@@ -1,9 +1,29 @@
 fileFormatVersion: 2
-guid: 51ff45b35fbd8cd4b9f0787268d4be34
+guid: 3f26cb10f1714cf488f1c1c786518f87
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Voxel_mat196.001
+    second: {fileID: 2100000, guid: d68bdfeef43ef814ea5d1198bce880fa, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Voxel_mat227.001
+    second: {fileID: 2100000, guid: 44a7285a596e9d746a2d70d6828210ce, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Voxel_mat236.001
+    second: {fileID: 2100000, guid: 21e8120d6cb3d9f41ae6a1e3035ec415, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Voxel_mat237.001
+    second: {fileID: 2100000, guid: 02ea2ae2d4190cc4ca1942504d61edd7, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -35,7 +55,7 @@ ModelImporter:
     isReadable: 0
   meshes:
     lODScreenPercentages: []
-    globalScale: 20
+    globalScale: 40
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
@@ -88,7 +108,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 0.19999999
+    globalScale: 40
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
