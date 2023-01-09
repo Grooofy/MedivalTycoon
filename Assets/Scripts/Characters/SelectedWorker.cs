@@ -8,23 +8,23 @@ public class SelectedWorker : MonoBehaviour
 
     private Button[] _buttons;
     private Image _image;
-    private int index;
+    private int indexSelectWorker;
 
     private void OnEnable()
     {
-        for (int index = 0; index < _buttons.Length; index++)
+        for (int i = 0; i < _buttons.Length; i++)
         {
-            _buttons[index].onClick.AddListener(ClickButton);
-            _workers[index].Selected += ShowWorker;
+            _buttons[i].onClick.AddListener(() =>ClickButton(i));
+           // _workers[i].Selected += ShowWorker(i);
         }
     }
 
     private void OnDisable()
     {
-        for (int index = 0; index < _buttons.Length; index++)
+        for (int i = 0; i < _buttons.Length; i++)
         {
-            _buttons[index].onClick.RemoveListener(ClickButton);
-            _workers[index].Selected -= ShowWorker;
+            _buttons[i].onClick.RemoveListener(() =>ClickButton(i));
+            //_workers[i].Selected -= ShowWorker(i);
         }
     }
 
@@ -32,20 +32,20 @@ public class SelectedWorker : MonoBehaviour
     {
         _buttons = GetComponentsInChildren<Button>();
         
-        for (int index = 0; index < _buttons.Length; index++)
+        for (int i = 0; i < _buttons.Length; i++)
         {
-            _image = _buttons[index].GetComponent<Image>();
-            ShowWorker();
+            _image = _buttons[i].GetComponent<Image>();
+            ShowWorker(i);
         }
     }
 
-    private void ShowWorker()
+    private void ShowWorker(int index)
     {
         _image.sprite = _workers[index].Icon;
         _buttons[index].interactable = !_workers[index].Select;
     }
 
-    private void ClickButton()
+    private void ClickButton(int index)
     {
         _workers[index].ChangeValueSelect();
     }

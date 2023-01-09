@@ -1,10 +1,18 @@
 {
   "dependencies": {
-    "com.agava.yandexgames": {
-      "version": "file:C:/Users/mrvol/Downloads/com.agava.yandexgames-master",
+    "com.agava.webutility": {
+      "version": "https://github.com/forcepusher/com.agava.webutility.git#2.0.0",
       "depth": 0,
-      "source": "local",
-      "dependencies": {}
+      "source": "git",
+      "dependencies": {},
+      "hash": "dbf49295fd77c3f9d8ba0ab156c96c0f2e90e9de"
+    },
+    "com.agava.yandexgames": {
+      "version": "https://github.com/forcepusher/com.agava.yandexgames.git#11.0.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "51d2698d5aaa609e1679da6546bbb49148c4909c"
     },
     "com.unity.collab-proxy": {
       "version": "1.17.6",
