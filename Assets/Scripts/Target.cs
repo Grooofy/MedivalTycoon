@@ -1,20 +1,33 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Target : MonoBehaviour
 {
-    [SerializeField] private List<CharacterInputController> _controllers;
+    [SerializeField] private List<SwitchInputController> _switchers;
+    public UnityAction<int> TargetReady;
 
-    public Transform Get()
+    private void OnEnable()
     {
-        foreach (var controller in _controllers)
+        foreach (var switcher in _switchers)
         {
-            if (controller.enabled)
-            {
-                return controller.transform;
-            }
+            switcher.Activate += TargetReady;
         }
-        return null;
+    }
+
+    private void OnDisable()
+    {
+        foreach (var switcher in _switchers)
+        {
+            switcher.Activate -= TargetReady;
+        }
+    }
+
+
+    public Transform Get(int id)
+    {
+        return _switchers[id].transform;
     }
     
 }
