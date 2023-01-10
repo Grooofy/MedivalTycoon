@@ -10,8 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4462d441f2ae44e2b28ea2b10d520472, type: 3}
-  m_Name: waiter
+  m_Name: waiter1
   m_EditorClassIdentifier: 
   _speed: 2
-  _select: 0
   _icon: {fileID: 21300000, guid: ee72e54f03f96b94789b6cec9d533abe, type: 3}
+  _id: 1
+  IsSelect: 0

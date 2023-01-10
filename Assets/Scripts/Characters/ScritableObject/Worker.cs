@@ -6,18 +6,17 @@ using UnityEngine.Events;
 public class Worker : ScriptableObject
 {
     [SerializeField] private float _speed;
-    [SerializeField] private bool _select;
     [SerializeField] private Sprite _icon;
+    [SerializeField] private int _id;
     
-    public bool Select => _select;
+    public bool IsSelect;
+    
     public float Speed => _speed;
     public Sprite Icon => _icon;
-
-    public UnityAction Selected;
-
+    public int Id => _id;
+    
     public void ChangeValueSelect()
     {
-        _select = !_select;
-        Selected.Invoke();
+        IsSelect = !IsSelect;
     }
 }
