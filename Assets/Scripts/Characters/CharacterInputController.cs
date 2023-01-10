@@ -14,7 +14,6 @@ public class CharacterInputController : MonoBehaviour
         
         if (_character == null)
             throw new Exception($"There is no ICharacter component on the object: {gameObject.name}");
-        
     }
 
     private void Update()

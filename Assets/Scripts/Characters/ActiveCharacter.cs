@@ -36,6 +36,6 @@ public class ActiveCharacter : MonoBehaviour
     {
        _previousButton.RefreshButton();
        _previousButton = _buttons[id];
-       CharacterSelected.Invoke(id);
+       CharacterSelected?.Invoke(id);
     }
 }

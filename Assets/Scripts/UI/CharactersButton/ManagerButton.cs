@@ -35,6 +35,6 @@ public class ManagerButton : MonoBehaviour
     private void ClickButton()
     {
         RefreshButton();
-        ReceivingPressedButtonId.Invoke(_model.GetId());
+        ReceivingPressedButtonId?.Invoke(_model.GetId());
     }
 }

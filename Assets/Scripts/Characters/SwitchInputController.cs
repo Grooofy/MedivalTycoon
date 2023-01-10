@@ -34,7 +34,7 @@ public class SwitchInputController : MonoBehaviour
         
         if (isValue)
         {
-            Activate.Invoke(_myId);
+            Activate?.Invoke(_myId);
         }
     }
 }
