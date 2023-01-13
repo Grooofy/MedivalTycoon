@@ -20,7 +20,6 @@ public class CameraFollower : MonoBehaviour
 
     private void Awake()
     {
-        _target = GetComponent<Target>();
         ChangeTarget(0);
     }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ActiveCharacter : MonoBehaviour
+public class Transmitter : MonoBehaviour
 {
     [SerializeField] private List<ManagerButton> _buttons;
 

@@ -4,7 +4,7 @@ using UnityEngine.Events;
 [RequireComponent(typeof(CharacterInputController))]
 public class SwitchInputController : MonoBehaviour
 {
-    [SerializeField] private ActiveCharacter _activeCharacter;
+    [SerializeField] private Transmitter _activeCharacter;
     [SerializeField] private CharacterInputController _characterInput;
     [SerializeField] private Character _character;
     
