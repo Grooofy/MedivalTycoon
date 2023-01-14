@@ -4,7 +4,7 @@ public class CameraFollower : MonoBehaviour
 {
     [SerializeField] private Vector3 _offSet;
     [SerializeField] private float _smoothing;
-    [SerializeField] private Target _target;
+    [SerializeField] private CameraTarget _target;
 
     private Transform _selectCharacter;
 

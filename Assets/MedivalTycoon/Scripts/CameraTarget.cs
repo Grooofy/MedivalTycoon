@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Target : MonoBehaviour
+public class CameraTarget : MonoBehaviour
 {
     [SerializeField] private List<SwitchInputController> _switchers;
     public UnityAction<int> TargetReady;
