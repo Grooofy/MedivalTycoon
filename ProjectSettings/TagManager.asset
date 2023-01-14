@@ -41,3 +41,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Bartender
+    uniqueID: 2681058729
+    locked: 0
+  - name: Waiter
+    uniqueID: 98911059
+    locked: 0
+  - name: Securite
+    uniqueID: 2930195649
+    locked: 0
