@@ -15,4 +15,4 @@ MonoBehaviour:
   _speed: 2
   _icon: {fileID: 21300000, guid: ee72e54f03f96b94789b6cec9d533abe, type: 3}
   _id: 0
-  IsSelect: 1
+  IsSelect: 0
