@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
@@ -5,9 +7,10 @@ using DG.Tweening;
 public class Character : MonoBehaviour, ICharacter
 {
     [SerializeField] private Worker _worker;
-    [SerializeField] private GameObject _barrel;
+    [SerializeField] private Transform _pointHand;
+    
     private CharacterController _controller;
-
+    private Queue<Barrel> _barrels;
     
     private void Awake()
     {
@@ -26,14 +29,17 @@ public class Character : MonoBehaviour, ICharacter
         _controller.Move(normalizeDirection * _worker.Speed * Time.deltaTime);
     }
 
-    public void PutObject(GameObject props)
-    {
-        props.transform.DOMove(transform.position + new Vector3(0,0.5f,0), 1);
-        props.SetActive(false);
-        _barrel.SetActive(true);
-        
+    public void PutObject(Barrel barrel)
+    { 
+        barrel.ChangeOwner(this.gameObject, CalculatePoint());
+        _barrels.Enqueue(barrel);
     }
 
+    private Vector3 CalculatePoint()
+    {
+        return new Vector3(_pointHand.position.x, _pointHand.position.y, _pointHand.position.z);
+    }
+    
     private void TryRotate(Vector3 direction)
     {
         if (direction != Vector3.zero)
