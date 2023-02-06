@@ -6,9 +6,11 @@ using DG.Tweening;
 public class Barrel : MonoBehaviour
 {
     [SerializeField] private int _beer;
+    private float _speedAnimation = 0.2f; 
     private Vector3 _firstPosition;
 
-    public UnityEvent PourBeer;
+
+    public UnityAction PourBeer;
 
     private void Awake()
     {
@@ -35,7 +37,7 @@ public class Barrel : MonoBehaviour
 
     private void ChangePosition(Vector3 newPosition)
     {
-       transform.DOMove(newPosition, 1);
+       transform.DOMove(newPosition, _speedAnimation);
     }
     
     private void Pour()
