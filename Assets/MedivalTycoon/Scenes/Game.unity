@@ -438,7 +438,7 @@ GameObject:
   m_Component:
   - component: {fileID: 31720228}
   m_Layer: 0
-  m_Name: point
+  m_Name: Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -452,7 +452,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 31720227}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 0.196, z: 0.352}
+  m_LocalPosition: {x: -0, y: 0.196, z: 0.24}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3953,7 +3953,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -1.271}
   m_AnchorMin: {x: 0.07337502, y: 0.013}
   m_AnchorMax: {x: 0.47439474, y: 0.98733336}
-  m_AnchoredPosition: {x: 4.260376, y: 8.7229}
+  m_AnchoredPosition: {x: 4.260254, y: 8.7229}
   m_SizeDelta: {x: -6.3582153, y: 1.8062744}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &195703879

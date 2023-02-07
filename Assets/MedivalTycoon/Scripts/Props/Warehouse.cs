@@ -8,30 +8,38 @@ public class Warehouse : MonoBehaviour
     [SerializeField] private int _capacity;
 
     private Queue<Barrel> _barrels = new Queue<Barrel>();
+    private Barrel[] _barrelsList;   
     
-    private void OnTriggerEnter(Collider other)
+
+    
+    private void OnTriggerStay(Collider other)
     {
         if (other.TryGetComponent(out Character character))
         {
-            character.PutObject(GetBarrel());
+            character.PutObjects(GetBarrel());
         }
     }
 
     private void Awake()
     {
+        _barrelsList = GetComponentsInChildren<Barrel>();
         CreateQueue();
     }
 
     private void Start()
     {
-        Debug.Log(_barrels.Count);
+        foreach (var item in _barrels)
+        {
+            Debug.Log(item.gameObject.name);
+        }
+        
     }
 
     private void CreateQueue()
     {
-        for (int i = 0; i < _capacity; i++)
+        foreach (var barrel in _barrelsList)
         {
-            _barrels.Enqueue(GetComponentInChildren<Barrel>());
+            _barrels.Enqueue(barrel);
         }
     }
     

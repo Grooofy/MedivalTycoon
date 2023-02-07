@@ -10,7 +10,9 @@ public class Character : MonoBehaviour, ICharacter
     [SerializeField] private Transform _pointHand;
 
     private CharacterController _controller;
-    private Queue<Barrel> _barrels;
+    private Queue<Barrel> _barrels = new Queue<Barrel>();
+    private float _offset;
+    private int _maxCoutBarrel = 5;
 
     private void Awake()
     {
@@ -29,15 +31,20 @@ public class Character : MonoBehaviour, ICharacter
         _controller.Move(normalizeDirection * _worker.Speed * Time.deltaTime);
     }
 
-    public void PutObject(Barrel barrel)
+    public void PutObjects(Barrel barrel)
     {
-        barrel.ChangeOwner(this.gameObject, CalculatePoint());
+        PutObject(barrel);
+    }
+
+    private void PutObject(Barrel barrel)
+    {
+        barrel.ChangeOwner(_pointHand.gameObject, CalculatePoint());
         _barrels.Enqueue(barrel);
     }
 
     private Vector3 CalculatePoint()
     {
-        return new Vector3(_pointHand.position.x, _pointHand.position.y, _pointHand.position.z);
+        return new Vector3(_pointHand.position.x, _pointHand.position.y + _offset, _pointHand.position.z);
     }
 
     private void TryRotate(Vector3 direction)

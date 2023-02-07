@@ -6,7 +6,7 @@ using DG.Tweening;
 public class Barrel : MonoBehaviour
 {
     [SerializeField] private int _beer;
-    private float _speedAnimation = 0.2f; 
+    private float _speedAnimation = 0.5f; 
     private Vector3 _firstPosition;
 
 
@@ -31,8 +31,8 @@ public class Barrel : MonoBehaviour
 
     public void ChangeOwner(GameObject owner, Vector3 newPosition)
     {
+        transform.SetParent(owner.transform);
         ChangePosition(newPosition);
-        gameObject.transform.SetParent(owner.transform);
     }
 
     private void ChangePosition(Vector3 newPosition)
