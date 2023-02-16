@@ -6,35 +6,30 @@ public class Lift : MonoBehaviour
 {
     [SerializeField] private Transform _point;
     [SerializeField] private float _step;
-    private Vector3 _newPosition;
     private float _offset;
     private Queue<Prop> _myProps = new Queue<Prop>();
-    private int _maxCoutProps = 5;
-
-    private void Awake()
-    {
-        _newPosition = _point.position;
-    }
-
+    private int _maxCountProps = 5;
+ 
+    
     public void  TryRaiseObject(Prop prop)
     {
-        if (_myProps.Count == _maxCoutProps)
+        if (_myProps.Count == _maxCountProps)
             return;
-
-        prop.ChangeOwner(this.gameObject, _newPosition);
+        
+        Vector3 firstPoint = CalculateNewPosition(_point.position);
+        prop.ChangeOwner(this.gameObject, _myProps.Count < 1 ? firstPoint : CalculateNewPosition(firstPoint));
         _myProps.Enqueue(prop);
-        _newPosition = CalculateNewPosition();
+        CalculateOffSet();
     }
 
-    private Vector3 CalculateNewPosition()
+    private Vector3 CalculateNewPosition(Vector3 point)
     {
-        Vector3 position = new Vector3(_point.position.x, _point.position.y + CalculateOffSet(_offset), _point.position.z);
+        Vector3 position = new Vector3(point.x, point.y + _offset, point.z);
         return position;
     }
 
-    private float CalculateOffSet(float offset)
+    private void CalculateOffSet()
     {
-        offset += _step;
-        return offset;
+        _offset += _step;
     }
 }

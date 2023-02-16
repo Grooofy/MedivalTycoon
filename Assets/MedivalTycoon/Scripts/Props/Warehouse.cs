@@ -6,19 +6,30 @@ using UnityEngine;
 public class Warehouse : MonoBehaviour
 {
     private Queue<Barrel> _barrels = new Queue<Barrel>();
-    private Barrel[] _barrelsList;  
+    private Barrel[] _barrelsList;
+    private WaitForSeconds _delay = new WaitForSeconds(0.25f);
     
     private void OnTriggerStay(Collider other)
     {
-        if (other.TryGetComponent(out Lift character))
+        if (other.TryGetComponent(out Lift lift))
         {
-            character.TryRaiseObject(TryGetBarrel());
+            StartCoroutine(RaiseObjects(lift, _delay));
         }
     }
 
     private void Awake()
     {
         CreateQueue();
+    }
+
+    private IEnumerator RaiseObjects(Lift lift, WaitForSeconds delay)
+    {
+        while (_barrels.Count != 0)
+        {
+            lift.TryRaiseObject(TryGetBarrel());
+
+            yield return delay;
+        }
     }
     
     private void CreateQueue()
@@ -37,7 +48,7 @@ public class Warehouse : MonoBehaviour
         {
             return null;
         }
-       return  _barrels.Dequeue();
+        return  _barrels.Dequeue();
     }
 
 }
