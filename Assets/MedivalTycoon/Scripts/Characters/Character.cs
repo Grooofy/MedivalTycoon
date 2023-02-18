@@ -23,6 +23,11 @@ public class Character : MonoBehaviour, ICharacter
         return _worker.Id;
     }
 
+    public int GetNumberWearableObjects()
+    {
+        return _worker.NumberWearableObjects;
+    }
+
     public void Move(Vector3 direction)
     {
         TryRotate(direction);

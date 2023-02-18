@@ -5,15 +5,19 @@ using UnityEngine;
 
 public class Warehouse : MonoBehaviour
 {
+    [SerializeField] private Transform _issueArea;
+    [SerializeField] private float _step;
+    private float _currentStep = 0;
     private Queue<Barrel> _barrels = new Queue<Barrel>();
     private Barrel[] _barrelsList;
     private WaitForSeconds _delay = new WaitForSeconds(0.25f);
-    
-    private void OnTriggerStay(Collider other)
+
+
+    private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out Lift lift))
+        if (other.TryGetComponent(out Hand hand))
         {
-            StartCoroutine(RaiseObjects(lift, _delay));
+            IssueObjects(hand, hand.GetNumberWearableObjects());            
         }
     }
 
@@ -22,7 +26,17 @@ public class Warehouse : MonoBehaviour
         CreateQueue();
     }
 
-    private IEnumerator RaiseObjects(Lift lift, WaitForSeconds delay)
+    private void IssueObjects(Hand hand, int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            Barrel barrel = TryGetBarrel();
+            //barrel.ChangePosition(hand.transform, hand.transform.position, _currentStep);
+            CalculateStep();
+        }
+    }
+
+    private IEnumerator RaiseObjects(Hand lift, WaitForSeconds delay)
     {
         while (_barrels.Count != 0)
         {
@@ -31,7 +45,13 @@ public class Warehouse : MonoBehaviour
             yield return delay;
         }
     }
-    
+
+    private void CalculateStep()
+    {
+        _currentStep += _step;
+    }
+
+
     private void CreateQueue()
     {
         _barrelsList = GetComponentsInChildren<Barrel>();
@@ -41,14 +61,14 @@ public class Warehouse : MonoBehaviour
             _barrels.Enqueue(barrel);
         }
     }
-    
+
     private Barrel TryGetBarrel()
     {
         if (_barrels.Count == 0)
         {
             return null;
         }
-        return  _barrels.Dequeue();
+        return _barrels.Dequeue();
     }
 
 }

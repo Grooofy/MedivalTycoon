@@ -18,10 +18,10 @@ public class Prop : MonoBehaviour
         _firstPosition = transform.position;
     }
 
-    public void ChangeOwner(GameObject owner, Vector3 newPosition)
+    
+    public void ChangePosition(Vector3 newPosition, float _offset)
     {
-        ChangePosition(newPosition);
-        transform.SetParent(owner.transform);
+        transform.DOJump(new Vector3(newPosition.x, newPosition.y + _offset, newPosition.z), _jumpPower, _jumpCount, _duration);
     }
 
     public void TryUseProp()
@@ -41,10 +41,6 @@ public class Prop : MonoBehaviour
         _capacity--;
     }
 
-    private void ChangePosition(Vector3 newPosition)
-    {
-        transform.DOJump(newPosition, _jumpPower, _jumpCount, _duration);
-    }
 
     private void ResetPosition()
     {
