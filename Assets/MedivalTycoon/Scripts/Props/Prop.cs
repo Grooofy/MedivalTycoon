@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using DG.Tweening;
 
@@ -17,13 +18,14 @@ public class Prop : MonoBehaviour
     {
         _firstPosition = transform.position;
     }
-
     
     public void ChangePosition(Vector3 newPosition, float _offset)
     {
-        transform.DOJump(new Vector3(newPosition.x, newPosition.y + _offset, newPosition.z), _jumpPower, _jumpCount, _duration);
+        var offset = Vector3.up * _offset;
+        transform.DOJump(newPosition + offset, _jumpPower, _jumpCount, _duration, false);
     }
-
+   
+    
     public void TryUseProp()
     {
         if (_capacity > 0)

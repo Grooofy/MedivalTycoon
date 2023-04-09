@@ -17,7 +17,7 @@ public class Warehouse : MonoBehaviour
     {
         if (other.TryGetComponent(out Hand hand))
         {
-            IssueObjects(hand, hand.GetNumberWearableObjects());            
+            StartCoroutine(RaiseObjects(hand, _delay));
         }
     }
 
@@ -32,15 +32,18 @@ public class Warehouse : MonoBehaviour
         {
             Barrel barrel = TryGetBarrel();
             //barrel.ChangePosition(hand.transform, hand.transform.position, _currentStep);
-            CalculateStep();
+            
         }
     }
 
-    private IEnumerator RaiseObjects(Hand lift, WaitForSeconds delay)
+    private IEnumerator RaiseObjects(Hand hand, WaitForSeconds delay)
     {
-        while (_barrels.Count != 0)
+        for (int i = 0; i < hand.GetNumberWearableObjects(); i++)
         {
-            lift.TryRaiseObject(TryGetBarrel());
+            var barrel = TryGetBarrel();
+            hand.TryRaiseObject(barrel, _currentStep); 
+            barrel.transform.SetParent(hand.transform, this);
+            CalculateStep();
 
             yield return delay;
         }
