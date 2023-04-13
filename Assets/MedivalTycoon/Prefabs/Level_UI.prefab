@@ -93,7 +93,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 131.2
+  m_fontSize: 18
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -147,6 +147,7 @@ GameObject:
   - component: {fileID: 5140553594226251528}
   - component: {fileID: 5140553594226251531}
   - component: {fileID: 5140553594226251530}
+  - component: {fileID: 2182711221749229404}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -252,11 +253,24 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 5140553594226251531}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2182711221749229404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5140553594226251532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 493d22819e0cef34595c6531639c2942, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _button: {fileID: 5140553594226251530}
 --- !u!1 &5140553594605411401
 GameObject:
   m_ObjectHideFlags: 0
@@ -266,6 +280,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5140553594605411398}
+  - component: {fileID: -8191065767168491008}
   m_Layer: 5
   m_Name: Level_UI
   m_TagString: Untagged
@@ -295,6 +310,24 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &-8191065767168491008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5140553594605411401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7b01615032694d4ba5f7c7b08323648, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _textMesh: {fileID: 5140553593936212695}
+  _button: {fileID: 5140553594226251530}
+  _coinImages:
+  - {fileID: 5140553594978857218}
+  - {fileID: 5140553595187794197}
+  - {fileID: 5140553595619311515}
 --- !u!1 &5140553594978857220
 GameObject:
   m_ObjectHideFlags: 0
