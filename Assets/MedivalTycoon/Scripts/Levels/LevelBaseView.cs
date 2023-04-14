@@ -2,7 +2,6 @@
 public class LevelBaseView : MonoBehaviour
 {
     [SerializeField] private LevelButtonCreater _levelButtonCreator;
-    [SerializeField] private LevelBase _levelBase;
     
     private void Start()
     {
@@ -11,9 +10,9 @@ public class LevelBaseView : MonoBehaviour
 
     private void ShowIcons()
     {
-        SwitchButtonInteractable(0);
+        ShowButtonInteractable(0);
         
-        for (int i = 0; i < _levelBase.LevelsCount; i++)
+        for (int i = 0; i < _levelButtonCreator.GetIconsCount(); i++)
         {
             ShowIconText(i);
         }
@@ -24,7 +23,7 @@ public class LevelBaseView : MonoBehaviour
         _levelButtonCreator.GetLevelButton(sequenceNumber).ShowNumber(sequenceNumber);
     }
 
-    private void SwitchButtonInteractable(int sequenceNumber)
+    private void ShowButtonInteractable(int sequenceNumber)
     {
         _levelButtonCreator.GetLevelButton(sequenceNumber).SwitchButtonInteractable();
     }

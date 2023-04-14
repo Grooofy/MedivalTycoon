@@ -1,18 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelButtonCreater : MonoBehaviour
 {
-    [SerializeField] private int _countLevels;
+    [SerializeField] private LevelBase _levelBase;
     [SerializeField] private Content _content;
     [SerializeField] private LevelUI _levelUI;
     
     private readonly List<LevelUI> _levelIcons = new List<LevelUI>();
-
+    
     private void OnEnable()
     {
         CreateLevelsList();
+        SetDataLevel();
     }
 
     public LevelUI GetLevelButton(int id)
@@ -20,18 +20,30 @@ public class LevelButtonCreater : MonoBehaviour
         return _levelIcons[id];
     }
 
+    public int GetIconsCount()
+    {
+        return _levelIcons.Count;
+    }
+
     private void CreateLevelsList()
     {
-        for (int i = 0; i < _countLevels; i++)
+        for (int i = 0; i < _levelBase.LevelsCount; i++)
         {
-            _levelIcons.Add(CreateIcon());
+            var pref = Instantiate(_levelUI.gameObject, _content.transform);
+            _levelIcons.Add(CreateLevelUI(pref));
+        }
+    }
+
+    private void SetDataLevel()
+    {
+        for (int i = 0; i < _levelBase.LevelsCount; i++)
+        {
+            _levelIcons[i].SetLevel(_levelBase.GetLevelData(i));
         }
     }
     
-    private LevelUI CreateIcon()
+    private LevelUI CreateLevelUI(GameObject prefab)
     {
-        var pref = Instantiate(_levelUI.gameObject, _content.transform);
-        LevelUI ui = pref.GetComponent<LevelUI>();
-        return ui;
+        return prefab.GetComponent<LevelUI>();
     }
 }

@@ -13,4 +13,9 @@ public class LevelBase : MonoBehaviour
         return _levels[id];
     }
 
+    public bool IsComplete(int id)
+    {
+        return _levels[id].IsComplete;
+    }
+
 }

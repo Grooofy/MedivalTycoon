@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -9,8 +8,20 @@ public class LevelUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _textMesh;
     [SerializeField] private Button _button;
     [SerializeField] private List<Image> _coinImages;
-    
+    [SerializeField] private LevelData _levelData;
 
+    private Level _level;
+
+    private void OnEnable()
+    {
+        _button.onClick.AddListener(delegate { _levelData.Save(_level); });
+    }
+
+    public void SetLevel(Level level)
+    {
+        _level = level;
+    }
+   
     public void SwitchButtonInteractable()
     {
         _button.interactable = !_button.interactable;
@@ -38,6 +49,7 @@ public class LevelUI : MonoBehaviour
     
     public void ShowNumber(int number)
     {
+        number++;
         _textMesh.text = number.ToString();
     }
 
