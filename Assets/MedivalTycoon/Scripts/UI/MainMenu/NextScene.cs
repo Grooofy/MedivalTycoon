@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class NextScene : MonoBehaviour
@@ -15,6 +14,6 @@ public class NextScene : MonoBehaviour
 
     private void OpenGameScene()
     {
-        SceneManager.LoadScene(NAMESCENE);
+        SceneTransition.SwitchToScene(NAMESCENE);
     }
 }
