@@ -16,4 +16,4 @@ MonoBehaviour:
   _startMoney: 1000
   _numberVisitors: 30
   _seconds: 100
-  _isComplete: 0
+  _isComplete: 1

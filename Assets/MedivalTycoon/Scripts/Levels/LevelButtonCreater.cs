@@ -25,6 +25,11 @@ public class LevelButtonCreater : MonoBehaviour
         return _levelIcons.Count;
     }
 
+    public bool GetInfoComplited(int number)
+    {
+        return _levelBase.IsComplete(number);
+    }
+
     private void CreateLevelsList()
     {
         for (int i = 0; i < _levelBase.LevelsCount; i++)

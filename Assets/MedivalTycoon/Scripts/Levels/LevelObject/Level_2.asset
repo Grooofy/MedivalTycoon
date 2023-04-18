@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _numberLevel: 2
   _startMoney: 1500
-  numberVisitors: 3
+  _numberVisitors: 0
   _seconds: 150
+  _isComplete: 1

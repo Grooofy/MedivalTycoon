@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Level_3
   m_EditorClassIdentifier: 
   _numberLevel: 0
-  _money: 000000000000000000000000
-  numberVisitors: 0
+  _startMoney: 0
+  _numberVisitors: 0
   _seconds: 0
+  _isComplete: 1
