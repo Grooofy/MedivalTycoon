@@ -15,4 +15,5 @@ MonoBehaviour:
   _speed: 2
   _icon: {fileID: 21300000, guid: 549835fb3c9719f4ead49b19acfdb603, type: 3}
   _id: 2
+  _numberWearableObjects: 0
   IsSelect: 0
