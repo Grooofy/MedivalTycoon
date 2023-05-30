@@ -7,7 +7,6 @@ using UnityEngine.Events;
 public class Table : MonoBehaviour
 {
     [SerializeField] private int _price;
-    [SerializeField] private int _step;
     [SerializeField] private float _speedBuilding;
     [SerializeField] private ParticleSystem _smoke;
 
@@ -15,20 +14,42 @@ public class Table : MonoBehaviour
     public UnityAction<int> PriceChanged;
     public int Price => _price;
 
-    public void Build()
+    private Coroutine _priceChanged;
+
+    public void ReducePrice(int step)
     {
-        _smoke.Play();
-        transform.DOScale(Vector3.one, _speedBuilding).OnComplete(LinedUp);
+        if (_priceChanged == null)
+        {
+            _priceChanged = StartCoroutine(ReducesPrice(step));
+        }
+        else
+        {
+            StopReducePrice();
+            _priceChanged = StartCoroutine(ReducesPrice(step));
+        }
     }
 
-    private IEnumerator ReducePrice(int newPrice)
+    public void StopReducePrice()
     {
-        while (_price != newPrice)
+        if (_priceChanged != null) 
+            StopCoroutine(_priceChanged);
+    }
+    
+    private IEnumerator ReducesPrice(int step)
+    {
+        while (_price != 0)
         {
-            _price -= _step;
+            _price -= step;
             PriceChanged?.Invoke(_price);
             yield return null;
         }
+        Build();
+    }
+    
+    private void Build()
+    {
+        _smoke.Play();
+        transform.DOScale(Vector3.one, _speedBuilding).OnComplete(LinedUp);
     }
     
 }

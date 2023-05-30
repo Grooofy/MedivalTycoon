@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Level_2
   m_EditorClassIdentifier: 
   _numberLevel: 2
-  _startMoney: 1500
+  _startMoney: 1000
   _numberVisitors: 20
   _seconds: 2000
   _isComplete: 1

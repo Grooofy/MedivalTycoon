@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -10,20 +11,19 @@ public class Wallet : MonoBehaviour
     [SerializeField] private int _step;
 
     public UnityAction<int> CoinsChanged;
-
-
+    
     private Coroutine _addedCoins;
     private Coroutine _removedCoins;
 
     private int _coins;
     
-    
-    private void Awake()
+  
+    private void Start()
     {
         LoadCoinsCount();
     }
     
-    public void AddCoins(int countCoins)
+    public void StartAddCoins(int countCoins)
     {
         if (_addedCoins == null)
         {
@@ -35,18 +35,25 @@ public class Wallet : MonoBehaviour
             _addedCoins = StartCoroutine(AddedCoins(countCoins));
         }
     }
+    
 
-    public void RemoveCoins(int countCoins)
+    public void StartRemoveCoins(int countCoins, int step)
     {
         if (_removedCoins == null)
         {
-            _removedCoins = StartCoroutine(RemovedCoins(countCoins));
+            _removedCoins = StartCoroutine(RemovedCoins(countCoins, step));
         }
         else
         {
-            StopCoroutine(_removedCoins);
-            _removedCoins = StartCoroutine(RemovedCoins(countCoins));
+            StopRemoveCoins();
+            _removedCoins = StartCoroutine(RemovedCoins(countCoins, step));
         }
+    }
+
+    public void StopRemoveCoins()
+    {
+        if (_removedCoins != null) 
+            StopCoroutine(_removedCoins);
     }
 
     public bool TryRemoveCoin(int priceTable)
@@ -64,13 +71,13 @@ public class Wallet : MonoBehaviour
         }
     }
     
-    private IEnumerator RemovedCoins(int number)
+    private IEnumerator RemovedCoins(int number, int step)
     {
         int sum = _coins - number;
         
         while (_coins != sum)
         {
-            _coins -= _step;
+            _coins -= step;
             CoinsChanged?.Invoke(_coins);
             yield return null;
         }
@@ -78,6 +85,7 @@ public class Wallet : MonoBehaviour
     
     private void LoadCoinsCount()
     {
-        AddCoins(_loadingGameSettings.GetMoney()); 
+        _coins =_loadingGameSettings.GetMoney(); 
+        CoinsChanged?.Invoke(_coins);
     }
 }

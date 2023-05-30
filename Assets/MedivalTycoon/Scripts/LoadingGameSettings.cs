@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class LoadingGameSettings : MonoBehaviour
 {
-    private ISaveSystem _saveSystem = new PlayerPrefsSystem();
+    private ISaveSystem _iSaveSystem = new PlayerPrefsSystem();
     private SaveData _saveData;
 
 
@@ -23,7 +23,7 @@ public class LoadingGameSettings : MonoBehaviour
 
     private void Awake()
     {
-        _saveData = _saveSystem.Load();
+        _saveData = _iSaveSystem.Load();
     }
 
 }

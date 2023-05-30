@@ -1,17 +1,12 @@
-using System;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class Trigger : MonoBehaviour
 {
     [SerializeField] private BoxCollider _boxCollider;
     [SerializeField] private Table _table;
-
-    public UnityAction Building;
-
-
+    
     private bool _isBuilding;
-
+    private bool _go;
 
     private void OnEnable()
     {
@@ -35,8 +30,8 @@ public class Trigger : MonoBehaviour
     {
         if (other.TryGetComponent(out Wallet wallet) && _isBuilding)
         {
-            wallet.RemoveCoins(_table.Price);
-            Building?.Invoke();
+            wallet.StartRemoveCoins(_table.Price, 1);
+            _table.ReducePrice(1);
         }
     }
 
@@ -44,13 +39,17 @@ public class Trigger : MonoBehaviour
     {
         if (other.TryGetComponent(out Wallet wallet))
         {
-            //_table.TryChangePrice();
+            wallet.StopRemoveCoins();
+            _table.StopReducePrice();
+            _go = true;
         }
     }
-
-
+    
     private void ActionCollider()
     {
-        _boxCollider.isTrigger = false;
+        if (_go)
+        {
+            _boxCollider.isTrigger = false;
+        }
     }
 }
