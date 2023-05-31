@@ -37,6 +37,7 @@ public class LevelButtonCreater : MonoBehaviour
             var pref = Instantiate(_levelUI.gameObject, _content.transform);
             _levelIcons.Add(CreateLevelUI(pref));
         }
+        _content.SetStartPosition();
     }
 
     private void SetDataLevel()
