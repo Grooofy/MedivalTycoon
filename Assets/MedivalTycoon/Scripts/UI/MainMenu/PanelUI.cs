@@ -1,20 +1,29 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using DG.Tweening;
 
 public class PanelUI: MonoBehaviour
 {
     [SerializeField] private float _durationAnimation;
-    private Vector3 _startScale = Vector3.zero;
-    private Vector3 _finishScale = Vector3.one;
-    
+    [SerializeField] private CanvasGroup _canvasGroup;
+
+    private int _maxValue = 1;
+    private int _minValue = 0;
+
     public virtual void Open()
     {
-        transform.DOScale(_finishScale, _durationAnimation);
+        _canvasGroup.DOFade(_maxValue, _durationAnimation);
+        SwitchCanvasGroup(true);
     }
 
     public virtual void Close()
     {
-        transform.DOScale(_startScale, _durationAnimation);
+        _canvasGroup.DOFade(_minValue, _durationAnimation);
+        SwitchCanvasGroup(false);
+    }
+
+    private void SwitchCanvasGroup(bool value)
+    {
+        _canvasGroup.interactable = value;
+        _canvasGroup.blocksRaycasts = value;
     }
 }
