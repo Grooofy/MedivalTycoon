@@ -6,12 +6,14 @@ public class Spawner : MonoBehaviour
     [SerializeField] private GameObject _barrel;
     [SerializeField] private Transform _startPoint;
     [SerializeField] private Regulating _regulating;
-    [SerializeField] private int _countBarrels;
+    
+    private int _countBarrels;
 
     private Queue<GameObject> _barrels = new Queue<GameObject>();
 
     private void OnEnable()
     {
+        _countBarrels = _regulating.CountBarrel * 2;
         _regulating.BarrelArrived += SendBarrel;
     }
 
@@ -23,17 +25,15 @@ public class Spawner : MonoBehaviour
     private void Start()
     {
         CreateObject();
-
     }
 
     private void CreateObject()
     {
         for (int i = 0; i < _countBarrels; i++)
         {
-            GameObject newBarrel = Instantiate(_barrel, _startPoint.position, Quaternion.identity);
+            GameObject newBarrel = Instantiate(_barrel, _startPoint.position, _barrel.transform.rotation);
             _barrels.Enqueue(newBarrel);
         }
-        Debug.Log(_barrels.Count);
         SendBarrel();
     }
 
@@ -44,10 +44,7 @@ public class Spawner : MonoBehaviour
 
     private GameObject TryGetBarrel()
     {
-        if (_barrels == null)
-            return null;
-
-        return _barrels.Dequeue();
+        return _barrels.Count == 0 ? null : _barrels.Dequeue();
     }
 
 
