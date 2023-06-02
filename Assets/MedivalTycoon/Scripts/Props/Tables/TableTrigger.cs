@@ -1,10 +1,11 @@
 using UnityEngine;
 
-public class Trigger : MonoBehaviour
+public class TableTrigger : MonoBehaviour, ITrigger
 {
     [SerializeField] private BoxCollider _boxCollider;
     [SerializeField] private Table _table;
-    
+
+    private int _step = 1;
     private bool _isBuilding;
     private bool _go;
 
@@ -18,7 +19,7 @@ public class Trigger : MonoBehaviour
         _table.LinedUp -= ActionCollider;
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out Wallet wallet))
         {
@@ -26,16 +27,16 @@ public class Trigger : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay(Collider other)
+    public void OnTriggerStay(Collider other)
     {
         if (other.TryGetComponent(out Wallet wallet) && _isBuilding)
         {
-            wallet.StartRemoveCoins(_table.Price, 1);
-            _table.ReducePrice(1);
+            wallet.StartRemoveCoins(_table.Price, _step);
+            _table.ReducePrice(_step);
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    public void OnTriggerExit(Collider other)
     {
         if (other.TryGetComponent(out Wallet wallet))
         {
@@ -44,12 +45,12 @@ public class Trigger : MonoBehaviour
             _go = true;
         }
     }
-    
+
     private void ActionCollider()
     {
         if (_go)
         {
             _boxCollider.isTrigger = false;
         }
-    }
+    }   
 }

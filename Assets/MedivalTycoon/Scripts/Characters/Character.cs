@@ -1,14 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
+
 
 [RequireComponent(typeof(CharacterController))]
 public class Character : MonoBehaviour, ICharacter
 {
     [SerializeField] private Worker _worker;
     [SerializeField] private Transform _pointHand;
-    
 
     private CharacterController _controller;
    
