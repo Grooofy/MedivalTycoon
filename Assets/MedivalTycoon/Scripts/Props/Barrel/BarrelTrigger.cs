@@ -10,7 +10,7 @@ public class BarrelTrigger : MonoBehaviour, ITrigger
     {
         if (other.TryGetComponent(out Bartender bartender))
         {
-            Debug.Log("BuleShite");
+            
         }
     }
 
