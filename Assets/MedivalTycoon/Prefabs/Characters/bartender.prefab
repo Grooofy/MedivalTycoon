@@ -1859,6 +1859,8 @@ GameObject:
   - component: {fileID: 8005517294511024676}
   - component: {fileID: 8005517294511024677}
   - component: {fileID: 8005517294511024702}
+  - component: {fileID: 543450653565469361}
+  - component: {fileID: 543450653565469365}
   m_Layer: 0
   m_Name: bartender
   m_TagString: Untagged
@@ -1898,7 +1900,7 @@ CharacterController:
   m_Radius: 0.14
   m_SlopeLimit: 0
   m_StepOffset: 0.1
-  m_SkinWidth: 0.014
+  m_SkinWidth: 0.0001
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0.25, z: 0}
 --- !u!114 &8005517294511024676
@@ -1944,6 +1946,32 @@ MonoBehaviour:
   _activeCharacter: {fileID: 0}
   _characterInput: {fileID: 8005517294511024676}
   _character: {fileID: 8005517294511024677}
+--- !u!114 &543450653565469361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7194542467760387321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01f4d84d92fac1a4b98e1ff319e67797, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &543450653565469365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7194542467760387321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91cb650e82cbf1846aa368ab7e6e9a22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _loadingGameSettings: {fileID: 0}
+  _step: 8
 --- !u!1 &7237824378960165321
 GameObject:
   m_ObjectHideFlags: 0
@@ -2298,9 +2326,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8005517294631186378}
-  - component: {fileID: 8005517294631186379}
-  - component: {fileID: 8005517294631186376}
   - component: {fileID: 8005517294631186377}
+  - component: {fileID: 8005517294631186379}
+  - component: {fileID: 1904288981}
+  - component: {fileID: 1883320677745282358}
   m_Layer: 0
   m_Name: Hand
   m_TagString: Untagged
@@ -2326,6 +2355,19 @@ Transform:
   m_Father: {fileID: 2332194007072797672}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &8005517294631186377
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8005517294631186381}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.05
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8005517294631186379
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2338,9 +2380,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a293e937d32c8f40873f083da6f257e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _character: {fileID: 8005517294511024677}
-  _point: {x: 0, y: -2, z: 0}
---- !u!54 &8005517294631186376
+  _points:
+  - {fileID: 8005517292997715054}
+  - {fileID: 8005517292835264780}
+  - {fileID: 8005517292977819116}
+  _speed: 0.5
+--- !u!54 &1904288981
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2352,23 +2397,23 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!135 &8005517294631186377
-SphereCollider:
+--- !u!114 &1883320677745282358
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8005517294631186381}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.05
-  m_Center: {x: 0, y: 0, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49917610ade0b13459e49da3c663e2bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 0
 --- !u!1 &8028783229462021675
 GameObject:
   m_ObjectHideFlags: 0

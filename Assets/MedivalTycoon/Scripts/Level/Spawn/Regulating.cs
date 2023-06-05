@@ -11,8 +11,10 @@ public class Regulating : MonoBehaviour
 
     public UnityAction BarrelArrived;
 
+    private Queue<GameObject> _barrels = new Queue<GameObject>();
     private int _pointNumber = 0;
     private bool _isMoved = true;
+    
 
     private void OnEnable()
     {
@@ -26,9 +28,15 @@ public class Regulating : MonoBehaviour
 
     public void MoveObject(GameObject barrel)
     {
+        _barrels.Enqueue(barrel);
         _mover.MoveToPoint(_points[_pointNumber].transform.position, barrel, _isMoved);
     }  
     
+    public GameObject GetObject()
+    {
+        return _barrels.Dequeue();
+    }
+
     private void CalculatePoint()
     {
         if (_pointNumber == _points.Count - 1)
@@ -39,10 +47,5 @@ public class Regulating : MonoBehaviour
         
         _pointNumber++;
         BarrelArrived?.Invoke();
-    }
-
-    private void TurnOffPoint(Point point)
-    {
-        point.SetActiveValue(false);
     }
 }

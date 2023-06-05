@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class BarrelTrigger : MonoBehaviour, ITrigger
 {
+    [SerializeField] Regulating _regulating;
 
 
     public void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out Bartender bartender))
-        {
-            
-        }
+        //if (other.TryGetComponent(out Hand bartender))
+        //{
+        //    bartender.TakeObject(_regulating.GetObject());
+        //}
     }
 
     public void OnTriggerExit(Collider other)
@@ -21,6 +22,9 @@ public class BarrelTrigger : MonoBehaviour, ITrigger
 
     public void OnTriggerStay(Collider other)
     {
-        throw new System.NotImplementedException();
+        if (other.TryGetComponent(out Hand bartender))
+        {
+            bartender.TakeObject(_regulating.GetObject());
+        }
     }        
 }
