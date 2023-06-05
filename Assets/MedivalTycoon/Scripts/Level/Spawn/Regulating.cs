@@ -8,7 +8,6 @@ public class Regulating : MonoBehaviour
     [SerializeField] private PropseMover _mover;
 
     public int CountBarrel => _points.Count;
-
     public UnityAction BarrelArrived;
 
     private Queue<GameObject> _barrels = new Queue<GameObject>();
@@ -28,8 +27,8 @@ public class Regulating : MonoBehaviour
 
     public void MoveObject(GameObject barrel)
     {
-        _barrels.Enqueue(barrel);
         _mover.MoveToPoint(_points[_pointNumber].transform.position, barrel, _isMoved);
+        _barrels.Enqueue(barrel);
     }  
     
     public GameObject GetObject()
