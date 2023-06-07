@@ -9,12 +9,12 @@ public class Hand : MonoBehaviour
 
     private int _maxNumberProps => _points.Count;
     private int _numberProps = 0;
-    private WaitForSeconds _sleep;
+    
 
 
     public void TryTakeObject(GameObject props)
     {
-        if (_numberProps > _maxNumberProps)
+        if (_numberProps == _maxNumberProps)
         {
             return;
         }
@@ -23,8 +23,8 @@ public class Hand : MonoBehaviour
 
     private void TakeObject(GameObject props)
     {
-        _mover.MoveToPoint(_points[_numberProps].position, props, false);
-        props.transform.SetParent(transform);
+        _mover.MoveToPoint(_points[_numberProps].position, props, true);
+        props.transform.SetParent(_points[_numberProps]);
         _numberProps++;
     } 
 

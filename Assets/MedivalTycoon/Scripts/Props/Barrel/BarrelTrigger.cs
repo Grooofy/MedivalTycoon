@@ -7,11 +7,12 @@ public class BarrelTrigger : MonoBehaviour, ITrigger
     [SerializeField] Regulating _regulating;
     [SerializeField] private float _delay;
 
+    private float _delayTime;
     
 
     private void Start()
     {
-       
+        _delayTime = _delay;
     }
 
 
@@ -19,7 +20,7 @@ public class BarrelTrigger : MonoBehaviour, ITrigger
     {
         if (other.TryGetComponent(out Hand bartender))
         {
-          _delay -= Time.deltaTime;
+         
         }
     }
 
@@ -32,8 +33,12 @@ public class BarrelTrigger : MonoBehaviour, ITrigger
     {
         if (other.TryGetComponent(out Hand bartender))
         {
+            _delay -= Time.deltaTime;
             if (_delay < 0)
+            {
                 bartender.TryTakeObject(_regulating.GetObject());
+                _delay = _delayTime;
+            }
         }
     }        
 }

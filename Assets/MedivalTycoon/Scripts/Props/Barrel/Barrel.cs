@@ -6,7 +6,7 @@ public class Barrel : Prop
     {
         if (other.TryGetComponent(out BarrelSpot _))
         {
-            StopAnimation();
+            StopRotationAnimation();
         }
     }
 }

@@ -2234,7 +2234,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8005517292835264780}
   m_Layer: 0
-  m_Name: Point (1)
+  m_Name: Point (2)
   m_TagString: Untagged
   m_Icon: {fileID: -5938655980376293919, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -2253,7 +2253,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8005517294631186378}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8005517292977819119
 GameObject:
@@ -2265,7 +2265,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8005517292977819116}
   m_Layer: 0
-  m_Name: Point (2)
+  m_Name: Point (1)
   m_TagString: Untagged
   m_Icon: {fileID: -5938655980376293919, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -2284,7 +2284,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8005517294631186378}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8005517292997715089
 GameObject:
@@ -2350,8 +2350,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8005517292997715054}
-  - {fileID: 8005517292835264780}
   - {fileID: 8005517292977819116}
+  - {fileID: 8005517292835264780}
   m_Father: {fileID: 2332194007072797672}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2382,9 +2382,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _points:
   - {fileID: 8005517292997715054}
-  - {fileID: 8005517292835264780}
   - {fileID: 8005517292977819116}
-  _speed: 0.5
+  - {fileID: 8005517292835264780}
+  _mover: {fileID: 0}
 --- !u!54 &1904288981
 Rigidbody:
   m_ObjectHideFlags: 0

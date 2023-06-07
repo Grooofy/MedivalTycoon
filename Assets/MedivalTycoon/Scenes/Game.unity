@@ -37567,6 +37567,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _regulating: {fileID: 428411083}
+  _delay: 0.5
 --- !u!1001 &1988197595
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -41274,6 +41275,14 @@ PrefabInstance:
     - target: {fileID: 7194542467760387321, guid: b967030063fd87a489b6018cb5d0e51c, type: 3}
       propertyPath: m_Name
       value: bartender
+      objectReference: {fileID: 0}
+    - target: {fileID: 8005517292835264780, guid: b967030063fd87a489b6018cb5d0e51c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.42
+      objectReference: {fileID: 0}
+    - target: {fileID: 8005517292977819116, guid: b967030063fd87a489b6018cb5d0e51c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.21
       objectReference: {fileID: 0}
     - target: {fileID: 8005517294511024676, guid: b967030063fd87a489b6018cb5d0e51c, type: 3}
       propertyPath: _joystick
