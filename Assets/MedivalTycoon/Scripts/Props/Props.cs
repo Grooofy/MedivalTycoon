@@ -1,6 +1,7 @@
 using UnityEngine;
+using DG.Tweening;
 
-public class Prop : MonoBehaviour
+public class Props : MonoBehaviour
 {
     [SerializeField] private Animator _animator;
 
@@ -10,12 +11,7 @@ public class Prop : MonoBehaviour
     {
         _animator.SetBool(_isStop, true);
     }
-
-    protected void PlayTakeAnimation()
-    {
-        _animator.SetTrigger(_take);
-    }
-
+    
     public void SetActiveValue(bool value)
     {
         gameObject.SetActive(value);

@@ -43,7 +43,6 @@ public class Regulating : MonoBehaviour
             _isMoved = false;
             return;
         }
-        
         _pointNumber++;
         BarrelArrived?.Invoke();
     }

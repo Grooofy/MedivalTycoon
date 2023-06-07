@@ -21,7 +21,7 @@ public class PropseMover : MonoBehaviour
             MovedTo(barrel, transform.position);
             yield return null;
         }
-
+        barrel.transform.SetParent(transform);
         while (isMoved && IsMinDistance(barrel.transform.position, _pointPosition))
         {
             MovedTo(barrel, _pointPosition);

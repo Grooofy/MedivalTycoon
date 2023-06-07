@@ -24,7 +24,6 @@ public class Hand : MonoBehaviour
     private void TakeObject(GameObject props)
     {
         _mover.MoveToPoint(_points[_numberProps].position, props, true);
-        props.transform.SetParent(_points[_numberProps]);
         _numberProps++;
     } 
 

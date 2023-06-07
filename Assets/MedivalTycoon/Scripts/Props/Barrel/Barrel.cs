@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Barrel : Prop
+public class Barrel : Props
 {
     private void OnTriggerEnter(Collider other)
     {
