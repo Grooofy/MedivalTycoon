@@ -7,12 +7,20 @@ public class BarrelTrigger : MonoBehaviour, ITrigger
     [SerializeField] Regulating _regulating;
     [SerializeField] private float _delay;
 
-    private float _delayTime;
-    
+    private bool _isMove;
+    private Hand _hand;
 
     private void Start()
     {
-        _delayTime = _delay;
+       
+    }
+
+    private void Update()
+    {
+        if (_isMove)
+        {
+            _hand.TryTakeObject(_regulating.GetObject());
+        }
     }
 
 
@@ -20,25 +28,25 @@ public class BarrelTrigger : MonoBehaviour, ITrigger
     {
         if (other.TryGetComponent(out Hand bartender))
         {
-         
+            _hand = bartender;
+            _isMove = true;
         }
     }
 
     public void OnTriggerExit(Collider other)
     {
-        //throw new System.NotImplementedException();
+        _isMove = false;
     }
 
     public void OnTriggerStay(Collider other)
     {
         if (other.TryGetComponent(out Hand bartender))
         {
-            _delay -= Time.deltaTime;
-            if (_delay < 0)
-            {
-                bartender.TryTakeObject(_regulating.GetObject());
-                _delay = _delayTime;
-            }
+            _hand = bartender;
+            _isMove = true;
         }
-    }        
+    }    
+    
+
+    
 }

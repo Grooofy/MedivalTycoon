@@ -8,13 +8,30 @@ public class PropseMover : MonoBehaviour
 
     public UnityAction MovementOver; 
 
-    public void MoveToPoint(Vector3 _pointPosition, GameObject barrel, bool isMoved)
+    public void MoveThroughTwoPoints(Vector3 _pointPosition, GameObject barrel)
     {
-        StartCoroutine(MovedToPoint(_pointPosition, barrel, isMoved));
+        StartCoroutine(MovedToPoint(_pointPosition, barrel, true));
+    }
+
+    public void MoveThroughOnePoints(Vector3 _pointPosition, GameObject barrel)
+    {
+        StartCoroutine(MovedToPoint(_pointPosition, barrel));
     }
 
 
-    private IEnumerator MovedToPoint(Vector3 _pointPosition, GameObject barrel, bool isMoved)
+    private IEnumerator MovedToPoint(Vector3 _pointPosition, GameObject barrel)
+    {
+        barrel.transform.SetParent(transform);
+        
+        while (IsMinDistance(barrel.transform.position, _pointPosition))
+        {
+            MovedTo(barrel, _pointPosition);
+            yield return null;
+        }
+        MovementOver?.Invoke();
+    }
+
+    private IEnumerator MovedToPoint(Vector3 _pointPosition, GameObject barrel, bool isMoreOnePoint)
     {
         while (IsMinDistance(barrel.transform.position, transform.position))
         {
@@ -22,7 +39,8 @@ public class PropseMover : MonoBehaviour
             yield return null;
         }
         barrel.transform.SetParent(transform);
-        while (isMoved && IsMinDistance(barrel.transform.position, _pointPosition))
+
+        while (isMoreOnePoint && IsMinDistance(barrel.transform.position, _pointPosition))
         {
             MovedTo(barrel, _pointPosition);
             yield return null;
