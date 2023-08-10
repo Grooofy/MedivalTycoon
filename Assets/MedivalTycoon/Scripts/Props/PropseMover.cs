@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
@@ -6,26 +7,33 @@ public class PropseMover : MonoBehaviour
 {
     [SerializeField] private float _speed;
 
-    public UnityAction MovementOver; 
+    public UnityAction MovementOver;
+    private Transform PointPosition;
+    private GameObject Barrel;
+    
 
     public void MoveThroughTwoPoints(Vector3 _pointPosition, GameObject barrel)
     {
         StartCoroutine(MovedToPoint(_pointPosition, barrel, true));
     }
 
-    public void MoveThroughOnePoints(Vector3 _pointPosition, GameObject barrel)
+    public void MoveThroughOnePoints(Transform _pointPosition, GameObject barrel)
     {
-        StartCoroutine(MovedToPoint(_pointPosition, barrel));
+        PointPosition = _pointPosition;
+        Barrel = barrel;
+        //StartCoroutine(MovedToPoint(_pointPosition, barrel));
+
     }
 
 
-    private IEnumerator MovedToPoint(Vector3 _pointPosition, GameObject barrel)
+    private IEnumerator MovedToPoint(Transform _pointPosition, GameObject barrel)
     {
         barrel.transform.SetParent(transform);
         
-        while (IsMinDistance(barrel.transform.position, _pointPosition))
+        while (IsMinDistance(barrel.transform.position, _pointPosition.localPosition))
         {
-            MovedTo(barrel, _pointPosition);
+            MovedTo(barrel, _pointPosition.localPosition);
+            Debug.Log(barrel.transform.position + "Бочка");
             yield return null;
         }
         MovementOver?.Invoke();
@@ -59,6 +67,14 @@ public class PropseMover : MonoBehaviour
     {
         item.transform.position =
                Vector3.MoveTowards(item.transform.position, positionEndPoint, _speed * Time.deltaTime);
+        
     }
 
+    private void Update()
+    {
+        if (PointPosition != null)
+        {
+            MovedTo(Barrel, PointPosition.position);
+        }
+    }
 }

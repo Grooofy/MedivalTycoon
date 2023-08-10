@@ -13,7 +13,7 @@ public class Hand : MonoBehaviour
 
     public void TryTakeObject(GameObject props)
     {
-        if (_maxNumberProps != _maxNumberProps)
+        if (_minNumberProps == _maxNumberProps)
         {
             return;
         }
@@ -23,7 +23,7 @@ public class Hand : MonoBehaviour
     private void TakeObject(GameObject props)
     {
         _items.Enqueue(props);
-        _mover.MoveThroughOnePoints(_points[_minNumberProps].position, props);
+        _mover.MoveThroughOnePoints(_points[_minNumberProps], props);
         _minNumberProps++;
     } 
 }

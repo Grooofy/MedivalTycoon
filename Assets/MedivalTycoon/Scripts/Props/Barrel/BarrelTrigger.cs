@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BarrelTrigger : MonoBehaviour, ITrigger
@@ -10,12 +11,7 @@ public class BarrelTrigger : MonoBehaviour, ITrigger
     private bool _isMove;
     private Hand _hand;
 
-    private void Start()
-    {
-       
-    }
-
-    private void Update()
+   private void Update()
     {
         if (_isMove)
         {
@@ -23,14 +19,20 @@ public class BarrelTrigger : MonoBehaviour, ITrigger
         }
     }
 
-
     public void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out Hand bartender))
+        bool isTach = true;
+        
+        if (isTach)
         {
-            _hand = bartender;
-            _isMove = true;
+            if (other.TryGetComponent(out Hand bartender))
+            {
+                _hand = bartender;
+                _isMove = true;
+                isTach = false;
+            }
         }
+       
     }
 
     public void OnTriggerExit(Collider other)

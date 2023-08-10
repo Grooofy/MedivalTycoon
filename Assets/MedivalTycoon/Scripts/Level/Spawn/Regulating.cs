@@ -13,8 +13,6 @@ public class Regulating : MonoBehaviour
     private Queue<GameObject> _barrels = new Queue<GameObject>();
     private int _pointNumber = 0;
     
-    
-
     private void OnEnable()
     {
         _mover.MovementOver += CalculatePoint;
