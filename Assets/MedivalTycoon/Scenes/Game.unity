@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44817007, g: 0.4981876, b: 0.57555956, a: 1}
+  m_IndirectSpecularColor: {r: 0.44817024, g: 0.49818796, b: 0.5755603, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -293,11 +293,6 @@ MonoBehaviour:
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f3e4fc2f87bf81b45852e9a1f94d8fe8, type: 3}
   m_PrefabInstance: {fileID: 1572377213}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &28759273 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8005517292835264780, guid: b967030063fd87a489b6018cb5d0e51c, type: 3}
-  m_PrefabInstance: {fileID: 8005517294607854830}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &37051872
 PrefabInstance:
@@ -40106,6 +40101,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3139886259785337806, guid: 7f37919bc1a4cd046a52aad3dc8a9673, type: 3}
   m_PrefabInstance: {fileID: 2080820612}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &2081993333 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8005517292977819116, guid: b967030063fd87a489b6018cb5d0e51c, type: 3}
+  m_PrefabInstance: {fileID: 8005517294607854830}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2082941350 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 925b5b30e14b8ec4398f9be84bfb5072, type: 3}
@@ -41199,7 +41199,7 @@ PrefabInstance:
       objectReference: {fileID: 1280256300}
     - target: {fileID: 1883320677745282358, guid: b967030063fd87a489b6018cb5d0e51c, type: 3}
       propertyPath: _speed
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2332194007072797672, guid: b967030063fd87a489b6018cb5d0e51c, type: 3}
       propertyPath: m_RootOrder
@@ -41271,12 +41271,12 @@ PrefabInstance:
       objectReference: {fileID: 1904288982}
     - target: {fileID: 8005517294631186379, guid: b967030063fd87a489b6018cb5d0e51c, type: 3}
       propertyPath: _points.Array.size
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8005517294631186379, guid: b967030063fd87a489b6018cb5d0e51c, type: 3}
       propertyPath: _points.Array.data[1]
       value: 
-      objectReference: {fileID: 28759273}
+      objectReference: {fileID: 2081993333}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b967030063fd87a489b6018cb5d0e51c, type: 3}
 --- !u!1001 &8330433716655988677

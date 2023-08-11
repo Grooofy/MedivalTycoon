@@ -10,6 +10,18 @@ public class Hand : MonoBehaviour
     private Queue<GameObject> _items = new Queue<GameObject>();
     private int _maxNumberProps => _points.Count;
     private int _minNumberProps = 0;
+    private GameObject _props;
+
+
+    private void OnEnable()
+    {
+        _mover.MovementOver += GoNextPoint;
+    }
+
+    private void OnDisable()
+    {
+        _mover.MovementOver -= GoNextPoint;
+    }
 
     public void TryTakeObject(GameObject props)
     {
@@ -17,13 +29,22 @@ public class Hand : MonoBehaviour
         {
             return;
         }
-        TakeObject(props);
+        if (props != null)
+        {
+            TakeObject(props);
+        }
+        return;
     }
 
     private void TakeObject(GameObject props)
     {
-        _items.Enqueue(props);
+        _props = props;
         _mover.MoveThroughOnePoints(_points[_minNumberProps], props);
-        _minNumberProps++;
     } 
+
+    private void GoNextPoint()
+    {
+        _items.Enqueue(_props);
+        _minNumberProps++;
+    }
 }

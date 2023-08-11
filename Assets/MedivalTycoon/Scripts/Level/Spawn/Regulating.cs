@@ -31,6 +31,10 @@ public class Regulating : MonoBehaviour
     
     public GameObject GetObject()
     {
+        if (_barrels.Count == 0)
+        {
+            return null;
+        }
         return _barrels.Dequeue();
     }
 
