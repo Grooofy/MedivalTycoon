@@ -8,20 +8,36 @@ public class PropseMover : MonoBehaviour
     [SerializeField] private float _speed;
 
     public UnityAction MovementOver;
+    public UnityAction MovedEnded;
     private Transform _endPointPosition;
     private GameObject _barrel;
     
 
+    private void Update()
+    {
+        if (_endPointPosition != null)
+        {
+            MovedTo(_endPointPosition.position, _barrel);
+            
+            if (IsMinDistance(_barrel.transform.position, _endPointPosition.position))
+            {
+                _barrel.transform.SetParent(transform);
+                MovedEnded?.Invoke();
+                _endPointPosition = null;
+            }
+        }
+    }
+    public void MoveThroughOnePoints(Transform pointPosition, GameObject barrel)
+    {
+        _endPointPosition = pointPosition;
+        _barrel = barrel;
+    }
+    
     public void MoveThroughTwoPoints(Vector3 _pointPosition, GameObject barrel)
     {
         StartCoroutine(MovedToPoint(_pointPosition, barrel, true));
     }
 
-    public void MoveThroughOnePoints(Transform _pointPosition, GameObject barrel)
-    {
-        _endPointPosition = _pointPosition;
-        _barrel = barrel;
-    }
 
     private IEnumerator MovedToPoint(Vector3 _pointPosition, GameObject barrel, bool isMoreOnePoint)
     {
@@ -51,21 +67,6 @@ public class PropseMover : MonoBehaviour
     {
         item.transform.position =
                Vector3.MoveTowards(item.transform.position, positionEndPoint, _speed * Time.deltaTime);
-        
     }
 
-    private void Update()
-    {
-        if (_endPointPosition != null)
-        {
-            MovedTo(_endPointPosition.position, _barrel);
-            
-            if (IsMinDistance(_barrel.transform.position, _endPointPosition.position))
-            {
-                _endPointPosition = null;
-                _barrel.transform.SetParent(transform);
-                MovementOver?.Invoke();
-            }
-        }
-    }
 }

@@ -15,12 +15,12 @@ public class Hand : MonoBehaviour
 
     private void OnEnable()
     {
-        _mover.MovementOver += GoNextPoint;
+        _mover.MovedEnded += GoNextPoint;
     }
 
     private void OnDisable()
     {
-        _mover.MovementOver -= GoNextPoint;
+        _mover.MovedEnded -= GoNextPoint;
     }
 
     public void TryTakeObject(GameObject props)
@@ -33,13 +33,13 @@ public class Hand : MonoBehaviour
         {
             TakeObject(props);
         }
-        return;
     }
 
     private void TakeObject(GameObject props)
     {
         _props = props;
         _mover.MoveThroughOnePoints(_points[_minNumberProps], props);
+        
     } 
 
     private void GoNextPoint()

@@ -1,15 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class BarrelTrigger : MonoBehaviour, ITrigger
 {
     [SerializeField] Regulating _regulating;
-    [SerializeField] private float _delay;
 
-    private Hand _hand;
+    private GameObject _takenBarrel;
 
+    
     public void OnTriggerEnter(Collider other)
     {
        
@@ -23,10 +20,11 @@ public class BarrelTrigger : MonoBehaviour, ITrigger
     {
         if (other.TryGetComponent(out Hand bartender))
         {
-            _hand = bartender;
-            _hand.TryTakeObject(_regulating.GetObject());
+            bartender.TryTakeObject(_regulating.GetObject());
         }
     }
+
+    
 
 
 
