@@ -29,13 +29,20 @@ public class Regulating : MonoBehaviour
         _barrels.Enqueue(barrel);
     }  
     
-    public GameObject GetObject()
+    public List<GameObject> GetObjects(int amount)
     {
-        if (_barrels.Count == 0)
+        List<GameObject> objects = new List<GameObject>();
+
+        if (_barrels.Count == 0 || _barrels.Count < amount)
         {
             return null;
         }
-        return _barrels.Dequeue();
+
+        for (int i = 0; i < amount; i++)
+        {
+            objects.Add(_barrels.Dequeue());
+        }
+        return objects;
     }
 
     private void CalculatePoint()

@@ -6,12 +6,13 @@ public class Hand : MonoBehaviour
 {
     [SerializeField] private List<Transform> _points;
     [SerializeField] private PropseMover _mover;
+    public int MaxNumberProps => _points.Count;
 
     private Queue<GameObject> _items = new Queue<GameObject>();
-    private int _maxNumberProps => _points.Count;
     private int _minNumberProps = 0;
     private GameObject _props;
 
+   
 
     private void OnEnable()
     {
@@ -23,15 +24,18 @@ public class Hand : MonoBehaviour
         _mover.MovedEnded -= GoNextPoint;
     }
 
-    public void TryTakeObject(GameObject props)
+    public void TryTakeObject(List<GameObject> props)
     {
-        if (_minNumberProps == _maxNumberProps)
+        if (_minNumberProps == MaxNumberProps)
         {
             return;
         }
         if (props != null)
         {
-            TakeObject(props);
+            foreach (var prop in props)
+            {
+                TakeObject(prop);
+            }
         }
     }
 
@@ -39,7 +43,6 @@ public class Hand : MonoBehaviour
     {
         _props = props;
         _mover.MoveThroughOnePoints(_points[_minNumberProps], props);
-        
     } 
 
     private void GoNextPoint()
