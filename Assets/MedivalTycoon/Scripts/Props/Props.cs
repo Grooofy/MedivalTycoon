@@ -7,8 +7,6 @@ public class Props : MonoBehaviour
 
     private const string _isStop = "IsStop";
 
-
-
     protected void StopRotationAnimation()
     {
         _animator.SetBool(_isStop, true);
