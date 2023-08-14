@@ -14,14 +14,14 @@ public class Hand : MonoBehaviour
     {
         if (_props != null)
         {
-            _props.Move(_points[0].position);
+            _props.Move(_curentPoint.position, _points[0].position);
             _props.SetNewParent(transform);
             _props = null;
         }
     }
-    public void Take(IProps props, Transform point)
+    public void Take(Transform startPoint, IProps props)
     {
-        _curentPoint = point;
+        _curentPoint = startPoint;
         _props = props;
     }
 }

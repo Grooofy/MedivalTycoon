@@ -19,9 +19,9 @@ public class Barrel : MonoBehaviour, IProps
         gameObject.SetActive(value);
     }
 
-    public void Move(Vector3 endPoint)
+    public void Move(Vector3 startPoint, Vector3 endPoint)
     {
-        transform.DOJump(endPoint, _jumpForse, _numJump, _duration);
+        transform.position = Vector3.MoveTowards(startPoint, endPoint, _jumpForse * Time.deltaTime);
 
         if (IsMinDistance(gameObject.transform.position, endPoint))
         {

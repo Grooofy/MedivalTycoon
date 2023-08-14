@@ -8,7 +8,7 @@ public class BarrelTrigger : MonoBehaviour, ITrigger
     {
         if (other.TryGetComponent(out Hand hand))
         {
-            
+            hand.Take(hand.transform, barrel);
         }
     }
 

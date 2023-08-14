@@ -4,7 +4,7 @@ public interface IProps
 {
     void SetActive(bool value);
 
-    void Move(Vector3 endPoint);
+    void Move(Vector3 startPoint, Vector3 endPoint);
 
     void SetNewParent(Transform newParent);
 }
