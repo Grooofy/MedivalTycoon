@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Hand : MonoBehaviour
 {
-    [SerializeField] private List<Transform> _points;
+    [SerializeField] private HandPoints _point;
+    public bool IsTaked;
 
     private Transform _curentPoint;
     private IProps _props;
@@ -12,16 +13,19 @@ public class Hand : MonoBehaviour
 
     private void Update()
     {
-        if (_props != null)
+        if (IsTaked)
         {
-            _props.Move(_curentPoint.position, _points[0].position);
+            _props.Move(_curentPoint.position);
             _props.SetNewParent(transform);
-            _props = null;
         }
     }
-    public void Take(Transform startPoint, IProps props)
+
+    public void Take(IProps props)
     {
-        _curentPoint = startPoint;
+        _curentPoint = _point.GetEmptyPoint();
+        
+        if (_curentPoint == null)
+            return;
         _props = props;
     }
 }

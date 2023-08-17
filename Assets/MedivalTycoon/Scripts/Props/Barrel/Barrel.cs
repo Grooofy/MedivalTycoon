@@ -4,30 +4,32 @@ using DG.Tweening;
 public class Barrel : MonoBehaviour, IProps
 {    
     [SerializeField] private Animator _animator;
-    [SerializeField] private float _jumpForse;
-
-    [Range(0, 10)]
-    [SerializeField] private int _numJump;
-
-    [Range(0.5f, 5)]
-    [SerializeField] private float _duration;
+    [SerializeField] private float _speed;
 
     private const string _isStop = "IsStop";
-
+    private Vector3 _startPoint;
+   
     public void SetActive(bool value)
     {
         gameObject.SetActive(value);
     }
 
-    public void Move(Vector3 startPoint, Vector3 endPoint)
+    public void Move(Vector3 endPoint)
     {
-        transform.position = Vector3.MoveTowards(startPoint, endPoint, _jumpForse * Time.deltaTime);
+        _startPoint = GetPosition();
+        transform.position = Vector3.MoveTowards(_startPoint, endPoint, _speed * Time.deltaTime);
 
         if (IsMinDistance(gameObject.transform.position, endPoint))
         {
             StopRotationAnimation();
         }
     }
+
+    public Vector3 GetPosition()
+    {
+        return transform.position;
+    }
+
     public void SetNewParent(Transform newParent)
     {
         transform.SetParent(newParent);
