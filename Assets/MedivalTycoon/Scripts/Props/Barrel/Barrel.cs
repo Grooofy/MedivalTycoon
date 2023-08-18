@@ -1,14 +1,15 @@
 using UnityEngine;
-using DG.Tweening;
+using System;
 
 public class Barrel : MonoBehaviour, IProps
 {    
-    [SerializeField] private Animator _animator;
     [SerializeField] private float _speed;
 
-    private const string _isStop = "IsStop";
+    public Action MoveEnded ;
+
     private Vector3 _startPoint;
-   
+
+
     public void SetActive(bool value)
     {
         gameObject.SetActive(value);
@@ -21,7 +22,7 @@ public class Barrel : MonoBehaviour, IProps
 
         if (IsMinDistance(gameObject.transform.position, endPoint))
         {
-            StopRotationAnimation();
+            MoveEnded?.Invoke();
         }
     }
 
@@ -33,11 +34,6 @@ public class Barrel : MonoBehaviour, IProps
     public void SetNewParent(Transform newParent)
     {
         transform.SetParent(newParent);
-    }
-
-    private void StopRotationAnimation()
-    {
-        _animator.SetBool(_isStop, true);
     }
 
     private bool IsMinDistance(Vector3 startPosition, Vector3 endPosition)

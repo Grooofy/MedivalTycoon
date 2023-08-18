@@ -164,6 +164,7 @@ GameObject:
   - component: {fileID: -135884009848610082}
   - component: {fileID: 3352043548110206399}
   - component: {fileID: 6245801489773677861}
+  - component: {fileID: 2035213677842487173}
   m_Layer: 0
   m_Name: Barrel
   m_TagString: Untagged
@@ -302,7 +303,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de4b3528513e10c4391ce5d5f1ab82fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _speed: 2
+--- !u!114 &2035213677842487173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6714245926382530394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ac4cb074adc64d4789b6f8f357ebb7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   _animator: {fileID: 5404746703719901396}
+  _barrel: {fileID: 6245801489773677861}
 --- !u!1 &7769946159003456190
 GameObject:
   m_ObjectHideFlags: 0

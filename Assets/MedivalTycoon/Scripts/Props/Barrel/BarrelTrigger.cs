@@ -6,7 +6,7 @@ public class BarrelTrigger : MonoBehaviour, ITrigger
     [SerializeField] private List<Barrel> _barrels;
     private Queue<Barrel> _queueBarrels = new Queue<Barrel>();
 
-    private void Start()
+    private void Awake()
     {
         for (int i = 0; i < _barrels.Count; i++)
         {
