@@ -12,7 +12,7 @@ public class HandPoints : MonoBehaviour
         {
             if (_points[i].enabled)
             {
-                _points[i].SetActiveValue(false);
+               
                 return _points[i].transform;
             }
         }

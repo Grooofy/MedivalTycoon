@@ -7,19 +7,28 @@ public class BarrelSpawner : MonoBehaviour
     [SerializeField] private Transform _spawmPoint;
     [SerializeField] private int _amount;
 
-    private Queue<Barrel> barrels = new Queue<Barrel>();
+    private readonly Queue<Barrel> _barrels = new Queue<Barrel>();
     
 
     private void Awake()
     {
         for (int i = 0; i < _amount; i++)
         {
-            barrels.Enqueue(CreateBarrel());
+            _barrels.Enqueue(CreateBarrel());
         }
     }
 
-    private Barrel CreateBarrel()
+    public Barrel GetBarrel()
     {
+        if (_barrels != null)
+        {
+            return _barrels.Dequeue();
+        }
+        return null;
+    }
+
+    private Barrel CreateBarrel()
+    {        
         return Instantiate(_prefab, _spawmPoint.position, Quaternion.identity);
     }
 
