@@ -4,50 +4,23 @@ using UnityEngine;
 
 public class Hand : MonoBehaviour
 {
-    [SerializeField] private List<Transform> _points;
-    [SerializeField] private PropseMover _mover;
-    public int MaxNumberProps => _points.Count;
+    [SerializeField] private List<Point> _points;
 
-    private Queue<GameObject> _items = new Queue<GameObject>();
-    private int _minNumberProps = 0;
-    private GameObject _props;
+    private Point _curentPoint;
+    private Barrel _curentBarrel;
 
-   
-
-    private void OnEnable()
+    public void TakeObject(Barrel barrel)
     {
-        _mover.MovedEnded += GoNextPoint;
-    }
-
-    private void OnDisable()
-    {
-        _mover.MovedEnded -= GoNextPoint;
-    }
-
-    public void TryTakeObject(List<GameObject> props)
-    {
-        if (_minNumberProps == MaxNumberProps)
+        _curentBarrel = barrel;
+        if (_curentPoint.IsFill == false)
+        {
+          
+            _curentPoint.IsFill = true;
+        }
+        else
         {
             return;
         }
-        if (props != null)
-        {
-            foreach (var prop in props)
-            {
-                TakeObject(prop);
-            }
-        }
     }
-
-    private void TakeObject(GameObject props)
-    {
-        _props = props;
-        _mover.MoveThroughOnePoints(_points[_minNumberProps], props);
-    } 
-
-    private void GoNextPoint()
-    {
-        _items.Enqueue(_props);
-        _minNumberProps++;
-    }
+   
 }

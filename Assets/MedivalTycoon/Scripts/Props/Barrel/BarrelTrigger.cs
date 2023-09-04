@@ -9,7 +9,10 @@ public class BarrelTrigger : MonoBehaviour, ITrigger
     
     public void OnTriggerEnter(Collider other)
     {
-       
+        if (other.TryGetComponent(out Hand bartender))
+        {
+            
+        }
     }
 
     public void OnTriggerExit(Collider other)
@@ -20,7 +23,7 @@ public class BarrelTrigger : MonoBehaviour, ITrigger
     {
         if (other.TryGetComponent(out Hand bartender))
         {
-            bartender.TryTakeObject(_regulating.GetObjects(bartender.MaxNumberProps));
+            
         }
     }
 }

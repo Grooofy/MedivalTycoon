@@ -3,26 +3,13 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    [SerializeField] private GameObject _barrel;
+    [SerializeField] private Props _barrel;
     [SerializeField] private Transform _startPoint;
     [SerializeField] private Regulating _regulating;
-    
-    private int _countBarrels;
 
-    private Queue<GameObject> _barrels = new Queue<GameObject>();
+    private int _countBarrels = 30;
 
-    private void OnEnable()
-    {
-        _countBarrels = _regulating.CountBarrel * 2;
-        _regulating.BarrelArrived += SendBarrel;
-    }
-
-    private void OnDisable()
-    {
-        _regulating.BarrelArrived -= SendBarrel;
-    }
-
-    private void Start()
+    private void Awake()
     {
         CreateObject();
     }
@@ -31,21 +18,8 @@ public class Spawner : MonoBehaviour
     {
         for (int i = 0; i < _countBarrels; i++)
         {
-            GameObject newBarrel = Instantiate(_barrel, _startPoint.position, _barrel.transform.rotation);
-            _barrels.Enqueue(newBarrel);
+            var newProps = Instantiate(_barrel, _startPoint.position, _barrel.transform.rotation);
+            _regulating.AddProps(newProps);
         }
-        SendBarrel();
     }
-
-    private void SendBarrel()
-    {
-        _regulating.MoveObject(TryGetBarrel());
-    }
-
-    private GameObject TryGetBarrel()
-    {
-        return _barrels.Count == 0 ? null : _barrels.Dequeue();
-    }
-
-
 }

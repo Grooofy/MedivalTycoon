@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -5,53 +6,43 @@ using UnityEngine.Events;
 public class Regulating : MonoBehaviour
 {
     [SerializeField] private List<Point> _points;
-    [SerializeField] private PropseMover _mover;
 
-    public int CountBarrel => _points.Count;
-    public UnityAction BarrelArrived;
+    private List<Props> _propses = new List<Props>();
 
-    private Queue<GameObject> _barrels = new Queue<GameObject>();
-    private int _pointNumber = 0;
-    
-    private void OnEnable()
+    private Point _currentPoint;
+    private int _indexBarrel = 0;
+
+
+    private void Start()
     {
-        _mover.MovementOver += CalculatePoint;
+        StartCoroutine(FillinPoints());
     }
 
-    private void OnDisable()
+    public void AddProps(Props props)
     {
-        _mover.MovementOver -= CalculatePoint;
+        _propses.Add(props);
     }
 
-    public void MoveObject(GameObject barrel)
-    {
-        _mover.MoveThroughTwoPoints(_points[_pointNumber].transform.position, barrel);
-        _barrels.Enqueue(barrel);
-    }  
-    
-    public List<GameObject> GetObjects(int amount)
-    {
-        List<GameObject> objects = new List<GameObject>();
 
-        if (_barrels.Count == 0 || _barrels.Count < amount)
+    private IEnumerator FillinPoints()
+    {
+        _currentPoint = _points[0];
+        while (_indexBarrel < _points.Count)
         {
-            return null;
-        }
+            GetProps().TryMoveTo(_currentPoint.transform);
 
-        for (int i = 0; i < amount; i++)
-        {
-            objects.Add(_barrels.Dequeue());
+            yield return new WaitForSeconds(10f);
         }
-        return objects;
     }
 
-    private void CalculatePoint()
+    private Props GetProps()
     {
-        if (_pointNumber == _points.Count - 1)
+        if (_propses != null)
         {
-          return;
+            return _propses[_indexBarrel];
         }
-        _pointNumber++;
-        BarrelArrived?.Invoke();
+        return null;
     }
+
+
 }
