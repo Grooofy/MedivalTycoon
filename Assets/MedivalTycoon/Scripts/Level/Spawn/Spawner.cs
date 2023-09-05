@@ -18,7 +18,7 @@ public class Spawner : MonoBehaviour
     {
         for (int i = 0; i < _countBarrels; i++)
         {
-            var newProps = Instantiate(_barrel, _startPoint.position, _barrel.transform.rotation);
+            var newProps = Instantiate(_barrel, _startPoint);
             _regulating.AddProps(newProps);
         }
     }

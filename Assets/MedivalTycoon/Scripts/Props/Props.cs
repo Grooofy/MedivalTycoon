@@ -9,21 +9,15 @@ public abstract class Props : MonoBehaviour
 
     public Action MoveEnded;
 
-    internal virtual void TryMoveTo(Transform endPoint)
-    {
-        if (endPoint == null)
-        {
-            return;
-        }
-        MoveTo(endPoint);
-    }
+    internal abstract void TryMoveTo(Transform endPoint);
 
-    private void MoveTo(Transform endPoint)
+    internal void MoveTo(Transform endPoint)
     {
         transform.position = Vector3.MoveTowards(transform.position, endPoint.position, _moveSpeed * Time.deltaTime);
+        
         if (IsMinDistance(transform.position, endPoint.position))
         {
-            _animator.Play("Spin");
+            _animator.SetTrigger("Take");
             MoveEnded?.Invoke();
         }
     }

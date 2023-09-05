@@ -7,42 +7,59 @@ public class Regulating : MonoBehaviour
 {
     [SerializeField] private List<Point> _points;
 
-    private List<Props> _propses = new List<Props>();
 
-    private Point _currentPoint;
+    private List<Props> _FullPropses = new List<Props>();
+    private Queue<Props> _queuePropses = new Queue<Props>();
+
+    private int _indexPoint = 0;
     private int _indexBarrel = 0;
+    private Props _curentObject;
+    private Coroutine _filingPoints;
 
 
     private void Start()
     {
-        StartCoroutine(FillinPoints());
+        _filingPoints = StartCoroutine(FillinPoints());
     }
 
     public void AddProps(Props props)
     {
-        _propses.Add(props);
+        props.MoveEnded += NetxObject;
+        _FullPropses.Add(props);
     }
 
+    public Props GiveawayProps()
+    {
+        return _queuePropses.Dequeue();
+    }
+
+    private void NetxObject()
+    {
+        _queuePropses.Enqueue(_curentObject);
+        _indexBarrel++;
+        _indexPoint++;
+
+        if (_indexBarrel == _FullPropses.Count)
+        {
+            _indexBarrel = 0;
+        }
+    }
+    //Идея в том что двигает до точки сам направитель
+    private IEnumerator Gived()
+    {
+        while (_queuePropses != null)
+        {
+            yield return null;
+        }
+    }
 
     private IEnumerator FillinPoints()
     {
-        _currentPoint = _points[0];
         while (_indexBarrel < _points.Count)
         {
-            GetProps().TryMoveTo(_currentPoint.transform);
-
-            yield return new WaitForSeconds(10f);
+            _curentObject = _FullPropses[_indexBarrel];
+            _curentObject.TryMoveTo(_points[_indexPoint].transform);
+            yield return null;
         }
     }
-
-    private Props GetProps()
-    {
-        if (_propses != null)
-        {
-            return _propses[_indexBarrel];
-        }
-        return null;
-    }
-
-
 }

@@ -6,21 +6,15 @@ public class Hand : MonoBehaviour
 {
     [SerializeField] private List<Point> _points;
 
-    private Point _curentPoint;
-    private Barrel _curentBarrel;
+    private Queue<Props> _propses = new Queue<Props>();
 
-    public void TakeObject(Barrel barrel)
+    private int _indexPoint = 0;
+
+    public void TakeObject(Props barrel)
     {
-        _curentBarrel = barrel;
-        if (_curentPoint.IsFill == false)
-        {
-          
-            _curentPoint.IsFill = true;
-        }
-        else
-        {
-            return;
-        }
+        barrel.TryMoveTo(_points[_indexPoint].transform);
     }
+   
+
    
 }
