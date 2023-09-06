@@ -1,6 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
 using System;
+using System.Collections;
 
 public abstract class Props : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public abstract class Props : MonoBehaviour
 
     public Action MoveEnded;
 
-    internal abstract void TryMoveTo(Transform endPoint);
+    internal abstract IEnumerator TryMoveTo(Transform endPoint);
 
     internal void MoveTo(Transform endPoint)
     {
@@ -18,11 +19,12 @@ public abstract class Props : MonoBehaviour
         if (IsMinDistance(transform.position, endPoint.position))
         {
             _animator.SetTrigger("Take");
+            transform.SetParent(endPoint);
             MoveEnded?.Invoke();
         }
     }
 
-    private bool IsMinDistance(Vector3 startPosition, Vector3 endPosition)
+    internal bool IsMinDistance(Vector3 startPosition, Vector3 endPosition)
     {
         float minDistance = 0.001f;
         return Vector3.Distance(startPosition, endPosition) < minDistance;

@@ -1,25 +1,17 @@
+using System.Collections;
 using UnityEngine;
 
 public class Barrel : Props
 {
-    private Transform _point;
-
-    private void Update()
+    internal override IEnumerator TryMoveTo(Transform endPoint)
     {
-        TryMoveTo(_point);
-    }
-
-    public void SetPointToMove(Transform point)
-    {
-        _point = point;
-    }
-
-    internal override void TryMoveTo(Transform endPoint)
-    {
-        if (endPoint == null)
+        if (endPoint != null)
         {
-            return;
+            while (IsMinDistance(transform.position, endPoint.position) == false)
+            {
+                MoveTo(endPoint);
+                yield return null;
+            }
         }
-        MoveTo(endPoint);
     }
 }

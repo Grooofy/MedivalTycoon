@@ -1,7 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
+
 
 public class Regulating : MonoBehaviour
 {
@@ -13,13 +12,12 @@ public class Regulating : MonoBehaviour
 
     private int _indexPoint = 0;
     private int _indexBarrel = 0;
-    private Props _curentObject;
-    private Coroutine _filingPoints;
+    private Props _takedObject;
 
 
     private void Start()
     {
-        _filingPoints = StartCoroutine(FillinPoints());
+        FillinPoints();
     }
 
     public void AddProps(Props props)
@@ -28,38 +26,31 @@ public class Regulating : MonoBehaviour
         _FullPropses.Add(props);
     }
 
-    public Props GiveawayProps()
+    public Props GiveAway()
     {
-        return _queuePropses.Dequeue();
+        if (_queuePropses.Count > 0)
+        {
+            return _queuePropses.Dequeue();
+        }
+        return null;
     }
 
     private void NetxObject()
     {
-        _queuePropses.Enqueue(_curentObject);
+        _queuePropses.Enqueue(_takedObject);
+        _takedObject.MoveEnded -= NetxObject;
         _indexBarrel++;
         _indexPoint++;
-
-        if (_indexBarrel == _FullPropses.Count)
-        {
-            _indexBarrel = 0;
-        }
-    }
-    //Идея в том что двигает до точки сам направитель
-    private IEnumerator Gived()
-    {
-        while (_queuePropses != null)
-        {
-            yield return null;
-        }
+        FillinPoints();
     }
 
-    private IEnumerator FillinPoints()
+    private void FillinPoints()
     {
-        while (_indexBarrel < _points.Count)
+        if (_indexBarrel == _points.Count)
         {
-            _curentObject = _FullPropses[_indexBarrel];
-            _curentObject.TryMoveTo(_points[_indexPoint].transform);
-            yield return null;
+            return;
         }
+        _takedObject = _FullPropses[_indexBarrel];
+        StartCoroutine(_takedObject.TryMoveTo(_points[_indexPoint].transform));
     }
 }

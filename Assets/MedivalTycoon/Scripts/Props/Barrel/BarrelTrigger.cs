@@ -8,7 +8,7 @@ public class BarrelTrigger : MonoBehaviour, ITrigger
     {
         if (other.TryGetComponent(out Hand bartender))
         {
-            bartender.TakeObject(_regulating.GiveawayProps());
+            bartender.ReceiveObject(_regulating);
         }
     }
 

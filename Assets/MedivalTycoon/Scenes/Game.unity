@@ -10017,6 +10017,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 422422, guid: 744af4e8823d0d245a50968433135757, type: 3}
   m_PrefabInstance: {fileID: 523919640}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &531591922 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8005517292997715054, guid: b967030063fd87a489b6018cb5d0e51c, type: 3}
+  m_PrefabInstance: {fileID: 8005517294607854830}
+  m_PrefabAsset: {fileID: 0}
 --- !u!198 &537512788 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 1286394958, guid: 655cf62867836524a8c25558677b85f1, type: 3}
@@ -20334,6 +20339,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 2401355987570163558, guid: 4743486de0406d34f911e92ea3860300, type: 3}
   m_PrefabInstance: {fileID: 1135609984}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1139448145 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8005517292835264780, guid: b967030063fd87a489b6018cb5d0e51c, type: 3}
+  m_PrefabInstance: {fileID: 8005517294607854830}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1147015548
 PrefabInstance:
@@ -37342,8 +37352,8 @@ GameObject:
   - component: {fileID: 1985857829}
   - component: {fileID: 1985857828}
   - component: {fileID: 1985857827}
-  - component: {fileID: 1985857826}
   - component: {fileID: 1985857831}
+  - component: {fileID: 1985857832}
   m_Layer: 5
   m_Name: BeerZone
   m_TagString: Untagged
@@ -37373,19 +37383,6 @@ RectTransform:
   m_AnchoredPosition: {x: 1.186, y: 0.033}
   m_SizeDelta: {x: 0.6285, y: 0.5893}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!65 &1985857826
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1985857824}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.6895735, y: 0.58124757, z: 0.50697356}
-  m_Center: {x: 0.015281796, y: 0.00034606457, z: -0.24651328}
 --- !u!225 &1985857827
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -37472,6 +37469,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _regulating: {fileID: 428411083}
+--- !u!135 &1985857832
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1985857824}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.41
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1988197595
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -38505,6 +38515,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 3139886259785337806, guid: 7f37919bc1a4cd046a52aad3dc8a9673, type: 3}
   m_PrefabInstance: {fileID: 2021368228}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &2021375617 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8005517292977819116, guid: b967030063fd87a489b6018cb5d0e51c, type: 3}
+  m_PrefabInstance: {fileID: 8005517294607854830}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2022167338
 PrefabInstance:
@@ -41177,6 +41192,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: bartender
       objectReference: {fileID: 0}
+    - target: {fileID: 8005517292835264780, guid: b967030063fd87a489b6018cb5d0e51c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.46
+      objectReference: {fileID: 0}
+    - target: {fileID: 8005517292977819116, guid: b967030063fd87a489b6018cb5d0e51c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.23
+      objectReference: {fileID: 0}
     - target: {fileID: 8005517294511024676, guid: b967030063fd87a489b6018cb5d0e51c, type: 3}
       propertyPath: _joystick
       value: 
@@ -41185,6 +41208,22 @@ PrefabInstance:
       propertyPath: _activeCharacter
       value: 
       objectReference: {fileID: 714495356}
+    - target: {fileID: 8005517294631186379, guid: b967030063fd87a489b6018cb5d0e51c, type: 3}
+      propertyPath: _points.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8005517294631186379, guid: b967030063fd87a489b6018cb5d0e51c, type: 3}
+      propertyPath: _points.Array.data[0]
+      value: 
+      objectReference: {fileID: 531591922}
+    - target: {fileID: 8005517294631186379, guid: b967030063fd87a489b6018cb5d0e51c, type: 3}
+      propertyPath: _points.Array.data[1]
+      value: 
+      objectReference: {fileID: 2021375617}
+    - target: {fileID: 8005517294631186379, guid: b967030063fd87a489b6018cb5d0e51c, type: 3}
+      propertyPath: _points.Array.data[2]
+      value: 
+      objectReference: {fileID: 1139448145}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b967030063fd87a489b6018cb5d0e51c, type: 3}
 --- !u!1001 &8330433716655988677
