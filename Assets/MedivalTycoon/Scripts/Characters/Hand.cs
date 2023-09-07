@@ -10,7 +10,8 @@ public class Hand : MonoBehaviour
     private Queue<Props> _propses = new Queue<Props>();
     private Regulating _regulating;
     private Props _curentBarrel;
-    private int _indexPoint = -1;
+    private Coroutine _moved;
+    private int _indexPoint = 0;
 
     public void ReceiveObject(Regulating regulating)
     {
@@ -18,27 +19,49 @@ public class Hand : MonoBehaviour
         TryTakeObject();
     }
 
+    public void Stop()
+    {
+        StopCoroutine(_moved);
+    }
+
     private void TryTakeObject()
     {
+       
         if (_indexPoint > _points.Count)
         {
             return;
         }
-        GetObject();
+        _moved = StartCoroutine(GetObject());
+       
     }
 
-    private void GetObject()
+    private IEnumerator GetObject()
+    {
+        _curentBarrel = _regulating.GiveAway();
+        _curentBarrel.MoveEnded += NextObject;
+       
+        if (_propses.Count == _points.Count)
+        {
+            _curentBarrel.MoveEnded -= NextObject;
+            _curentBarrel = null;
+        }
+        while (_curentBarrel != null)
+        {
+            StartCoroutine(_curentBarrel.TryMoveTo(_points[_indexPoint]));
+            yield return null;
+        }
+    }
+
+    private void NextObject()
     {
         _indexPoint++;
-        if (_propses.Count >= _points.Count)
+        _curentBarrel = _regulating.GiveAway();
+        if (_curentBarrel == null)
         {
-            _curentBarrel = null;
             return;
         }
-        _curentBarrel = _regulating.GiveAway();
-        _curentBarrel.MoveEnded += GetObject;
+        _curentBarrel.MoveEnded += NextObject;
         _propses.Enqueue(_curentBarrel);
-        StartCoroutine(_curentBarrel.TryMoveTo(_points[_indexPoint]));
     }
 
 }

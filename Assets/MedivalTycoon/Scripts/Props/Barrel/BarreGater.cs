@@ -1,23 +1,25 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class BarrelTrigger : MonoBehaviour, ITrigger
+public class BarreGater : MonoBehaviour, ITrigger
 {
-    [SerializeField] Regulating _regulating;
-
+    [SerializeField] private Regulating _regulating;
     public void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out Hand bartender))
         {
-            bartender.ReceiveObject(_regulating);
+            _regulating.FillinPoint();
         }
     }
 
     public void OnTriggerExit(Collider other)
     {
+       
     }
 
     public void OnTriggerStay(Collider other)
     {
-       
+        
     }
 }
