@@ -21,6 +21,10 @@ public class Hand : MonoBehaviour
 
     public void Stop()
     {
+        if (_moved == null)
+        {
+            return;
+        }
         StopCoroutine(_moved);
     }
 
@@ -45,7 +49,7 @@ public class Hand : MonoBehaviour
             _curentBarrel.MoveEnded -= NextObject;
             _curentBarrel = null;
         }
-        while (_curentBarrel != null)
+        while (_indexPoint < _points.Count && _curentBarrel != null)
         {
             StartCoroutine(_curentBarrel.TryMoveTo(_points[_indexPoint]));
             yield return null;
