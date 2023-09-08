@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44817024, g: 0.49818796, b: 0.5755603, a: 1}
+  m_IndirectSpecularColor: {r: 0.44817007, g: 0.4981876, b: 0.57555956, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3709,7 +3709,7 @@ CharacterController:
   m_Radius: 0.14
   m_SlopeLimit: 0
   m_StepOffset: 0.1
-  m_SkinWidth: 0.014
+  m_SkinWidth: 0.0001
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0.25, z: 0}
 --- !u!1001 &208636479
@@ -11288,7 +11288,7 @@ CharacterController:
   m_Radius: 0.14
   m_SlopeLimit: 0
   m_StepOffset: 0.1
-  m_SkinWidth: 0.014
+  m_SkinWidth: 0.0001
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0.25, z: 0}
 --- !u!1 &598572001
@@ -12052,8 +12052,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 4, y: 0.5, z: 0.1}
-  m_Center: {x: 0, y: 0.21, z: 0}
+  m_Size: {x: 4.88336, y: 0.5, z: 0.1}
+  m_Center: {x: 0.44168103, y: 0.20999998, z: 0}
 --- !u!1001 &662195048
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14782,8 +14782,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 4, y: 0.8, z: 0.1}
-  m_Center: {x: 0, y: 0.4, z: 0}
+  m_Size: {x: 4.9942293, y: 0.8, z: 0.1}
+  m_Center: {x: 0.49711454, y: 0.4, z: 0}
 --- !u!1001 &798095075
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30693,7 +30693,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: bbbe47774238a7845a7c1af9e825ba77, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.054
+      value: 0.029
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: bbbe47774238a7845a7c1af9e825ba77, type: 3}
       propertyPath: m_LocalPosition.z
@@ -41809,6 +41809,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2332194007072797672, guid: b967030063fd87a489b6018cb5d0e51c, type: 3}
   m_PrefabInstance: {fileID: 8005517294607854830}
   m_PrefabAsset: {fileID: 0}
+--- !u!143 &543450653565469373 stripped
+CharacterController:
+  m_CorrespondingSourceObject: {fileID: 8005517294511024674, guid: b967030063fd87a489b6018cb5d0e51c, type: 3}
+  m_PrefabInstance: {fileID: 8005517294607854830}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2213363109264885245
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -42136,6 +42141,10 @@ PrefabInstance:
       propertyPath: _joystick
       value: 
       objectReference: {fileID: 494869738}
+    - target: {fileID: 8005517294511024676, guid: b967030063fd87a489b6018cb5d0e51c, type: 3}
+      propertyPath: _characterController
+      value: 
+      objectReference: {fileID: 543450653565469373}
     - target: {fileID: 8005517294511024702, guid: b967030063fd87a489b6018cb5d0e51c, type: 3}
       propertyPath: _activeCharacter
       value: 
