@@ -6,14 +6,17 @@ public class CharacterInputController : MonoBehaviour
 {
     [SerializeField] private FloatingJoystick _joystick;
     [SerializeField] private float _angelOffset = 70;
+ 
     
     private ICharacter _character;
     private float _cosX;
     private float _sinX;
+    private float _y;
     
     private void Awake()
     {
         _character = GetComponent<ICharacter>();
+        _y = transform.position.y;
         
         if (_character == null)
             throw new Exception($"There is no ICharacter component on the object: {gameObject.name}");
@@ -28,6 +31,7 @@ public class CharacterInputController : MonoBehaviour
     private void Update()
     {
         ReadMove();
+        CheckGround();
     }
 
     private void ReadMove()
@@ -38,8 +42,16 @@ public class CharacterInputController : MonoBehaviour
         float newHorizontal = CalculateOffSetX(horizontal, vertical);
         float newVertical = CalculateOffSetY(horizontal, vertical);
 
-        Vector3 direction = new Vector3(newHorizontal , 0f, newVertical);
+        Vector3 direction = new Vector3(newHorizontal , 0, newVertical);
         _character.Move(direction);
+    }
+
+    private void CheckGround()
+    {
+        if (transform.position.y > _y)
+        {
+            transform.position = new Vector3(transform.position.x, _y, transform.position.z);
+        }
     }
 
     private float CalculateOffSetX(float x, float y)
