@@ -19,6 +19,11 @@ public class Hand : MonoBehaviour
         TryTakeObject();
     }
 
+    public void RemoveObject(Transform point)
+    {
+
+    }
+
     public void Stop()
     {
         if (_moved == null)
@@ -30,13 +35,11 @@ public class Hand : MonoBehaviour
 
     private void TryTakeObject()
     {
-       
         if (_indexPoint > _points.Count)
         {
             return;
         }
         _moved = StartCoroutine(GetObject());
-       
     }
 
     private IEnumerator GetObject()

@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class Lever : MonoBehaviour
 {
-
     [SerializeField] private GameObject _uiObject;
     [SerializeField] private Animator _animator;
     [SerializeField] private Regulating _regulating;
     [SerializeField] private SphereCollider _collider;
+    private MoverStoper _moverStoper;
 
 
     private void OnEnable()
@@ -28,12 +28,17 @@ public class Lever : MonoBehaviour
         _animator.SetBool("IsOn", value);
         _collider.enabled = !value;
         _uiObject.SetActive(!value);
+        
+        if (_moverStoper != null)
+            _moverStoper.TurnOnMove();
     }
 
     public void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out Hand bartender))
+        if (other.TryGetComponent(out MoverStoper moverStoper))
         {
+            _moverStoper = moverStoper;
+            _moverStoper.TurnOffMove();
             _collider.enabled = false;
             _regulating.FillinPoint();
         }

@@ -34,12 +34,13 @@ public class Regulating : MonoBehaviour
         if (_indexBarrel == _points.Count)
         {
             _queuePropses = new Queue<Props>(_queuePropses.Reverse());
+            IsFull(true);
             return;
         }
         _takedObject = _fullPropses[_indexBarrel];
         _fullPropses.RemoveAt(_indexBarrel);
         StartCoroutine(_takedObject.TryMoveTo(_points[_indexPoint].transform));
-        IsFull(true);
+        
     }
 
     public Props GiveAway()
