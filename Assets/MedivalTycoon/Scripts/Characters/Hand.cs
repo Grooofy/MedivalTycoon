@@ -9,7 +9,7 @@ public class Hand : MonoBehaviour
 
     private Queue<Props> _propses = new Queue<Props>();
     private Regulating _regulating;
-    private Props _curentBarrel;
+    private Props _currentBarrel;
     private Coroutine _moved;
     private int _indexPoint = 0;
 
@@ -44,17 +44,17 @@ public class Hand : MonoBehaviour
 
     private IEnumerator GetObject()
     {
-        _curentBarrel = _regulating.GiveAway();
-        _curentBarrel.MoveEnded += NextObject;
+        _currentBarrel = _regulating.GiveAway();
+        _currentBarrel.MoveEnded += NextObject;
        
         if (_propses.Count == _points.Count)
         {
-            _curentBarrel.MoveEnded -= NextObject;
-            _curentBarrel = null;
+            _currentBarrel.MoveEnded -= NextObject;
+            _currentBarrel = null;
         }
-        while (_indexPoint < _points.Count && _curentBarrel != null)
+        while (_indexPoint < _points.Count && _currentBarrel != null)
         {
-            StartCoroutine(_curentBarrel.TryMoveTo(_points[_indexPoint]));
+            StartCoroutine(_currentBarrel.TryMoveTo(_points[_indexPoint]));
             yield return null;
         }
     }
@@ -62,13 +62,13 @@ public class Hand : MonoBehaviour
     private void NextObject()
     {
         _indexPoint++;
-        _curentBarrel = _regulating.GiveAway();
-        if (_curentBarrel == null)
+        _currentBarrel = _regulating.GiveAway();
+        if (_currentBarrel == null)
         {
             return;
         }
-        _curentBarrel.MoveEnded += NextObject;
-        _propses.Enqueue(_curentBarrel);
+        _currentBarrel.MoveEnded += NextObject;
+        _propses.Enqueue(_currentBarrel);
     }
 
 }
