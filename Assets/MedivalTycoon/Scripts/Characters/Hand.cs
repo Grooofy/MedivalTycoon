@@ -21,7 +21,7 @@ public class Hand : MonoBehaviour
 
     public void RemoveObject(Transform point)
     {
-
+        _propses.Dequeue().TryMoveTo(point);
     }
 
     public void Stop()

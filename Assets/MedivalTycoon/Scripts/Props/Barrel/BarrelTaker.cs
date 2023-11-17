@@ -3,8 +3,9 @@ using UnityEngine;
 
 public class BarrelTaker : MonoBehaviour, ITrigger
 {
-    [SerializeField] Regulating _regulating;
-    [SerializeField] SphereCollider _collider;
+    [SerializeField] private Regulating _regulating;
+    [SerializeField] private SphereCollider _collider;
+
 
     private void OnEnable()
     {
@@ -16,6 +17,7 @@ public class BarrelTaker : MonoBehaviour, ITrigger
         _regulating.Fulling -= TurnCollider;
     }
 
+    
     private void TurnCollider(bool value)
     {
         _collider.enabled = value;
@@ -39,6 +41,5 @@ public class BarrelTaker : MonoBehaviour, ITrigger
 
     public void OnTriggerStay(Collider other)
     {
-       
     }
 }
