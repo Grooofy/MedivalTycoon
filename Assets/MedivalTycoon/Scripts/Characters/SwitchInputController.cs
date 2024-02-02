@@ -25,7 +25,10 @@ public class SwitchInputController : MonoBehaviour
 
     private void Switch(int id)
     {
-        Switching(_myId == id);
+        if (_character.IsCanMove)
+        {
+            Switching(_myId == id);
+        }
     }
 
     private void Switching(bool isValue)

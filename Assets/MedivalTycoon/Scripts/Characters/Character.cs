@@ -8,7 +8,7 @@ public class Character : MonoBehaviour, ICharacter
     [SerializeField] private Transform _pointHand;
 
     private CharacterController _controller;
-   
+    public bool IsCanMove = true;
 
     private void Awake()
     {

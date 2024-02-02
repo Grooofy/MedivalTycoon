@@ -96,8 +96,8 @@ GameObject:
   - component: {fileID: 1951637592164495051}
   - component: {fileID: 3905992545013167266}
   - component: {fileID: 7752795885770795079}
-  - component: {fileID: 2531666485477460451}
   - component: {fileID: 347996022427630596}
+  - component: {fileID: 341668342162570644}
   m_Layer: 0
   m_Name: Barrel
   m_TagString: Untagged
@@ -150,20 +150,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.20261903, y: 0.24875945, z: 0.20261903}
   m_Center: {x: 0, y: 0.03, z: 0}
---- !u!114 &2531666485477460451
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2835679033264244420}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de4b3528513e10c4391ce5d5f1ab82fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _moveSpeed: 2
-  _animator: {fileID: 347996022427630596}
 --- !u!95 &347996022427630596
 Animator:
   serializedVersion: 4
@@ -184,6 +170,20 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &341668342162570644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2835679033264244420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11ebc90968ce4c8db55464d1de92d40a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _moveSpeed: 5
+  _animator: {fileID: 347996022427630596}
 --- !u!1 &3475131768389517966
 GameObject:
   m_ObjectHideFlags: 0
