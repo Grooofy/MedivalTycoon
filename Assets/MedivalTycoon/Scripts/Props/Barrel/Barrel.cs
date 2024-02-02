@@ -5,7 +5,13 @@ public class Barrel : Props
 {
     internal override IEnumerator TryMoveTo(Transform endPoint)
     {
-         MoveTo(endPoint);
-         yield return new WaitForSeconds(1);
+        if (endPoint != null)
+        {
+            while (IsMinDistance(transform.position, endPoint.position) == false)
+            {
+                MoveTo(endPoint);
+                yield return null;
+            }
+        }
     }
 }

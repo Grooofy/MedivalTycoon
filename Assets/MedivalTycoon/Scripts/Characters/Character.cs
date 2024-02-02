@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 
 [RequireComponent(typeof(CharacterController))]
@@ -8,7 +9,7 @@ public class Character : MonoBehaviour, ICharacter
     [SerializeField] private Transform _pointHand;
 
     private CharacterController _controller;
-    public bool IsCanMove = true;
+    public bool IsCantMove = false;
 
     private void Awake()
     {
@@ -27,9 +28,12 @@ public class Character : MonoBehaviour, ICharacter
 
     public void Move(Vector3 direction)
     {
-        TryRotate(direction);
-        var normalizeDirection = Vector3.Normalize(direction);
-        _controller.Move(normalizeDirection * _worker.Speed * Time.deltaTime);
+        if (!IsCantMove)
+        {
+            TryRotate(direction);
+            var normalizeDirection = Vector3.Normalize(direction);
+            _controller.Move(normalizeDirection * _worker.Speed * Time.deltaTime);
+        }
     }
 
     private void TryRotate(Vector3 direction)

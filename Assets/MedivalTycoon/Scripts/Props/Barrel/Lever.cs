@@ -33,7 +33,7 @@ public class Lever : MonoBehaviour
             _moverStoper.TurnOnMove();
     }
 
-    public void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out MoverStoper moverStoper))
         {

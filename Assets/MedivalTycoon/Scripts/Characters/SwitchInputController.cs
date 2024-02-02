@@ -7,7 +7,7 @@ public class SwitchInputController : MonoBehaviour
     [SerializeField] private Transmitter _activeCharacter;
     [SerializeField] private CharacterInputController _characterInput;
     [SerializeField] private Character _character;
-    
+
     public UnityAction<int> Activate;
 
     private int _myId;
@@ -25,16 +25,13 @@ public class SwitchInputController : MonoBehaviour
 
     private void Switch(int id)
     {
-        if (_character.IsCanMove)
-        {
-            Switching(_myId == id);
-        }
+        Switching(_myId == id);
     }
 
     private void Switching(bool isValue)
     {
         _characterInput.enabled = isValue;
-        
+
         if (isValue)
         {
             Activate?.Invoke(_myId);

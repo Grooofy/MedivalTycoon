@@ -7,7 +7,7 @@ public class Hand : MonoBehaviour
 {
     [SerializeField] private List<Transform> _points;
 
-    private Queue<Props> _propses = new Queue<Props>();
+    private Stack<Props> _propses = new Stack<Props>();
     private Regulating _regulating;
     private Props _currentBarrel;
     private Coroutine _moved;
@@ -21,7 +21,7 @@ public class Hand : MonoBehaviour
 
     public void RemoveObject(Transform point)
     {
-        _propses.Dequeue().TryMoveTo(point);
+        _propses.Peek().TryMoveTo(point);
     }
 
     public void Stop()
@@ -68,7 +68,7 @@ public class Hand : MonoBehaviour
             return;
         }
         _currentBarrel.MoveEnded += NextObject;
-        _propses.Enqueue(_currentBarrel);
+        _propses.Push(_currentBarrel);
     }
 
 }
