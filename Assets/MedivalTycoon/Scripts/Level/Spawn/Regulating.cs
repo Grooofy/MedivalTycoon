@@ -8,9 +8,9 @@ public class Regulating : MonoBehaviour
 {
     [SerializeField] private List<Point> _points;
 
-    public Action<bool> Fulling; 
+    public Action<bool> Fulling;
     private List<Props> _spawnedProps = new List<Props>();
-    
+
     private Stack<Props> _propses = new Stack<Props>();
 
     private int _indexPoint = 0;
@@ -21,7 +21,7 @@ public class Regulating : MonoBehaviour
     {
         CheckPoints();
     }
-    
+
     public void AddProps(Props props)
     {
         props.MoveEnded += NetxObject;
@@ -37,6 +37,7 @@ public class Regulating : MonoBehaviour
             StartCoroutine(_takedObject.TryMoveTo(_points[_indexPoint].transform));
             _points[_indexPoint].IsFill = true;
         }
+
         CheckPoints();
     }
 
@@ -49,18 +50,23 @@ public class Regulating : MonoBehaviour
             _points[_indexPoint].IsFill = false;
             return _propses.Pop();
         }
+
         return null;
     }
 
     private void CheckPoints()
     {
-        foreach (var point in _points)
+        for (int i = 0; i < _points.Count; i++)
         {
-            if (point.IsFill == false)
+            if (_points[i].IsFill == false)
             {
-                Fulling?.Invoke(point.IsFill);
+                Fulling?.Invoke(false);
+               return;
             }
-            
+            if (i == _points.Count)
+            {
+                Fulling?.Invoke(true);
+            }
         }
     }
 
@@ -75,5 +81,4 @@ public class Regulating : MonoBehaviour
             FillinPoint();
         }
     }
-
 }
