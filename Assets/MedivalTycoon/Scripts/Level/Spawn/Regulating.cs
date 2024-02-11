@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,41 +10,35 @@ public class Regulating : MonoBehaviour
     [SerializeField] private List<Point> _points;
 
     public Action<bool> Fulling;
-    private List<Props> _spawnedProps = new List<Props>();
 
+    private Stack<Props> _spawnedProps = new Stack<Props>();
     private Stack<Props> _propses = new Stack<Props>();
 
+    private bool _isEmptyPoint;
     private int _indexPoint = 0;
     private int _indexBarrel = 0;
     private Props _takedObject;
 
-    private void Start()
-    {
-        CheckPoints();
-    }
 
     public void AddProps(Props props)
     {
-        props.MoveEnded += NetxObject;
-        _spawnedProps.Add(props);
+        props.MoveEnded += NextObject;
+        _spawnedProps.Push(props);
     }
 
-    public void FillinPoint()
+    public IEnumerator FillingPoints()
     {
-        if (!_points[_indexPoint].IsFill)
+        while (_isEmptyPoint || _spawnedProps.Count > 0)
         {
-            _takedObject = _spawnedProps[_indexBarrel];
-            _spawnedProps.RemoveAt(_indexBarrel);
-            StartCoroutine(_takedObject.TryMoveTo(_points[_indexPoint].transform));
-            _points[_indexPoint].IsFill = true;
+            FillingPoint();
+            yield return new WaitForSeconds(0.5f);
         }
-
         CheckPoints();
     }
 
     public Props GiveAway()
     {
-        if (_propses.Count > 0)
+        if (_indexBarrel > 0)
         {
             _indexBarrel--;
             _indexPoint--;
@@ -54,31 +49,29 @@ public class Regulating : MonoBehaviour
         return null;
     }
 
-    private void CheckPoints()
+    private void FillingPoint()
     {
-        for (int i = 0; i < _points.Count; i++)
-        {
-            if (_points[i].IsFill == false)
-            {
-                Fulling?.Invoke(false);
-               return;
-            }
-            if (i == _points.Count)
-            {
-                Fulling?.Invoke(true);
-            }
-        }
+        _takedObject = _spawnedProps.Peek();
+        _spawnedProps.Pop();
+        StartCoroutine(_takedObject.TryMoveTo(_points[_indexPoint].transform));
+        _points[_indexPoint].IsFill = true;
     }
 
-    private void NetxObject()
+    private void CheckPoints()
+    {
+        _isEmptyPoint = _points.FirstOrDefault(point => point.IsFill == false);
+        Fulling?.Invoke(!_isEmptyPoint);
+    }
+
+
+    private void NextObject()
     {
         if (_indexPoint != _points.Count)
         {
+            _takedObject.MoveEnded -= NextObject;
             _propses.Push(_takedObject);
-            _takedObject.MoveEnded -= NetxObject;
             _indexBarrel++;
             _indexPoint++;
-            FillinPoint();
         }
     }
 }

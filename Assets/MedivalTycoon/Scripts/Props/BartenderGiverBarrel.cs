@@ -1,9 +1,7 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class BartenderTrigger : MonoBehaviour ,ITrigger
+public class BartenderGiverBarrel : MonoBehaviour, ITrigger
 {
     [SerializeField] private Regulating _regulating;
     private Hand _hand;
@@ -13,17 +11,17 @@ public class BartenderTrigger : MonoBehaviour ,ITrigger
         if (other.TryGetComponent(out Hand hand))
         {
             _hand = hand;
-            _hand.ReceiveObject(_regulating);
+            _hand.RemoveObject(_regulating);
         }
     }
 
     public void OnTriggerStay(Collider other)
     {
-       
+        
     }
 
     public void OnTriggerExit(Collider other)
     {
-       _hand.Stop();
+        
     }
 }

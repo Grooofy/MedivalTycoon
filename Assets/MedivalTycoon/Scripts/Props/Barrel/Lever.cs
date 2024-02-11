@@ -29,20 +29,18 @@ public class Lever : MonoBehaviour
         _collider.enabled = !value;
         _uiObject.SetActive(!value);
         
-        if (_moverStoper != null)
+        if (value)
             _moverStoper.TurnOnMove();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out MoverStoper moverStoper))
+        if (other.TryGetComponent(out MoverStoper moverStoped))
         {
-            _moverStoper = moverStoper;
+            _moverStoper = moverStoped;
             _moverStoper.TurnOffMove();
             _collider.enabled = false;
-            _regulating.FillinPoint();
+            StartCoroutine(_regulating.FillingPoints());
         }
     }
-
-
 }
