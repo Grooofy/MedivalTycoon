@@ -26,14 +26,9 @@ public class Regulating : MonoBehaviour
         _spawnedProps.Push(props);
     }
 
-    public IEnumerator FillingPoints()
+    public void FillingPoints()
     {
-        while (_isEmptyPoint || _spawnedProps.Count > 0)
-        {
-            FillingPoint();
-            yield return new WaitForSeconds(0.5f);
-        }
-        CheckPoints();
+        FillingPoint();
     }
 
     public Props GiveAway()
@@ -43,18 +38,21 @@ public class Regulating : MonoBehaviour
             _indexBarrel--;
             _indexPoint--;
             _points[_indexPoint].IsFill = false;
+            CheckPoints();
             return _propses.Pop();
         }
-
         return null;
     }
 
     private void FillingPoint()
     {
-        _takedObject = _spawnedProps.Peek();
-        _spawnedProps.Pop();
-        StartCoroutine(_takedObject.TryMoveTo(_points[_indexPoint].transform));
-        _points[_indexPoint].IsFill = true;
+        if (_points[_indexPoint].IsFill == false)
+        {
+            _takedObject = _spawnedProps.Pop();
+            StartCoroutine(_takedObject.TryMoveTo(_points[_indexPoint].transform));
+            _points[_indexPoint].IsFill = true;
+        }
+        CheckPoints();
     }
 
     private void CheckPoints()

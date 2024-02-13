@@ -25,7 +25,8 @@ public class Hand : MonoBehaviour
         {
             regulating.AddProps(_propses.Pop());
         }
-        StartCoroutine(regulating.FillingPoints());
+
+        regulating.FillingPoints();
     }
 
     public void Stop()
@@ -34,12 +35,13 @@ public class Hand : MonoBehaviour
         {
             return;
         }
+
         StopCoroutine(_moved);
     }
 
     private void TryTakeObject()
     {
-        if (_indexPoint != _points.Count)
+        if (_indexPoint < _points.Count)
         {
             _moved = StartCoroutine(GetObject());
         }
@@ -48,29 +50,35 @@ public class Hand : MonoBehaviour
     private IEnumerator GetObject()
     {
         _currentBarrel = _regulating.GiveAway();
-        
+
         if (_currentBarrel != null)
         {
             _currentBarrel.MoveEnded += NextObject;
             _propses.Push(_currentBarrel);
         }
+
         if (_propses.Count == _points.Count)
         {
             _currentBarrel.MoveEnded -= NextObject;
             _currentBarrel = null;
         }
+
         while (_indexPoint < _points.Count && _currentBarrel != null)
         {
             StartCoroutine(_currentBarrel.TryMoveTo(_points[_indexPoint]));
             yield return null;
         }
-        
     }
 
     private void NextObject()
     {
+        _currentBarrel = null;
         _indexPoint++;
-        _currentBarrel = _regulating.GiveAway();
+        
+        if (_indexPoint <= _points.Count)
+        {
+            _currentBarrel = _regulating.GiveAway();
+        }
         if (_currentBarrel == null)
         {
             return;
@@ -78,5 +86,4 @@ public class Hand : MonoBehaviour
         _propses.Push(_currentBarrel);
         _currentBarrel.MoveEnded += NextObject;
     }
-
 }

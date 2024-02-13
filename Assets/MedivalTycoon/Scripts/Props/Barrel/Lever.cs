@@ -40,7 +40,7 @@ public class Lever : MonoBehaviour
             _moverStoper = moverStoped;
             _moverStoper.TurnOffMove();
             _collider.enabled = false;
-            StartCoroutine(_regulating.FillingPoints());
+            _regulating.FillingPoints();
         }
     }
 }

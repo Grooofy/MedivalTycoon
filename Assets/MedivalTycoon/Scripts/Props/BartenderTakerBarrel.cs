@@ -21,6 +21,10 @@ public class BartenderTakerBarrel : MonoBehaviour ,ITrigger
 
     public void OnTriggerExit(Collider other)
     {
-       _hand.Stop();
+        if (_hand != null)
+        {
+            _hand.Stop();
+            _hand = null;
+        }
     }
 }
