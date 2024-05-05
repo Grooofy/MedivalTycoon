@@ -10,16 +10,17 @@ public abstract class Props : MonoBehaviour
 
     public Action MoveEnded;
 
-    internal abstract IEnumerator TryMoveTo(Transform endPoint);
+    internal abstract IEnumerator TryMoveTo(Point endPoint);
 
-    internal void MoveTo(Transform endPoint)
+    internal void MoveTo(Point endPoint)
     {
-        transform.position = Vector3.MoveTowards(transform.position, endPoint.position, _moveSpeed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, endPoint.transform.position, _moveSpeed * Time.deltaTime);
         
-        if (IsMinDistance(transform.position, endPoint.position))
+        if (IsMinDistance(transform.position, endPoint.transform.position))
         {
             _animator.SetTrigger("Take");
-            transform.SetParent(endPoint);
+            transform.SetParent(endPoint.transform);
+            endPoint.IsFill = true;
             MoveEnded?.Invoke();
         }
     }

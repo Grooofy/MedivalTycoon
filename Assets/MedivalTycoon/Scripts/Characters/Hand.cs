@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Hand : MonoBehaviour
 {
-    [SerializeField] private List<Transform> _points;
+    [SerializeField] private List<Point> _points;
 
     private Queue<Props> _propses = new Queue<Props>();
     private Regulating _regulating;
@@ -19,7 +19,7 @@ public class Hand : MonoBehaviour
         TryTakeObject();
     }
 
-    public void RemoveObject(Transform point)
+    public void RemoveObject(Point point)
     {
         _propses.Dequeue().TryMoveTo(point);
     }

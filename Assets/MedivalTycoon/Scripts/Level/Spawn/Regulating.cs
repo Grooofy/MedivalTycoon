@@ -25,7 +25,7 @@ public class Regulating : MonoBehaviour
 
     public void AddProps(Props props)
     {
-        props.MoveEnded += NetxObject;
+        props.MoveEnded += FillinPoint;
         _fullPropses.Add(props);
     }
 
@@ -33,14 +33,22 @@ public class Regulating : MonoBehaviour
     {
         if (_indexBarrel == _points.Count)
         {
-            _queuePropses = new Queue<Props>(_queuePropses.Reverse());
             IsFull(true);
             return;
         }
-        _takedObject = _fullPropses[_indexBarrel];
-        _fullPropses.RemoveAt(_indexBarrel);
-        StartCoroutine(_takedObject.TryMoveTo(_points[_indexPoint].transform));
-        
+
+        if(_points[_indexPoint].IsFill)
+        {
+            _indexPoint++;
+            _indexBarrel++;
+            FillinPoint();
+        }
+        else
+        {
+            _takedObject = _fullPropses[_indexBarrel];
+            _fullPropses.RemoveAt(_indexBarrel);
+            StartCoroutine(_takedObject.TryMoveTo(_points[_indexPoint]));
+        }
     }
 
     public Props GiveAway()
@@ -63,10 +71,7 @@ public class Regulating : MonoBehaviour
     private void NetxObject()
     {
         _queuePropses.Enqueue(_takedObject);
-        _takedObject.MoveEnded -= NetxObject;
-        _indexBarrel++;
-        _indexPoint++;
-        FillinPoint();
+        _takedObject.MoveEnded -= FillinPoint;
     }
 
 }
