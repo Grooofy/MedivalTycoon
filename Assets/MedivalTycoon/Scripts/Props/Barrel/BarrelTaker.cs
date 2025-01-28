@@ -8,12 +8,12 @@ public class BarrelTaker : MonoBehaviour, ITrigger
 
     private void OnEnable()
     {
-        _regulating.Fulling += TurnCollider;
+        //_regulating.Fulling += TurnCollider;
     }
 
     private void OnDisable()
     {
-        _regulating.Fulling -= TurnCollider;
+       // _regulating.Fulling -= TurnCollider;
     }
 
     

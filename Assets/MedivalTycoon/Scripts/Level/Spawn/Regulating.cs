@@ -6,72 +6,24 @@ using UnityEngine;
 
 public class Regulating : MonoBehaviour
 {
-    [SerializeField] private List<Point> _points;
+    [SerializeField] private List<Point> _points = new List<Point>();
+    
+    private Queue<Props> _props = new Queue<Props>();
+    private Props _currentProps;
 
-    public Action<bool> Fulling; 
+    private int _index = 0;
 
-    private List<Props> _fullPropses = new List<Props>();
-    private Queue<Props> _queuePropses = new Queue<Props>();
-
-    private int _indexPoint = 0;
-    private int _indexBarrel = 0;
-    private Props _takedObject;
-
-    private void Start()
+    public void RegisterProps(Props props)
     {
-        IsFull(false);
+        _props.Enqueue(props);
     }
 
 
-    public void AddProps(Props props)
+    public void FillingPoints()
     {
-        props.MoveEnded += FillinPoint;
-        _fullPropses.Add(props);
-    }
-
-    public void FillinPoint()
-    {
-        if (_indexBarrel == _points.Count)
+        while (_index <= _points.Count)
         {
-            IsFull(true);
-            return;
-        }
-
-        if(_points[_indexPoint].IsFill)
-        {
-            _indexPoint++;
-            _indexBarrel++;
-            FillinPoint();
-        }
-        else
-        {
-            _takedObject = _fullPropses[_indexBarrel];
-            _fullPropses.RemoveAt(_indexBarrel);
-            StartCoroutine(_takedObject.TryMoveTo(_points[_indexPoint]));
+            StartCoroutine(_props.Dequeue().TryMoveTo(_points[_index++]));
         }
     }
-
-    public Props GiveAway()
-    {
-        if (_queuePropses.Count > 0)
-        {
-            _indexBarrel--;
-            _indexPoint--;
-            return _queuePropses.Dequeue();
-        }
-        IsFull(false);
-        return null;
-    }
-
-    private void IsFull(bool value)
-    {
-        Fulling?.Invoke(value);
-    }
-
-    private void NetxObject()
-    {
-        _queuePropses.Enqueue(_takedObject);
-        _takedObject.MoveEnded -= FillinPoint;
-    }
-
 }

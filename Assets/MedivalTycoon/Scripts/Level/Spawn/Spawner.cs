@@ -7,7 +7,7 @@ public class Spawner : MonoBehaviour
     [SerializeField] private Transform _startPoint;
     [SerializeField] private Regulating _regulating;
 
-    private int _countBarrels = 30;
+    private readonly int _amount = 30;
 
     private void Awake()
     {
@@ -16,10 +16,10 @@ public class Spawner : MonoBehaviour
 
     private void CreateObject()
     {
-        for (int i = 0; i < _countBarrels; i++)
+        for (int i = 0; i < _amount; i++)
         {
             var newProps = Instantiate(_barrel, _startPoint);
-            _regulating.AddProps(newProps);
+            _regulating.RegisterProps(newProps);
         }
     }
 }
