@@ -11,12 +11,12 @@ public class Lever : MonoBehaviour
 
     private void OnEnable()
     {
-        //_regulating.Fulling += TurnObject;
+        _regulating.Fulling += TurnObject;
     }
 
     private void OnDisable()
     {
-       // _regulating.Fulling -= TurnObject;
+        _regulating.Fulling -= TurnObject;
     }
 
    
@@ -37,7 +37,7 @@ public class Lever : MonoBehaviour
             _moverStoper = moverStoper;
             _moverStoper.TurnOffMove();
             _collider.enabled = false;
-            _regulating.FillingPoints();
+            StartCoroutine(_regulating.FillingPoints());
         }
     }
 

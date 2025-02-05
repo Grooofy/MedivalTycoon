@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class Barrel : Props
 { 
-    
-    
     internal override IEnumerator TryMoveTo(Point endPoint)
     {
         if (endPoint.IsFill == false && endPoint != null)
@@ -19,11 +17,13 @@ public class Barrel : Props
         }
     }
 
-    internal override IEnumerator TryJumpTo(Point endPoint, Vector3 startPosition, float elapsedTime, float moveDuration)
+    internal override IEnumerator TryJumpTo(Point endPoint, float elapsedTime, float moveDuration)
     {
+        Vector3 startPosition = transform.position;
+        
         while (elapsedTime < moveDuration)
         {
-           JumpTo(endPoint, transform.position, elapsedTime, moveDuration);
+           JumpTo(endPoint, startPosition, elapsedTime, moveDuration);
            yield return null;
         }
         transform.position = endPoint.transform.position;

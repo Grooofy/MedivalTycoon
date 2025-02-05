@@ -2,6 +2,7 @@ using UnityEngine;
 using DG.Tweening;
 using System;
 using System.Collections;
+using UnityEditor;
 
 public abstract class Props : MonoBehaviour
 {
@@ -12,22 +13,21 @@ public abstract class Props : MonoBehaviour
     public Action MoveEnded;
 
     internal abstract IEnumerator TryMoveTo(Point endPoint);
-    internal abstract IEnumerator TryJumpTo(Point endPoint,Vector3 startPosition,float elapsedTime, float moveDuration);
+    internal abstract IEnumerator TryJumpTo(Point endPoint,float elapsedTime, float moveDuration);
 
     internal void MoveTo(Point endPoint)
     {
+        if(endPoint == null) return;
+        
         transform.position = Vector3.MoveTowards(transform.position, endPoint.transform.position, _moveSpeed * Time.deltaTime);
         
         if (IsMinDistance(transform.position, endPoint.transform.position))
         {
-            _animator.SetTrigger("Take");
-            transform.SetParent(endPoint.transform);
-            endPoint.IsFill = true;
-            MoveEnded?.Invoke();
+            SetParent(endPoint);
         }
     }
 
-    internal void JumpTo(Point endPoint,Vector3 startPosition,float elapsedTime, float moveDuration)
+    internal void JumpTo(Point endPoint,Vector3 startPosition ,float elapsedTime, float moveDuration)
     {
         elapsedTime += Time.deltaTime;
         float t = elapsedTime / moveDuration;
@@ -35,6 +35,11 @@ public abstract class Props : MonoBehaviour
         
         float height = Mathf.Sin(t * Mathf.PI) * _parabolaHeight;
         transform.position = Vector3.Lerp(startPosition, endPoint.transform.position, t) + Vector3.up * height;
+        
+        if (IsMinDistance(transform.position, endPoint.transform.position))
+        {
+           SetParent(endPoint);
+        }
     }
     
 
@@ -42,5 +47,13 @@ public abstract class Props : MonoBehaviour
     {
         float minDistance = 0.001f;
         return Vector3.Distance(startPosition, endPosition) < minDistance;
+    }
+
+    private void SetParent(Point endPoint) 
+    {
+        _animator.SetTrigger("Take");
+        transform.SetParent(endPoint.transform);
+        endPoint.IsFill = true;
+        MoveEnded?.Invoke();
     }
 }

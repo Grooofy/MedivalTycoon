@@ -8,12 +8,12 @@ public class BarrelTaker : MonoBehaviour, ITrigger
 
     private void OnEnable()
     {
-        //_regulating.Fulling += TurnCollider;
+        _regulating.Fulling += TurnCollider;
     }
 
     private void OnDisable()
     {
-       // _regulating.Fulling -= TurnCollider;
+        _regulating.Fulling -= TurnCollider;
     }
 
     
@@ -22,11 +22,13 @@ public class BarrelTaker : MonoBehaviour, ITrigger
         _collider.enabled = value;
     }
 
+    
     public void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out Hand bartender))
         {
-            bartender.ReceiveObject(_regulating);
+            bartender.RegisterProps(_regulating);
+            StartCoroutine(bartender.FillingPoints());
         }
     }
 
@@ -34,7 +36,7 @@ public class BarrelTaker : MonoBehaviour, ITrigger
     {
         if (other.TryGetComponent(out Hand bartender))
         {
-            bartender.Stop();
+            
         }
     }
 

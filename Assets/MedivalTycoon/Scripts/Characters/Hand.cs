@@ -2,73 +2,56 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Hand : MonoBehaviour
 {
-    [SerializeField] private List<Point> _points;
+    public Action<bool> HandFulling;
+    [SerializeField] private List<Point> _pointsProps;
 
-    private Queue<Props> _propses = new Queue<Props>();
-    private Regulating _regulating;
-    private Props _currentBarrel;
-    private Coroutine _moved;
-    private int _indexPoint = 0;
+    private Queue<Props> _props = new Queue<Props>();
+    private Queue<Props> _pointProps = new Queue<Props>();
+    private WaitForSeconds _wait = new WaitForSeconds(0.2f);
+    private Props _currentProps;
+    private int _index = 0;
+    private bool _isFulling;
 
-    public void ReceiveObject(Regulating regulating)
+
+    public void RegisterProps(Regulating regulating)
     {
-        _regulating = regulating;
-        TryTakeObject();
+        if (regulating == null) return;
+
+        if (_isFulling) return;
+        
+        if (regulating.GetTo(_pointsProps.Count) == null) return;
+
+        _props = regulating.GetTo(_pointsProps.Count);
+        
     }
 
-    public void RemoveObject(Point point)
-    {
-      //  _propses.Dequeue().TryMoveTo(point);
-    }
 
-    public void Stop()
+    public IEnumerator FillingPoints()
     {
-        if (_moved == null)
+        while (_props.Count > 0)
         {
-            return;
-        }
-        StopCoroutine(_moved);
-    }
+            StartCoroutine(_props.Peek().TryMoveTo(_pointsProps[_index]));
+            _pointProps.Enqueue(_props.Dequeue());
+            _index++;
 
-    private void TryTakeObject()
-    {
-        if (_indexPoint > _points.Count)
-        {
-            return;
-        }
-        _moved = StartCoroutine(GetObject());
-    }
+            if (_index == _pointsProps.Count)
+            {
+                _isFulling = true;
+                HandFulling?.Invoke(true);
+            }
 
-    private IEnumerator GetObject()
-    {
-        //_currentBarrel = _regulating.GiveAway();
-        _currentBarrel.MoveEnded += NextObject;
-       
-        if (_propses.Count == _points.Count)
-        {
-            _currentBarrel.MoveEnded -= NextObject;
-            _currentBarrel = null;
-        }
-        while (_indexPoint < _points.Count && _currentBarrel != null)
-        {
-           // StartCoroutine(_currentBarrel.TryMoveTo(_points[_indexPoint]));
-            yield return null;
+            yield return _wait;
         }
     }
 
-    private void NextObject()
+    public Props GetOne()
     {
-        _indexPoint++;
-      //  _currentBarrel = _regulating.GiveAway();
-        if (_currentBarrel == null)
-        {
-            return;
-        }
-        _currentBarrel.MoveEnded += NextObject;
-        _propses.Enqueue(_currentBarrel);
-    }
+        if (_pointsProps.Count == 0) return null;
 
+        return _pointProps.Dequeue();
+    }
 }
