@@ -33,7 +33,6 @@ public class Regulating : MonoBehaviour
             
             if (_index == _points.Count)
                 Fulling?.Invoke(true);
-            
             yield return _wait;
         }
     }
@@ -46,10 +45,8 @@ public class Regulating : MonoBehaviour
         
         for (int i = 0; i < count; i++)
         {
-            queue.Enqueue(_pointsProps.Dequeue()); 
-            _index--;
+            queue.Enqueue(_pointsProps.Dequeue());
         }
-
         return queue;
     }
 }

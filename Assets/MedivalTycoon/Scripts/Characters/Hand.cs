@@ -19,14 +19,13 @@ public class Hand : MonoBehaviour
 
     public void RegisterProps(Regulating regulating)
     {
-        if (regulating == null) return;
-
         if (_isFulling) return;
+
+        if (regulating == null) return;
         
         if (regulating.GetTo(_pointsProps.Count) == null) return;
 
         _props = regulating.GetTo(_pointsProps.Count);
-        
     }
 
 
@@ -37,7 +36,7 @@ public class Hand : MonoBehaviour
             StartCoroutine(_props.Peek().TryMoveTo(_pointsProps[_index]));
             _pointProps.Enqueue(_props.Dequeue());
             _index++;
-
+            Debug.Log(_index);
             if (_index == _pointsProps.Count)
             {
                 _isFulling = true;
