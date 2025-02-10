@@ -18551,7 +18551,7 @@ GameObject:
   - component: {fileID: 1010662466}
   - component: {fileID: 1010662467}
   m_Layer: 0
-  m_Name: Regulating (1)
+  m_Name: RegulatingBearCreator
   m_TagString: Untagged
   m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -32715,7 +32715,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9734e0cc6f45bfa43aa7c5f874a85b46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _regulating: {fileID: 428411083}
+  _regulating: {fileID: 1010662467}
   _collider: {fileID: 1669454042}
 --- !u!225 &1669454044
 CanvasGroup:

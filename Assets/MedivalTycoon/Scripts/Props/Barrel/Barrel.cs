@@ -7,13 +7,12 @@ public class Barrel : Props
     {
         if (endPoint.IsFill == false && endPoint != null)
         {
-            while (IsMinDistance(transform.position, endPoint.transform.position) == false)
+            while (endPoint.IsFill == false)
             {
                 MoveTo(endPoint);
                 yield return null;
             }
             transform.position = endPoint.transform.position;
-            
         }
     }
 

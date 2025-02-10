@@ -27,8 +27,15 @@ public class BarrelTaker : MonoBehaviour, ITrigger
     {
         if (other.TryGetComponent(out Hand bartender))
         {
-            bartender.RegisterProps(_regulating);
-            StartCoroutine(bartender.FillingPoints());
+            if (bartender.IsFulling)
+            {
+                _regulating.RegisterProps(bartender.GetTo());
+            }
+            else
+            {
+                bartender.RegisterProps(_regulating);
+                StartCoroutine(bartender.FillingPoints());
+            }
         }
     }
 

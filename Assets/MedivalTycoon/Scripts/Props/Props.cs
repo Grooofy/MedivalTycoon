@@ -29,6 +29,8 @@ public abstract class Props : MonoBehaviour
 
     internal void JumpTo(Point endPoint,Vector3 startPosition ,float elapsedTime, float moveDuration)
     {
+        if(endPoint == null) return;
+        
         elapsedTime += Time.deltaTime;
         float t = elapsedTime / moveDuration;
 

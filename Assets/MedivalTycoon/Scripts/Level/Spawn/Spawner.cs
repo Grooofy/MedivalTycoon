@@ -7,19 +7,21 @@ public class Spawner : MonoBehaviour
     [SerializeField] private Transform _startPoint;
     [SerializeField] private Regulating _regulating;
 
+    private Queue<Props> _props = new Queue<Props>();
     private readonly int _amount = 30;
 
     private void Awake()
     {
-        CreateObject();
+        CreateObjects();
     }
 
-    private void CreateObject()
+    private void CreateObjects()
     {
         for (int i = 0; i < _amount; i++)
         {
             var newProps = Instantiate(_barrel, _startPoint);
-            _regulating.RegisterProps(newProps);
+            _props.Enqueue(newProps);
         }
+        _regulating.RegisterProps(_props);
     }
 }

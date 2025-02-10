@@ -12,27 +12,36 @@ public class Regulating : MonoBehaviour
     [SerializeField] private List<Point> _points = new List<Point>();
     private WaitForSeconds _wait = new WaitForSeconds(0.6f);
     private Queue<Props> _props = new Queue<Props>();
-    private Queue<Props> _pointsProps = new Queue<Props>();
+    private Queue<Props> _pointsProps;// = new Queue<Props>();
     
     private Props _currentProps;
     private int _index = 0;
 
-    public void RegisterProps(Props props)
+    public void RegisterProps(Queue<Props> props)
     {
-        _props.Enqueue(props);
+        foreach (var prop in props)
+        {
+            _props.Enqueue(prop);
+        }
+        
     }
 
 
     public IEnumerator FillingPoints()
     {
+        var temporaryQueue = new Queue<Props>();
+        
         while (_index < _points.Count)
         {
             StartCoroutine(_props.Peek().TryMoveTo(_points[_index]));
-            _pointsProps.Enqueue(_props.Dequeue());
+            temporaryQueue.Enqueue(_props.Dequeue());
             _index++;
-            
+
             if (_index == _points.Count)
+            {
                 Fulling?.Invoke(true);
+                _pointsProps = new Queue<Props>(temporaryQueue.Reverse());
+            }
             yield return _wait;
         }
     }
