@@ -5,15 +5,14 @@ public class Barrel : Props
 { 
     internal override IEnumerator TryMoveTo(Point endPoint)
     {
-        if (endPoint.IsFill == false && endPoint != null)
+        if (endPoint == null) yield break;
+        
+        while (endPoint.IsFill == false)
         {
-            while (endPoint.IsFill == false)
-            {
-                MoveTo(endPoint);
-                yield return null;
-            }
-            transform.position = endPoint.transform.position;
+            MoveTo(endPoint);
+            yield return null;
         }
+        transform.position = endPoint.transform.position;
     }
 
     internal override IEnumerator TryJumpTo(Point endPoint, float elapsedTime, float moveDuration)

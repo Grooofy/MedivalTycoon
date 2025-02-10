@@ -8031,6 +8031,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e516dfe7bf102cc4e843ef03f87aa9c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsMain: 1
   _points:
   - {fileID: 152253635}
   - {fileID: 598572003}
@@ -18594,6 +18595,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e516dfe7bf102cc4e843ef03f87aa9c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsMain: 0
   _points:
   - {fileID: 287174121}
   - {fileID: 1794739950}
@@ -32654,7 +32656,7 @@ GameObject:
   - component: {fileID: 1669454043}
   - component: {fileID: 1669454042}
   m_Layer: 5
-  m_Name: BeerZone (1)
+  m_Name: BeerZoneCreator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

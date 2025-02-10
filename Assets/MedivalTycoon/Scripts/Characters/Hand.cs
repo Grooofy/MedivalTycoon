@@ -9,22 +9,21 @@ public class Hand : MonoBehaviour
 {
     public Action<bool> HandFulling;
     [SerializeField] private List<Point> _points;
-    [HideInInspector] public bool IsFulling;
+    [FormerlySerializedAs("_isFull")] [HideInInspector] public bool IsFull;
 
     private Queue<Props> _props = new Queue<Props>();
-    private Queue<Props> _pointProps; 
+    private Queue<Props> _pointProps = new Queue<Props>(); 
     private WaitForSeconds _wait = new WaitForSeconds(0.2f);
     private Props _currentProps;
-    private int _index = 0;
+    private int _index;
 
 
     public void RegisterProps(Regulating regulating)
     {
-        if (IsFulling) return;
-
         if (regulating == null) return;
         
         _props = regulating.GetTo(_points.Count);
+        _index = 0;
     }
 
 
@@ -32,7 +31,7 @@ public class Hand : MonoBehaviour
     {
         var temporaryQueue = new Queue<Props>();
         
-        while (_props.Count > 0)
+        while (IsFull == false && _index < _points.Count)
         {
             StartCoroutine(_props.Peek().TryMoveTo(_points[_index]));
             temporaryQueue.Enqueue(_props.Dequeue());
@@ -40,7 +39,8 @@ public class Hand : MonoBehaviour
             
             if (_index == _points.Count)
             {
-                IsFulling = true;
+                _index = _points.Count - 1;
+                IsFull = true;
                 HandFulling?.Invoke(true);
                 _pointProps = new Queue<Props>(temporaryQueue.Reverse());
             }
@@ -51,14 +51,23 @@ public class Hand : MonoBehaviour
 
     public Queue<Props> GetTo()
     {
-        if (_points.Count == 0) return null;
+        if (_pointProps.Count == 0) return null;
+        if(_index <= 0) return null;
 
         var queue = new Queue<Props>();
         
-        for (int i = 0; i < _points.Count; i++)
+        for (int i = 0 ; i < _points.Count; i++)
         {
             queue.Enqueue(_pointProps.Dequeue());
+            _points[_index].IsFill = false;
+            _index--;
+            IsFull = false;
         }
         return queue;
+    }
+
+    private void Update()
+    {
+        Debug.Log(_index);
     }
 }
