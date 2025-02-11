@@ -9,35 +9,60 @@ using UnityEngine.Serialization;
 public class Regulating : MonoBehaviour
 {
     public Action<bool> Fulling;
-    [FormerlySerializedAs("isMain")] public bool IsMain;
-    
     [SerializeField] private List<Point> _points = new List<Point>();
     private WaitForSeconds _wait = new WaitForSeconds(0.3f);
     private Queue<Props> _props = new Queue<Props>();
     private Queue<Props> _pointsProps = new Queue<Props>();
     
     private Props _currentProps;
-    private int _index = 0;
+    private int _index;
     private bool _isFull;
 
-    public void RegisterProps(Queue<Props> props)
+    public bool RegisterProps(Queue<Props> props)
     {
-        if(props == null) return;
-        
+        if (props == null)
+        {
+            Debug.LogError("Null register props!");
+            return false;
+        }
+
+        if (props.Count == 0)
+        {
+            Debug.LogWarning("Empty props queue passed to RegisterProps.");
+            return false;
+        }
+
         foreach (var prop in props)
         {
+            if (prop == null)
+            {
+                Debug.LogWarning("Null prop found in the queue. Skipping.");
+                continue; // Пропускаем null элементы
+            }
+
             _props.Enqueue(prop);
         }
+
+        Debug.Log($"Successfully registered {props.Count} props in Regulating.");
+        
+        return true;
     }
 
 
     public IEnumerator FillingPoints()
     {
+        if(_props.Count == 0) yield break;
+        
         var temporaryQueue = new Queue<Props>();
         
         while (_isFull == false && _index < _points.Count)
         {
-            StartCoroutine(_props.Peek().TryMoveTo(_points[_index]));
+            if(_props.Count == 0) yield break;
+            
+            var prop = _props.Peek();
+            if (prop == null) yield break;
+            
+            StartCoroutine(prop.TryMoveTo(_points[_index]));
             temporaryQueue.Enqueue(_props.Dequeue());
             _index++;
 
@@ -52,25 +77,36 @@ public class Regulating : MonoBehaviour
         }
     }
 
-    public Queue<Props> GetTo(int count)
+    public Queue<Props> GetTo(int amount)
     {
-        if (_index == 0) return null;
         if(_pointsProps.Count == 0) return null;
 
+        if (amount > _pointsProps.Count)
+        {
+            _index = amount;
+            amount = _pointsProps.Count;
+        }
+
+        Debug.Log(amount + " колво взятых");
         var queue = new Queue<Props>();
-        
-        for (int i = 0; i < count; i++)
+       
+        for (int i = 0; i < amount; i++)
         {
             queue.Enqueue(_pointsProps.Dequeue());
             _points[_index].IsFill = false;
-            _index--;
-            
-            if (_index == 0)
+
+            if (_index > 0) 
+            {
+                _index--;
+            }
+
+            if (_pointsProps.Count == 0)
             {
                 _isFull = false;
-                _index = 0;
+                Fulling?.Invoke(false);
             }
         }
+        Debug.Log(queue.Count + " длина очереди");
         return queue;
     }
 }

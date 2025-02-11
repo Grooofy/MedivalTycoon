@@ -1,11 +1,10 @@
 using UnityEngine;
 
-public class BarrelTaker : MonoBehaviour, ITrigger
+public class PropsGiver : MonoBehaviour, ITrigger
 {
     [SerializeField] private Regulating _regulating;
     [SerializeField] private SphereCollider _collider;
-
-
+    
     private void OnEnable()
     {
         _regulating.Fulling += TurnCollider;
@@ -26,24 +25,14 @@ public class BarrelTaker : MonoBehaviour, ITrigger
     public void OnTriggerEnter(Collider other)
     {
         if (!other.TryGetComponent(out Hand hand)) return;
+        if (hand.IsFull) return;
 
-        if (_regulating.IsMain)
-        {
-            hand.RegisterProps(_regulating);
-            StartCoroutine(hand.FillingPoints());
-        }
-
-        if (!hand.IsFull) return;
-        
-        _regulating.RegisterProps(hand.GetTo());
-        StartCoroutine(_regulating.FillingPoints());
+        hand.RegisterProps(_regulating);
+        StartCoroutine(hand.FillingPoints());
     }
 
     public void OnTriggerExit(Collider other)
     {
-        if (other.TryGetComponent(out Hand bartender))
-        {
-        }
     }
 
     public void OnTriggerStay(Collider other)

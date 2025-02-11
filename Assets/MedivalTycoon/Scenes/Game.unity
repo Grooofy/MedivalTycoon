@@ -8031,7 +8031,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e516dfe7bf102cc4e843ef03f87aa9c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsMain: 1
   _points:
   - {fileID: 152253635}
   - {fileID: 598572003}
@@ -18595,7 +18594,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e516dfe7bf102cc4e843ef03f87aa9c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsMain: 0
   _points:
   - {fileID: 287174121}
   - {fileID: 1794739950}
@@ -32653,8 +32651,8 @@ GameObject:
   - component: {fileID: 1669454046}
   - component: {fileID: 1669454045}
   - component: {fileID: 1669454044}
-  - component: {fileID: 1669454043}
   - component: {fileID: 1669454042}
+  - component: {fileID: 1669454048}
   m_Layer: 5
   m_Name: BeerZoneCreator
   m_TagString: Untagged
@@ -32705,20 +32703,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.24
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1669454043
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1669454040}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9734e0cc6f45bfa43aa7c5f874a85b46, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _regulating: {fileID: 1010662467}
-  _collider: {fileID: 1669454042}
 --- !u!225 &1669454044
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -32794,6 +32778,19 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &1669454048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1669454040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9320fe703f042ae973909c392eb6d2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _regulating: {fileID: 1010662467}
 --- !u!4 &1676883263 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f3e4fc2f87bf81b45852e9a1f94d8fe8, type: 3}
