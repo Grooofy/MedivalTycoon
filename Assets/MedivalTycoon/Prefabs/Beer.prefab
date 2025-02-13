@@ -45,6 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7085ab36e02ff64eb0f9f13f187e6fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _moveSpeed: 0
+  _parabolaHeight: 0
+  _animator: {fileID: 0}
 --- !u!1001 &6293231449182957459
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -71,15 +74,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f3e4fc2f87bf81b45852e9a1f94d8fe8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.21299997
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f3e4fc2f87bf81b45852e9a1f94d8fe8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.426
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f3e4fc2f87bf81b45852e9a1f94d8fe8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.0069999453
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f3e4fc2f87bf81b45852e9a1f94d8fe8, type: 3}
       propertyPath: m_LocalRotation.w

@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 
-public class Regulating : MonoBehaviour
+public class Regulating : MonoBehaviour, IPropsMover
 {
     public Action<bool> Fulling;
     [SerializeField] private List<Point> _points = new List<Point>();

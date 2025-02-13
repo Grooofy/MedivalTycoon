@@ -2,17 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Beer : MonoBehaviour
+public class Beer : Props
 {
-    // Start is called before the first frame update
-    void Start()
+    internal override IEnumerator TryMoveTo(Point endPoint)
     {
-        
+        throw new System.NotImplementedException();
     }
 
-    // Update is called once per frame
-    void Update()
+    internal override IEnumerator TryJumpTo(Point endPoint, float elapsedTime, float moveDuration)
     {
-        
+        throw new System.NotImplementedException();
     }
 }

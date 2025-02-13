@@ -4,11 +4,12 @@ public class PropsTaker : MonoBehaviour, ITrigger
 {
     [SerializeField] private Regulating _regulating;
 
+    private int _amount = 3;
     public void OnTriggerEnter(Collider other)
     {
         if (!other.TryGetComponent(out Hand hand)) return;
 
-        var props = hand.GetTo(3); // Получаем до 3 объектов из Hand
+        var props = hand.GetTo(_amount); // Получаем до 3 объектов из Hand
 
         if (props == null || props.Count == 0)
         {
