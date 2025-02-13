@@ -20,10 +20,11 @@ public abstract class Props : MonoBehaviour
         if(endPoint == null) return;
         
         transform.position = Vector3.MoveTowards(transform.position, endPoint.transform.position, _moveSpeed * Time.deltaTime);
+        transform.SetParent(endPoint.transform);
         
         if (IsMinDistance(transform.position, endPoint.transform.position))
         {
-            SetParent(endPoint);
+            MoveEnd(endPoint);
         }
     }
 
@@ -40,7 +41,7 @@ public abstract class Props : MonoBehaviour
         
         if (IsMinDistance(transform.position, endPoint.transform.position))
         {
-           SetParent(endPoint);
+           MoveEnd(endPoint);
         }
     }
     
@@ -51,10 +52,9 @@ public abstract class Props : MonoBehaviour
         return Vector3.Distance(startPosition, endPosition) < minDistance;
     }
 
-    private void SetParent(Point endPoint) 
+    private void MoveEnd(Point endPoint) 
     {
         _animator.SetTrigger("Take");
-        transform.SetParent(endPoint.transform);
         endPoint.IsFill = true;
         MoveEnded?.Invoke();
     }

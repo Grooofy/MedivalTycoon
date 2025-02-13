@@ -18,18 +18,18 @@ public class Regulating : MonoBehaviour
     private int _index;
     private bool _isFull;
 
-    public bool RegisterProps(Queue<Props> props)
+    public void RegisterProps(Queue<Props> props)
     {
         if (props == null)
         {
             Debug.LogError("Null register props!");
-            return false;
+            return;
         }
 
         if (props.Count == 0)
         {
             Debug.LogWarning("Empty props queue passed to RegisterProps.");
-            return false;
+            return;
         }
 
         foreach (var prop in props)
@@ -37,15 +37,13 @@ public class Regulating : MonoBehaviour
             if (prop == null)
             {
                 Debug.LogWarning("Null prop found in the queue. Skipping.");
-                continue; // Пропускаем null элементы
+                continue; 
             }
 
             _props.Enqueue(prop);
         }
 
         Debug.Log($"Successfully registered {props.Count} props in Regulating.");
-        
-        return true;
     }
 
 
@@ -86,8 +84,7 @@ public class Regulating : MonoBehaviour
             _index = amount;
             amount = _pointsProps.Count;
         }
-
-        Debug.Log(amount + " колво взятых");
+        
         var queue = new Queue<Props>();
        
         for (int i = 0; i < amount; i++)
@@ -102,11 +99,20 @@ public class Regulating : MonoBehaviour
 
             if (_pointsProps.Count == 0)
             {
+                _index = 0;
                 _isFull = false;
                 Fulling?.Invoke(false);
+                ResetPoints();
             }
         }
-        Debug.Log(queue.Count + " длина очереди");
         return queue;
+    }
+
+    private void ResetPoints()
+    {
+        foreach (var point in _points)
+        {
+            point.IsFill = false;
+        }
     }
 }
