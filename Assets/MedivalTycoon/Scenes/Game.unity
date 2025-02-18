@@ -12465,7 +12465,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.030479169, y: 0.45600003}
   m_AnchorMax: {x: 0.11487501, y: 0.9535556}
-  m_AnchoredPosition: {x: -2.7998047, y: 0}
+  m_AnchoredPosition: {x: -2.8000488, y: 0}
   m_SizeDelta: {x: -3.999998, y: -1}
   m_Pivot: {x: 1.2, y: 0.5}
 --- !u!114 &714495355
@@ -23084,7 +23084,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7038891403986418778, guid: 909ebd970bf26ab4485ed164ba355895, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 4.64209
+      value: 4.6420593
       objectReference: {fileID: 0}
     - target: {fileID: 7038891404728702251, guid: 909ebd970bf26ab4485ed164ba355895, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -38025,6 +38025,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1944904835}
+  - component: {fileID: 1944904836}
   m_Layer: 0
   m_Name: Barrel
   m_TagString: Untagged
@@ -38047,6 +38048,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 51976284}
   m_LocalEulerAnglesHint: {x: 0, y: -22.506, z: 0}
+--- !u!114 &1944904836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1944904834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2f5d905e86e79c499a6331fa76af40e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _regulating: {fileID: 1010662467}
+  _beerCreator: {fileID: 51976285}
 --- !u!1 &1951603757
 GameObject:
   m_ObjectHideFlags: 0
