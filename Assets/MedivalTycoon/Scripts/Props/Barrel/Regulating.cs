@@ -9,11 +9,13 @@ using UnityEngine.Serialization;
 public class Regulating : MonoBehaviour, IPropsMover
 {
     public Action<bool> Fulling;
+    public Action<int> BarrelAmount;
     [SerializeField] private List<Point> _points = new List<Point>();
     private WaitForSeconds _wait = new WaitForSeconds(0.3f);
     private Queue<Props> _props = new Queue<Props>();
     private Queue<Props> _pointsProps = new Queue<Props>();
-    
+
+    private const int NumberOne = 1;
     private Props _currentProps;
     private int _index;
     private bool _isFull;
@@ -37,7 +39,7 @@ public class Regulating : MonoBehaviour, IPropsMover
             if (prop == null)
             {
                 Debug.LogWarning("Null prop found in the queue. Skipping.");
-                continue; 
+                continue;
             }
 
             _props.Enqueue(prop);
@@ -49,18 +51,19 @@ public class Regulating : MonoBehaviour, IPropsMover
 
     public IEnumerator FillingPoints()
     {
-        if(_props.Count == 0) yield break;
-        
+        if (_props.Count == 0) yield break;
+
         var temporaryQueue = new Queue<Props>();
-        
+
         while (_isFull == false && _index < _points.Count)
         {
-            if(_props.Count == 0) yield break;
-            
+            if (_props.Count == 0) yield break;
+
             var prop = _props.Peek();
             if (prop == null) yield break;
-            
+
             StartCoroutine(prop.TryMoveTo(_points[_index]));
+            BarrelAmount?.Invoke(NumberOne);
             temporaryQueue.Enqueue(_props.Dequeue());
             _index++;
 
@@ -77,22 +80,22 @@ public class Regulating : MonoBehaviour, IPropsMover
 
     public Queue<Props> GetTo(int amount)
     {
-        if(_pointsProps.Count == 0) return null;
+        if (_pointsProps.Count == 0) return null;
 
         if (amount > _pointsProps.Count)
         {
             _index = amount;
             amount = _pointsProps.Count;
         }
-        
+
         var queue = new Queue<Props>();
-       
+
         for (int i = 0; i < amount; i++)
         {
             queue.Enqueue(_pointsProps.Dequeue());
             _points[_index].IsFill = false;
 
-            if (_index > 0) 
+            if (_index > 0)
             {
                 _index--;
             }
@@ -105,6 +108,7 @@ public class Regulating : MonoBehaviour, IPropsMover
                 ResetPoints();
             }
         }
+
         return queue;
     }
 
