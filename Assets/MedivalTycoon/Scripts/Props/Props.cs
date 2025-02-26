@@ -55,7 +55,7 @@ public abstract class Props : MonoBehaviour
     private void MoveEnd(Point endPoint) 
     {
         _animator.SetTrigger("Take");
-        endPoint.IsFill = true;
+        endPoint.Fill();
         MoveEnded?.Invoke();
     }
 }

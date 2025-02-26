@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
+
 
 
 public class Regulating : MonoBehaviour, IPropsMover
@@ -63,10 +63,9 @@ public class Regulating : MonoBehaviour, IPropsMover
             if (prop == null) yield break;
 
             StartCoroutine(prop.TryMoveTo(_points[_index]));
-            BarrelAmount?.Invoke(NumberOne);
             temporaryQueue.Enqueue(_props.Dequeue());
             _index++;
-
+            
             if (_index == _points.Count)
             {
                 _index = _points.Count - 1;
@@ -74,6 +73,7 @@ public class Regulating : MonoBehaviour, IPropsMover
                 _isFull = true;
                 _pointsProps = new Queue<Props>(temporaryQueue.Reverse());
             }
+            _pointsProps = new Queue<Props>(temporaryQueue.Reverse());
             yield return _wait;
         }
     }
@@ -93,7 +93,7 @@ public class Regulating : MonoBehaviour, IPropsMover
         for (int i = 0; i < amount; i++)
         {
             queue.Enqueue(_pointsProps.Dequeue());
-            _points[_index].IsFill = false;
+            _points[_index -1].Free();
 
             if (_index > 0)
             {
@@ -116,7 +116,7 @@ public class Regulating : MonoBehaviour, IPropsMover
     {
         foreach (var point in _points)
         {
-            point.IsFill = false;
+            point.Free();
         }
     }
 }

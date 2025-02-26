@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
+
 
 public class Hand : MonoBehaviour
 {
@@ -22,11 +22,9 @@ public class Hand : MonoBehaviour
     {
         if (regulating == null)
         {
-            Debug.Log("Error: Null regulating");
             return;
         }
         _props = regulating.GetTo(_points.Count);
-        Debug.Log(_props.Count + " длина полученых");
         _index = 0;
     }
 
@@ -77,7 +75,7 @@ public class Hand : MonoBehaviour
         for (int i = 0; i < amount; i++)
         {
             queue.Enqueue(_handProps.Dequeue());
-            _points[_index -1].IsFill = false;
+            _points[_index -1].Free();
             _index--;
             IsFull = false;
             if (_index < 0) _index = 0; 

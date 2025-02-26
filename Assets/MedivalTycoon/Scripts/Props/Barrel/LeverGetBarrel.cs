@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Lever : MonoBehaviour
+public class LeverGetBarrel : MonoBehaviour
 {
     [SerializeField] private GameObject _uiObject;
     [SerializeField] private Animator _animator;
