@@ -9,13 +9,14 @@ using UnityEngine;
 public class Regulating : MonoBehaviour, IPropsMover
 {
     public Action<bool> Fulling;
-    public Action<int> BarrelAmount;
+    
     [SerializeField] private List<Point> _points = new List<Point>();
+    [SerializeField] private BarrelToBeer _barrelToBeer = null;
+    
     private WaitForSeconds _wait = new WaitForSeconds(0.3f);
     private Queue<Props> _props = new Queue<Props>();
     private Queue<Props> _pointsProps = new Queue<Props>();
 
-    private const int NumberOne = 1;
     private Props _currentProps;
     private int _index;
     private bool _isFull;
@@ -43,6 +44,11 @@ public class Regulating : MonoBehaviour, IPropsMover
             }
 
             _props.Enqueue(prop);
+        }
+        
+        if (_barrelToBeer != null)
+        {
+            _barrelToBeer.RegisterProps(_props);
         }
 
         Debug.Log($"Successfully registered {props.Count} props in Regulating.");

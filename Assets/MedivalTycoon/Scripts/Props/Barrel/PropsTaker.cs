@@ -5,6 +5,7 @@ public class PropsTaker : MonoBehaviour, ITrigger
     [SerializeField] private Regulating _regulating;
 
     private int _amount = 3;
+    
     public void OnTriggerEnter(Collider other)
     {
         if (!other.TryGetComponent(out Hand hand)) return;

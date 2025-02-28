@@ -7947,6 +7947,7 @@ MonoBehaviour:
   - {fileID: 1063701301}
   - {fileID: 1148608908}
   - {fileID: 959081587}
+  _barrelToBeer: {fileID: 0}
 --- !u!1001 &434446615
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9479,22 +9480,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2f5d905e86e79c499a6331fa76af40e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _points:
-  - {fileID: 287174121}
-  - {fileID: 1794739950}
-  - {fileID: 1458385236}
-  - {fileID: 1136514573}
-  - {fileID: 1775389111}
-  - {fileID: 600042880}
-  - {fileID: 957717014}
-  - {fileID: 1421860677}
-  - {fileID: 1124150106}
-  - {fileID: 1722784886}
   _barrelPoint: {fileID: 1944904837}
-  _uiObject: {fileID: 517368226}
-  _animator: {fileID: 896659020}
-  _regulating: {fileID: 1010662467}
-  _collider: {fileID: 500643477}
 --- !u!135 &500643477
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -18883,6 +18869,7 @@ MonoBehaviour:
   - {fileID: 1421860677}
   - {fileID: 1124150106}
   - {fileID: 1722784886}
+  _barrelToBeer: {fileID: 0}
 --- !u!1001 &1012870502
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23601,7 +23588,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7038891403986418778, guid: 909ebd970bf26ab4485ed164ba355895, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 4.6420593
+      value: 4.64209
       objectReference: {fileID: 0}
     - target: {fileID: 7038891404728702251, guid: 909ebd970bf26ab4485ed164ba355895, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -34111,6 +34098,7 @@ MonoBehaviour:
   - {fileID: 344745070}
   - {fileID: 410818762}
   - {fileID: 989060739}
+  _barrelToBeer: {fileID: 0}
 --- !u!1001 &1767243443
 PrefabInstance:
   m_ObjectHideFlags: 0
