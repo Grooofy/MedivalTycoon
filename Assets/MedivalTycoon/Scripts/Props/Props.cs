@@ -15,6 +15,12 @@ public abstract class Props : MonoBehaviour
     internal abstract IEnumerator TryMoveTo(Point endPoint);
     internal abstract IEnumerator TryJumpTo(Point endPoint,float elapsedTime, float moveDuration);
 
+    
+    public void ScaleUp()
+    {
+        transform.DOScale(1.5f, 1f);
+    }
+    
     internal void MoveTo(Point endPoint)
     {
         if(endPoint == null) return;

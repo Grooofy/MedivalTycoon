@@ -1,11 +1,36 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class BeerCreator : MonoBehaviour, IPropsMover
 {
+    public Action<bool> Fulling;
+    [SerializeField] private Point _barelPoint;
+    [SerializeField] private List<Point> _points = new List<Point>();
     private Queue<Props> _props = new Queue<Props>();
-    
+    private Queue<Props> _pointsProps = new Queue<Props>();
+    private WaitForSeconds _wait = new WaitForSeconds(0.3f);
+    private Props _currentProps;
+    private int _index;
+    private bool _isFull;
+
+
+    private void OnEnable()
+    {
+        _barelPoint.Filling += MoveBearToPoint;
+    }
+
+
+    private void MoveBearToPoint(bool value)
+    {
+        for (int i = 0; i <= 4; i++)
+        {
+            StartCoroutine(FillingPoints());
+        }
+    }
+
     public void RegisterProps(Queue<Props> props)
     {
         if (props == null)
@@ -36,7 +61,31 @@ public class BeerCreator : MonoBehaviour, IPropsMover
 
     public IEnumerator FillingPoints()
     {
-        throw new System.NotImplementedException();
+        if (_props.Count == 0) yield break;
+
+        var temporaryQueue = new Queue<Props>();
+
+        while (_isFull == false && _index < _points.Count)
+        {
+            if (_props.Count == 0) yield break;
+
+            var prop = _props.Peek();
+            if (prop == null) yield break;
+
+            StartCoroutine(prop.TryMoveTo(_points[_index]));
+            temporaryQueue.Enqueue(_props.Dequeue());
+            _index++;
+            
+            if (_index == _points.Count)
+            {
+                _index = _points.Count - 1;
+                Fulling?.Invoke(true);
+                _isFull = true;
+                _pointsProps = new Queue<Props>(temporaryQueue.Reverse());
+            }
+            _pointsProps = new Queue<Props>(temporaryQueue.Reverse());
+            yield return _wait;
+        }
     }
 
     public Queue<Props> GetTo(int amount)

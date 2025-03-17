@@ -9,9 +9,9 @@ using UnityEngine;
 public class Regulating : MonoBehaviour, IPropsMover
 {
     public Action<bool> Fulling;
+    public Action<bool> PointFill;
     
     [SerializeField] private List<Point> _points = new List<Point>();
-    [SerializeField] private BarrelToBeer _barrelToBeer = null;
     
     private WaitForSeconds _wait = new WaitForSeconds(0.3f);
     private Queue<Props> _props = new Queue<Props>();
@@ -21,6 +21,7 @@ public class Regulating : MonoBehaviour, IPropsMover
     private int _index;
     private bool _isFull;
 
+    
     public void RegisterProps(Queue<Props> props)
     {
         if (props == null)
@@ -44,11 +45,6 @@ public class Regulating : MonoBehaviour, IPropsMover
             }
 
             _props.Enqueue(prop);
-        }
-        
-        if (_barrelToBeer != null)
-        {
-            _barrelToBeer.RegisterProps(_props);
         }
 
         Debug.Log($"Successfully registered {props.Count} props in Regulating.");
@@ -79,6 +75,7 @@ public class Regulating : MonoBehaviour, IPropsMover
                 _isFull = true;
                 _pointsProps = new Queue<Props>(temporaryQueue.Reverse());
             }
+            PointFill?.Invoke(true);
             _pointsProps = new Queue<Props>(temporaryQueue.Reverse());
             yield return _wait;
         }
