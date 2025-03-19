@@ -3,6 +3,7 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using UnityEditor;
+using UnityEngine.Serialization;
 
 public abstract class Props : MonoBehaviour
 {
@@ -11,14 +12,37 @@ public abstract class Props : MonoBehaviour
     [SerializeField] private Animator _animator; 
 
     public Action MoveEnded;
+    public int CountHealth;
 
+    private Vector3 _startPositionValue;
+    private Quaternion _startRotationValue;
+    
     internal abstract IEnumerator TryMoveTo(Point endPoint);
     internal abstract IEnumerator TryJumpTo(Point endPoint,float elapsedTime, float moveDuration);
 
-    
+
+    private const float _endValueScale = 1.5f;
+    private const float _durationAnimation = 1f;
+
+
+    private void OnEnable()
+    {
+        _startPositionValue = transform.position;
+        _startRotationValue = transform.rotation;
+    }
+
+    public void Reset()
+    {
+        transform.position = _startPositionValue;
+        transform.rotation = _startRotationValue;
+        gameObject.SetActive(false);
+        ResetAnimation();
+    }
+
+
     public void ScaleUp()
     {
-        transform.DOScale(1.5f, 1f);
+        transform.DOScale(_endValueScale, _durationAnimation);
     }
     
     internal void MoveTo(Point endPoint)
@@ -30,7 +54,7 @@ public abstract class Props : MonoBehaviour
         
         if (IsMinDistance(transform.position, endPoint.transform.position))
         {
-            MoveEnd(endPoint);
+            MoveEndAnimation(endPoint);
         }
     }
 
@@ -47,7 +71,7 @@ public abstract class Props : MonoBehaviour
         
         if (IsMinDistance(transform.position, endPoint.transform.position))
         {
-           MoveEnd(endPoint);
+           MoveEndAnimation(endPoint);
         }
     }
     
@@ -58,10 +82,15 @@ public abstract class Props : MonoBehaviour
         return Vector3.Distance(startPosition, endPosition) < minDistance;
     }
 
-    private void MoveEnd(Point endPoint) 
+    private void MoveEndAnimation(Point endPoint) 
     {
         _animator.SetTrigger("Take");
         endPoint.Fill();
         MoveEnded?.Invoke();
+    }
+
+    private void ResetAnimation()
+    {
+        _animator.SetTrigger("Reset");
     }
 }

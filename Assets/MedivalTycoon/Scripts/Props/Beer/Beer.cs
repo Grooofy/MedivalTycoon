@@ -6,7 +6,14 @@ public class Beer : Props
 {
     internal override IEnumerator TryMoveTo(Point endPoint)
     {
-        throw new System.NotImplementedException();
+        if (endPoint == null) yield break;
+        
+        while (endPoint.IsFill == false)
+        {
+            MoveTo(endPoint);
+            yield return null;
+        }
+        transform.position = endPoint.transform.position;
     }
 
     internal override IEnumerator TryJumpTo(Point endPoint, float elapsedTime, float moveDuration)

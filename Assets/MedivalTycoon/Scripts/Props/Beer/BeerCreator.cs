@@ -25,10 +25,7 @@ public class BeerCreator : MonoBehaviour, IPropsMover
 
     private void MoveBearToPoint(bool value)
     {
-        for (int i = 0; i <= 4; i++)
-        {
-            StartCoroutine(FillingPoints());
-        }
+        StartCoroutine(FillingPoints());
     }
 
     public void RegisterProps(Queue<Props> props)
@@ -71,7 +68,7 @@ public class BeerCreator : MonoBehaviour, IPropsMover
 
             var prop = _props.Peek();
             if (prop == null) yield break;
-
+            
             StartCoroutine(prop.TryMoveTo(_points[_index]));
             temporaryQueue.Enqueue(_props.Dequeue());
             _index++;
