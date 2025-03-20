@@ -582,7 +582,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bac6adc99327c24e9edaaeade98ec92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _barelPoint: {fileID: 1944904837}
+  _barrelPoint: {fileID: 1944904837}
   _points:
   - {fileID: 1512539942}
   - {fileID: 490888842}
@@ -9491,6 +9491,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _barrelPoint: {fileID: 1944904837}
+  _beerCreator: {fileID: 51976285}
   _uiObject: {fileID: 517368226}
   _animator: {fileID: 896659020}
   _regulating: {fileID: 1010662467}

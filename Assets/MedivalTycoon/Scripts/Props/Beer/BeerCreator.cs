@@ -3,30 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class BeerCreator : MonoBehaviour, IPropsMover
 {
     public Action<bool> Fulling;
-    [SerializeField] private Point _barelPoint;
+   
+    [SerializeField] private Point _barrelPoint;
     [SerializeField] private List<Point> _points = new List<Point>();
+    
     private Queue<Props> _props = new Queue<Props>();
     private Queue<Props> _pointsProps = new Queue<Props>();
     private WaitForSeconds _wait = new WaitForSeconds(0.3f);
     private Props _currentProps;
     private int _index;
     private bool _isFull;
-
-
-    private void OnEnable()
-    {
-        _barelPoint.Filling += MoveBearToPoint;
-    }
-
-
-    private void MoveBearToPoint(bool value)
-    {
-        StartCoroutine(FillingPoints());
-    }
+    
 
     public void RegisterProps(Queue<Props> props)
     {
@@ -56,16 +48,16 @@ public class BeerCreator : MonoBehaviour, IPropsMover
         Debug.Log($"Successfully registered {props.Count} props in Regulating.");
     }
 
+    
+    //нет решения как передвигать определеннне количество объектов
     public IEnumerator FillingPoints()
     {
         if (_props.Count == 0) yield break;
-
         var temporaryQueue = new Queue<Props>();
 
-        while (_isFull == false && _index < _points.Count)
+        while (_isFull == false)
         {
             if (_props.Count == 0) yield break;
-
             var prop = _props.Peek();
             if (prop == null) yield break;
             
@@ -78,7 +70,6 @@ public class BeerCreator : MonoBehaviour, IPropsMover
                 _index = _points.Count - 1;
                 Fulling?.Invoke(true);
                 _isFull = true;
-                _pointsProps = new Queue<Props>(temporaryQueue.Reverse());
             }
             _pointsProps = new Queue<Props>(temporaryQueue.Reverse());
             yield return _wait;

@@ -1,12 +1,11 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 
 public class BarrelToBeer : MonoBehaviour, IPropsMover
 {
     [SerializeField] private Point _barrelPoint;
+    [SerializeField] private BeerCreator _beerCreator; 
     [SerializeField] private GameObject _uiObject;
     [SerializeField] private Animator _animator;
     [SerializeField] private Regulating _regulating;
@@ -15,7 +14,8 @@ public class BarrelToBeer : MonoBehaviour, IPropsMover
     
     private WaitForSeconds _wait = new WaitForSeconds(0.5f);
     private MoverStoper _moverStoper;
-
+    private Props _currentBarrel;
+    
 
     private void OnEnable()
     {
@@ -64,20 +64,22 @@ public class BarrelToBeer : MonoBehaviour, IPropsMover
     public IEnumerator FillingPoints()
     {
         var currentQueueBarrels = _regulating.GetTo(1);
-        var currentBarrel = currentQueueBarrels.Peek();
+        if (currentQueueBarrels.Count == 0) yield break;
+        
+        _currentBarrel = currentQueueBarrels.Peek();
         
         while (_barrelPoint.IsFill == false)
         {
-            if (currentBarrel == null) yield break;
+            if (_currentBarrel == null) yield break;
             
-            StartCoroutine(currentBarrel.TryMoveTo(_barrelPoint));
-            currentBarrel.ScaleUp();
+            StartCoroutine(_currentBarrel.TryMoveTo(_barrelPoint));
+            _currentBarrel.ScaleUp();
+            
             yield return _wait;
         }
     }
     
     
     public void RegisterProps(Queue<Props> props) { }
-
     public Queue<Props> GetTo(int amount) { return null; }
 }
