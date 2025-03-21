@@ -3,13 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
+
 
 public class BeerCreator : MonoBehaviour, IPropsMover
 {
     public Action<bool> Fulling;
-   
-    [SerializeField] private Point _barrelPoint;
+    [SerializeField] private int _amountBarrelToBeer;
     [SerializeField] private List<Point> _points = new List<Point>();
     
     private Queue<Props> _props = new Queue<Props>();
@@ -18,44 +17,35 @@ public class BeerCreator : MonoBehaviour, IPropsMover
     private Props _currentProps;
     private int _index;
     private bool _isFull;
-    
+    private int _currentCountBeerPoint;
 
+    
     public void RegisterProps(Queue<Props> props)
     {
-        if (props == null)
-        {
-            Debug.LogError("Null register props!");
-            return;
-        }
-
-        if (props.Count == 0)
-        {
-            Debug.LogWarning("Empty props queue passed to RegisterProps.");
-            return;
-        }
-
+        _currentCountBeerPoint = _amountBarrelToBeer;
+        
+        if (props == null) return;
+        if (props.Count == 0) return;
+       
         foreach (var prop in props)
         {
-            if (prop == null)
-            {
-                Debug.LogWarning("Null prop found in the queue. Skipping.");
-                continue; 
-            }
+            if (prop == null) continue; 
 
             _props.Enqueue(prop);
         }
-
-        Debug.Log($"Successfully registered {props.Count} props in Regulating.");
     }
 
-    
-    //нет решения как передвигать определеннне количество объектов
+    public void RegisterProp(Props props)
+    {
+        _props.Enqueue(props);
+    }
+
     public IEnumerator FillingPoints()
     {
         if (_props.Count == 0) yield break;
         var temporaryQueue = new Queue<Props>();
 
-        while (_isFull == false)
+        while (_isFull == false && _index < _currentCountBeerPoint)
         {
             if (_props.Count == 0) yield break;
             var prop = _props.Peek();
@@ -68,11 +58,17 @@ public class BeerCreator : MonoBehaviour, IPropsMover
             if (_index == _points.Count)
             {
                 _index = _points.Count - 1;
-                Fulling?.Invoke(true);
+                _currentCountBeerPoint = _amountBarrelToBeer;
                 _isFull = true;
             }
             _pointsProps = new Queue<Props>(temporaryQueue.Reverse());
             yield return _wait;
+        }
+
+        if (_index == _currentCountBeerPoint)
+        {
+            _currentCountBeerPoint += _amountBarrelToBeer;
+            Fulling?.Invoke(true);
         }
     }
 

@@ -2,8 +2,7 @@ using UnityEngine;
 using DG.Tweening;
 using System;
 using System.Collections;
-using UnityEditor;
-using UnityEngine.Serialization;
+
 
 public abstract class Props : MonoBehaviour
 {
@@ -12,34 +11,39 @@ public abstract class Props : MonoBehaviour
     [SerializeField] private Animator _animator; 
 
     public Action MoveEnded;
-    public int CountHealth;
-
     private Vector3 _startPositionValue;
     private Quaternion _startRotationValue;
+    private Vector3 _startScaleValue;
     
     internal abstract IEnumerator TryMoveTo(Point endPoint);
     internal abstract IEnumerator TryJumpTo(Point endPoint,float elapsedTime, float moveDuration);
 
 
     private const float _endValueScale = 1.5f;
+    private const float _startValueScale = 1.0f;
     private const float _durationAnimation = 1f;
-
+  
 
     private void OnEnable()
     {
         _startPositionValue = transform.position;
         _startRotationValue = transform.rotation;
+        _startScaleValue = transform.localScale;
     }
 
-    public void Reset()
+    public void Reset(IPropsMover propsMover)
     {
         transform.position = _startPositionValue;
-        transform.rotation = _startRotationValue;
-        gameObject.SetActive(false);
+        propsMover.RegisterProp(this);
         ResetAnimation();
     }
 
 
+    public void ReturnScale()
+    {
+        transform.DOScale(_startValueScale, _durationAnimation);
+    }
+    
     public void ScaleUp()
     {
         transform.DOScale(_endValueScale, _durationAnimation);

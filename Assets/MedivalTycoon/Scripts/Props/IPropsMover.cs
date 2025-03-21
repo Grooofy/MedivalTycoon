@@ -4,6 +4,8 @@ using System.Collections.Generic;
 public interface IPropsMover
 {
     public void RegisterProps(Queue<Props> props);
+    public void RegisterProp(Props props);
+    
     public IEnumerator FillingPoints();
     public Queue<Props> GetTo(int amount);
 }

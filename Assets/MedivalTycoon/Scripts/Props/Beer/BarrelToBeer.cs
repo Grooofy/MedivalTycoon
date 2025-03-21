@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BarrelToBeer : MonoBehaviour, IPropsMover
+public class BarrelToBeer : MonoBehaviour
 {
+    [SerializeField] private Regulating _firstSpawn;
     [SerializeField] private Point _barrelPoint;
     [SerializeField] private BeerCreator _beerCreator; 
     [SerializeField] private GameObject _uiObject;
@@ -21,12 +23,21 @@ public class BarrelToBeer : MonoBehaviour, IPropsMover
     {
         _regulating.PointFill += TurnObject;
         _barrelPoint.Filling += EnableMover;
+        _beerCreator.Fulling += Reset;
     }
 
     private void OnDisable()
     {
         _regulating.PointFill -= TurnObject;
         _barrelPoint.Filling -= EnableMover;
+        _beerCreator.Fulling -= Reset;
+    }
+
+
+    private void Reset(bool value)
+    {
+       TurnObject(value);
+       _currentBarrel.Reset(_firstSpawn);
     }
 
     private void EnableMover(bool value)
@@ -41,7 +52,7 @@ public class BarrelToBeer : MonoBehaviour, IPropsMover
             _moverStoper = null;
         }
     }
-    
+    //Разобраться с выключением Props'ов
     private void TurnObject(bool value)
     {
         _animator.SetBool("IsOn", value);
@@ -54,12 +65,11 @@ public class BarrelToBeer : MonoBehaviour, IPropsMover
         if (other.TryGetComponent(out MoverStoper moverStoper))
         {
             _moverStoper = moverStoper;
-            _moverStoper.TurnOffMove();
+            //_moverStoper.TurnOffMove();
             _collider.enabled = false;
             StartCoroutine(FillingPoints());
         }
     }
-
 
     public IEnumerator FillingPoints()
     {
@@ -74,12 +84,8 @@ public class BarrelToBeer : MonoBehaviour, IPropsMover
             
             StartCoroutine(_currentBarrel.TryMoveTo(_barrelPoint));
             _currentBarrel.ScaleUp();
-            
+            StartCoroutine(_beerCreator.FillingPoints());
             yield return _wait;
         }
     }
-    
-    
-    public void RegisterProps(Queue<Props> props) { }
-    public Queue<Props> GetTo(int amount) { return null; }
 }

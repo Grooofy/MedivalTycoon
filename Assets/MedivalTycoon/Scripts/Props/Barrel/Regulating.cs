@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-
-
 public class Regulating : MonoBehaviour, IPropsMover
 {
     public Action<bool> Fulling;
@@ -22,32 +20,24 @@ public class Regulating : MonoBehaviour, IPropsMover
     private bool _isFull;
 
     
+    
     public void RegisterProps(Queue<Props> props)
     {
-        if (props == null)
-        {
-            Debug.LogError("Null register props!");
-            return;
-        }
-
-        if (props.Count == 0)
-        {
-            Debug.LogWarning("Empty props queue passed to RegisterProps.");
-            return;
-        }
+        if (props == null) return;
+        if (props.Count == 0) return;
 
         foreach (var prop in props)
         {
-            if (prop == null)
-            {
-                Debug.LogWarning("Null prop found in the queue. Skipping.");
-                continue;
-            }
-
+            if (prop == null) continue;
             _props.Enqueue(prop);
         }
+    }
 
-        Debug.Log($"Successfully registered {props.Count} props in Regulating.");
+    public void RegisterProp(Props props)
+    {
+        if (props == null) return;
+        _props.Enqueue(props);
+        Debug.Log("!!!!!!!!!!!" + _props.Count +"!!!!!!!!!!!");
     }
 
 
@@ -73,7 +63,6 @@ public class Regulating : MonoBehaviour, IPropsMover
                 _index = _points.Count - 1;
                 Fulling?.Invoke(true);
                 _isFull = true;
-                _pointsProps = new Queue<Props>(temporaryQueue.Reverse());
             }
             PointFill?.Invoke(true);
             _pointsProps = new Queue<Props>(temporaryQueue.Reverse());
@@ -98,10 +87,7 @@ public class Regulating : MonoBehaviour, IPropsMover
             queue.Enqueue(_pointsProps.Dequeue());
             _points[_index -1].Free();
 
-            if (_index > 0)
-            {
-                _index--;
-            }
+            if (_index > 0) _index--;
 
             if (_pointsProps.Count == 0)
             {
@@ -111,7 +97,6 @@ public class Regulating : MonoBehaviour, IPropsMover
                 ResetPoints();
             }
         }
-
         return queue;
     }
 

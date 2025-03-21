@@ -16,7 +16,7 @@ public class Spawner : MonoBehaviour
     
     
     private Queue<Props> _props = new Queue<Props>();
-    private readonly int _amount = 30;
+    private readonly int _amount = 10;
 
     private void Awake()
     {

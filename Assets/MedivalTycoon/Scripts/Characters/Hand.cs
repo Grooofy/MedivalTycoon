@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 
 
-public class Hand : MonoBehaviour
+public class Hand : MonoBehaviour, IPropsMover
 {
     public Action<bool> HandFulling;
     [SerializeField] private List<Point> _points;
@@ -27,7 +27,6 @@ public class Hand : MonoBehaviour
         _props = regulating.GetTo(_points.Count);
         _index = 0;
     }
-
 
     public IEnumerator FillingPoints()
     {
@@ -58,11 +57,7 @@ public class Hand : MonoBehaviour
 
     public Queue<Props> GetTo(int amount)
     {
-        if (_handProps.Count == 0)
-        {
-            Debug.LogWarning("Hand is empty. No props to give.");
-            return new Queue<Props>();
-        }
+        if (_handProps.Count == 0) return new Queue<Props>();
 
         if (amount > _handProps.Count)
         {
@@ -80,9 +75,10 @@ public class Hand : MonoBehaviour
             IsFull = false;
             if (_index < 0) _index = 0; 
         }
-
-        Debug.Log($"Transferred {queue.Count} props from Hand to Regulating.");
         return queue;
     }
+    public void RegisterProps(Queue<Props> props) { }
+
+    public void RegisterProp(Props props) { }
 
 }
