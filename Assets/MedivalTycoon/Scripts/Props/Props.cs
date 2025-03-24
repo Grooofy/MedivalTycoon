@@ -31,18 +31,16 @@ public abstract class Props : MonoBehaviour
         _startScaleValue = transform.localScale;
     }
 
-    public void Reset(IPropsMover propsMover)
+    public void Reset(IPropsMover propsMover, Point point)
     {
-        transform.position = _startPositionValue;
+        ReturnScale();
         propsMover.RegisterProp(this);
         ResetAnimation();
+        point.IsFill = false;
     }
 
 
-    public void ReturnScale()
-    {
-        transform.DOScale(_startValueScale, _durationAnimation);
-    }
+    
     
     public void ScaleUp()
     {
@@ -93,6 +91,11 @@ public abstract class Props : MonoBehaviour
         MoveEnded?.Invoke();
     }
 
+    private void ReturnScale()
+    {
+        transform.DOScale(_startValueScale, _durationAnimation);
+    }
+    
     private void ResetAnimation()
     {
         _animator.SetTrigger("Reset");

@@ -37,7 +37,7 @@ public class BarrelToBeer : MonoBehaviour
     private void Reset(bool value)
     {
        TurnObject(value);
-       _currentBarrel.Reset(_firstSpawn);
+       _currentBarrel.Reset(_firstSpawn, _barrelPoint);
     }
 
     private void EnableMover(bool value)
