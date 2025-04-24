@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.Events;
@@ -9,6 +10,7 @@ public class Table : MonoBehaviour
     [SerializeField] private int _price;
     [SerializeField] private float _speedBuilding;
     [SerializeField] private ParticleSystem _smoke;
+    [SerializeField] private List<Seat> _seatPoints = new List<Seat>();
 
     public TweenCallback LinedUp;
     public UnityAction<int> PriceChanged;
@@ -44,12 +46,14 @@ public class Table : MonoBehaviour
             yield return null;
         }
         Build();
+        FindObjectOfType<QueueManager>().AddSeats(_seatPoints);
     }
     
     private void Build()
     {
         _smoke.Play();
         transform.DOScale(Vector3.one, _speedBuilding).OnComplete(LinedUp);
+        
     }
     
 }
