@@ -1,43 +1,26 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Seat : MonoBehaviour
 {
     [Header("Настройки")]
-    [SerializeField] private Transform _sitPosition;
-    [SerializeField] private GameObject _orderDisplay;
+    [SerializeField] private Transform visitorPosition;
+    [SerializeField] private GameObject occupiedIndicator;
+
+    public bool IsOccupied { get; private set; }
+    public Vector3 VisitorPosition => visitorPosition.position;
+
+    public void Occupy(Visitor visitor)
+    {
+        IsOccupied = true;
+        occupiedIndicator.SetActive(true);
+        visitor.transform.position = VisitorPosition; 
+    }
+
+    public void Release()
+    {
+        IsOccupied = false;
+        occupiedIndicator.SetActive(false);
+    }
     
-    private Visitor _currentVisitor;
-    public bool IsOccupied => _currentVisitor != null;
-
-    public void AssignVisitor(Visitor visitor)
-    {
-        _currentVisitor = visitor;
-        visitor.MoveToSeat(_sitPosition.position);
-        StartCoroutine(OrderProcess(visitor));
-    }
-
-    private IEnumerator OrderProcess(Visitor visitor)
-    {
-        // Активация отображения заказа
-        _orderDisplay.SetActive(true);
-        _orderDisplay.GetComponentInChildren<TMPro.TextMeshPro>().text = 
-            visitor.RequiredOrders.ToString();
-
-        // Таймер приготовления
-        float timer = 0;
-        while(timer < visitor.PreparationTime)
-        {
-            timer += Time.deltaTime;
-            yield return null;
-        }
-
-        visitor.CompleteOrder();
-        _orderDisplay.SetActive(false);
-    }
-
-    public void ReleaseSeat()
-    {
-        _currentVisitor = null;
-    }
+   
 }

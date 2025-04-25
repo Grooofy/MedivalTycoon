@@ -30,6 +30,12 @@ public class Table : MonoBehaviour
             _priceChanged = StartCoroutine(ReducesPrice(step));
         }
     }
+    
+    private void Initialize()
+    {
+        foreach (Seat seat in _seatPoints)
+            SeatManager.Instance.RegisterSeat(seat);
+    }
 
     public void StopReducePrice()
     {
@@ -46,14 +52,14 @@ public class Table : MonoBehaviour
             yield return null;
         }
         Build();
-        FindObjectOfType<QueueManager>().AddSeats(_seatPoints);
+       
     }
     
     private void Build()
     {
         _smoke.Play();
         transform.DOScale(Vector3.one, _speedBuilding).OnComplete(LinedUp);
-        
+        Initialize();
     }
     
 }

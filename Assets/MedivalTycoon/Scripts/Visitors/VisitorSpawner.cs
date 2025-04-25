@@ -4,93 +4,107 @@ using System.Collections.Generic;
 
 public class VisitorSpawner : MonoBehaviour
 {
-    [Header("Основные настройки")] [SerializeField]
-    private Visitor _visitorPrefab; // Префаб посетителя
+    [Header("Настройки спавна")]
+    [SerializeField] private Visitor _visitorPrefab;
+    [SerializeField] private Transform[] _spawnPoints;
+    [SerializeField] private float _spawnInterval = 5f;
+    [SerializeField] private int _maxVisitors = 10;
+    [SerializeField] private float _queueSpacing = 1.5f;
+    [SerializeField] private bool _spawnRightToLeft = true; // Новый параметр направления
 
-    [SerializeField] private Transform _spawnPoint; // Точка появления
-    [SerializeField] private Transform _queueStart; // Начало очереди
-    [SerializeField] private float _queueSpacing = 1.5f; // Расстояние между NPC
+    private Queue<Visitor> _waitingQueue = new Queue<Visitor>();
+    private List<Visitor> _allVisitors = new List<Visitor>();
 
-    [Header("Параметры спавна")] [SerializeField]
-    private int _initialSpawn = 5; // Посетителей при старте
-
-    [SerializeField] private float _spawnInterval = 10f; // Интервал между спавном
-    [SerializeField] private int _maxVisitors = 15; // Макс. длина очереди
-
-    private QueueManager _queueManager;
-    private List<Vector3> _queuePositions = new List<Vector3>();
-
-    private void Awake()
+    private void Start()
     {
-        _queueManager = FindObjectOfType<QueueManager>();
-        CalculateQueuePositions();
-        InitialSpawn();
-        StartCoroutine(AutoSpawn());
+        StartCoroutine(SpawnRoutine());
+        SeatManager.Instance.OnSeatAvailable += OnSeatAvailable;
     }
 
-    // Рассчитать позиции в очереди
-    private void CalculateQueuePositions()
-    {
-        _queuePositions.Clear();
-        for (int i = 0; i < _maxVisitors; i++)
-        {
-            Vector3 pos = _queueStart.position +
-                          new Vector3(_queueSpacing, 0, 0);
-            _queuePositions.Add(pos);
-        }
-    }
-
-    // Первоначальный спавн
-    private void InitialSpawn()
-    {
-        for (int i = 0; i < _initialSpawn; i++)
-        {
-            SpawnVisitor();
-        }
-    }
-
-    // Автоматический спавн
-    private IEnumerator AutoSpawn()
+    private IEnumerator SpawnRoutine()
     {
         while (true)
         {
             yield return new WaitForSeconds(_spawnInterval);
-            if (_queueManager.QueueCount < _maxVisitors)
+            
+            if (_allVisitors.Count < _maxVisitors)
             {
                 SpawnVisitor();
             }
         }
     }
 
-    // Создание одного посетителя
-    public void SpawnVisitor()
+    private void SpawnVisitor()
     {
-        Visitor newVisitor = Instantiate(
-            _visitorPrefab,
-            _spawnPoint.position,
-            Quaternion.identity
-        );
-
-        // Инициализация параметров
-        newVisitor.Initialize(
-            orders: Random.Range(1, 5),
-            prepTime: Random.Range(8f, 15f)
-        );
-
-        // Добавление в очередь
-        _queueManager.AddVisitorToQueue(newVisitor);
-        UpdateAllPositions();
+        Transform spawnPoint = GetSpawnPoint();
+        Visitor visitor = Instantiate(_visitorPrefab, spawnPoint.position, Quaternion.identity);
+        visitor.Initialize(Random.Range(1, 4));
+        _allVisitors.Add(visitor);
+        
+        AddToQueue(visitor);
+        TryAssignSeat(visitor);
     }
 
-    // Обновить позиции всех в очереди
-    private void UpdateAllPositions()
+    private Transform GetSpawnPoint()
+    {
+        // Если направление справа-налево, берем последнюю точку спавна
+        int index = _spawnRightToLeft ? 
+            _spawnPoints.Length - 1 : 
+            Random.Range(0, _spawnPoints.Length);
+        
+        return _spawnPoints[index];
+    }
+
+    private void AddToQueue(Visitor visitor)
+    {
+        _waitingQueue.Enqueue(visitor);
+        UpdateQueuePositions();
+    }
+
+    private void UpdateQueuePositions()
     {
         int index = 0;
-        foreach (Visitor visitor in _queueManager.GetAllVisitors())
+        int directionModifier = _spawnRightToLeft ? -1 : 1;
+        
+        foreach (Visitor visitor in _waitingQueue)
         {
-            if (index >= _queuePositions.Count) break;
-            visitor.MoveToPosition(_queuePositions[index]);
+            Vector3 position = transform.position + 
+                new Vector3(index * _queueSpacing * directionModifier, 0, 0);
+            
+            visitor.MoveToPosition(position);
             index++;
         }
+    }
+
+    private void TryAssignSeat(Visitor visitor)
+    {
+        Seat seat = SeatManager.Instance.GetAvailableSeat();
+        if (seat != null)
+        {
+            _waitingQueue.Dequeue();
+            visitor.AssignSeat(seat);
+            UpdateQueuePositions();
+        }
+    }
+
+    private void OnSeatAvailable()
+    {
+        if (_waitingQueue.Count > 0)
+        {
+            TryAssignSeat(_waitingQueue.Peek());
+        }
+    }
+
+    // Метод для изменения направления в runtime
+    public void ChangeSpawnDirection(bool rightToLeft)
+    {
+        _spawnRightToLeft = rightToLeft;
+        UpdateQueuePositions();
+    }
+
+    private void OnDestroy()
+    {
+        if (SeatManager.Instance != null)
+            SeatManager.Instance.OnSeatAvailable -= OnSeatAvailable;
     }
 }

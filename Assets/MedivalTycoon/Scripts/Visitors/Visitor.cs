@@ -1,70 +1,77 @@
-using System.Collections;
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 public class Visitor : MonoBehaviour
 {
+    public enum State { Waiting, MovingToSeat, InProcess }
+    
     [Header("Настройки")]
-    [SerializeField] private float _moveSpeed = 2f;
-    [SerializeField] private GameObject _sleepEffect;
-    
-    public int RequiredOrders { get; private set; }
-    public float PreparationTime { get; private set; }
-    public bool IsReadyToCarry { get; private set; }
+    [SerializeField] private float moveSpeed = 3f;
+    [SerializeField] private float rotationSpeed = 5f;
+    [SerializeField] private float positionThreshold = 0.1f;
 
+    private State _currentState;
+    private int _requiredOrders;
     private Vector3 _targetPosition;
-    private bool _isMoving;
-    private Coroutine _movementCoroutine;
+    private Seat _targetSeat;
+    public event System.Action<Visitor> OnDestroyed;
 
-    public void Initialize(int orders, float prepTime)
+    public State CurrentState => _currentState;
+    public int RequiredOrders => _requiredOrders;
+
+    public void Initialize(int orders)
     {
-        RequiredOrders = orders;
-        PreparationTime = prepTime;
-        _sleepEffect.SetActive(false);
+        _requiredOrders = orders;
+        _currentState = State.Waiting;
+    }
+   
+    public void MoveToPosition(Vector3 position, System.Action onComplete = null)
+    {
+        _currentState = State.MovingToSeat;
+        StartCoroutine(MovementRoutine(position, onComplete));
     }
 
-    public void MoveToSeat(Vector3 target)
+    private IEnumerator MovementRoutine(Vector3 target, System.Action callback)
     {
-        _targetPosition = target;
-        StartCoroutine(MovementRoutine());
-    }
-    
-    public void MoveToPosition(Vector3 target)
-    {
-        if (_movementCoroutine != null) StopCoroutine(_movementCoroutine);
-        _movementCoroutine = StartCoroutine(MoveCoroutine(target));
-    }
-
-    private IEnumerator MoveCoroutine(Vector3 target)
-    {
-        while (Vector3.Distance(transform.position, target) > 0.1f)
+        while (Vector3.Distance(transform.position, target) > positionThreshold)
         {
-            transform.position = Vector3.MoveTowards(
-                transform.position,
-                target,
-                _moveSpeed * Time.deltaTime
-            );
+            transform.position = Vector3.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
+            RotateTowards(target);
             yield return null;
+        }
+        
+        _currentState = State.Waiting;
+        callback?.Invoke();
+    }
+
+    private void RotateTowards(Vector3 target)
+    {
+        Vector3 direction = (target - transform.position).normalized;
+        if (direction != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation, 
+                targetRotation, 
+                rotationSpeed * Time.deltaTime
+            );
         }
     }
 
-    private IEnumerator MovementRoutine()
+    public void AssignSeat(Seat seat)
     {
-        _isMoving = true;
-        while(Vector3.Distance(transform.position, _targetPosition) > 0.1f)
-        {
-            transform.position = Vector3.MoveTowards(
-                transform.position,
-                _targetPosition,
-                _moveSpeed * Time.deltaTime
-            );
-            yield return null;
-        }
-        _isMoving = false;
+        _targetSeat = seat;
+        _currentState = State.InProcess;
+        StartCoroutine(ProcessOrder());
     }
 
-    public void CompleteOrder()
+    private IEnumerator ProcessOrder()
     {
-        _sleepEffect.SetActive(true);
-        IsReadyToCarry = true;
+        yield return new WaitForSeconds(_requiredOrders * 2f);
+        _targetSeat.Release();
+        SeatManager.Instance.ReturnSeat(_targetSeat);
+        OnDestroyed?.Invoke(this); // Уведомляем о уничтожении
+        Destroy(gameObject);
     }
 }
