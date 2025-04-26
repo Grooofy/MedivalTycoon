@@ -11,6 +11,7 @@ public class Table : MonoBehaviour
     [SerializeField] private float _speedBuilding;
     [SerializeField] private ParticleSystem _smoke;
     [SerializeField] private List<Seat> _seatPoints = new List<Seat>();
+    [SerializeField] private SeatManager _seatManager;
 
     public TweenCallback LinedUp;
     public UnityAction<int> PriceChanged;
@@ -31,10 +32,14 @@ public class Table : MonoBehaviour
         }
     }
     
-    private void Initialize()
+    public void InitializeSeats()
     {
         foreach (Seat seat in _seatPoints)
-            SeatManager.Instance.RegisterSeat(seat);
+        {
+            seat.Vacate();
+            _seatManager.AddSeat(seat);
+        }
+            
     }
 
     public void StopReducePrice()
@@ -52,14 +57,12 @@ public class Table : MonoBehaviour
             yield return null;
         }
         Build();
-       
     }
     
     private void Build()
     {
         _smoke.Play();
         transform.DOScale(Vector3.one, _speedBuilding).OnComplete(LinedUp);
-        Initialize();
     }
     
 }

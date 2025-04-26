@@ -1,28 +1,41 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SeatManager : MonoBehaviour
 {
-    public static SeatManager Instance { get; private set; }
-    public event System.Action OnSeatAvailable;
+    [SerializeField] private QueueManager queueManager; // Менеджер очереди
+    private List<Seat> seats = new List<Seat>();       // Список всех мест
 
-    private Queue<Seat> _availableSeats = new Queue<Seat>();
+    
 
-    private void Awake() => Instance = this;
-
-    public void RegisterSeat(Seat seat)
+    // Добавить место
+    public void AddSeat(Seat seat)
     {
-        _availableSeats.Enqueue(seat);
-        OnSeatAvailable?.Invoke();
+        if (!seats.Contains(seat))
+        {
+            seats.Add(seat);
+            seat.OnSeatVacated += HandleSeatVacated; // Подписываемся на событие освобождения места
+            Debug.Log("Место добавлено.");
+        }
     }
 
-    public Seat GetAvailableSeat() => 
-        _availableSeats.Count > 0 ? _availableSeats.Dequeue() : null;
-
-    public void ReturnSeat(Seat seat)
+    // Удалить место
+    public void RemoveSeat(Seat seat)
     {
-        seat.Release();
-        _availableSeats.Enqueue(seat);
-        OnSeatAvailable?.Invoke();
+        if (seats.Contains(seat))
+        {
+            seats.Remove(seat);
+            seat.OnSeatVacated -= HandleSeatVacated; // Отписываемся от события
+            Debug.Log("Место удалено.");
+        }
+    }
+
+    // Обработка освобождения места
+    private void HandleSeatVacated(Seat seat)
+    {
+        Debug.Log("Место освобождено.");
+        queueManager.AssignSeatToNextGuest(seat); // Сообщаем менеджеру очереди о свободном месте
     }
 }

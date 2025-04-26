@@ -33,6 +33,7 @@ public class TableTrigger : MonoBehaviour, ITrigger
         {
             wallet.StartRemoveCoins(_table.Price, _step);
             _table.ReducePrice(_step);
+            _table.InitializeSeats();
         }
     }
 
