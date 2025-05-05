@@ -1,89 +1,49 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class Seat : MonoBehaviour
 {
-    public bool IsOccupied { get; private set; } // Свободно ли место
-    private TavernGuest currentGuest;           // Текущий гость на месте
-    private int requiredBeerAmount;             // Необходимое количество пива
-    private int deliveredBeerAmount;            // Доставленное количество пива
+    [SerializeField] private TextMeshProUGUI beerText;
+    public bool IsOccupied { get; private set; }
+    private TavernGuest guest;
+    private int requiredBeer;
+    private int deliveredBeer;
 
-    [SerializeField] private Text beerText;     // Текстовое поле для отображения количества пива
+    public delegate void SeatVacatedHandler();
+    public event SeatVacatedHandler OnSeatVacated;
 
-    public delegate void SeatVacatedHandler(Seat seat);
-    public event SeatVacatedHandler OnSeatVacated; // Событие освобождения места
-
-    private void Start()
-    {
-        IsOccupied = false;
-        UpdateBeerDisplay(0); // Инициализация текста
-    }
-
-    // Занять место
     public void Occupy(TavernGuest guest)
     {
         if (!IsOccupied)
         {
-            currentGuest = guest;
-            IsOccupied = true;
-
-            // Установить необходимое количество пива
-            requiredBeerAmount = guest.GetBeerAmount();
-            deliveredBeerAmount = 0;
-
-            // Обновить отображение пива
-            UpdateBeerDisplay(requiredBeerAmount);
-
-            Debug.Log($"Место занято. Необходимо пива: {requiredBeerAmount}");
+            IsOccupied = true; // ✅ Место сразу становится занятым
+            this.guest = guest;
+            requiredBeer = guest.GetBeerAmount();
+            deliveredBeer = 0;
+            UpdateBeerDisplay(requiredBeer);
         }
     }
 
-    // Освободить место
     public void Vacate()
     {
-        if (IsOccupied)
-        {
-            currentGuest = null;
-            IsOccupied = false;
-
-            // Сбросить отображение пива
-            UpdateBeerDisplay(0);
-
-            Debug.Log("Место освобождено.");
-
-            // Вызываем событие освобождения места
-            OnSeatVacated?.Invoke(this);
-        }
+        IsOccupied = false;
+        guest = null;
+        UpdateBeerDisplay(0);
+        OnSeatVacated?.Invoke();
     }
 
-    // Доставка пива на место
     public void DeliverBeer(int amount)
     {
-        if (IsOccupied && deliveredBeerAmount < requiredBeerAmount)
-        {
-            deliveredBeerAmount += amount;
-            deliveredBeerAmount = Mathf.Min(deliveredBeerAmount, requiredBeerAmount);
-
-            // Обновить отображение пива
-            UpdateBeerDisplay(requiredBeerAmount - deliveredBeerAmount);
-
-            Debug.Log($"Доставлено пива: {deliveredBeerAmount}/{requiredBeerAmount}");
-
-            // Если заказ выполнен
-            if (deliveredBeerAmount >= requiredBeerAmount)
-            {
-                Debug.Log("Заказ выполнен!");
-                currentGuest.OrderCompleted();
-            }
-        }
+        deliveredBeer += amount;
+        deliveredBeer = Mathf.Min(deliveredBeer, requiredBeer);
+        UpdateBeerDisplay(requiredBeer - deliveredBeer);
+        if (deliveredBeer >= requiredBeer)
+            guest.OrderCompleted();
     }
 
-    // Обновить отображение пива
-    private void UpdateBeerDisplay(int remainingBeer)
+    private void UpdateBeerDisplay(int remaining)
     {
-        if (beerText != null)
-        {
-            beerText.text = $"Пива: {remainingBeer}";
-        }
+        beerText.text = $"Beer: {remaining}";
     }
 }

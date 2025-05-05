@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,7 +19,7 @@ public class Table : MonoBehaviour
     public int Price => _price;
 
     private Coroutine _priceChanged;
-
+   
     public void ReducePrice(int step)
     {
         if (_priceChanged == null)
@@ -62,7 +63,7 @@ public class Table : MonoBehaviour
     private void Build()
     {
         _smoke.Play();
-        transform.DOScale(Vector3.one, _speedBuilding).OnComplete(LinedUp);
+        transform.DOScale(Vector3.one, _speedBuilding).OnComplete(() => InitializeSeats());
     }
     
 }

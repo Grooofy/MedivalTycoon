@@ -3,76 +3,48 @@ using UnityEngine;
 
 public class QueueManager : MonoBehaviour
 {
-    [SerializeField] private GameObject guestPrefab;
-    [SerializeField] private Transform spawnPoint; // Точка спавна гостей
-    [SerializeField] private Transform[] queuePositions; // Фиксированные позиции в очереди
-    [SerializeField] private int maxQueueLength = 5; // Максимальная длина очереди
-
-    private Queue<TavernGuest> guestQueue = new Queue<TavernGuest>(); // Очередь гостей
+    [SerializeField] private TavernGuest _guest;
+    [SerializeField] private Transform spawnPoint;
+    [SerializeField] private Transform[] queuePositions;
+    [SerializeField] private int maxQueueLength = 5;
+    private Queue<TavernGuest> guestQueue = new Queue<TavernGuest>();
 
     private void Start()
     {
-        // Инициализация
-        foreach (var position in queuePositions)
+        foreach (var pos in queuePositions)
         {
-            if (position == null)
-            {
-                Debug.LogError("Одна из позиций очереди не назначена!");
-            }
+            if (pos == null) Debug.LogError("Queue position not set!");
             AddGuestToQueue();
         }
     }
 
-    // Добавить гостя в очередь
     public void AddGuestToQueue()
     {
-        if (guestQueue.Count >= maxQueueLength)
-        {
-            Debug.Log("Очередь переполнена. Гость не добавлен.");
-            return;
-        }
+        if (guestQueue.Count >= maxQueueLength) return;
 
-        // Создаём нового гостя
-        
-        if (guestPrefab == null)
-        {
-            Debug.LogError("Префаб гостя не найден!");
-            return;
-        }
-
-        var guestObject = Instantiate(guestPrefab, spawnPoint.position, Quaternion.identity);
-        var guest = guestObject.GetComponent<TavernGuest>();
-
-        if (guest != null)
-        {
-            guestQueue.Enqueue(guest); // Добавляем гостя в очередь
-            Debug.Log("Гость добавлен в очередь.");
-            UpdateQueuePositions(); // Обновляем позиции гостей в очереди
-        }
+        var guest = Instantiate(_guest.gameObject, spawnPoint.position, Quaternion.identity).GetComponent<TavernGuest>();
+        guestQueue.Enqueue(guest);
+        UpdateQueuePositions();
     }
 
-    // Назначить гостя на свободное место
     public void AssignSeatToNextGuest(Seat seat)
     {
         if (guestQueue.Count > 0 && seat != null && !seat.IsOccupied)
         {
-            var nextGuest = guestQueue.Dequeue(); // Берём первого гостя из очереди
-            seat.Occupy(nextGuest);              // Занимаем место
-            Debug.Log("Гость назначен на свободное место.");
-            UpdateQueuePositions();             // Обновляем позиции гостей в очереди
+            var guest = guestQueue.Dequeue();
+            seat.Occupy(guest); // 🚨 Блокируем место сразу
+            guest.AssignSeat(seat); // Гость начинает движение
+            UpdateQueuePositions();
         }
     }
 
-    // Обновить позиции гостей в очереди
     private void UpdateQueuePositions()
     {
         int index = 0;
         foreach (var guest in guestQueue)
         {
             if (index < queuePositions.Length)
-            {
-                guest.MoveToQueuePosition(queuePositions[index]); // Перемещаем гостя на новую позицию
-            }
+                guest.MoveToQueuePosition(queuePositions[index]);
             index++;
         }
     }
