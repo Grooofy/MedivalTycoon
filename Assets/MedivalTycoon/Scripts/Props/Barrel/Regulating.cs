@@ -19,8 +19,6 @@ public class Regulating : MonoBehaviour, IPropsMover
     private int _index;
     private bool _isFull;
 
-    
-    
     public void RegisterProps(Queue<Props> props)
     {
         if (props == null) return;

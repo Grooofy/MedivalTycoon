@@ -11,12 +11,10 @@ public abstract class Props : MonoBehaviour
     [SerializeField] private Animator _animator; 
 
     public Action MoveEnded;
-    private Vector3 _startPositionValue;
-    private Quaternion _startRotationValue;
-    private Vector3 _startScaleValue;
+    private Transform _startPoint;
+   
     
     internal abstract IEnumerator TryMoveTo(Point endPoint);
-    internal abstract IEnumerator TryJumpTo(Point endPoint,float elapsedTime, float moveDuration);
 
 
     private const float _endValueScale = 1.5f;
@@ -24,23 +22,20 @@ public abstract class Props : MonoBehaviour
     private const float _durationAnimation = 1f;
   
 
-    private void OnEnable()
+    public void Initilization(Transform parent)
     {
-        _startPositionValue = transform.position;
-        _startRotationValue = transform.rotation;
-        _startScaleValue = transform.localScale;
+        _startPoint = parent;
     }
 
     public void Reset(IPropsMover propsMover, Point point)
     {
-        ReturnScale();
-        propsMover.RegisterProp(this);
-        ResetAnimation();
         point.IsFill = false;
+        ReturnScale();
+        transform.SetParent(_startPoint);
+        transform.position = _startPoint.position;
+        ResetAnimation();
+        propsMover.RegisterProp(this);
     }
-
-
-    
     
     public void ScaleUp()
     {
@@ -60,24 +55,6 @@ public abstract class Props : MonoBehaviour
         }
     }
 
-    internal void JumpTo(Point endPoint,Vector3 startPosition ,float elapsedTime, float moveDuration)
-    {
-        if(endPoint == null) return;
-        
-        elapsedTime += Time.deltaTime;
-        float t = elapsedTime / moveDuration;
-
-        
-        float height = Mathf.Sin(t * Mathf.PI) * _parabolaHeight;
-        transform.position = Vector3.Lerp(startPosition, endPoint.transform.position, t) + Vector3.up * height;
-        
-        if (IsMinDistance(transform.position, endPoint.transform.position))
-        {
-           MoveEndAnimation(endPoint);
-        }
-    }
-    
-
     internal bool IsMinDistance(Vector3 startPosition, Vector3 endPosition)
     {
         float minDistance = 0.001f;
@@ -93,7 +70,7 @@ public abstract class Props : MonoBehaviour
 
     private void ReturnScale()
     {
-        transform.DOScale(_startValueScale, _durationAnimation);
+        transform.DOScale(_startValueScale, _durationAnimation).OnComplete(ResetAnimation);
     }
     
     private void ResetAnimation()

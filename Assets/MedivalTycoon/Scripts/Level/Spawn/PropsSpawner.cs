@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
-public class Spawner : MonoBehaviour
+public class PropsSpawner : MonoBehaviour
 {
     [Header("Barrels")]
     [SerializeField] private Props _barrel;
@@ -29,6 +28,7 @@ public class Spawner : MonoBehaviour
         for (int i = 0; i < _amount; i++)
         {
             var newProps = Instantiate(props, spawnPoint);
+            newProps.Initilization(_spawnBarrelPoint);
             _props.Enqueue(newProps);
         }
         mover.RegisterProps(_props);

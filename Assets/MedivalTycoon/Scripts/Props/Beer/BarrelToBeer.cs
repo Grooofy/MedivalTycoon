@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BarrelToBeer : MonoBehaviour
@@ -21,16 +19,13 @@ public class BarrelToBeer : MonoBehaviour
 
     private void OnEnable()
     {
-        _regulating.PointFill += TurnObject;
         _barrelPoint.Filling += EnableMover;
-        _beerCreator.Fulling += Reset;
     }
 
     private void OnDisable()
     {
-        _regulating.PointFill -= TurnObject;
         _barrelPoint.Filling -= EnableMover;
-        _beerCreator.Fulling -= Reset;
+      
     }
 
 

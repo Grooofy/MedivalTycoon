@@ -15,9 +15,4 @@ public class Beer : Props
         }
         transform.position = endPoint.transform.position;
     }
-
-    internal override IEnumerator TryJumpTo(Point endPoint, float elapsedTime, float moveDuration)
-    {
-        throw new System.NotImplementedException();
-    }
 }
