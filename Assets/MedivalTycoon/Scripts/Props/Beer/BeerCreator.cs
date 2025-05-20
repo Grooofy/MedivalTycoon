@@ -13,7 +13,7 @@ public class BeerCreator : MonoBehaviour, IPropsMover
     
     private Queue<Props> _props = new Queue<Props>();
     private Queue<Props> _pointsProps = new Queue<Props>();
-    private WaitForSeconds _wait = new WaitForSeconds(0.3f);
+    private WaitForSeconds _wait = new WaitForSeconds(1f);
     private Props _currentProps;
     private int _index;
     private bool _isFull;

@@ -27,10 +27,14 @@ public abstract class Props : MonoBehaviour
         _startPoint = parent;
     }
 
+    public void BarrelEmpty()
+    {
+        ReturnScale();
+    }
+    
     public void Reset(IPropsMover propsMover, Point point)
     {
         point.IsFill = false;
-        ReturnScale();
         transform.SetParent(_startPoint);
         transform.position = _startPoint.position;
         ResetAnimation();
@@ -70,7 +74,7 @@ public abstract class Props : MonoBehaviour
 
     private void ReturnScale()
     {
-        transform.DOScale(_startValueScale, _durationAnimation).OnComplete(ResetAnimation);
+        transform.DOScale(_startValueScale, _durationAnimation);
     }
     
     private void ResetAnimation()
