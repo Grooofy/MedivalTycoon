@@ -8,12 +8,13 @@ public class Regulating : MonoBehaviour, IPropsMover
 {
     public Action<bool> Fulling;
     public Action<bool> PointFill;
-    
+
     [SerializeField] private List<Point> _points = new List<Point>();
-    
+
     private WaitForSeconds _wait = new WaitForSeconds(0.3f);
     private Queue<Props> _props = new Queue<Props>();
     private Queue<Props> _pointsProps = new Queue<Props>();
+    private List<Props> _usedProps = new List<Props>();
 
     private Props _currentProps;
     private int _index;
@@ -29,13 +30,14 @@ public class Regulating : MonoBehaviour, IPropsMover
             if (prop == null) continue;
             _props.Enqueue(prop);
         }
+
+        Debug.Log(_props.Count);
     }
 
     public void RegisterProp(Props props)
     {
         if (props == null) return;
         _props.Enqueue(props);
-        Debug.Log("!!!!!!!!!!!" + _props.Count +"!!!!!!!!!!!");
     }
 
 
@@ -43,34 +45,45 @@ public class Regulating : MonoBehaviour, IPropsMover
     {
         if (_props.Count == 0) yield break;
 
-        var temporaryQueue = new Queue<Props>();
-
         while (_isFull == false && _index < _points.Count)
         {
             if (_props.Count == 0) yield break;
 
-            var prop = _props.Peek();
+            Props prop = null;
+
+            for (int i = 0; i < _props.Count; i++)
+            {
+                var currentProp = _props.ElementAt(i);
+                if (!_usedProps.Contains(currentProp))
+                {
+                    prop = currentProp;
+                    break;
+                }
+            }
+
             if (prop == null) yield break;
 
+            _usedProps.Add(prop);
             StartCoroutine(prop.TryMoveTo(_points[_index]));
-            temporaryQueue.Enqueue(_props.Dequeue());
+            _pointsProps.Enqueue(prop);
             _index++;
-            
+
             if (_index == _points.Count)
             {
                 _index = _points.Count - 1;
                 Fulling?.Invoke(true);
                 _isFull = true;
             }
+
             PointFill?.Invoke(true);
-            _pointsProps = new Queue<Props>(temporaryQueue.Reverse());
+            _pointsProps = new Queue<Props>(_pointsProps.Reverse());
             yield return _wait;
         }
     }
 
     public Queue<Props> GetTo(int amount)
     {
-        if (_pointsProps.Count == 0) return null;
+        if (_pointsProps.Count == 0) return new Queue<Props>();
 
         if (amount > _pointsProps.Count)
         {
@@ -83,7 +96,12 @@ public class Regulating : MonoBehaviour, IPropsMover
         for (int i = 0; i < amount; i++)
         {
             queue.Enqueue(_pointsProps.Dequeue());
-            _points[_index -1].Free();
+
+            int indexToFree = _index - 1;
+            if (indexToFree >= 0 && indexToFree < _points.Count)
+            {
+                _points[indexToFree].Free();
+            }
 
             if (_index > 0) _index--;
 
@@ -95,6 +113,8 @@ public class Regulating : MonoBehaviour, IPropsMover
                 ResetPoints();
             }
         }
+
+        Debug.Log(_pointsProps.Count);
         return queue;
     }
 

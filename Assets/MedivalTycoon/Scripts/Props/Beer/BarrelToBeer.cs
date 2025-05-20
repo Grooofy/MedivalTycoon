@@ -1,48 +1,62 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 
 public class BarrelToBeer : MonoBehaviour
 {
     [SerializeField] private Regulating _firstSpawn;
     [SerializeField] private Point _barrelPoint;
-    [SerializeField] private BeerCreator _beerCreator; 
-    [SerializeField] private GameObject _bartenderUiObject;
-    [SerializeField] private GameObject _waiterUiObject;
+    [SerializeField] private BeerCreator _beerCreator;
+    [SerializeField] private GroundUI _groundUIbartender;
+    [SerializeField] private GroundUI _groundUIwaiter;
     [SerializeField] private Animator _animator;
+    [SerializeField] private ParticleSystem _smoke;
     [SerializeField] private Regulating _regulating;
     [SerializeField] private SphereCollider _collider;
-    
-    
+
+
     private WaitForSeconds _wait = new WaitForSeconds(2f);
     private MoverStoper _moverStoper;
     private Props _currentBarrel;
-    
+
 
     private void OnEnable()
     {
-        _regulating.PointFill += TurnObject;
+        _regulating.PointFill += TurnLeverObject;
     }
 
     private void OnDisable()
     {
-        _regulating.PointFill -= TurnObject;
+        _regulating.PointFill -= TurnLeverObject;
     }
 
 
     private void Reset(bool value)
     {
-       TurnObject(value);
-       _waiterUiObject.SetActive(!value);
-       _currentBarrel.Reset(_firstSpawn, _barrelPoint);
+        TurnLeverObject(value);
+        TurnOffUiObject(_groundUIwaiter);
+        TurnOnUiObject(_groundUIbartender);
+        _currentBarrel.Reset(_firstSpawn, _barrelPoint);
+        _smoke.Play();
     }
 
-    
-   private void TurnObject(bool value)
+
+    private void TurnLeverObject(bool value)
     {
         _animator.SetBool("IsOn", value);
         _collider.enabled = value;
-        _bartenderUiObject.SetActive(value);
+        TurnOnUiObject(_groundUIbartender);
+    }
+
+    private void TurnOffUiObject(GroundUI ui)
+    {
+        ui.FadeOut();
+    }
+
+    private void TurnOnUiObject(GroundUI ui)
+    {
+        ui.FadeIn();
     }
 
     public void OnTriggerEnter(Collider other)
@@ -50,7 +64,7 @@ public class BarrelToBeer : MonoBehaviour
         if (other.TryGetComponent(out Bartender bartender) && _barrelPoint.IsFill == false)
         {
             _collider.enabled = false;
-            _bartenderUiObject.SetActive(false);
+            TurnOffUiObject(_groundUIbartender);
             StartCoroutine(FillingPoints());
         }
 
@@ -58,27 +72,27 @@ public class BarrelToBeer : MonoBehaviour
         {
             Reset(true);
         }
-        
     }
 
-    public IEnumerator FillingPoints()
+    private IEnumerator FillingPoints()
     {
         var currentQueueBarrels = _regulating.GetTo(1);
         if (currentQueueBarrels.Count == 0) yield break;
-        
+
         _currentBarrel = currentQueueBarrels.Peek();
         _currentBarrel.ScaleUp();
-        
+
         while (_barrelPoint.IsFill == false)
         {
             if (_currentBarrel == null) yield break;
-            
+            currentQueueBarrels.Dequeue();
             StartCoroutine(_currentBarrel.TryMoveTo(_barrelPoint));
             StartCoroutine(_beerCreator.FillingPoints());
             yield return _wait;
         }
+
         _currentBarrel.BarrelEmpty();
         _collider.enabled = true;
-        _waiterUiObject.SetActive(true);
+        TurnOnUiObject(_groundUIwaiter);
     }
 }

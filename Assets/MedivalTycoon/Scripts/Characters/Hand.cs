@@ -75,6 +75,7 @@ public class Hand : MonoBehaviour, IPropsMover
             IsFull = false;
             if (_index < 0) _index = 0; 
         }
+        Debug.Log(queue.Count);
         return queue;
     }
     public void RegisterProps(Queue<Props> props) { }
