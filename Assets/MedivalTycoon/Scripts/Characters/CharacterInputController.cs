@@ -6,8 +6,11 @@ public class CharacterInputController : MonoBehaviour
 {
     [SerializeField] private FloatingJoystick _joystick;
     [SerializeField] private float _angelOffset = 70;
- 
+    [SerializeField] private Animator _animator;
+
+    public bool IsStop;
     
+    private Vector3 _moveDirection;
     private ICharacter _character;
     private float _cosX;
     private float _sinX;
@@ -30,8 +33,11 @@ public class CharacterInputController : MonoBehaviour
 
     private void Update()
     {
-        ReadMove();
-        CheckGround();
+        if (_joystick.isActiveAndEnabled)
+        {
+            ReadMove();
+            CheckGround();
+        }
     }
 
     private void ReadMove()
@@ -42,8 +48,9 @@ public class CharacterInputController : MonoBehaviour
         float newHorizontal = CalculateOffSetX(horizontal, vertical);
         float newVertical = CalculateOffSetY(horizontal, vertical);
 
-        Vector3 direction = new Vector3(newHorizontal , 0, newVertical);
-        _character.Move(direction);
+        _moveDirection = new Vector3(newHorizontal , 0, newVertical);
+        _character.Move(_moveDirection);
+        _animator.SetFloat("Speed", _moveDirection.magnitude);
     }
 
     private void CheckGround()

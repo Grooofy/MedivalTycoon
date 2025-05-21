@@ -35,7 +35,7 @@ public class LeverGetBarrel : MonoBehaviour
         if (other.TryGetComponent(out MoverStoper moverStoper))
         {
             _moverStoper = moverStoper;
-            _moverStoper.TurnOffMove();
+            //_moverStoper.TurnOffMove();
             _collider.enabled = false;
             StartCoroutine(_regulating.FillingPoints());
         }

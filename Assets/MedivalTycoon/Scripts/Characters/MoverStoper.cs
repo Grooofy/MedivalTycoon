@@ -9,11 +9,11 @@ public class MoverStoper : MonoBehaviour
 
     public void TurnOffMove()
     {
-        _inputController.enabled = false;
+        _inputController.IsStop = true;
     }
 
     public void TurnOnMove()
     {
-        _inputController.enabled = true;
+        _inputController.IsStop = false;
     }
 }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4462d441f2ae44e2b28ea2b10d520472, type: 3}
   m_Name: security2
   m_EditorClassIdentifier: 
-  _speed: 2
+  _speed: 0.5
   _icon: {fileID: 21300000, guid: 549835fb3c9719f4ead49b19acfdb603, type: 3}
   _id: 2
   _numberWearableObjects: 0
