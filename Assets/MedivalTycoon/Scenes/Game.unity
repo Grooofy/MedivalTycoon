@@ -2219,7 +2219,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0.29200003, y: 1}
-  m_AnchoredPosition: {x: 0.007507324, y: 0}
+  m_AnchoredPosition: {x: 0.0075683594, y: 0}
   m_SizeDelta: {x: 0.6352997, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &140315331
@@ -13002,7 +13002,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.030479169, y: 0.45600003}
   m_AnchorMax: {x: 0.11487501, y: 0.9535556}
-  m_AnchoredPosition: {x: -2.8000488, y: 0}
+  m_AnchoredPosition: {x: -2.7998047, y: 0}
   m_SizeDelta: {x: -3.999998, y: -1}
   m_Pivot: {x: 1.2, y: 0.5}
 --- !u!114 &714495355
@@ -28805,7 +28805,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7038891403986418778, guid: 909ebd970bf26ab4485ed164ba355895, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 4.642029
+      value: 4.64209
       objectReference: {fileID: 0}
     - target: {fileID: 7038891404728702251, guid: 909ebd970bf26ab4485ed164ba355895, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -37041,7 +37041,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.36800003, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.69000244, y: -0.023044586}
+  m_AnchoredPosition: {x: 0.69000244, y: -0.023040771}
   m_SizeDelta: {x: -0.25799942, y: 0.486}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1632991284
@@ -45693,7 +45693,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0.36800003, y: 1}
-  m_AnchoredPosition: {x: 0.18554688, y: -0.023136139}
+  m_AnchoredPosition: {x: 0.18554688, y: -0.023132324}
   m_SizeDelta: {x: 1.4904995, y: 0.046}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2007340810
@@ -46962,7 +46962,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.3577955, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.5220032, y: 0.00010681152}
+  m_AnchoredPosition: {x: -0.5220032, y: 0.000091552734}
   m_SizeDelta: {x: 0.6399994, y: 0.010002136}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2060443485
@@ -48875,6 +48875,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _inputController: {fileID: 543450653565469376}
+--- !u!95 &543450653565469380
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1269786069}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: cbddb4f475bc3b94d9354ff558607185, type: 3}
+  m_Controller: {fileID: 9100000, guid: fddcc9e1b68cc184d81a3eb7053b4855, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &2213363109264885245
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -49199,6 +49220,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3170071665052891338, guid: b967030063fd87a489b6018cb5d0e51c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3466243181259740200, guid: b967030063fd87a489b6018cb5d0e51c, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -49317,6 +49342,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7194542467760387321, guid: b967030063fd87a489b6018cb5d0e51c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 543450653565469377}
+    - targetCorrespondingSourceObject: {fileID: 7194542467760387321, guid: b967030063fd87a489b6018cb5d0e51c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 543450653565469380}
   m_SourcePrefab: {fileID: 100100000, guid: b967030063fd87a489b6018cb5d0e51c, type: 3}
 --- !u!1001 &8330433716655988677
 PrefabInstance:
