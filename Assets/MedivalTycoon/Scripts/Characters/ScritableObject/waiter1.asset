@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4462d441f2ae44e2b28ea2b10d520472, type: 3}
   m_Name: waiter1
   m_EditorClassIdentifier: 
-  _speed: 0.8
+  _speed: 0.6
   _icon: {fileID: 21300000, guid: c64430cc2bdbdb24383883afba1a2af8, type: 3}
   _id: 1
   _numberWearableObjects: 0
-  IsSelect: 0
+  IsSelect: 1

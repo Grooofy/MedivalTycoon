@@ -30,8 +30,6 @@ public class Regulating : MonoBehaviour, IPropsMover
             if (prop == null) continue;
             _props.Enqueue(prop);
         }
-
-        Debug.Log(_props.Count);
     }
 
     public void RegisterProp(Props props)
@@ -67,18 +65,18 @@ public class Regulating : MonoBehaviour, IPropsMover
             StartCoroutine(prop.TryMoveTo(_points[_index]));
             _pointsProps.Enqueue(prop);
             _index++;
-
+            Debug.Log(prop.name);
             if (_index == _points.Count)
             {
                 _index = _points.Count - 1;
                 Fulling?.Invoke(true);
                 _isFull = true;
             }
-
+            
             PointFill?.Invoke(true);
-            _pointsProps = new Queue<Props>(_pointsProps.Reverse());
             yield return _wait;
         }
+        _pointsProps = new Queue<Props>(_pointsProps.Reverse());
     }
 
     public Queue<Props> GetTo(int amount)
@@ -113,8 +111,6 @@ public class Regulating : MonoBehaviour, IPropsMover
                 ResetPoints();
             }
         }
-
-        Debug.Log(_pointsProps.Count);
         return queue;
     }
 

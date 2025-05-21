@@ -18,7 +18,7 @@ public class Hand : MonoBehaviour, IPropsMover
     private int _index;
 
 
-    public void RegisterProps(Regulating regulating)
+    public void RegisterProps(IPropsMover regulating)
     {
         if (regulating == null)
         {

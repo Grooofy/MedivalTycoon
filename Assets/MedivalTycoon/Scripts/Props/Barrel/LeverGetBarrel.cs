@@ -10,6 +10,7 @@ public class LeverGetBarrel : MonoBehaviour
     
     private void OnEnable()
     {
+        _animator.SetBool("IsOn", true);
         _regulating.Fulling += TurnObject;
     }
 
@@ -31,6 +32,7 @@ public class LeverGetBarrel : MonoBehaviour
         if (other.TryGetComponent(out Bartender bartender))
         {
             _collider.enabled = false;
+            _animator.SetBool("IsOn", false);
             StartCoroutine(_regulating.FillingPoints());
         }
     }

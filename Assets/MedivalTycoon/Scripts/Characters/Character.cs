@@ -31,7 +31,6 @@ public class Character : MonoBehaviour, ICharacter
         TryRotate(direction);
         var normalizeDirection = Vector3.Normalize(direction);
         _controller.Move(normalizeDirection * _worker.Speed * Time.deltaTime);
-        
     }
 
     private void TryRotate(Vector3 direction)

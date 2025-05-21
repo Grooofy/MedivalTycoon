@@ -4,7 +4,7 @@ public class PropsGiver : MonoBehaviour, ITrigger
 {
     [SerializeField] private Regulating _regulating;
     [SerializeField] private SphereCollider _collider;
-    
+
     private void OnEnable()
     {
         _regulating.Fulling += TurnCollider;
