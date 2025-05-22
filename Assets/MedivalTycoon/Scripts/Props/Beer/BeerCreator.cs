@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class BeerCreator : MonoBehaviour, IPropsMover
 {
-    public Action<bool> Fulling;
+    public Action<bool> Fulling { get; set; }
     [SerializeField] private int _amountBarrelToBeer;
     [SerializeField] private List<Point> _points = new List<Point>();
     
@@ -74,6 +74,44 @@ public class BeerCreator : MonoBehaviour, IPropsMover
 
     public Queue<Props> GetTo(int amount)
     {
-        throw new System.NotImplementedException();
+        if (_pointsProps.Count == 0) return new Queue<Props>();
+
+        if (amount > _pointsProps.Count)
+        {
+            _index = amount;
+            amount = _pointsProps.Count;
+        }
+
+        var queue = new Queue<Props>();
+
+        for (int i = 0; i < amount; i++)
+        {
+            queue.Enqueue(_pointsProps.Dequeue());
+
+            int indexToFree = _index - 1;
+            if (indexToFree >= 0 && indexToFree < _points.Count)
+            {
+                _points[indexToFree].Free();
+            }
+
+            if (_index > 0) _index--;
+
+            if (_pointsProps.Count == 0)
+            {
+                _index = 0;
+                _isFull = false;
+                Fulling?.Invoke(false);
+                ResetPoints();
+            }
+        }
+        return queue;
+    }
+
+    private void ResetPoints()
+    {
+        foreach (var point in _points)
+        {
+            point.Free();
+        }
     }
 }

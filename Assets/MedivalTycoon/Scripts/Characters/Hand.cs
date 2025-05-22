@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class Hand : MonoBehaviour, IPropsMover
 {
-    public Action<bool> HandFulling;
+    public Action<bool> Fulling { get; set; }
     [SerializeField] private List<Point> _points;
     [SerializeField] public bool IsFull;
 
@@ -48,7 +48,7 @@ public class Hand : MonoBehaviour, IPropsMover
             {
                 //_index = _points.Count - 1;
                 IsFull = true;
-                HandFulling?.Invoke(true);
+                Fulling?.Invoke(true);
                 _handProps = new Queue<Props>(temporaryQueue.Reverse());
             }
             yield return _wait;
@@ -75,7 +75,6 @@ public class Hand : MonoBehaviour, IPropsMover
             IsFull = false;
             if (_index < 0) _index = 0; 
         }
-        Debug.Log(queue.Count);
         return queue;
     }
     public void RegisterProps(Queue<Props> props) { }

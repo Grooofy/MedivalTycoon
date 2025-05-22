@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Regulating : MonoBehaviour, IPropsMover
 {
-    public Action<bool> Fulling;
+    public Action<bool> Fulling { get; set; }
     public Action<bool> PointFill;
 
     [SerializeField] private List<Point> _points = new List<Point>();
@@ -65,7 +65,7 @@ public class Regulating : MonoBehaviour, IPropsMover
             StartCoroutine(prop.TryMoveTo(_points[_index]));
             _pointsProps.Enqueue(prop);
             _index++;
-            Debug.Log(prop.name);
+            
             if (_index == _points.Count)
             {
                 _index = _points.Count - 1;

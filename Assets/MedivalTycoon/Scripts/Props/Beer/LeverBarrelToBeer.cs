@@ -1,9 +1,7 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 
-public class BarrelToBeer : MonoBehaviour
+public class LeverBarrelToBeer : MonoBehaviour
 {
     [SerializeField] private Regulating _firstSpawn;
     [SerializeField] private Point _barrelPoint;

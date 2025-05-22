@@ -2,10 +2,16 @@
 
 public class PropsTaker : MonoBehaviour, ITrigger
 {
-    [SerializeField] private Regulating _regulating;
+    private IPropsMover _regulating;
 
     private int _amount = 3;
 
+    public void Initialize(IPropsMover regulating)
+    {
+        _regulating = regulating;
+    }
+    
+    
     public void OnTriggerEnter(Collider other)
     {
         if (!other.TryGetComponent(out Hand hand)) return;
