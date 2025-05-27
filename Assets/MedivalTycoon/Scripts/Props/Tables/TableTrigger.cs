@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TableTrigger : MonoBehaviour, ITrigger
+public class TableTrigger : MonoBehaviour
 {
     [SerializeField] private BoxCollider _boxCollider;
     [SerializeField] private Table _table;
@@ -33,7 +33,6 @@ public class TableTrigger : MonoBehaviour, ITrigger
         {
             wallet.StartRemoveCoins(_table.Price, _step);
             _table.ReducePrice(_step);
-            _table.InitializeSeats();
         }
     }
 
@@ -53,5 +52,5 @@ public class TableTrigger : MonoBehaviour, ITrigger
         {
             _boxCollider.isTrigger = false;
         }
-    }   
+    }
 }
