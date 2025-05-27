@@ -1,5 +1,6 @@
 ﻿using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Seat : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class Seat : MonoBehaviour
     {
         if (!IsOccupied)
         {
-            IsOccupied = true;
+            IsOccupied = true; // ✅ Место сразу становится занятым
             this.guest = guest;
             requiredBeer = guest.GetBeerAmount();
             deliveredBeer = 0;
@@ -37,7 +38,6 @@ public class Seat : MonoBehaviour
         deliveredBeer += amount;
         deliveredBeer = Mathf.Min(deliveredBeer, requiredBeer);
         UpdateBeerDisplay(requiredBeer - deliveredBeer);
-
         if (deliveredBeer >= requiredBeer)
             guest.OrderCompleted();
     }

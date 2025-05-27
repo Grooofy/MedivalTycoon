@@ -11,7 +11,7 @@ public class TavernGuest : MonoBehaviour
     [SerializeField] private float maxWaitTime = 10f;
     private int beerAmount;
     private float waitTimer;
-    private Vector3 targetPosition;
+    private Transform targetPosition;
     private Seat currentSeat;
     private bool isInteractable = false;
 
@@ -20,6 +20,12 @@ public class TavernGuest : MonoBehaviour
         currentState = GuestState.InQueue;
         beerAmount = Random.Range(1, 5);
         StartCoroutine(GuestBehavior());
+    }
+
+    private void Update()
+    {
+        Debug.Log(currentState);
+        Debug.Log(beerAmount);
     }
 
     private IEnumerator GuestBehavior()
@@ -54,10 +60,9 @@ public class TavernGuest : MonoBehaviour
     {
         currentState = GuestState.MovingToSeat;
         currentSeat = seat;
-        targetPosition = seat.transform.position;
-        StartCoroutine(MoveToPosition(targetPosition));
+        targetPosition = seat.transform;
     }
-
+    
     public void MoveToQueuePosition(Transform target)
     {
         if (target == null)
@@ -79,11 +84,11 @@ public class TavernGuest : MonoBehaviour
 
     private void MoveToTarget()
     {
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
-        if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
+        transform.position = Vector3.MoveTowards(transform.position, targetPosition.position, moveSpeed * Time.deltaTime);
+        if (Vector3.Distance(transform.position, targetPosition.position) < 0.1f)
         {
             currentState = GuestState.WaitingForOrder;
-            targetPosition = Vector3.zero;
+            targetPosition = null;
             waitTimer = 0f;
         }
     }
@@ -108,14 +113,14 @@ public class TavernGuest : MonoBehaviour
         if (isInteractable)
         {
             currentState = GuestState.Leaving;
-            targetPosition = exit.position;
+            targetPosition = exit;
         }
     }
 
     private void LeaveTavern()
     {
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
-        if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
+        transform.position = Vector3.MoveTowards(transform.position, targetPosition.position, moveSpeed * Time.deltaTime);
+        if (Vector3.Distance(transform.position, targetPosition.position) < 0.1f)
             Destroy(gameObject);
     }
 

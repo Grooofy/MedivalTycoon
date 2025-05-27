@@ -5,6 +5,23 @@ public class PropsGiver : MonoBehaviour, ITrigger
     [SerializeField] private SphereCollider _collider;
     private IPropsMover _regulating;
 
+    /*private void OnEnable()
+    {
+        _regulating.Fulling += TurnCollider;
+    }
+
+    private void OnDisable()
+    {
+        _regulating.Fulling -= TurnCollider;
+    }
+
+
+    private void TurnCollider(bool value)
+    {
+        _collider.enabled = value;
+    }*/
+
+
     public void Initialize(IPropsMover regulating)
     {
         _regulating = regulating;

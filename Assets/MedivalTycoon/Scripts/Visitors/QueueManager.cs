@@ -7,8 +7,6 @@ public class QueueManager : MonoBehaviour
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private Transform[] queuePositions;
     [SerializeField] private int maxQueueLength = 5;
-    [SerializeField] private SeatManager _seatManager;
-
     private Queue<TavernGuest> guestQueue = new Queue<TavernGuest>();
 
     private void Start()
@@ -29,28 +27,15 @@ public class QueueManager : MonoBehaviour
         UpdateQueuePositions();
     }
 
-    public void AssignSeatToNextGuest()
+    public void AssignSeatToNextGuest(Seat seat)
     {
-        var availableSeat = GetFirstAvailableSeat();
-        if (availableSeat == null) return;
-
-        if (guestQueue.Count > 0)
+        if (guestQueue.Count > 0 && seat != null && !seat.IsOccupied)
         {
             var guest = guestQueue.Dequeue();
-            availableSeat.Occupy(guest);
-            guest.AssignSeat(availableSeat); // 👈 Здесь гость начинает движение
+            seat.Occupy(guest); // 🚨 Блокируем место сразу
+            guest.AssignSeat(seat); // Гость начинает движение
             UpdateQueuePositions();
         }
-    }
-
-    private Seat GetFirstAvailableSeat()
-    {
-        foreach (var seat in _seatManager.seats)
-        {
-            if (!seat.IsOccupied)
-                return seat;
-        }
-        return null;
     }
 
     private void UpdateQueuePositions()

@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.Events;
+
 
 public class Table : MonoBehaviour
 {
@@ -17,18 +19,7 @@ public class Table : MonoBehaviour
     public int Price => _price;
 
     private Coroutine _priceChanged;
-    private bool isInitialized = false;
-
-    private void OnEnable()
-    {
-        LinedUp += InitializeSeats;
-    }
-
-    private void OnDisable()
-    {
-        LinedUp -= InitializeSeats;
-    }
-
+   
     public void ReducePrice(int step)
     {
         if (_priceChanged == null)
@@ -41,26 +32,23 @@ public class Table : MonoBehaviour
             _priceChanged = StartCoroutine(ReducesPrice(step));
         }
     }
-
+    
     public void InitializeSeats()
     {
-        if (isInitialized) return;
-
         foreach (Seat seat in _seatPoints)
         {
             seat.Vacate();
             _seatManager.AddSeat(seat);
         }
-
-        isInitialized = true;
+            
     }
 
     public void StopReducePrice()
     {
-        if (_priceChanged != null)
+        if (_priceChanged != null) 
             StopCoroutine(_priceChanged);
     }
-
+    
     private IEnumerator ReducesPrice(int step)
     {
         while (_price != 0)
@@ -69,13 +57,13 @@ public class Table : MonoBehaviour
             PriceChanged?.Invoke(_price);
             yield return null;
         }
-
         Build();
     }
-
+    
     private void Build()
     {
         _smoke.Play();
-        transform.DOScale(Vector3.one, _speedBuilding).OnComplete(LinedUp);
+        transform.DOScale(Vector3.one, _speedBuilding).OnComplete(() => InitializeSeats());
     }
+    
 }
