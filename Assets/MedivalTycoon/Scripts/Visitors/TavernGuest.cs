@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -22,10 +23,10 @@ public class TavernGuest : MonoBehaviour
         StartCoroutine(GuestBehavior());
     }
 
+
     private void Update()
     {
-        Debug.Log(currentState);
-        Debug.Log(beerAmount);
+        Debug.Log(currentState + " - current State " );
     }
 
     private IEnumerator GuestBehavior()
@@ -61,6 +62,7 @@ public class TavernGuest : MonoBehaviour
         currentState = GuestState.MovingToSeat;
         currentSeat = seat;
         targetPosition = seat.transform;
+        StartCoroutine(MoveToPosition(targetPosition.position));
     }
     
     public void MoveToQueuePosition(Transform target)

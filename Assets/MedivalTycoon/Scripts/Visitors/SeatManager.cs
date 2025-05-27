@@ -10,6 +10,7 @@ public class SeatManager : MonoBehaviour
     {
         seats.Add(seat);
         seat.OnSeatVacated += () => queueManager.AssignSeatToNextGuest(seat);
+        Debug.Log(seat  + "seat assigned");
     }
 
     public void RemoveSeat(Seat seat)
