@@ -61,6 +61,7 @@ public class LeverBarrelToBeer : MonoBehaviour
     {
         if (other.TryGetComponent(out Bartender bartender) && _barrelPoint.IsFill == false)
         {
+            _animator.SetBool("IsOn", false);
             _collider.enabled = false;
             TurnOffUiObject(_groundUIbartender);
             StartCoroutine(FillingPoints());

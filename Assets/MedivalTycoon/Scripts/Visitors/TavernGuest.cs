@@ -5,12 +5,23 @@ using Random = UnityEngine.Random;
 
 public class TavernGuest : MonoBehaviour
 {
-    public enum GuestState { InQueue, MovingToSeat, WaitingForOrder, Satisfied, Leaving }
+    public enum GuestState
+    {
+        InQueue,
+        MovingToSeat,
+        WaitingForOrder,
+        Drinking,
+        Satisfied,
+        Leaving
+    }
+
     private GuestState currentState;
 
     [SerializeField] private List<GameObject> modelPrefab;
     [SerializeField] private float moveSpeed = 2f;
     [SerializeField] private float maxWaitTime = 10f;
+
+    private Animator _animator;
     private int beerAmount;
     private float waitTimer;
     private Vector3 targetPosition;
@@ -21,7 +32,8 @@ public class TavernGuest : MonoBehaviour
     {
         currentState = GuestState.InQueue;
         beerAmount = Random.Range(1, 5);
-        Instantiate(modelPrefab[Random.Range(0, modelPrefab.Count)], transform);
+        var guestGameObject = Instantiate(modelPrefab[Random.Range(0, modelPrefab.Count)], transform);
+        _animator = guestGameObject.GetComponent<Animator>();
         StartCoroutine(GuestBehavior());
     }
 
@@ -35,28 +47,36 @@ public class TavernGuest : MonoBehaviour
                     yield return null;
                     break;
                 case GuestState.MovingToSeat:
+                    _animator.SetTrigger("Walk");
                     MoveToTarget();
                     yield return null;
                     break;
                 case GuestState.WaitingForOrder:
                     WaitOrder();
+                    _animator.SetTrigger("Idle");
+                    yield return null;
+                    break;
+                case GuestState.Drinking:
+                    _animator.SetTrigger("Drink");
                     yield return null;
                     break;
                 case GuestState.Satisfied:
+                    _animator.SetTrigger("Sleep");
                     isInteractable = true;
                     yield break;
                 case GuestState.Leaving:
                     LeaveTavern();
                     yield break;
             }
+
             yield return null;
         }
     }
 
     public void AssignSeat(Seat seat)
     {
-        if(seat.IsOccupied == false) return;
-        
+        if (seat.IsOccupied == false) return;
+
         currentState = GuestState.MovingToSeat;
         currentSeat = seat;
         targetPosition = seat.transform.position;
@@ -70,6 +90,7 @@ public class TavernGuest : MonoBehaviour
             Debug.LogError("Target position is null!");
             return;
         }
+
         StartCoroutine(MoveToPosition(target.position));
     }
 
@@ -78,6 +99,7 @@ public class TavernGuest : MonoBehaviour
         while (Vector3.Distance(transform.position, targetPosition) > 0.1f)
         {
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+            transform.LookAt(targetPosition);
             yield return null;
         }
 
@@ -112,6 +134,12 @@ public class TavernGuest : MonoBehaviour
             currentState = GuestState.Leaving;
             currentSeat.Vacate();
         }
+    }
+
+    public void Drinking(Seat seat)
+    {
+        currentState = GuestState.Drinking;
+        seat.DeliverBeer(1);
     }
 
     public void OrderCompleted()

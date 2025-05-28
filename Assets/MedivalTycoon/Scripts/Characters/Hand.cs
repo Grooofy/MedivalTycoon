@@ -51,6 +51,7 @@ public class Hand : MonoBehaviour, IPropsMover
                 Fulling?.Invoke(true);
                 _handProps = new Queue<Props>(temporaryQueue.Reverse());
             }
+            Debug.Log(_handProps.Count + "Количество в руке " );
             yield return _wait;
         }
     }
@@ -75,6 +76,7 @@ public class Hand : MonoBehaviour, IPropsMover
             IsFull = false;
             if (_index < 0) _index = 0; 
         }
+        Debug.Log(_handProps.Count + "Количество в руке после того как отдал" );
         return queue;
     }
     public void RegisterProps(Queue<Props> props) { }

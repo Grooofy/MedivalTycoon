@@ -75,5 +75,5 @@ MonoBehaviour:
   - {fileID: 1408258074504032, guid: eeb694852bd594d4a904c98702663ad3, type: 3}
   - {fileID: 1744385805961278, guid: f9527c2757f240d4092108c99f07e436, type: 3}
   - {fileID: 1658861369803080, guid: f18c40c0b33ac4844b576cd5a67437c8, type: 3}
-  moveSpeed: 3
+  moveSpeed: 0.5
   maxWaitTime: 10

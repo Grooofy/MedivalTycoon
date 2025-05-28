@@ -16,6 +16,14 @@ public class PropsMoverInitilizator : MonoBehaviour
     [SerializeField] private PropsTaker _beerTaker;
     [SerializeField] private PropsGiver _beerGiver;
     [SerializeField] private BeerCreator _beerRegulating;
+    
+    [Header("To Table")]
+    [SerializeField] private PropsTaker _tableTaker;
+    [SerializeField] private Regulating _tableRegulating;
+    
+    [Header("To 2 Table")]
+    [SerializeField] private PropsTaker _tableTaker2;
+    [SerializeField] private Regulating _tableRegulating2;
 
     private void Awake()
     {
@@ -23,5 +31,7 @@ public class PropsMoverInitilizator : MonoBehaviour
         _barrelTaker.Initialize(_secondRegulating);
         _beerGiver.Initialize(_beerRegulating);
         _beerTaker.Initialize(_beerRegulating);
+        //_tableTaker.Initialize(_tableRegulating);
+        //_tableTaker2.Initialize(_tableRegulating2);
     }
 }
