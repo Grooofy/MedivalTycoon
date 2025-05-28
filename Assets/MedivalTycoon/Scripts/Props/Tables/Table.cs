@@ -52,9 +52,7 @@ public class Table : MonoBehaviour
 
         foreach (Seat seat in _seatPoints)
         {
-            seat.Vacate();
             _seatManager.AddSeat(seat);
-            Debug.Log("Initialize seat");
         }
 
         isInitialized = true;

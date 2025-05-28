@@ -1,5 +1,5 @@
-using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -8,11 +8,12 @@ public class TavernGuest : MonoBehaviour
     public enum GuestState { InQueue, MovingToSeat, WaitingForOrder, Satisfied, Leaving }
     private GuestState currentState;
 
+    [SerializeField] private List<GameObject> modelPrefab;
     [SerializeField] private float moveSpeed = 2f;
     [SerializeField] private float maxWaitTime = 10f;
     private int beerAmount;
     private float waitTimer;
-    private Transform targetPosition;
+    private Vector3 targetPosition;
     private Seat currentSeat;
     private bool isInteractable = false;
 
@@ -20,13 +21,8 @@ public class TavernGuest : MonoBehaviour
     {
         currentState = GuestState.InQueue;
         beerAmount = Random.Range(1, 5);
+        Instantiate(modelPrefab[Random.Range(0, modelPrefab.Count)], transform);
         StartCoroutine(GuestBehavior());
-    }
-
-
-    private void Update()
-    {
-        Debug.Log(currentState + " - current State " );
     }
 
     private IEnumerator GuestBehavior()
@@ -59,12 +55,14 @@ public class TavernGuest : MonoBehaviour
 
     public void AssignSeat(Seat seat)
     {
+        if(seat.IsOccupied == false) return;
+        
         currentState = GuestState.MovingToSeat;
         currentSeat = seat;
-        targetPosition = seat.transform;
-        StartCoroutine(MoveToPosition(targetPosition.position));
+        targetPosition = seat.transform.position;
+        StartCoroutine(MoveToPosition(targetPosition));
     }
-    
+
     public void MoveToQueuePosition(Transform target)
     {
         if (target == null)
@@ -82,15 +80,26 @@ public class TavernGuest : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
             yield return null;
         }
+
+        if (currentState == GuestState.MovingToSeat)
+        {
+            currentState = GuestState.WaitingForOrder;
+            targetPosition = Vector3.zero;
+            waitTimer = 0f;
+        }
+        else if (currentState == GuestState.Leaving)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void MoveToTarget()
     {
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition.position, moveSpeed * Time.deltaTime);
-        if (Vector3.Distance(transform.position, targetPosition.position) < 0.1f)
+        transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+        if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
         {
             currentState = GuestState.WaitingForOrder;
-            targetPosition = null;
+            targetPosition = Vector3.zero;
             waitTimer = 0f;
         }
     }
@@ -115,14 +124,14 @@ public class TavernGuest : MonoBehaviour
         if (isInteractable)
         {
             currentState = GuestState.Leaving;
-            targetPosition = exit;
+            targetPosition = exit.position;
         }
     }
 
     private void LeaveTavern()
     {
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition.position, moveSpeed * Time.deltaTime);
-        if (Vector3.Distance(transform.position, targetPosition.position) < 0.1f)
+        transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+        if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
             Destroy(gameObject);
     }
 

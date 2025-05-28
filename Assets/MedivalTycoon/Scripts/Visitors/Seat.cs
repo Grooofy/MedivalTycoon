@@ -1,24 +1,24 @@
-﻿using TMPro;
+﻿using System;
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Seat : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI beerText;
     public bool IsOccupied { get; private set; }
-    private TavernGuest guest;
+    private TavernGuest _guest;
     private int requiredBeer;
     private int deliveredBeer;
 
-    public delegate void SeatVacatedHandler();
-    public event SeatVacatedHandler OnSeatVacated;
+    
+    public Action<Seat> OnSeatVacated;
 
     public void Occupy(TavernGuest guest)
     {
-        if (!IsOccupied)
+        if (IsOccupied == false)
         {
-            IsOccupied = true; // ✅ Место сразу становится занятым
-            this.guest = guest;
+            IsOccupied = true; 
+            _guest = guest;
             requiredBeer = guest.GetBeerAmount();
             deliveredBeer = 0;
             UpdateBeerDisplay(requiredBeer);
@@ -28,9 +28,9 @@ public class Seat : MonoBehaviour
     public void Vacate()
     {
         IsOccupied = false;
-        guest = null;
+        _guest = null;
         UpdateBeerDisplay(0);
-        OnSeatVacated?.Invoke();
+        OnSeatVacated?.Invoke(this);
     }
 
     public void DeliverBeer(int amount)
@@ -39,11 +39,11 @@ public class Seat : MonoBehaviour
         deliveredBeer = Mathf.Min(deliveredBeer, requiredBeer);
         UpdateBeerDisplay(requiredBeer - deliveredBeer);
         if (deliveredBeer >= requiredBeer)
-            guest.OrderCompleted();
+            _guest.OrderCompleted();
     }
 
     private void UpdateBeerDisplay(int remaining)
     {
-        beerText.text = $"Beer: {remaining}";
+        beerText.text = $"Пиво: {remaining}";
     }
 }

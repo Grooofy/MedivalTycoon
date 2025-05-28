@@ -15,14 +15,22 @@ public class QueueManager : MonoBehaviour
     {
         foreach (var pos in queuePositions)
         {
-            if (pos == null) Debug.LogError("Queue position not set!");
+            if (pos == null)
+            {
+                Debug.LogError("Queue position not set!");
+                continue;
+            }
             AddGuestToQueue();
         }
     }
 
     public void AddGuestToQueue()
     {
-        if (guestQueue.Count >= maxQueueLength) return;
+        if (guestQueue.Count >= maxQueueLength)
+        {
+            Debug.LogWarning("Max queue length reached.");
+            return;
+        }
 
         var guest = Instantiate(_guest.gameObject, spawnPoint.position, Quaternion.identity).GetComponent<TavernGuest>();
         guestQueue.Enqueue(guest);
@@ -32,13 +40,11 @@ public class QueueManager : MonoBehaviour
 
     public void AssignSeatToNextGuest(Seat seat)
     {
-        Debug.Log(guestQueue.Count + "seat!!!");
         if (guestQueue.Count > 0 && seat != null && !seat.IsOccupied)
         {
-            Debug.Log("Assigning seat to guest");
+            seat.Occupy(guestQueue.Peek());
             var guest = guestQueue.Dequeue();
-            seat.Occupy(guest); // 🚨 Блокируем место сразу
-            guest.AssignSeat(seat); // Гость начинает движение
+            guest.AssignSeat(seat); // 👈 Запускает движение
             UpdateQueuePositions();
         }
     }
