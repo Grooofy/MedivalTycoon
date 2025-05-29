@@ -8165,6 +8165,7 @@ MonoBehaviour:
   - {fileID: 1063701301}
   - {fileID: 1148608908}
   - {fileID: 959081587}
+  _seat: {fileID: 0}
 --- !u!1001 &434446615
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15843,6 +15844,7 @@ MonoBehaviour:
   - {fileID: 2027061039}
   - {fileID: 1390770289}
   - {fileID: 626097049}
+  _seat: {fileID: 975391832778195682}
 --- !u!4 &578522397
 Transform:
   m_ObjectHideFlags: 0
@@ -24905,6 +24907,7 @@ MonoBehaviour:
   - {fileID: 1421860677}
   - {fileID: 1124150106}
   - {fileID: 1722784886}
+  _seat: {fileID: 0}
 --- !u!1001 &1012870502
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -39599,7 +39602,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7038891403986418778, guid: 909ebd970bf26ab4485ed164ba355895, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 4.641449
+      value: 4.6414795
       objectReference: {fileID: 0}
     - target: {fileID: 7038891404728702251, guid: 909ebd970bf26ab4485ed164ba355895, type: 3}
       propertyPath: m_AnchoredPosition.y

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Regulating : MonoBehaviour, IPropsMover
@@ -10,6 +11,7 @@ public class Regulating : MonoBehaviour, IPropsMover
     public Action<bool> PointFill;
 
     [SerializeField] private List<Point> _points = new List<Point>();
+    [SerializeField] private Seat _seat;
 
     private WaitForSeconds _wait = new WaitForSeconds(0.3f);
     private Queue<Props> _props = new Queue<Props>();
@@ -18,7 +20,10 @@ public class Regulating : MonoBehaviour, IPropsMover
 
     private Props _currentProps;
     private int _index;
+    private int _amountPoint;
     private bool _isFull;
+    private TavernGuest _guest;
+    
 
     public void RegisterProps(Queue<Props> props)
     {
@@ -42,8 +47,18 @@ public class Regulating : MonoBehaviour, IPropsMover
     public IEnumerator FillingPoints()
     {
         if (_props.Count == 0) yield break;
+       
+        if (_seat != null)
+        {
+            _guest = _seat.GetGuest();
+            _amountPoint = _guest.GetBeerAmount()+1;
+        }
+        else
+        {
+            _amountPoint = _points.Count;
+        }
 
-        while (_isFull == false && _index < _points.Count)
+        while (_isFull == false && _index < _amountPoint)
         {
             if (_props.Count == 0) yield break;
 
@@ -63,6 +78,10 @@ public class Regulating : MonoBehaviour, IPropsMover
 
             _usedProps.Add(prop);
             StartCoroutine(prop.TryMoveTo(_points[_index]));
+            if (_guest != null)
+            {
+                _guest.Drinking(_seat);
+            }
             _pointsProps.Enqueue(prop);
             _index++;
             

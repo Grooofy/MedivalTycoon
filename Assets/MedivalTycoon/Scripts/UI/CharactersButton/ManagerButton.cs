@@ -26,6 +26,11 @@ public class ManagerButton : MonoBehaviour
         _view.ShowInfoObject(_button, _model.GetStatus(), _model.GetIcon());
     }
 
+    public bool GetStatus()
+    {
+      return  _model.GetStatus();
+    }
+    
     public void RefreshButton()
     {
         _model.SelectWorker();

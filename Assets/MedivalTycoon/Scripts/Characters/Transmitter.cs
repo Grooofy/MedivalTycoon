@@ -9,6 +9,7 @@ public class Transmitter : MonoBehaviour
 
     public UnityAction<int> CharacterSelected;
     private ManagerButton _previousButton;
+    private ManagerButton _firstButton;
 
 
     private void OnEnable()
@@ -29,13 +30,14 @@ public class Transmitter : MonoBehaviour
 
     private void Awake()
     {
-        _previousButton = _buttons[0];
+        _firstButton = _buttons[0];
     }
 
     private void GiveSignal(int id)
     {
-       _previousButton.RefreshButton();
-       _previousButton = _buttons[id];
-       CharacterSelected?.Invoke(id);
+        _previousButton = _firstButton;
+        _previousButton.RefreshButton();
+        _firstButton = _buttons[id];
+        CharacterSelected?.Invoke(id);
     }
 }

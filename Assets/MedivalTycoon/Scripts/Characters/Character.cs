@@ -20,7 +20,7 @@ public class Character : MonoBehaviour, ICharacter
     {
         return _worker.Id;
     }
-
+   
     public int GetNumberWearableObjects()
     {
         return _worker.NumberWearableObjects;

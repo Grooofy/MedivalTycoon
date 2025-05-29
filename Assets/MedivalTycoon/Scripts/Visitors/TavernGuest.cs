@@ -41,6 +41,7 @@ public class TavernGuest : MonoBehaviour
     {
         while (true)
         {
+            Debug.Log(currentState+"State");
             switch (currentState)
             {
                 case GuestState.InQueue:
@@ -57,7 +58,6 @@ public class TavernGuest : MonoBehaviour
                     yield return null;
                     break;
                 case GuestState.Drinking:
-                    _animator.SetTrigger("Drink");
                     yield return null;
                     break;
                 case GuestState.Satisfied:
@@ -139,6 +139,7 @@ public class TavernGuest : MonoBehaviour
     public void Drinking(Seat seat)
     {
         currentState = GuestState.Drinking;
+        _animator.SetTrigger("Drink");
         seat.DeliverBeer(1);
     }
 

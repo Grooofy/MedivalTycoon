@@ -25,6 +25,11 @@ public class Seat : MonoBehaviour
         }
     }
 
+    public TavernGuest GetGuest()
+    {
+        return _guest;
+    }
+
     public void Vacate()
     {
         IsOccupied = false;
