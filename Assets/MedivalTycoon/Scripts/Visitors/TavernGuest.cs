@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -21,6 +23,7 @@ public class TavernGuest : MonoBehaviour
     [SerializeField] private float moveSpeed = 2f;
     [SerializeField] private float maxWaitTime = 10f;
 
+    public Action<bool, int> Waiting;
     private Animator _animator;
     private int beerAmount;
     private float waitTimer;
@@ -129,9 +132,12 @@ public class TavernGuest : MonoBehaviour
     private void WaitOrder()
     {
         waitTimer += Time.deltaTime;
+        Waiting?.Invoke(true, beerAmount);
+        
         if (waitTimer >= maxWaitTime)
         {
             currentState = GuestState.Leaving;
+            Waiting?.Invoke(false, 0);
             currentSeat.Vacate();
         }
     }
@@ -140,12 +146,13 @@ public class TavernGuest : MonoBehaviour
     {
         currentState = GuestState.Drinking;
         _animator.SetTrigger("Drink");
-        seat.DeliverBeer(1);
+        StartCoroutine(seat.DeliverBeer(1));
     }
 
     public void OrderCompleted()
     {
         currentState = GuestState.Satisfied;
+        Waiting?.Invoke(false, 0);
     }
 
     public void InteractWithGuard(Transform exit)

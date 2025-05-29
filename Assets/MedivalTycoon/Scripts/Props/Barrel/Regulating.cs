@@ -48,10 +48,11 @@ public class Regulating : MonoBehaviour, IPropsMover
     {
         if (_props.Count == 0) yield break;
        
-        if (_seat != null)
+        if (_seat != null && _guest == null)
         {
             _guest = _seat.GetGuest();
-            _amountPoint = _guest.GetBeerAmount()+1;
+            _amountPoint = _guest.GetBeerAmount();
+            _wait = new WaitForSeconds(0.8f);
         }
         else
         {
@@ -78,6 +79,7 @@ public class Regulating : MonoBehaviour, IPropsMover
 
             _usedProps.Add(prop);
             StartCoroutine(prop.TryMoveTo(_points[_index]));
+            
             if (_guest != null)
             {
                 _guest.Drinking(_seat);
@@ -85,9 +87,9 @@ public class Regulating : MonoBehaviour, IPropsMover
             _pointsProps.Enqueue(prop);
             _index++;
             
-            if (_index == _points.Count)
+            if (_index == _amountPoint)
             {
-                _index = _points.Count - 1;
+                _index = _amountPoint - 1;
                 Fulling?.Invoke(true);
                 _isFull = true;
             }
