@@ -23,13 +23,14 @@ public class TavernGuest : MonoBehaviour
     [SerializeField] private float moveSpeed = 2f;
     [SerializeField] private float maxWaitTime = 10f;
 
+    public bool isInteractable = false;
     public Action<bool, int> Waiting;
     private Animator _animator;
     private int beerAmount;
     private float waitTimer;
     private Vector3 targetPosition;
     private Seat currentSeat;
-    private bool isInteractable = false;
+    
 
     private void Start()
     {
@@ -160,15 +161,14 @@ public class TavernGuest : MonoBehaviour
         if (isInteractable)
         {
             currentState = GuestState.Leaving;
-            targetPosition = exit.position;
+            transform.parent = exit;
+            currentSeat.Vacate();
         }
     }
 
     private void LeaveTavern()
     {
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
-        if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
-            Destroy(gameObject);
+        Destroy(gameObject);
     }
 
     public int GetBeerAmount() => beerAmount;
