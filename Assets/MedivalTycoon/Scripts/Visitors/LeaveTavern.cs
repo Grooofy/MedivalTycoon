@@ -9,8 +9,12 @@ public class LeaveTavern : MonoBehaviour
     {
         if (other.TryGetComponent(out TavernGuest guest))
         {
+            
             if (guest.isInteractable)
-                Destroy(other.gameObject);
+            {
+                guest.LeaveTavern();
+            }
+               
         }
     }
 }

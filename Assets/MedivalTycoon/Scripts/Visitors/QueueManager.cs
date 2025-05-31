@@ -8,6 +8,7 @@ public class QueueManager : MonoBehaviour
     [SerializeField] private Transform[] queuePositions;
     [SerializeField] private int maxQueueLength = 5;
     [SerializeField] private SeatManager _seatManager;
+   
 
     private Queue<TavernGuest> guestQueue = new Queue<TavernGuest>();
 
@@ -40,6 +41,7 @@ public class QueueManager : MonoBehaviour
 
     public void AssignSeatToNextGuest(Seat seat)
     {
+            
         if (guestQueue.Count > 0 && seat != null && !seat.IsOccupied)
         {
             seat.Occupy(guestQueue.Peek());

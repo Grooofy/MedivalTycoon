@@ -6,7 +6,7 @@ using UnityEngine;
 public class Seat : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI beerText;
-    public bool IsOccupied { get; private set; }
+    public bool IsOccupied  { get; private set; }
     private TavernGuest _guest;
     private int requiredBeer;
     private WaitForSeconds _delay = new WaitForSeconds(0.5f);

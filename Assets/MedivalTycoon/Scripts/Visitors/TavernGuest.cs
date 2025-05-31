@@ -26,14 +26,16 @@ public class TavernGuest : MonoBehaviour
     public bool isInteractable = false;
     public Action<bool, int> Waiting;
     private Animator _animator;
+    private Transform _exit;
     private int beerAmount;
     private float waitTimer;
     private Vector3 targetPosition;
     private Seat currentSeat;
-    
 
-    private void Start()
+
+    public void Start()
     {
+        _exit = FindObjectOfType<LeaveTavern>().transform;
         currentState = GuestState.InQueue;
         beerAmount = Random.Range(1, 5);
         var guestGameObject = Instantiate(modelPrefab[Random.Range(0, modelPrefab.Count)], transform);
@@ -45,7 +47,7 @@ public class TavernGuest : MonoBehaviour
     {
         while (true)
         {
-            Debug.Log(currentState+"State");
+            Debug.Log(currentState + "State");
             switch (currentState)
             {
                 case GuestState.InQueue:
@@ -69,7 +71,6 @@ public class TavernGuest : MonoBehaviour
                     isInteractable = true;
                     yield break;
                 case GuestState.Leaving:
-                    LeaveTavern();
                     yield break;
             }
 
@@ -134,7 +135,7 @@ public class TavernGuest : MonoBehaviour
     {
         waitTimer += Time.deltaTime;
         Waiting?.Invoke(true, beerAmount);
-        
+
         if (waitTimer >= maxWaitTime)
         {
             currentState = GuestState.Leaving;
@@ -162,11 +163,10 @@ public class TavernGuest : MonoBehaviour
         {
             currentState = GuestState.Leaving;
             transform.parent = exit;
-            currentSeat.Vacate();
         }
     }
 
-    private void LeaveTavern()
+    public void LeaveTavern()
     {
         Destroy(gameObject);
     }
