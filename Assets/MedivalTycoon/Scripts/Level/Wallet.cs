@@ -4,19 +4,18 @@ using UnityEngine.Events;
 
 public class Wallet : MonoBehaviour
 {
-    [SerializeField] private LoadingGameSettings _loadingGameSettings;
-    [SerializeField] private int _step;
-
     public UnityAction<int> CoinsChanged;
+
+    private LoadingGameSettings _loadingGameSettings;
+    private int _step;
+    private int _coins;
     
     private Coroutine _addedCoins;
     private Coroutine _removedCoins;
-
-    private int _coins;
-    
   
-    private void Start()
+    public void Initilize(LoadingGameSettings loadingGameSettings)
     {
+        _loadingGameSettings = loadingGameSettings;
         LoadCoinsCount();
     }
     
@@ -33,7 +32,6 @@ public class Wallet : MonoBehaviour
         }
     }
     
-
     public void StartRemoveCoins(int countCoins, int step)
     {
         if (_removedCoins == null)

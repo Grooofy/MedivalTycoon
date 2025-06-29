@@ -1,9 +1,11 @@
+using Characters;
 using UnityEngine;
 
 public class TableTrigger : MonoBehaviour, ITrigger
 {
     [SerializeField] private BoxCollider _boxCollider;
     [SerializeField] private Table _table;
+    [SerializeField] private Wallet _wallet;
 
     private int _step = 1;
     private bool _isBuilding;
@@ -21,26 +23,26 @@ public class TableTrigger : MonoBehaviour, ITrigger
 
     public void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out Wallet wallet))
+        if (other.TryGetComponent(out Bartender wallet))
         {
-            _isBuilding = wallet.TryRemoveCoin(_table.Price);
+            _isBuilding = _wallet.TryRemoveCoin(_table.Price);
         }
     }
 
     public void OnTriggerStay(Collider other)
     {
-        if (other.TryGetComponent(out Wallet wallet) && _isBuilding)
+        if (other.TryGetComponent(out Bartender wallet) && _isBuilding)
         {
-            wallet.StartRemoveCoins(_table.Price, _step);
+            _wallet.StartRemoveCoins(_table.Price, _step);
             _table.ReducePrice(_step);
         }
     }
 
     public void OnTriggerExit(Collider other)
     {
-        if (other.TryGetComponent(out Wallet wallet))
+        if (other.TryGetComponent(out Bartender wallet))
         {
-            wallet.StopRemoveCoins();
+            _wallet.StopRemoveCoins();
             _table.StopReducePrice();
             _go = true;
         }

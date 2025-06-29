@@ -11,7 +11,7 @@ namespace Characters
         [SerializeField] private ButtonsTransmitter _buttonsTransmitter;
         [SerializeField] private SwitcherSelectedCharacter _switcherSelectedCharacter;
 
-        private void Start()
+        public void CreateCharacters()
         {
             _characterCreator.Create(_characterInputController, _joystick);
             _buttonsTransmitter.Initialize();
@@ -19,7 +19,7 @@ namespace Characters
             _cameraFollower.Initialize(_characterCreator.Characters, _switcherSelectedCharacter, _characterCreator.StartSelectedCharacter);
         }
 
-        private void Update()
+        public void MoveCharacter()
         {
             _characterInputController.ReadMoveDirection();
             _cameraFollower.Move();
