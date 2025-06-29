@@ -2,18 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoverStoper : MonoBehaviour
+
+namespace Characters
 {
-    [SerializeField] CharacterInputController _inputController;
-
-
-    public void TurnOffMove()
+    public class MoverStoper : MonoBehaviour
     {
-        _inputController.IsStop = true;
-    }
+        [SerializeField] CharacterInputController _inputController;
 
-    public void TurnOnMove()
-    {
-        _inputController.IsStop = false;
+
+        public void TurnOffMove()
+        {
+            _inputController.IsStop = true;
+        }
+
+        public void TurnOnMove()
+        {
+            _inputController.IsStop = false;
+        }
     }
 }
+

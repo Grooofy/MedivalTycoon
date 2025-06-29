@@ -1,4 +1,5 @@
 using System.Collections;
+using Characters;
 using UnityEngine;
 
 public class LeverBarrelToBeer : MonoBehaviour

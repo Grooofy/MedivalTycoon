@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Characters;
+using UnityEngine;
 
 public class PropsTaker : MonoBehaviour, ITrigger
 {

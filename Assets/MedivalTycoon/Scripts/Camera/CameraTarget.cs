@@ -1,33 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+using Characters;
 using UnityEngine.Events;
 
-public class CameraTarget : MonoBehaviour
+public class CameraTarget : IDisposable
 {
-    [SerializeField] private List<SwitchInputController> _switchers;
+    private SwitcherSelectedCharacter _switcher;
     public UnityAction<int> TargetReady;
 
-    private void OnEnable()
+    public void Initilize(SwitcherSelectedCharacter switcher)
     {
-        foreach (var switcher in _switchers)
-        {
-            switcher.Activate += TargetReady;
-        }
+        _switcher = switcher;
+        _switcher.Activate += TargetReady;
     }
 
-    private void OnDisable()
+    public void Dispose()
     {
-        foreach (var switcher in _switchers)
-        {
-            switcher.Activate -= TargetReady;
-        }
+        _switcher.Activate -= TargetReady;
     }
-
-
-    public Transform Get(int id)
-    {
-        return _switchers[id].transform;
-    }
-    
 }

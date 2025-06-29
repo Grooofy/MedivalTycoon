@@ -1,7 +1,13 @@
 using UnityEngine;
 
-public interface ICharacter
+namespace Characters
 {
-    public void Move(Vector3 direction);
+    public interface ICharacter
+    {
+        public void Initialize(Worker worker);
+        public void Move(Vector3 direction);
+        public Vector3 GetPosition();
 
+    }
 }
+

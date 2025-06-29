@@ -1,3 +1,4 @@
+using Characters;
 using UnityEngine;
 
 public class PropsGiver : MonoBehaviour, ITrigger

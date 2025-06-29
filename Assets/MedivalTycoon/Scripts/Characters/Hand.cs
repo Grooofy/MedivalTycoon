@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-
-public class Hand : MonoBehaviour, IPropsMover
+namespace Characters
+{
+    public class Hand : MonoBehaviour, IPropsMover
 {
     public Action<bool> Fulling { get; set; }
     [SerializeField] private List<Point> _points;
@@ -84,3 +85,5 @@ public class Hand : MonoBehaviour, IPropsMover
     public void RegisterProp(Props props) { }
 
 }
+}
+

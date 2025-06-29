@@ -3,16 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GuestTaker : MonoBehaviour
+
+namespace Characters
 {
-    [SerializeField] private Point _point;
-    
-    
-    private void OnTriggerEnter(Collider other)
+    public class GuestTaker : MonoBehaviour
     {
-        if (other.TryGetComponent(out TavernGuest guest))
+        [SerializeField] private Point _point;
+    
+    
+        private void OnTriggerEnter(Collider other)
         {
-            guest.InteractWithGuard(_point.transform);
+            if (other.TryGetComponent(out TavernGuest guest))
+            {
+                guest.InteractWithGuard(_point.transform);
+            }
         }
     }
 }
+

@@ -1,9 +1,19 @@
-﻿using UnityEngine;
+﻿using Characters;
+using UnityEngine;
 
 public class ModelButton : MonoBehaviour
-{
-    [SerializeField] private Worker _worker;
+{ 
+    private Worker _worker;
 
+    public void Initialize(Worker worker)
+    {
+        if (worker == null)
+        {
+            Debug.LogError($"Worker {worker.name} is null");
+        }
+        _worker = worker;
+    }
+    
     public void SelectWorker()
     {
         _worker.ChangeValueSelect();
