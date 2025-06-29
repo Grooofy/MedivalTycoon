@@ -7674,6 +7674,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _boxCollider: {fileID: 402595722}
   _table: {fileID: 410789116}
+  _wallet: {fileID: 1888693656}
 --- !u!65 &402595722
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -27445,8 +27446,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterManager: {fileID: 593555961}
-  _loadingGameSettings: {fileID: 0}
-  _wallet: {fileID: 0}
+  _loadingGameSettings: {fileID: 1280256300}
+  _wallet: {fileID: 1888693656}
 --- !u!1001 &1117242404
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -35666,7 +35667,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7038891403986418778, guid: 909ebd970bf26ab4485ed164ba355895, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 4.6413574
+      value: 4.6414185
       objectReference: {fileID: 0}
     - target: {fileID: 7038891404728702251, guid: 909ebd970bf26ab4485ed164ba355895, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -42282,6 +42283,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _boxCollider: {fileID: 1543102818}
   _table: {fileID: 646853920}
+  _wallet: {fileID: 1888693656}
 --- !u!65 &1543102818
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -57344,7 +57346,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a66eab5d82f07e4aa45ca734f87b1ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _wallet: {fileID: 0}
+  _wallet: {fileID: 1888693656}
   _gameMoney: {fileID: 1632991284}
 --- !u!4 &1954291550 stripped
 Transform:
@@ -63761,11 +63763,11 @@ SceneRoots:
   m_Roots:
   - {fileID: 1113492498}
   - {fileID: 1888693657}
+  - {fileID: 1280256299}
   - {fileID: 1467678142}
   - {fileID: 593555959}
   - {fileID: 2075315242}
   - {fileID: 2120647594}
-  - {fileID: 1280256299}
   - {fileID: 79604542}
   - {fileID: 418306350}
   - {fileID: 667030134}
