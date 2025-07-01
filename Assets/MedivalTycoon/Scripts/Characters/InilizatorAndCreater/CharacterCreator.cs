@@ -26,10 +26,10 @@ namespace Characters
                 {
                     StartSelectedCharacter = character;
                 }
+                character.HandTool.CreatePoints(character.GetNumberWearableObjects(), character.GetDistanceBetweenPoints());
                 Characters.Add(character);
             }
             _inputInitializer.InitializeInputController(controller, Characters,  joystick, StartSelectedCharacter);
         }
-        
     }
 }

@@ -19,7 +19,12 @@ public class BeerCreator : MonoBehaviour, IPropsMover
     private bool _isFull;
     private int _currentCountBeerPoint;
 
-    
+
+    public void CreatePoints(int cout, float offset)
+    {
+        throw new NotImplementedException();
+    }
+
     public void RegisterProps(Queue<Props> props)
     {
         _currentCountBeerPoint = _amountBarrelToBeer;

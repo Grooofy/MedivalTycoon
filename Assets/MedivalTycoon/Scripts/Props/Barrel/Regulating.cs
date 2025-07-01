@@ -23,7 +23,11 @@ public class Regulating : MonoBehaviour, IPropsMover
     private int _amountPoint;
     private bool _isFull;
     private TavernGuest _guest;
-    
+  
+    public void CreatePoints(int cout, float offset)
+    {
+        throw new NotImplementedException();
+    }
 
     public void RegisterProps(Queue<Props> props)
     {

@@ -5,9 +5,12 @@ namespace Characters
     [RequireComponent(typeof(CharacterController))]
     public class Character : MonoBehaviour, ICharacter
     {
+        public IPropsMover HandTool => _hand;
+        
         private Worker _worker;
         private CharacterController _controller;
         private Animator _animator;
+        private IPropsMover _hand;
    
 
         public void Initialize(Worker worker)
@@ -15,17 +18,23 @@ namespace Characters
             _worker = worker;
             _controller = GetComponent<CharacterController>();
             _animator = GetComponentInChildren<Animator>();
-        }
-
-        public int GetId()
-        {
-            return _worker.Id;
+            _hand = GetComponentInChildren<IPropsMover>();
+            if (_hand == null)
+            {
+                Debug.LogWarning("No hand selected!!!!!!!!!!");
+            }
         }
    
         public int GetNumberWearableObjects()
         {
             return _worker.NumberWearableObjects;
         }
+
+        public float GetDistanceBetweenPoints()
+        {
+            return _worker.DistanceBetweenPoints;
+        }
+
 
         public void Move(Vector3 direction)
         {
