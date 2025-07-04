@@ -31,7 +31,7 @@ public class PropsGiver : MonoBehaviour, ITrigger
     public void OnTriggerEnter(Collider other)
     {
         if (!other.TryGetComponent(out Hand hand)) return;
-        if (hand.IsFull) return;
+       
         Debug.Log(hand.name + " is full");
         hand.RegisterProps(_regulating);
         StartCoroutine(hand.FillingPoints());

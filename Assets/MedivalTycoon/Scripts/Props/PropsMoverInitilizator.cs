@@ -25,7 +25,7 @@ public class PropsMoverInitilizator : MonoBehaviour
     [SerializeField] private PropsTaker _tableTaker2;
     [SerializeField] private Regulating _tableRegulating2;
 
-    private void Awake()
+    private void Start()
     {
         _barrelGiver.Initialize(_firstRegulating);
         _barrelTaker.Initialize(_secondRegulating);

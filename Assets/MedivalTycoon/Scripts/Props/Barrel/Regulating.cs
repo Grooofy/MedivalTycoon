@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Regulating : MonoBehaviour, IPropsMover
 {
-    public Action<bool> Fulling { get; set; }
+    public UnityAction<bool> Fulling;
     public Action<bool> PointFill;
 
     [SerializeField] private List<Point> _points = new List<Point>();

@@ -21,12 +21,12 @@ namespace Characters
             {
                 ICharacter character = Instantiate(_characterPrefabs[i], _spawnPoints[i]);
                 character.Initialize(_workers[i]);
+                character.HandTool.CreatePoints(character.GetNumberWearableObjects(), character.GetDistanceBetweenPoints());
                 
                 if (_workers[i].IsSelect)
                 {
                     StartSelectedCharacter = character;
                 }
-                character.HandTool.CreatePoints(character.GetNumberWearableObjects(), character.GetDistanceBetweenPoints());
                 Characters.Add(character);
             }
             _inputInitializer.InitializeInputController(controller, Characters,  joystick, StartSelectedCharacter);

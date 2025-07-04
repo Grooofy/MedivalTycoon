@@ -16532,6 +16532,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 681550140}
+  - component: {fileID: 681550141}
   m_Layer: 0
   m_Name: Warehouse
   m_TagString: Untagged
@@ -16560,6 +16561,29 @@ Transform:
   - {fileID: 51976284}
   m_Father: {fileID: 2120647594}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &681550141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 681550139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4909027ff9af6b049848801fb13b9961, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _barrelTaker: {fileID: 1669454048}
+  _barrelGiver: {fileID: 1985857831}
+  _firstRegulating: {fileID: 428411083}
+  _secondRegulating: {fileID: 1010662467}
+  _beerTaker: {fileID: 1669454048}
+  _beerGiver: {fileID: 819556163}
+  _beerRegulating: {fileID: 51976285}
+  _tableTaker: {fileID: 0}
+  _tableRegulating: {fileID: 0}
+  _tableTaker2: {fileID: 0}
+  _tableRegulating2: {fileID: 0}
 --- !u!1001 &681895046
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -36750,7 +36774,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7038891403986418778, guid: 909ebd970bf26ab4485ed164ba355895, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 4.64151
+      value: 4.641449
       objectReference: {fileID: 0}
     - target: {fileID: 7038891404728702251, guid: 909ebd970bf26ab4485ed164ba355895, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -59175,7 +59199,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 108.7
+  m_fontSize: 115.6
   m_fontSizeBase: 90
   m_fontWeight: 400
   m_enableAutoSizing: 1

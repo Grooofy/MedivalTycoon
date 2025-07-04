@@ -3,11 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 
 public class BeerCreator : MonoBehaviour, IPropsMover
 {
-    public Action<bool> Fulling { get; set; }
+    public UnityAction<bool> Fulling { get; set; }
     [SerializeField] private int _amountBarrelToBeer;
     [SerializeField] private List<Point> _points = new List<Point>();
     

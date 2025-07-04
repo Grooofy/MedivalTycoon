@@ -38,7 +38,7 @@ namespace Characters
     
         public void ReadMoveDirection()
         {
-            if (_joystick.isActiveAndEnabled)
+            if (_joystick is not null && _joystick.isActiveAndEnabled)
             {
                 ReadMove();
             }

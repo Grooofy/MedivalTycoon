@@ -3,13 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Characters
 {
     public class Hand : MonoBehaviour, IPropsMover
     {
-        public Action<bool> Fulling { get; set; }
-        public bool IsFull { get; private set; }
+        public bool IsFull { get; private set; } 
 
         private List<Point> _points = new List<Point>();
         private Queue<Props> _props = new Queue<Props>();
@@ -27,6 +27,7 @@ namespace Characters
             }
 
             _props = regulating.GetTo(_points.Count);
+            Debug.Log(_points.Count + " points registered");
             _index = 0;
         }
 
@@ -49,7 +50,6 @@ namespace Characters
                 if (_props.Count == 0)
                 {
                     IsFull = true;
-                    Fulling?.Invoke(true);
                     _handProps = new Queue<Props>(temporaryQueue.Reverse());
                 }
 
@@ -86,9 +86,9 @@ namespace Characters
             for (int i = 0; i < cout; i++)
             {
                 var point = ObjectFactory.CreateObjectWithComponent<Point>("Point" + i);
-                Instantiate(point, transform.position, Quaternion.identity);
                 point.transform.parent = transform;
                 point.transform.localPosition =  Vector3.up * (i* offset);
+                point.IsFill = false;
                 _points.Add(point);
             }
         }
