@@ -9,6 +9,8 @@ public class Level : ScriptableObject
     [SerializeField] private int _numberVisitors;
     [SerializeField] private float _seconds;
     [SerializeField] private bool _isComplete;
+    [SerializeField] private int _tableAmount;
+    [SerializeField] private string _tableCost;
 
     public int NumberLevel => _numberLevel;
     public int StartMoney => _startMoney;
@@ -16,4 +18,7 @@ public class Level : ScriptableObject
     public float Seconds => _seconds;
 
     public bool IsComplete => _isComplete;
+    
+    public int TableAmount => _tableAmount;
+    public string TableCost => _tableCost;
 }

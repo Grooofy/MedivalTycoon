@@ -7,4 +7,6 @@ public class SaveData
     public int StartMoney; 
     public int NumberVisitors;
     public float Seconds;
+    public int TableAmount;
+    public string TableCost;
 }

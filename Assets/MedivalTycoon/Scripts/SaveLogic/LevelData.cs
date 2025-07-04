@@ -29,5 +29,7 @@ public class LevelData : MonoBehaviour
         _myData.StartMoney = level.StartMoney;
         _myData.NumberVisitors = level.NumberVisitors;
         _myData.Seconds = level.Seconds;
+        _myData.TableAmount = level.TableAmount;
+        _myData.TableCost = level.TableCost;
     }
 }

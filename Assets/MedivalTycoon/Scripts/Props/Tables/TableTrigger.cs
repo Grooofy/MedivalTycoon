@@ -1,58 +1,51 @@
+using System;
 using Characters;
+using Tables;
 using UnityEngine;
 
-public class TableTrigger : MonoBehaviour, ITrigger
+public class TableTrigger : MonoBehaviour
 {
-    [SerializeField] private BoxCollider _boxCollider;
-    [SerializeField] private Table _table;
-    [SerializeField] private Wallet _wallet;
+    private ConstructionHandler _handler;
+    private Table _table;
+    private BoxCollider _boxCollider;
 
-    private int _step = 1;
-    private bool _isBuilding;
-    private bool _go;
-
-    private void OnEnable()
+    public ViewTable Initialize(ConstructionHandler handler)
     {
-        _table.LinedUp += ActionCollider;
+        _handler = handler;
+        _boxCollider = GetComponent<BoxCollider>();
+         return GetComponentInChildren<ViewTable>();
     }
 
-    private void OnDisable()
+    public Table CreateTable(Table prefab)
     {
-        _table.LinedUp -= ActionCollider;
+        _table =  Instantiate(prefab, transform.position, Quaternion.identity, transform);
+        _table.LinedUp += EnableCollider;
+        return _table;
     }
 
-    public void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out Bartender wallet))
+        if (other.TryGetComponent<Bartender>(out _))
         {
-            _isBuilding = _wallet.TryRemoveCoin(_table.Price);
+            _handler.StartBuilding(_table);
         }
     }
 
-    public void OnTriggerStay(Collider other)
+    private void OnTriggerExit(Collider other)
     {
-        if (other.TryGetComponent(out Bartender wallet) && _isBuilding)
+        if (other.TryGetComponent<Bartender>(out _))
         {
-            _wallet.StartRemoveCoins(_table.Price, _step);
-            _table.ReducePrice(_step);
+            _handler.StopBuilding();
         }
     }
 
-    public void OnTriggerExit(Collider other)
+    private void EnableCollider()
     {
-        if (other.TryGetComponent(out Bartender wallet))
-        {
-            _wallet.StopRemoveCoins();
-            _table.StopReducePrice();
-            _go = true;
-        }
+        _boxCollider.isTrigger = false;
     }
 
-    private void ActionCollider()
+    private void OnDestroy()
     {
-        if (_go)
-        {
-            _boxCollider.isTrigger = false;
-        }
-    }   
+        _table.LinedUp -= EnableCollider;
+    }
 }

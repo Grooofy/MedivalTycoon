@@ -11,6 +11,8 @@ namespace Characters
         private CharacterController _controller;
         private Animator _animator;
         private IPropsMover _hand;
+        
+        private Vector3 _velocity;
    
 
         public void Initialize(Worker worker)
@@ -19,10 +21,6 @@ namespace Characters
             _controller = GetComponent<CharacterController>();
             _animator = GetComponentInChildren<Animator>();
             _hand = GetComponentInChildren<IPropsMover>();
-            if (_hand == null)
-            {
-                Debug.LogWarning("No hand selected!!!!!!!!!!");
-            }
         }
    
         public int GetNumberWearableObjects()
@@ -40,10 +38,22 @@ namespace Characters
         {
             TryRotate(direction);
             var normalizeDirection = Vector3.Normalize(direction);
-            _controller.Move(normalizeDirection * _worker.Speed * Time.deltaTime);
+            MoveController(normalizeDirection);
             _animator.SetFloat("Speed", _controller.velocity.magnitude);
         }
-
+        
+        private void MoveController(Vector3 normalizeDirection)
+        {
+            _controller.Move((normalizeDirection + _velocity) * _worker.Speed * Time.deltaTime);
+            
+            if (!_controller.isGrounded)
+                _velocity.y += -9.81f * Time.deltaTime;
+            else if (_velocity.y < 0)
+                _velocity.y = -2f;
+            
+            Vector3.Normalize(_velocity);
+        }
+        
         public Vector3 GetPosition()
         {
             return _controller.transform.position;

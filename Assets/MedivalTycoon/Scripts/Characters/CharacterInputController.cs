@@ -16,14 +16,13 @@ namespace Characters
         private float _angelOffset = 70;
         private float _cosX;
         private float _sinX;
-        private float _y;
+       
         
         public void Initialize(List<ICharacter> characters, FloatingJoystick joystick, ICharacter currentCharacter = null)
         {
             _characters = characters;
             _currentCharacter = currentCharacter;
             _joystick = joystick;
-            _y = transform.position.y;
         }
 
         public void SwitchCharacter(ICharacter character)
@@ -42,7 +41,6 @@ namespace Characters
             if (_joystick.isActiveAndEnabled)
             {
                 ReadMove();
-                CheckGround();
             }
         }
     
@@ -57,14 +55,7 @@ namespace Characters
             _moveDirection = new Vector3(newHorizontal , 0, newVertical);
             _currentCharacter.Move(_moveDirection);
         }
-    
-        private void CheckGround()
-        {
-            if (transform.position.y > _y)
-            {
-                transform.position = new Vector3(transform.position.x, _y, transform.position.z);
-            }
-        }
+      
     
         private float CalculateOffSetX(float x, float y)
         {

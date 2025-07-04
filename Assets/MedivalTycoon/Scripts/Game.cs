@@ -1,4 +1,6 @@
 ﻿using Characters;
+using Tables;
+using UI;
 using UnityEngine;
 
 namespace MedivalTycoon
@@ -7,17 +9,22 @@ namespace MedivalTycoon
     {
         [SerializeField] private CharacterManager _characterManager;
         [SerializeField] private LoadingGameSettings _loadingGameSettings;
-        [SerializeField] private Wallet _wallet;
+        [SerializeField] private GameUIManager _gameUIManager;
+        [SerializeField] private TableManager _tableManager;
         
         
         private void Start()
         {
+            _loadingGameSettings.Load();
             _characterManager.CreateCharacters();
-            _wallet.Initilize(_loadingGameSettings);
+            _gameUIManager.ShowUIInfo(_loadingGameSettings);
+            _tableManager.Initialize(_loadingGameSettings);
+            _tableManager.CreateTables(_loadingGameSettings);
         }
 
         private void Update()
         {
+            _gameUIManager.UpdateUIInfo();
             _characterManager.MoveCharacter();
         }
     }

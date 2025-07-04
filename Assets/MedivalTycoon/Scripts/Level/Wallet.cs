@@ -5,6 +5,7 @@ using UnityEngine.Events;
 public class Wallet : MonoBehaviour
 {
     public UnityAction<int> CoinsChanged;
+    public int Coins => _coins;
 
     private LoadingGameSettings _loadingGameSettings;
     private int _step;
@@ -13,7 +14,7 @@ public class Wallet : MonoBehaviour
     private Coroutine _addedCoins;
     private Coroutine _removedCoins;
   
-    public void Initilize(LoadingGameSettings loadingGameSettings)
+    public void Initialize(LoadingGameSettings loadingGameSettings)
     {
         _loadingGameSettings = loadingGameSettings;
         LoadCoinsCount();
@@ -45,7 +46,7 @@ public class Wallet : MonoBehaviour
         }
     }
 
-    public void StopRemoveCoins()
+    private void StopRemoveCoins()
     {
         if (_removedCoins != null) 
             StopCoroutine(_removedCoins);

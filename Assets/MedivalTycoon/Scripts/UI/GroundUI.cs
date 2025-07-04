@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class GroundUI : MonoBehaviour
 {
-    
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private float fadeDuration = 1f; // Время анимации
 

@@ -1,82 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
 using UnityEngine.Events;
 
-
-public class Table : MonoBehaviour
+namespace Tables
 {
-    [SerializeField] private int _price;
-    [SerializeField] private float _speedBuilding;
-    [SerializeField] private ParticleSystem _smoke;
-    [SerializeField] private List<Seat> _seatPoints = new List<Seat>();
-    [SerializeField] private SeatManager _seatManager;
-
-    public TweenCallback LinedUp;
-    public UnityAction<int> PriceChanged;
-    public int Price => _price;
-
-    private Coroutine _priceChanged;
-    private bool isInitialized;
-
-
-    private void OnEnable()
+    public class Table : MonoBehaviour
     {
-        LinedUp += InitializeSeats;
-    }
+        public event UnityAction<int> PriceChanged;
+        public event UnityAction LinedUp;
+        public bool IsBuilt => Price <= 0;
+        public int Price { get; private set; }
 
-    private void OnDisable()
-    {
-        LinedUp -= InitializeSeats;
-    }
 
-    public void ReducePrice(int step)
-    {
-        if (_priceChanged == null)
+        public void Initialize(int startPrice, TableBuilderAnimation tableBuilderAnimation)
         {
-            _priceChanged = StartCoroutine(ReducesPrice(step));
-        }
-        else
-        {
-            StopReducePrice();
-            _priceChanged = StartCoroutine(ReducesPrice(step));
-        }
-    }
-    
-    public void InitializeSeats()
-    {
-        if (isInitialized) return;
-
-        foreach (Seat seat in _seatPoints)
-        {
-            _seatManager.AddSeat(seat);
+            Price = startPrice;
         }
 
-        isInitialized = true;
-    }
-
-    public void StopReducePrice()
-    {
-        if (_priceChanged != null) 
-            StopCoroutine(_priceChanged);
-    }
-    
-    private IEnumerator ReducesPrice(int step)
-    {
-        while (_price != 0)
+        public void ReducePrice(int step)
         {
-            _price -= step;
-            PriceChanged?.Invoke(_price);
-            yield return null;
+            Price = Mathf.Max(Price - step, 0);
+            PriceChanged?.Invoke(Price);
+
+            if (Price <= 0)
+            {
+                LinedUp?.Invoke();
+            }
         }
-        Build();
     }
-    
-    private void Build()
-    {
-        _smoke.Play();
-        transform.DOScale(Vector3.one, _speedBuilding).OnComplete(LinedUp);
-    }
-    
 }

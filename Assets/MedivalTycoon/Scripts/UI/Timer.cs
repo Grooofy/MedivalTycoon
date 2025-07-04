@@ -1,43 +1,57 @@
 ﻿using UnityEngine;
 using TMPro;
+using UnityEngine.Serialization;
 
 
 public class Timer : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI GameCountTimeText;
-    [SerializeField] LoadingGameSettings _loadingGameSettings;  
-
+    private TextMeshProUGUI _gameCountTimeText;
     private float _gameTime;
-    private float timer = 0;
-    private int _minut;
+    private float _tickTimer = 0;
+    private int _minutes;
     private float _second;
+    private bool _isRunning;
 
-    private void Start()
+    public void Initialize(LoadingGameSettings loadingGameSettings)
     {
-        _gameTime = _loadingGameSettings.GetSeconds();
+        _gameCountTimeText = GetComponentInChildren<TextMeshProUGUI>();
+        _gameTime = loadingGameSettings.GetSeconds();
+        _isRunning = true;
     }
 
-    void Update()
+    public void UpdateTimer()
     {
-        _minut = (int)(_gameTime / 60);
+        if (_isRunning == false) return;
+        
+        _minutes = (int)(_gameTime / 60);
         _second = _gameTime % 60;
-        timer += Time.deltaTime;
+        _tickTimer += Time.deltaTime;
         ShowTimer();
 
-        if (timer >= 1f)
+        if (_tickTimer >= 1f)
         {
-            timer = 0;
+            _tickTimer = 0;
             _gameTime--;
             
-            if (_minut <= 0 & _second <= 0)
+            if (_minutes <= 0 && _second <= 0)
             {
                 
             }
         }
     }
+    
+    public void Stop()
+    {
+        _isRunning = false;
+    }
+
+    public void Resume()
+    {
+        _isRunning = true;
+    }
 
     private void ShowTimer()
     {
-        GameCountTimeText.text = _minut + ":" + string.Format("{0:00}", _second);
+        _gameCountTimeText.text = _minutes + ":" + string.Format("{0:00}", _second);
     }
 }

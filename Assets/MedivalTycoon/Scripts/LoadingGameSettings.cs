@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class LoadingGameSettings : MonoBehaviour
@@ -5,6 +6,10 @@ public class LoadingGameSettings : MonoBehaviour
     private ISaveSystem _iSaveSystem = new PlayerPrefsSystem();
     private SaveData _saveData;
 
+    public void Load()
+    {
+        _saveData = _iSaveSystem.Load();
+    }
 
     public float GetSeconds()
     {
@@ -21,9 +26,15 @@ public class LoadingGameSettings : MonoBehaviour
         return _saveData.StartMoney;
     }
 
-    private void Awake()
+    public int GetTableAmount()
     {
-        _saveData = _iSaveSystem.Load();
+        return _saveData.TableAmount;
     }
+    
+    public int[] GetTableCost()
+    {
+        return _saveData.TableCost.Split(',').Select(s => int.Parse(s)).ToArray();
+    }
+
 
 }

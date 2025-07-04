@@ -30,7 +30,7 @@ public class PropsMoverInitilizator : MonoBehaviour
         _barrelGiver.Initialize(_firstRegulating);
         _barrelTaker.Initialize(_secondRegulating);
         _beerGiver.Initialize(_beerRegulating);
-        _beerTaker.Initialize(_beerRegulating);
+//        _beerTaker.Initialize(_beerRegulating);
         _tableTaker.Initialize(_tableRegulating);
         //_tableTaker2.Initialize(_tableRegulating2);
     }
