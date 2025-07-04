@@ -8,6 +8,7 @@ public class TableTrigger : MonoBehaviour
     private ConstructionHandler _handler;
     private Table _table;
     private BoxCollider _boxCollider;
+    private bool _isBuild;
 
     public ViewTable Initialize(ConstructionHandler handler)
     {
@@ -36,12 +37,17 @@ public class TableTrigger : MonoBehaviour
         if (other.TryGetComponent<Bartender>(out _))
         {
             _handler.StopBuilding();
+            
+            if (_isBuild)
+            {
+                _boxCollider.isTrigger = false;
+            }
         }
     }
 
     private void EnableCollider()
     {
-        _boxCollider.isTrigger = false;
+        _isBuild = true;
     }
 
     private void OnDestroy()

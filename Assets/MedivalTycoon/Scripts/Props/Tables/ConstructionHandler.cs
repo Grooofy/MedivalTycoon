@@ -6,7 +6,7 @@ namespace Tables
     public class ConstructionHandler : MonoBehaviour
     {
         private Wallet _wallet;
-        private float _stepCooldown = 0.003f;
+        private float _stepCooldown = 0.05f; 
         private int _step = 1;
 
         private Coroutine _buildRoutine;
