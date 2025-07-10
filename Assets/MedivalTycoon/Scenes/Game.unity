@@ -6236,6 +6236,7 @@ GameObject:
   - component: {fileID: 307822170}
   - component: {fileID: 307822169}
   - component: {fileID: 307822168}
+  - component: {fileID: 307822172}
   m_Layer: 5
   m_Name: LeverPressed
   m_TagString: Untagged
@@ -6339,6 +6340,18 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &307822172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 307822164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15e47e09e4881214fa3d0e33be456dc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &308754789
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12613,8 +12626,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15e47e09e4881214fa3d0e33be456dc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvasGroup: {fileID: 517368228}
-  fadeDuration: 1
 --- !u!4 &521550639 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8126234637730377396, guid: 41a2edecaedc0bb4e8c1ad3055928721, type: 3}
@@ -16577,6 +16588,7 @@ MonoBehaviour:
   _barrelGiver: {fileID: 1985857831}
   _firstRegulating: {fileID: 428411083}
   _secondRegulating: {fileID: 1010662467}
+  _leverGetBarrel: {fileID: 3399816450162927343}
   _beerTaker: {fileID: 1669454048}
   _beerGiver: {fileID: 819556163}
   _beerRegulating: {fileID: 51976285}
@@ -17278,7 +17290,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.030479169, y: 0.22815166}
   m_AnchorMax: {x: 0.1063999, y: 0.9535556}
-  m_AnchoredPosition: {x: -1.7192383, y: -0.7510376}
+  m_AnchoredPosition: {x: -1.7192383, y: -0.75109863}
   m_SizeDelta: {x: -3.099001, y: 0.501}
   m_Pivot: {x: 1.2, y: 0.5}
 --- !u!114 &714495355
@@ -36774,7 +36786,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7038891403986418778, guid: 909ebd970bf26ab4485ed164ba355895, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 4.641449
+      value: 4.6414795
       objectReference: {fileID: 0}
     - target: {fileID: 7038891404728702251, guid: 909ebd970bf26ab4485ed164ba355895, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -38493,8 +38505,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9778750c56602204cb641c76f2988633, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvasGroup: {fileID: 0}
-  fadeDuration: 1
 --- !u!1001 &1322192954
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -49718,8 +49728,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15e47e09e4881214fa3d0e33be456dc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvasGroup: {fileID: 1726880890}
-  fadeDuration: 1
 --- !u!1001 &1727867911
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -56253,7 +56261,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.83100003, y: 0.86639804}
   m_AnchorMax: {x: 0.9771877, y: 0.97300005}
-  m_AnchoredPosition: {x: 0.6619873, y: -0.08227539}
+  m_AnchoredPosition: {x: 0.6621094, y: -0.08227539}
   m_SizeDelta: {x: -0.205, y: -0.16446}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1951603759
@@ -57711,7 +57719,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0.36800003, y: 1}
-  m_AnchoredPosition: {x: 0.12966919, y: -0.023132324}
+  m_AnchoredPosition: {x: 0.1296997, y: -0.023132324}
   m_SizeDelta: {x: 1.3785, y: 0.046}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2007340810
@@ -59199,7 +59207,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 124.05
+  m_fontSize: 107.5
   m_fontSizeBase: 90
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -61428,8 +61436,8 @@ GameObject:
   - component: {fileID: 3399816450162668574}
   - component: {fileID: 3399816450159787730}
   - component: {fileID: 3399816450160840594}
-  - component: {fileID: 3399816450162927343}
   - component: {fileID: 3399816450162927344}
+  - component: {fileID: 3399816450162927343}
   m_Layer: 0
   m_Name: Lever
   m_TagString: Untagged
@@ -61449,10 +61457,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11074572023c16941b826aea498f7b8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uiObject: {fileID: 307822164}
-  _animator: {fileID: 1780939514}
-  _regulating: {fileID: 428411083}
-  _collider: {fileID: 3399816450162927344}
 --- !u!135 &3399816450162927344
 SphereCollider:
   m_ObjectHideFlags: 0

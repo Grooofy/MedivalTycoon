@@ -3,19 +3,24 @@ using UnityEngine;
 
 public class LeverGetBarrel : MonoBehaviour
 {
-    [SerializeField] private GameObject _uiObject;
-    [SerializeField] private Animator _animator;
-    [SerializeField] private Regulating _regulating;
-    [SerializeField] private SphereCollider _collider;
-    
-    
-    private void OnEnable()
-    {
-        _animator.SetBool("IsOn", true);
-        _regulating.Fulling += TurnObject;
-    }
+    private GroundUI _uiObject;
+    private Animator _animator;
+    private Regulating _regulating;
+    private SphereCollider _collider;
 
-    private void OnDisable()
+
+    public void Initialize(IPropsMover propsMover)
+    {
+        _regulating = propsMover as Regulating;
+        _collider = GetComponent<SphereCollider>();
+        _uiObject = GetComponentInChildren<GroundUI>().Initialize();
+        _animator = GetComponentInChildren<Animator>();
+        _regulating.Fulling += TurnObject;
+        _animator.SetBool("IsOn", true);
+    }
+   
+
+    private void OnDestroy()
     {
         _regulating.Fulling -= TurnObject;
     }
@@ -24,8 +29,13 @@ public class LeverGetBarrel : MonoBehaviour
     private void TurnObject(bool value)
     {
         _animator.SetBool("IsOn", value);
+        
         _collider.enabled = !value;
-        _uiObject.SetActive(!value);
+        
+        if (value)
+            _uiObject.FadeIn();
+        else
+            _uiObject.FadeOut();
     }
 
     public void OnTriggerEnter(Collider other)

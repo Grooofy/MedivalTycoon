@@ -6,32 +6,30 @@ using System.Collections;
 
 public abstract class Props : MonoBehaviour
 {
-    [SerializeField] private float _moveSpeed;
-    [SerializeField] private float _parabolaHeight;
-    [SerializeField] private Animator _animator; 
-
     public Action MoveEnded;
+    private Animator _animator;
     private Transform _startPoint;
-   
-    
-    internal abstract IEnumerator TryMoveTo(Point endPoint);
+    private float _moveSpeed;
 
+    internal abstract IEnumerator TryMoveTo(Point endPoint);
 
     private const float _endValueScale = 1.5f;
     private const float _startValueScale = 1.0f;
     private const float _durationAnimation = 1f;
-  
 
-    public void Initilization(Transform parent)
+
+    public void Initilization(Transform parent, float moveSpeed)
     {
+        _moveSpeed =  moveSpeed;
         _startPoint = parent;
+        _animator = GetComponent<Animator>();
     }
 
     public void BarrelEmpty()
     {
         ReturnScale();
     }
-    
+
     public void Reset(IPropsMover propsMover, Point point)
     {
         point.IsFill = false;
@@ -40,19 +38,20 @@ public abstract class Props : MonoBehaviour
         ResetAnimation();
         propsMover.RegisterProp(this);
     }
-    
+
     public void ScaleUp()
     {
         transform.DOScale(_endValueScale, _durationAnimation);
     }
-    
+
     internal void MoveTo(Point endPoint)
     {
-        if(endPoint == null) return;
-        
-        transform.position = Vector3.MoveTowards(transform.position, endPoint.transform.position, _moveSpeed * Time.deltaTime);
+        if (endPoint == null) return;
+
+        transform.position =
+            Vector3.MoveTowards(transform.position, endPoint.transform.position, _moveSpeed * Time.deltaTime);
         transform.SetParent(endPoint.transform);
-        
+
         if (IsMinDistance(transform.position, endPoint.transform.position))
         {
             MoveEndAnimation(endPoint);
@@ -65,7 +64,7 @@ public abstract class Props : MonoBehaviour
         return Vector3.Distance(startPosition, endPosition) < minDistance;
     }
 
-    private void MoveEndAnimation(Point endPoint) 
+    private void MoveEndAnimation(Point endPoint)
     {
         _animator.SetTrigger("Take");
         endPoint.Fill();
@@ -76,7 +75,7 @@ public abstract class Props : MonoBehaviour
     {
         transform.DOScale(_startValueScale, _durationAnimation);
     }
-    
+
     private void ResetAnimation()
     {
         _animator.SetTrigger("Reset");

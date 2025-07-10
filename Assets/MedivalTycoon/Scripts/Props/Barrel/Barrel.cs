@@ -1,6 +1,4 @@
 using System.Collections;
-using DG.Tweening;
-using UnityEngine;
 
 public class Barrel : Props
 {
@@ -15,5 +13,4 @@ public class Barrel : Props
         }
         transform.position = endPoint.transform.position;
     }
-    
 }
