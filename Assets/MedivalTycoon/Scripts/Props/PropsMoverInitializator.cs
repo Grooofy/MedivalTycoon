@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class PropsMoverInitilizator : MonoBehaviour
+public class PropsMoverInitializator : MonoBehaviour
 {
     [Header("To Barrel")]
     [SerializeField] private PropsTaker _barrelTaker;
