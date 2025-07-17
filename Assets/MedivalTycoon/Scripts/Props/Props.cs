@@ -2,13 +2,14 @@ using UnityEngine;
 using DG.Tweening;
 using System;
 using System.Collections;
+using Barrels;
+using MedivalTycoon.Scripts.Events;
 
 
 public abstract class Props : MonoBehaviour
 {
-    public Action MoveEnded;
-    private Animator _animator;
     private Transform _startPoint;
+    private BarrelAnimation _barrelAnimation;
     private float _moveSpeed;
 
     internal abstract IEnumerator TryMoveTo(Point endPoint);
@@ -22,7 +23,7 @@ public abstract class Props : MonoBehaviour
     {
         _moveSpeed =  moveSpeed;
         _startPoint = parent;
-        _animator = GetComponent<Animator>();
+        
     }
 
     public void BarrelEmpty()
@@ -54,7 +55,8 @@ public abstract class Props : MonoBehaviour
 
         if (IsMinDistance(transform.position, endPoint.transform.position))
         {
-            MoveEndAnimation(endPoint);
+            EventBus.Raise(new PointFillingEvent());
+            endPoint.Fill();
         }
     }
 
@@ -64,13 +66,6 @@ public abstract class Props : MonoBehaviour
         return Vector3.Distance(startPosition, endPosition) < minDistance;
     }
 
-    private void MoveEndAnimation(Point endPoint)
-    {
-        _animator.SetTrigger("Take");
-        endPoint.Fill();
-        MoveEnded?.Invoke();
-    }
-
     private void ReturnScale()
     {
         transform.DOScale(_startValueScale, _durationAnimation);
@@ -78,6 +73,6 @@ public abstract class Props : MonoBehaviour
 
     private void ResetAnimation()
     {
-        _animator.SetTrigger("Reset");
+      //ВЫзов иветна
     }
 }
