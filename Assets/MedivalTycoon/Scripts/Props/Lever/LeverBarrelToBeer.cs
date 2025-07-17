@@ -2,6 +2,10 @@ using System.Collections;
 using Characters;
 using UnityEngine;
 
+namespace Lever
+{
+    
+
 public class LeverBarrelToBeer : MonoBehaviour
 {
     [SerializeField] private Regulating _firstSpawn;
@@ -20,15 +24,7 @@ public class LeverBarrelToBeer : MonoBehaviour
     private Props _currentBarrel;
 
 
-    private void OnEnable()
-    {
-        _regulating.PointFill += TurnLeverObject;
-    }
-
-    private void OnDisable()
-    {
-        _regulating.PointFill -= TurnLeverObject;
-    }
+  
 
 
     private void Reset(bool value)
@@ -95,4 +91,5 @@ public class LeverBarrelToBeer : MonoBehaviour
         _collider.enabled = true;
         TurnOnUiObject(_groundUIwaiter);
     }
+}
 }

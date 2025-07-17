@@ -7,10 +7,8 @@ using UnityEngine;
 using UnityEngine.Events;
 
 public class Regulating : MonoBehaviour, IPropsMover
-{
-    public UnityAction<bool> Fulling;
-    public Action<bool> PointFill;
-
+{  
+    private const string SourceId = "Barrel";
     [SerializeField] private List<Point> _points = new List<Point>();
     [SerializeField] private Seat _seat;
 
@@ -95,11 +93,9 @@ public class Regulating : MonoBehaviour, IPropsMover
             if (_index == _amountPoint)
             {
                 _index = _amountPoint - 1;
-                Fulling?.Invoke(true);
+                EventBus.Raise(new PropsMoverFullingPointEvent(true, SourceId));
                 _isFull = true;
             }
-            
-            PointFill?.Invoke(true);
             yield return _wait;
         }
         _pointsProps = new Queue<Props>(_pointsProps.Reverse());
@@ -133,7 +129,7 @@ public class Regulating : MonoBehaviour, IPropsMover
             {
                 _index = 0;
                 _isFull = false;
-                Fulling?.Invoke(false);
+                EventBus.Raise(new PropsMoverFullingPointEvent(false, SourceId));
                 ResetPoints();
             }
         }

@@ -7,10 +7,9 @@ public class GroundUI : MonoBehaviour
     private float _fadeDuration = 1f; 
     private bool _isFading = false;
 
-    public GroundUI Initialize()
+    public void Initialize()
     {
         _canvasGroup = GetComponent<CanvasGroup>();
-        return this;
     }
     
     public void FadeIn()
