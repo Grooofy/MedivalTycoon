@@ -16,7 +16,7 @@ public class Regulating : MonoBehaviour, IPropsMover
     private Queue<Props> _props = new Queue<Props>();
     private Queue<Props> _pointsProps = new Queue<Props>();
     private List<Props> _usedProps = new List<Props>();
-
+    private SpawnerPoints _spawnerPoints = new SpawnerPoints();
     private Props _currentProps;
     private int _index;
     private int _amountPoint;
@@ -25,7 +25,7 @@ public class Regulating : MonoBehaviour, IPropsMover
   
     public void CreatePoints(int cout, float offset)
     {
-        throw new NotImplementedException();
+       _spawnerPoints.Initialize(cout, offset, transform);
     }
 
     public void RegisterProps(Queue<Props> props)
