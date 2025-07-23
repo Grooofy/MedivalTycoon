@@ -1,6 +1,8 @@
 using System.Collections;
 using Characters;
+using Propses;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Lever
 {
@@ -8,20 +10,20 @@ namespace Lever
 
 public class LeverBarrelToBeer : MonoBehaviour
 {
-    [SerializeField] private Regulating _firstSpawn;
+    [SerializeField] private BarrelBuffer _firstSpawn;
     [SerializeField] private Point _barrelPoint;
     [SerializeField] private BeerCreator _beerCreator;
     [SerializeField] private GroundUI _groundUIbartender;
     [SerializeField] private GroundUI _groundUIwaiter;
     [SerializeField] private Animator _animator;
     [SerializeField] private ParticleSystem _smoke;
-    [SerializeField] private Regulating _regulating;
+    [FormerlySerializedAs("_regulating")] [SerializeField] private BarrelBuffer barrelBuffer;
     [SerializeField] private SphereCollider _collider;
 
 
     private WaitForSeconds _wait = new WaitForSeconds(2f);
     private MoverStoper _moverStoper;
-    private Props _currentBarrel;
+    private IProps _currentBarrel;
 
 
   
@@ -72,11 +74,11 @@ public class LeverBarrelToBeer : MonoBehaviour
 
     private IEnumerator FillingPoints()
     {
-        var currentQueueBarrels = _regulating.GetTo(1);
+        var currentQueueBarrels = barrelBuffer.GetTo(1);
         if (currentQueueBarrels.Count == 0) yield break;
 
         _currentBarrel = currentQueueBarrels.Peek();
-        _currentBarrel.ScaleUp();
+       // _currentBarrel.ScaleUp();
 
         while (_barrelPoint.IsFill == false)
         {
@@ -87,7 +89,7 @@ public class LeverBarrelToBeer : MonoBehaviour
             yield return _wait;
         }
 
-        _currentBarrel.BarrelEmpty();
+        //_currentBarrel.BarrelEmpty();
         _collider.enabled = true;
         TurnOnUiObject(_groundUIwaiter);
     }

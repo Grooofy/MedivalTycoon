@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Propses;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -32,12 +33,12 @@ namespace Characters
             }
         }
 
-        public void RegisterProps(Queue<Props> props)
+        public void RegisterProps(Queue<IProps> props)
         {
             throw new NotImplementedException();
         }
 
-        public void RegisterProp(Props props)
+        public void RegisterProp(IProps barrel)
         {
             throw new NotImplementedException();
         }
@@ -48,7 +49,7 @@ namespace Characters
             throw new NotImplementedException();
         }
 
-        public Queue<Props> GetTo(int amount)
+        public Queue<IProps> GetTo(int amount)
         {
             throw new NotImplementedException();
         }

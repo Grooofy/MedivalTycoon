@@ -1,9 +1,12 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace Propses
 {
     public interface IProps
     {
-        public void Initilization(Transform parent, float moveSpeed);
+        public void Initilization(Transform parent, float moveSpeed, Animator animator);
+        public IEnumerator TryMoveTo(Point endPoint);
+        public void Reset(IPropsMover propsMover, Point point);
     }
 }

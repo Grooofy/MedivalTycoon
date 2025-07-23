@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Beer : Props
+public class Beer : Barrel
 {
-    internal override IEnumerator TryMoveTo(Point endPoint)
+    /*internal override IEnumerator TryMoveTo(Point endPoint)
     {
         if (endPoint == null) yield break;
         
@@ -14,5 +14,5 @@ public class Beer : Props
             yield return null;
         }
         transform.position = endPoint.transform.position;
-    }
+    }*/
 }

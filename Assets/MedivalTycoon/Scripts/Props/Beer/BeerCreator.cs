@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Propses;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -12,10 +13,10 @@ public class BeerCreator : MonoBehaviour, IPropsMover
     [SerializeField] private int _amountBarrelToBeer;
     [SerializeField] private List<Point> _points = new List<Point>();
     
-    private Queue<Props> _props = new Queue<Props>();
-    private Queue<Props> _pointsProps = new Queue<Props>();
+    private Queue<IProps> _props = new Queue<IProps>();
+    private Queue<IProps> _pointsProps = new Queue<IProps>();
     private WaitForSeconds _wait = new WaitForSeconds(1f);
-    private Props _currentProps;
+    private Barrel _currentBarrel;
     private int _index;
     private bool _isFull;
     private int _currentCountBeerPoint;
@@ -26,7 +27,7 @@ public class BeerCreator : MonoBehaviour, IPropsMover
         throw new NotImplementedException();
     }
 
-    public void RegisterProps(Queue<Props> props)
+    public void RegisterProps(Queue<IProps> props)
     {
         _currentCountBeerPoint = _amountBarrelToBeer;
         
@@ -41,15 +42,15 @@ public class BeerCreator : MonoBehaviour, IPropsMover
         }
     }
 
-    public void RegisterProp(Props props)
+    public void RegisterProp(IProps barrel)
     {
-        _props.Enqueue(props);
+        _props.Enqueue(barrel);
     }
 
     public IEnumerator FillingPoints()
     {
         if (_props.Count == 0) yield break;
-        var temporaryQueue = new Queue<Props>();
+        var temporaryQueue = new Queue<IProps>();
 
         while (_isFull == false && _index < _currentCountBeerPoint)
         {
@@ -67,7 +68,7 @@ public class BeerCreator : MonoBehaviour, IPropsMover
                 _currentCountBeerPoint = _amountBarrelToBeer;
                 _isFull = true;
             }
-            _pointsProps = new Queue<Props>(temporaryQueue.Reverse());
+            _pointsProps = new Queue<IProps>(temporaryQueue.Reverse());
             yield return _wait;
         }
 
@@ -78,9 +79,9 @@ public class BeerCreator : MonoBehaviour, IPropsMover
         }
     }
 
-    public Queue<Props> GetTo(int amount)
+    public Queue<IProps> GetTo(int amount)
     {
-        if (_pointsProps.Count == 0) return new Queue<Props>();
+        if (_pointsProps.Count == 0) return new Queue<IProps>();
 
         if (amount > _pointsProps.Count)
         {
@@ -88,7 +89,7 @@ public class BeerCreator : MonoBehaviour, IPropsMover
             amount = _pointsProps.Count;
         }
 
-        var queue = new Queue<Props>();
+        var queue = new Queue<IProps>();
 
         for (int i = 0; i < amount; i++)
         {

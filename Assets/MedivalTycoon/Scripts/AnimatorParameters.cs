@@ -1,7 +1,6 @@
 public enum AnimatorParameters
 {
     IsOn,
-    Take,
-    isTake,
+    MoveEnd,
     Reset
 }

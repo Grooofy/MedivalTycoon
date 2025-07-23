@@ -4,7 +4,6 @@ namespace Lever
 {
     public class LeverAnimator
     {
-        private const string ParameterName = "IsOn";
         private Animator _animator;
 
         public LeverAnimator(Animator animator)
@@ -22,7 +21,7 @@ namespace Lever
         {
             if (value.SourceId != "Barrel") return;
             
-            _animator.SetBool(ParameterName, value.IsFull);
+            AnimatorExtensions.Set(_animator, AnimatorParameters.IsOn);
         }
     }
 }

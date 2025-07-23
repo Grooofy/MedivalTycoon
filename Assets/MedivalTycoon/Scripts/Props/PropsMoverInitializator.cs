@@ -1,5 +1,6 @@
 using UnityEngine;
 using Lever;
+using UnityEngine.Serialization;
 
 
 public class PropsMoverInitializator : MonoBehaviour
@@ -7,8 +8,8 @@ public class PropsMoverInitializator : MonoBehaviour
     [Header("To Barrel")]
     [SerializeField] private PropsTaker _barrelTaker;
     [SerializeField] private PropsGiver _barrelGiver;
-    [SerializeField] private Regulating _firstRegulating;
-    [SerializeField] private Regulating _secondRegulating;
+    [FormerlySerializedAs("_firstRegulating")] [SerializeField] private BarrelBuffer firstBarrelBuffer;
+    [FormerlySerializedAs("_secondRegulating")] [SerializeField] private BarrelBuffer secondBarrelBuffer;
     
     [SerializeField] private LeverInstaller _leverGetBarrel;
 
@@ -19,17 +20,17 @@ public class PropsMoverInitializator : MonoBehaviour
     
     [Header("To Table")]
     [SerializeField] private PropsTaker _tableTaker;
-    [SerializeField] private Regulating _tableRegulating;
+    [FormerlySerializedAs("_tableRegulating")] [SerializeField] private BarrelBuffer tableBarrelBuffer;
     
     [Header("To 2 Table")]
     [SerializeField] private PropsTaker _tableTaker2;
-    [SerializeField] private Regulating _tableRegulating2;
+    [SerializeField] private BarrelBuffer _tableRegulating2;
 
     private void Start()
     {
-        _barrelGiver.Initialize(_firstRegulating);
-        _barrelTaker.Initialize(_secondRegulating);
-        _leverGetBarrel.Initialize(_firstRegulating);
+        _barrelGiver.Initialize(firstBarrelBuffer);
+        _barrelTaker.Initialize(secondBarrelBuffer);
+        _leverGetBarrel.Initialize(firstBarrelBuffer);
        // _beerGiver.Initialize(_beerRegulating);
 //        _beerTaker.Initialize(_beerRegulating);
         //_tableTaker.Initialize(_tableRegulating);
