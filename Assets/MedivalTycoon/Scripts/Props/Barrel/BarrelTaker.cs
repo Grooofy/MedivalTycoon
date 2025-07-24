@@ -1,12 +1,11 @@
 ﻿using Characters;
 using UnityEngine;
 
-public class PropsTaker : MonoBehaviour, ITrigger
+public class BarrelTaker : MonoBehaviour, ITrigger
 {
     private IPropsMover _regulating;
-
-    private int _amount = 3;
-
+    
+    
     public void Initialize(IPropsMover regulating)
     {
         _regulating = regulating;
@@ -17,7 +16,7 @@ public class PropsTaker : MonoBehaviour, ITrigger
     {
         if (!other.TryGetComponent(out Hand hand)) return;
 
-        var props = hand.GetTo(_amount); // Получаем до 3 объектов из Hand
+        var props = hand.GetTo(hand.Amount); 
 
         if (props == null || props.Count == 0)
         {

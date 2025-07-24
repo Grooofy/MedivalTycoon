@@ -1,4 +1,5 @@
-﻿using Characters;
+﻿using Barrels;
+using Characters;
 using Tables;
 using UI;
 using UnityEngine;
@@ -11,6 +12,7 @@ namespace MedivalTycoon
         [SerializeField] private LoadingGameSettings _loadingGameSettings;
         [SerializeField] private GameUIManager _gameUIManager;
         [SerializeField] private TableManager _tableManager;
+        [SerializeField] private BarrelManager _barrelManager;
         
         
         private void Start()
@@ -20,6 +22,8 @@ namespace MedivalTycoon
             _gameUIManager.ShowUIInfo(_loadingGameSettings);
             _tableManager.Initialize(_loadingGameSettings);
             _tableManager.CreateTables(_loadingGameSettings);
+            _barrelManager.Initialize();
+            _barrelManager.CreatePointToBarrel();
         }
 
         private void Update()

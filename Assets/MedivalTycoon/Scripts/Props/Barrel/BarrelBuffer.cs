@@ -7,12 +7,12 @@ using UnityEngine;
 
 public class BarrelBuffer : MonoBehaviour, IPropsMover
 {  
-    private List<Point> _points;
     private WaitForSeconds _wait = new WaitForSeconds(0.3f);
     private Queue<IProps> _props = new Queue<IProps>();
     private Stack<IProps> _pointsProps = new Stack<IProps>();
-    private Vector3 _spaceSize;
     private SpawnerPoints _spawnerPoints = new SpawnerPoints();
+    private List<Point> _points;
+    private Vector3 _spaceSize;
     private IProps _currentBarrel;
     private int _index;
     private int _amountPoint;

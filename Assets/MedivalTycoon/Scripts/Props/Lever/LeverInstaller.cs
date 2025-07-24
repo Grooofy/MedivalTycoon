@@ -1,4 +1,5 @@
 ﻿using System;
+using Propses;
 using UnityEngine;
 
 namespace Lever

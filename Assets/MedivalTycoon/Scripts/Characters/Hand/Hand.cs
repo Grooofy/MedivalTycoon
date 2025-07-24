@@ -11,6 +11,7 @@ namespace Characters
     public class Hand : MonoBehaviour, IPropsMover
     {
         public bool IsFull { get; private set; } 
+        public int Amount => _points.Count;
 
         private List<Point> _points = new List<Point>();
         private Queue<IProps> _props = new Queue<IProps>();
