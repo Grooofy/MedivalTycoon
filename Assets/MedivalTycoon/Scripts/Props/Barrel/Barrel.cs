@@ -36,8 +36,8 @@ public class Barrel : MonoBehaviour, IProps
             _mover.MoveTo(transform,endPoint, _moveSpeed);
             yield return null;
         }
-        transform.position = endPoint.transform.position;
         _barrelAnimation.MoveEnd();
+        transform.position = endPoint.transform.position;
     }
 
    

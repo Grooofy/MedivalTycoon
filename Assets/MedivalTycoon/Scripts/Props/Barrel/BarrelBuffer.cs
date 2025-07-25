@@ -11,6 +11,7 @@ public class BarrelBuffer : MonoBehaviour, IPropsMover
     private Queue<IProps> _props = new Queue<IProps>();
     private Stack<IProps> _pointsProps = new Stack<IProps>();
     private SpawnerPoints _spawnerPoints = new SpawnerPoints();
+    private BarrelPool _barrelPool;
     private List<Point> _points;
     private Vector3 _spaceSize;
     private IProps _currentBarrel;
@@ -19,9 +20,10 @@ public class BarrelBuffer : MonoBehaviour, IPropsMover
     private bool _isFull;
     private string _sourceId;
 
-    public void Initialize(string sourceId, Vector3 spaceSize)
+    public void Initialize(string sourceId, BarrelPool barrelPool,  Vector3 spaceSize)
     {
         _sourceId = sourceId;
+        _barrelPool = barrelPool;
         _spaceSize = spaceSize;
     }
   
@@ -29,6 +31,7 @@ public class BarrelBuffer : MonoBehaviour, IPropsMover
     {
        _spawnerPoints.Initialize(cout, offset, transform);
        _points = _spawnerPoints.SpawnObjectsInCube(_spaceSize);
+       _amountPoint = _points.Count;
     }
 
     public void RegisterProps(Queue<IProps> props)

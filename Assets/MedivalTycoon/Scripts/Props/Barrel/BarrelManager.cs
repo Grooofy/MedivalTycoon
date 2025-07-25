@@ -16,21 +16,18 @@ namespace Barrels
         [SerializeField] private PropsSpawner _propsSpawner;
 
         private Queue<IProps> _props = new Queue<IProps>();
-        private BarrelPool _barrelPool;
 
 
         public void Initialize()
         {
-            _barrelBuffer.Initialize("Barrel", _spaceSize);
+            _barrelBuffer.Initialize("Barrel", _propsSpawner.GetBarrelPool(), _spaceSize);
             _leverInstaller.Initialize(_barrelBuffer);
             _barrelGiver.Initialize(_barrelBuffer);
-            _barrelPool = _propsSpawner.GetBarrelPool();
         }
 
         public void CreatePointToBarrel()
         {
             CreatePoints();
-            CreateBarrels();
         }
 
         private void CreatePoints()
@@ -38,14 +35,7 @@ namespace Barrels
             _barrelBuffer.CreatePoints(_spawnCount, _spacing);
         }
 
-        private void CreateBarrels()
-        {
-            for (int i = 0; i < _spawnCount; i++)
-            {
-                _props.Enqueue(_barrelPool.SpawnBarrel());
-            }
-            _barrelBuffer.RegisterProps(_props);
-        }
+       
 
        /* private void OnDrawGizmos()
         {

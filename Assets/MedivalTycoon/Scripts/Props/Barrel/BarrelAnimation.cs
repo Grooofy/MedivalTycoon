@@ -13,6 +13,7 @@ namespace Barrels
 
         public void MoveEnd()
         {
+            Debug.Log("Animation End!!!!!");
             AnimatorExtensions.Set(_animator, AnimatorParameters.MoveEnd);
         }
 
