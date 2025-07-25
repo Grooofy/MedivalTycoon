@@ -21,7 +21,7 @@ namespace Characters
             }
         }
 
-        public void CreatePoints(int cout, float offset)
+        public void CreatePoints(int cout, float offset, Vector3 spaceSize)
         {
             for (int i = 0; i < cout; i++)
             {

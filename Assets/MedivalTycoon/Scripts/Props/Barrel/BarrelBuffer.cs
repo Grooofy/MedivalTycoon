@@ -13,24 +13,21 @@ public class BarrelBuffer : MonoBehaviour, IPropsMover
     private SpawnerPoints _spawnerPoints = new SpawnerPoints();
     private BarrelPool _barrelPool;
     private List<Point> _points;
-    private Vector3 _spaceSize;
-    private IProps _currentBarrel;
     private int _index;
     private int _amountPoint;
     private bool _isFull;
     private string _sourceId;
 
-    public void Initialize(string sourceId, BarrelPool barrelPool,  Vector3 spaceSize)
+    public void Initialize(string sourceId, BarrelPool barrelPool)
     {
         _sourceId = sourceId;
         _barrelPool = barrelPool;
-        _spaceSize = spaceSize;
     }
   
-    public void CreatePoints(int cout, float offset)
+    public void CreatePoints(int cout, float offset, Vector3 spaceSize)
     {
        _spawnerPoints.Initialize(cout, offset, transform);
-       _points = _spawnerPoints.SpawnObjectsInCube(_spaceSize);
+       _points = _spawnerPoints.SpawnObjectsInCube(spaceSize);
        _amountPoint = _points.Count;
     }
 
@@ -55,11 +52,11 @@ public class BarrelBuffer : MonoBehaviour, IPropsMover
 
     public IEnumerator FillingPoints()
     {
-        if (_props.Count == 0 || _isFull) yield break;
-
-        while (!_isFull && _props.TryDequeue(out var prop))
+        while (_isFull == false)
         {
             if (_index >= _amountPoint) break;
+
+            var prop = _barrelPool.SpawnBarrel();
 
             yield return prop.TryMoveTo(_points[_index]);
 

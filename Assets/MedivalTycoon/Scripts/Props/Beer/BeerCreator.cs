@@ -22,7 +22,7 @@ public class BeerCreator : MonoBehaviour, IPropsMover
     private int _currentCountBeerPoint;
 
 
-    public void CreatePoints(int cout, float offset)
+    public void CreatePoints(int cout, float offset, Vector3 spaceSize)
     {
         throw new NotImplementedException();
     }

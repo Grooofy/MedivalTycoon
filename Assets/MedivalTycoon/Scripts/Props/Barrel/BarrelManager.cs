@@ -20,7 +20,7 @@ namespace Barrels
 
         public void Initialize()
         {
-            _barrelBuffer.Initialize("Barrel", _propsSpawner.GetBarrelPool(), _spaceSize);
+            _barrelBuffer.Initialize("Barrel", _propsSpawner.GetBarrelPool());
             _leverInstaller.Initialize(_barrelBuffer);
             _barrelGiver.Initialize(_barrelBuffer);
         }
@@ -32,7 +32,7 @@ namespace Barrels
 
         private void CreatePoints()
         {
-            _barrelBuffer.CreatePoints(_spawnCount, _spacing);
+            _barrelBuffer.CreatePoints(_spawnCount, _spacing, _spaceSize);
         }
 
        

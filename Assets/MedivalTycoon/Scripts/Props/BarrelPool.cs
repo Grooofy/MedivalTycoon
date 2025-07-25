@@ -7,7 +7,6 @@ namespace Propses
     public class BarrelPool : MonoBehaviour
     {
         [SerializeField] private Barrel _barrelPrefab;
-        [SerializeField] private Animator _animator;
         [SerializeField] private float _moveSpeed;
 
         private ObjectPool<Barrel> _pool;
@@ -46,7 +45,7 @@ namespace Propses
         private void OnGetBarrel(Barrel barrel)
         {
             barrel.gameObject.SetActive(true);
-            barrel.Initilization(transform, _moveSpeed, _animator);
+            barrel.Initilization(transform, _moveSpeed, barrel.gameObject.GetComponent<Animator>());
         }
 
         private void OnReleaseBarrel(Barrel barrel)
