@@ -1,3 +1,4 @@
+using System;
 using Characters;
 using UnityEngine;
 
@@ -38,8 +39,15 @@ namespace Lever
         {
             if (other.TryGetComponent(out Bartender bartender))
             {
+                _barrelBuffer.IsTake = true;
                 StartCoroutine(_barrelBuffer.FillingPoints());
             }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.TryGetComponent(out Bartender bartender))
+                _barrelBuffer.IsTake = false;
         }
     }
 }

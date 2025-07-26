@@ -22,6 +22,11 @@ public class BeerCreator : MonoBehaviour, IPropsMover
     private int _currentCountBeerPoint;
 
 
+    public void Initialize(string sourceId, BarrelPool barrelPool)
+    {
+        throw new NotImplementedException();
+    }
+
     public void CreatePoints(int cout, float offset, Vector3 spaceSize)
     {
         throw new NotImplementedException();
@@ -112,6 +117,11 @@ public class BeerCreator : MonoBehaviour, IPropsMover
             }
         }
         return queue;
+    }
+
+    public IProps GetTos()
+    {
+        throw new NotImplementedException();
     }
 
     private void ResetPoints()

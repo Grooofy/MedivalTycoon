@@ -13,8 +13,7 @@ public class BarrelGiver : MonoBehaviour, ITrigger
     public void OnTriggerEnter(Collider other)
     {
         if (!other.TryGetComponent(out Hand hand)) return;
-
-        Debug.Log(hand.name + " is full");
+       
         hand.RegisterProps(_regulating);
         StartCoroutine(hand.FillingPoints());
     }

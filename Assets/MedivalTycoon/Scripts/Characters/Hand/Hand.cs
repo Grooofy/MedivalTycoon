@@ -27,9 +27,7 @@ namespace Characters
             {
                 return;
             }
-
-            _props = regulating.GetTo(_points.Count);
-            Debug.Log(_points.Count + " points registered");
+            _props = regulating.GetTo(Amount);
             _index = 0;
         }
 
@@ -83,6 +81,7 @@ namespace Characters
             return queue;
         }
 
+
         public void CreatePoints(int cout, float offset, Vector3 spaceSize)
         {
             for (int i = 0; i < cout; i++)
@@ -93,6 +92,10 @@ namespace Characters
                 point.IsFill = false;
                 _points.Add(point);
             }
+        }
+        
+        public void Initialize(string sourceId, BarrelPool barrelPool)
+        {
         }
 
         public void RegisterProps(Queue<IProps> props)

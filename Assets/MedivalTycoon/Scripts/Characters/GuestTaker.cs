@@ -21,6 +21,11 @@ namespace Characters
             }
         }
 
+        public void Initialize(string sourceId, BarrelPool barrelPool)
+        {
+            throw new NotImplementedException();
+        }
+
         public void CreatePoints(int cout, float offset, Vector3 spaceSize)
         {
             for (int i = 0; i < cout; i++)
@@ -50,6 +55,11 @@ namespace Characters
         }
 
         public Queue<IProps> GetTo(int amount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IProps GetTos()
         {
             throw new NotImplementedException();
         }

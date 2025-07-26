@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class BarrelBuffer : MonoBehaviour, IPropsMover
 {  
+    public bool IsTake { get; set; }
+    
     private WaitForSeconds _wait = new WaitForSeconds(0.3f);
     private Queue<IProps> _props = new Queue<IProps>();
     private Stack<IProps> _pointsProps = new Stack<IProps>();
@@ -52,7 +54,7 @@ public class BarrelBuffer : MonoBehaviour, IPropsMover
 
     public IEnumerator FillingPoints()
     {
-        while (_isFull == false)
+        while (_isFull == false && IsTake)
         {
             if (_index >= _amountPoint) break;
 
@@ -68,7 +70,6 @@ public class BarrelBuffer : MonoBehaviour, IPropsMover
                 _isFull = true;
                 EventBus.Raise(new PropsMoverFullingPointEvent(true, _sourceId));
             }
-
             yield return _wait;
         }
     }

@@ -10037,7 +10037,7 @@ Transform:
   m_GameObject: {fileID: 428411081}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.151, y: 0.266, z: -0.411}
+  m_LocalPosition: {x: 0.185, y: 0.28, z: -0.374}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -12115,9 +12115,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f163626b4a5f4653a4b1e2dc393c9ced, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spaceSize: {x: 0.53, y: 0.6, z: 0.6}
+  _spaceSize: {x: 0.6, y: 0.4, z: 0.49}
   _spawnCount: 30
-  _spacing: 0.21
+  _spacing: 0.24
   _barrelBuffer: {fileID: 428411083}
   _leverInstaller: {fileID: 179564856}
   _barrelGiver: {fileID: 1985857831}
@@ -12130,8 +12130,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 493533108}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.483, y: 0.506, z: 2.019}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.56, y: 0.439, z: 2.013}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -15856,7 +15856,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _barrelPrefab: {fileID: 3166413933466699781, guid: 2f6c2838ded511549931bdeadae0a917, type: 3}
-  _animator: {fileID: 347996022427630596, guid: 2f6c2838ded511549931bdeadae0a917, type: 3}
   _moveSpeed: 3
 --- !u!4 &641602947
 Transform:
@@ -61223,9 +61222,9 @@ SceneRoots:
   - {fileID: 171294562}
   - {fileID: 1280256299}
   - {fileID: 1888693657}
+  - {fileID: 493533110}
   - {fileID: 16643950}
   - {fileID: 1467678142}
-  - {fileID: 493533110}
   - {fileID: 593555959}
   - {fileID: 2104728499}
   - {fileID: 2075315242}
