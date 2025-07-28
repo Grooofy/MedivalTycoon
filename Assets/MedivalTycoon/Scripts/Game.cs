@@ -23,7 +23,7 @@ namespace MedivalTycoon
             _tableManager.Initialize(_loadingGameSettings);
             _tableManager.CreateTables(_loadingGameSettings);
             _barrelManager.Initialize();
-            _barrelManager.CreatePointToBarrel();
+            _barrelManager.CreatePoints();
         }
 
         private void Update()

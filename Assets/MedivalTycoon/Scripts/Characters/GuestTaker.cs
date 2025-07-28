@@ -38,7 +38,7 @@ namespace Characters
             }
         }
 
-        public void RegisterProps(Queue<IProps> props)
+        public void RegisterProps(Stack<IProps> props)
         {
             throw new NotImplementedException();
         }
@@ -54,7 +54,7 @@ namespace Characters
             throw new NotImplementedException();
         }
 
-        public Queue<IProps> GetTo(int amount)
+        public Stack<IProps> GetTo(int amount)
         {
             throw new NotImplementedException();
         }

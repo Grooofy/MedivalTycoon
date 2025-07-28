@@ -32,7 +32,7 @@ public class BeerCreator : MonoBehaviour, IPropsMover
         throw new NotImplementedException();
     }
 
-    public void RegisterProps(Queue<IProps> props)
+    public void RegisterProps(Stack<IProps> props)
     {
         _currentCountBeerPoint = _amountBarrelToBeer;
         
@@ -84,9 +84,9 @@ public class BeerCreator : MonoBehaviour, IPropsMover
         }
     }
 
-    public Queue<IProps> GetTo(int amount)
+    public Stack<IProps> GetTo(int amount)
     {
-        if (_pointsProps.Count == 0) return new Queue<IProps>();
+        if (_pointsProps.Count == 0) return new Stack<IProps>();
 
         if (amount > _pointsProps.Count)
         {
@@ -94,11 +94,11 @@ public class BeerCreator : MonoBehaviour, IPropsMover
             amount = _pointsProps.Count;
         }
 
-        var queue = new Queue<IProps>();
+        var queue = new Stack<IProps>();
 
         for (int i = 0; i < amount; i++)
         {
-            queue.Enqueue(_pointsProps.Dequeue());
+            queue.Push(_pointsProps.Dequeue());
 
             int indexToFree = _index - 1;
             if (indexToFree >= 0 && indexToFree < _points.Count)

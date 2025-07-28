@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Lever;
 using Propses;
+using Propses.Beer;
 using UnityEngine;
 
 namespace Barrels
@@ -13,29 +14,29 @@ namespace Barrels
         [SerializeField] private BarrelBuffer _barrelBuffer;
         [SerializeField] private LeverInstaller _leverInstaller;
         [SerializeField] private BarrelGiver _barrelGiver;
+        [SerializeField] private BarrelTaker _barrelTaker;
+        [SerializeField] private BeerBuffer _beerBuffer;
         [SerializeField] private PropsSpawner _propsSpawner;
 
-        private Queue<IProps> _props = new Queue<IProps>();
+        private BarrelPool _barrelPool;
 
 
         public void Initialize()
         {
-            _barrelBuffer.Initialize("Barrel", _propsSpawner.GetBarrelPool());
+            _barrelPool = _propsSpawner.GetBarrelPool();
+            _barrelBuffer.Initialize("Barrel", _barrelPool);
             _leverInstaller.Initialize(_barrelBuffer);
             _barrelGiver.Initialize(_barrelBuffer);
+            _beerBuffer.Initialize("Beer",  _barrelPool);
+            _barrelTaker.Initialize(_beerBuffer);
         }
 
-        public void CreatePointToBarrel()
-        {
-            CreatePoints();
-        }
-
-        private void CreatePoints()
+        public void CreatePoints()
         {
             _barrelBuffer.CreatePoints(_spawnCount, _spacing, _spaceSize);
+            _beerBuffer.CreatePoints(_spawnCount, _spacing, _spaceSize);
         }
-
-       
+        
 
         /*private void OnDrawGizmos()
         {

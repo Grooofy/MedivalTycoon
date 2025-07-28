@@ -5,7 +5,6 @@ public class BarrelTaker : MonoBehaviour, ITrigger
 {
     private IPropsMover _regulating;
     
-    
     public void Initialize(IPropsMover regulating)
     {
         _regulating = regulating;

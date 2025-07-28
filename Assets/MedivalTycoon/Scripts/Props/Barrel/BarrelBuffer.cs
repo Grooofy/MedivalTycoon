@@ -33,7 +33,7 @@ public class BarrelBuffer : MonoBehaviour, IPropsMover
        _amountPoint = _points.Count;
     }
 
-    public void RegisterProps(Queue<IProps> props)
+    public void RegisterProps(Stack<IProps> props)
     {
         if (props == null) return;
         if (props.Count == 0) return;
@@ -74,22 +74,21 @@ public class BarrelBuffer : MonoBehaviour, IPropsMover
         }
     }
 
-    public Queue<IProps> GetTo(int amount)
+    public Stack<IProps> GetTo(int amount)
     {
-        var result = new Queue<IProps>();
+        var result = new Stack<IProps>();
+        int itemsToTake = Mathf.Min(amount, _pointsProps.Count);
 
-        for (int i = 0; i < amount && _pointsProps.Count > 0; i++)
+        for (int i = 0; i < itemsToTake; i++)
         {
             var prop = _pointsProps.Pop();
-            result.Enqueue(prop);
+            result.Push(prop);
 
-            int indexToFree = _index - 1;
-            if (indexToFree >= 0 && indexToFree < _points.Count)
+            if (_index > 0)
             {
-                _points[indexToFree].Free();
+                _index--;
+                _points[_index].Free();
             }
-
-            if (_index > 0) _index--;
         }
 
         if (_pointsProps.Count == 0)

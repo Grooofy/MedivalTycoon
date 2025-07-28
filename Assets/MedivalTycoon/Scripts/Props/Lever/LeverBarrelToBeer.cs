@@ -83,7 +83,7 @@ public class LeverBarrelToBeer : MonoBehaviour
         while (_barrelPoint.IsFill == false)
         {
             if (_currentBarrel == null) yield break;
-            currentQueueBarrels.Dequeue();
+            currentQueueBarrels.Pop();
             StartCoroutine(_currentBarrel.TryMoveTo(_barrelPoint));
             StartCoroutine(_beerCreator.FillingPoints());
             yield return _wait;
