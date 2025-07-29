@@ -10,6 +10,7 @@ public class Barrel : MonoBehaviour, IProps
     private Transform _startPoint;
     private BarrelAnimation _barrelAnimation;
     private float _moveSpeed;
+    private bool _isFirstAnimationPlaying;
 
     public void Initilization(Transform parent, float moveSpeed, Animator animator)
     {
@@ -20,24 +21,29 @@ public class Barrel : MonoBehaviour, IProps
 
     public void Reset(IPropsMover propsMover, Point point)
     {
-        point.IsFill = false;
+        point.Free();
         transform.SetParent(_startPoint);
         transform.position = _startPoint.position;
         _barrelAnimation.Reset();
-        propsMover.RegisterProp(this);
+        _isFirstAnimationPlaying = false;
+        //propsMover.RegisterProp(this);
     }
     
     public IEnumerator TryMoveTo(Point endPoint)
     {
-        if (endPoint == null) yield break;
+        if (endPoint.IsFill) yield break;
         
         while (endPoint.IsFill == false)
         {
-            _mover.MoveTo(transform,endPoint, _moveSpeed);
+            _mover.MoveTo(transform, endPoint, _moveSpeed);
             yield return null;
         }
-        _barrelAnimation.MoveEnd();
-        transform.position = endPoint.transform.position;
+
+        if (_isFirstAnimationPlaying == false)
+        {
+            _barrelAnimation.MoveEnd();
+            _isFirstAnimationPlaying = true;
+        }
     }
 
    

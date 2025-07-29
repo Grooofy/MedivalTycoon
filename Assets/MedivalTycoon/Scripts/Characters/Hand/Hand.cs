@@ -26,7 +26,7 @@ namespace Characters
                 var point = ObjectFactory.CreateObjectWithComponent<Point>("Point_" + i);
                 point.transform.parent = transform;
                 point.transform.localPosition = Vector3.up * (i * offset);
-                point.IsFill = false;
+                point.Free();
                 _points.Add(point);
             }
         }
@@ -35,16 +35,26 @@ namespace Characters
         {
             if (regulating == null) return;
 
-            _incomingProps = regulating.GetTo(Amount);
-            _index = 0;
-            IsFull = false;
+            _incomingProps = regulating.GetTo(GetEmptyPointsCount());
+            
+            
         }
         
+        public int GetEmptyPointsCount()
+        {
+            var index = 0;
+
+            foreach (var point in _points)
+            {
+                if (point.IsFill == false) index++;
+            }
+
+            return index;
+        }
+
         public IEnumerator FillingPoints()
         {
             if (_incomingProps.Count == 0 || _points.Count == 0) yield break;
-
-            _carriedProps.Clear();
 
             while (_index < _points.Count && _incomingProps.Count > 0)
             {
@@ -73,12 +83,10 @@ namespace Characters
 
             for (int i = 0; i < takeAmount; i++)
             {
-                var prop = _carriedProps.Pop();
-                result.Push(prop);
-
-                _index--;
-                if (_index >= 0 && _index < _points.Count)
+                if (_carriedProps.TryPop(out var props))
                 {
+                    result.Push(props);
+                    _index--;
                     _points[_index].Free();
                 }
             }
@@ -87,9 +95,18 @@ namespace Characters
             {
                 IsFull = false;
                 _index = 0;
+                ResetPoints();
             }
 
             return result;
+        }
+        
+        private void ResetPoints()
+        {
+            foreach (var point in _points)
+            {
+                point.Free();
+            }
         }
 
         

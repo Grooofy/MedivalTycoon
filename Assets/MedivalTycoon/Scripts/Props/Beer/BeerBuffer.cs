@@ -42,6 +42,18 @@ namespace Propses.Beer
                 _props.Push(prop);
             }
         }
+        
+        public int GetEmptyPointsCount()
+        {
+            var index = 0;
+
+            foreach (var point in _points)
+            {
+                if (point.IsFill) index++;
+            }
+
+            return index;
+        }
 
 
         public IEnumerator FillingPoints()

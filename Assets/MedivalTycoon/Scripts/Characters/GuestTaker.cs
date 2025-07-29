@@ -33,9 +33,21 @@ namespace Characters
                 var point = ObjectFactory.CreateObjectWithComponent<Point>("Point" + i);
                 point.transform.parent = transform;
                 point.transform.localPosition =  Vector3.up * (i* offset);
-                point.IsFill = false;
+                point.Free();
                 _points.Add(point);
             }
+        }
+        
+        public int GetEmptyPointsCount()
+        {
+            var index = 0;
+
+            foreach (var point in _points)
+            {
+                if (point.IsFill) index++;
+            }
+
+            return index;
         }
 
         public void RegisterProps(Stack<IProps> props)

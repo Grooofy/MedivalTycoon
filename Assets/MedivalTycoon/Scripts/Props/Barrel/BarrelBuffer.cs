@@ -6,9 +6,9 @@ using UnityEngine;
 
 
 public class BarrelBuffer : MonoBehaviour, IPropsMover
-{  
+{
     public bool IsTake { get; set; }
-    
+
     private WaitForSeconds _wait = new WaitForSeconds(0.3f);
     private Queue<IProps> _props = new Queue<IProps>();
     private Stack<IProps> _pointsProps = new Stack<IProps>();
@@ -25,12 +25,12 @@ public class BarrelBuffer : MonoBehaviour, IPropsMover
         _sourceId = sourceId;
         _barrelPool = barrelPool;
     }
-  
+
     public void CreatePoints(int cout, float offset, Vector3 spaceSize)
     {
-       _spawnerPoints.Initialize(cout, offset, transform);
-       _points = _spawnerPoints.SpawnObjectsInCube(spaceSize);
-       _amountPoint = _points.Count;
+        _spawnerPoints.Initialize(cout, offset, transform);
+        _points = _spawnerPoints.SpawnObjectsInCube(spaceSize);
+        _amountPoint = _points.Count;
     }
 
     public void RegisterProps(Stack<IProps> props)
@@ -45,12 +45,17 @@ public class BarrelBuffer : MonoBehaviour, IPropsMover
         }
     }
 
-    public void RegisterProp(IProps barrel)
+    public int GetEmptyPointsCount()
     {
-        if (barrel == null) return;
-        _props.Enqueue(barrel);
-    }
+        var index = 0;
 
+        foreach (var point in _points)
+        {
+            if (point.IsFill) index++;
+        }
+
+        return index;
+    }
 
     public IEnumerator FillingPoints()
     {
@@ -70,6 +75,7 @@ public class BarrelBuffer : MonoBehaviour, IPropsMover
                 _isFull = true;
                 EventBus.Raise(new PropsMoverFullingPointEvent(true, _sourceId));
             }
+
             yield return _wait;
         }
     }
@@ -82,6 +88,8 @@ public class BarrelBuffer : MonoBehaviour, IPropsMover
         for (int i = 0; i < itemsToTake; i++)
         {
             var prop = _pointsProps.Pop();
+            if (prop == null) return null;
+            
             result.Push(prop);
 
             if (_index > 0)
@@ -89,16 +97,15 @@ public class BarrelBuffer : MonoBehaviour, IPropsMover
                 _index--;
                 _points[_index].Free();
             }
+            
+            if (_pointsProps.Count == 0)
+            {
+                _index = 0;
+                _isFull = false;
+                EventBus.Raise(new PropsMoverFullingPointEvent(false, _sourceId));
+                ResetPoints();
+            }
         }
-
-        if (_pointsProps.Count == 0)
-        {
-            _index = 0;
-            _isFull = false;
-            EventBus.Raise(new PropsMoverFullingPointEvent(false, _sourceId));
-            ResetPoints();
-        }
-
         return result;
     }
 

@@ -7,7 +7,7 @@ namespace Propses
     {
         public void MoveTo(Transform transform, Point endPoint, float moveSpeed)
         {
-            if (endPoint == null) return;
+            if (endPoint.IsFill) return;
 
             transform.position =
                 Vector3.MoveTowards(transform.position, endPoint.transform.position, moveSpeed * Time.deltaTime);

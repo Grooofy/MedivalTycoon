@@ -4,13 +4,11 @@ using UnityEngine;
 
 public class Point : MonoBehaviour
 {
-   public bool IsFill;
-   public Action<bool> Filling;
+   public bool IsFill { get; private set; }
 
    public void Fill()
    {
       IsFill = true;
-      Filling?.Invoke(IsFill);
    }
 
    public void Free()
