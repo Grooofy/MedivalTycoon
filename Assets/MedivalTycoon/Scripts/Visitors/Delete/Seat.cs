@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Seat : MonoBehaviour
 {
+    /*
     [SerializeField] private TextMeshProUGUI beerText;
     public bool IsOccupied  { get; private set; }
     private TavernGuest _guest;
@@ -70,5 +71,5 @@ public class Seat : MonoBehaviour
     private void UpdateBeerDisplay(int remaining)
     {
         beerText.text = $"Пиво: {remaining}";
-    }
+    }*/
 }

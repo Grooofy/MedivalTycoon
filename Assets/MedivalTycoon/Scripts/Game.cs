@@ -3,6 +3,8 @@ using Characters;
 using Tables;
 using UI;
 using UnityEngine;
+using UnityEngine.Serialization;
+using Visitors;
 
 namespace MedivalTycoon
 {
@@ -13,6 +15,7 @@ namespace MedivalTycoon
         [SerializeField] private GameUIManager _gameUIManager;
         [SerializeField] private TableManager _tableManager;
         [SerializeField] private BarrelManager _barrelManager;
+        [FormerlySerializedAs("_queueManager")] [SerializeField] private QueueVisitor queueVisitor;
         
         
         private void Start()
@@ -24,12 +27,16 @@ namespace MedivalTycoon
             _tableManager.CreateTables(_loadingGameSettings);
             _barrelManager.Initialize();
             _barrelManager.CreatePoints();
+            queueVisitor.Initialize(10, 0.5f, 10,10);
+            queueVisitor.SpawnVisitorsInLine(queueVisitor.transform.position);
         }
 
         private void Update()
         {
             _gameUIManager.UpdateUIInfo();
             _characterManager.MoveCharacter();
+            _barrelManager.CheckHits();
+            queueVisitor.UpdateState();
         }
     }
 }

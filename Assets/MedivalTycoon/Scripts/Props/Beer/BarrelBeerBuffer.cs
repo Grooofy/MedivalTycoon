@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Propses;
 using UnityEngine;
 
-namespace Propses.Beer
+namespace Beers
 {
-    public class BeerBuffer : MonoBehaviour, IPropsMover
+    public class BarrelBeerBuffer : MonoBehaviour, IPropsMover
     {
-        private WaitForSeconds _wait = new WaitForSeconds(0.3f);
+        private WaitForSeconds _wait = new WaitForSeconds(0.2f);
         private Stack<IProps> _props = new Stack<IProps>();
         private Stack<IProps> _pointsProps = new Stack<IProps>();
         private SpawnerPoints _spawnerPoints = new SpawnerPoints();
@@ -82,6 +83,15 @@ namespace Propses.Beer
         {
             throw new System.NotImplementedException();
         }
+        
+        private void ResetPoints()
+        {
+            foreach (var point in _points)
+            {
+                point.Free();
+            }
+        }
+        
         public void RegisterProp(IProps barrel)
         {
             throw new System.NotImplementedException();

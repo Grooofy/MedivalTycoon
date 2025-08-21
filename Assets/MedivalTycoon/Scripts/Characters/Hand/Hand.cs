@@ -18,7 +18,7 @@ namespace Characters
 
         private int _index;
 
-        
+
         public void CreatePoints(int count, float offset, Vector3 spaceSize)
         {
             for (int i = 0; i < count; i++)
@@ -30,16 +30,14 @@ namespace Characters
                 _points.Add(point);
             }
         }
-        
+
         public void RegisterProps(IPropsMover regulating)
         {
             if (regulating == null) return;
 
             _incomingProps = regulating.GetTo(GetEmptyPointsCount());
-            
-            
         }
-        
+
         public int GetEmptyPointsCount()
         {
             var index = 0;
@@ -75,7 +73,6 @@ namespace Characters
             }
         }
 
-        
         public Stack<IProps> GetTo(int amount)
         {
             var result = new Stack<IProps>();
@@ -100,7 +97,7 @@ namespace Characters
 
             return result;
         }
-        
+
         private void ResetPoints()
         {
             foreach (var point in _points)
@@ -109,11 +106,17 @@ namespace Characters
             }
         }
 
-        
-        public void Initialize(string sourceId, BarrelPool barrelPool) { }
 
-        public void RegisterProps(Stack<IProps> props) { }
+        public void Initialize(string sourceId, BarrelPool barrelPool)
+        {
+        }
 
-        public void RegisterProp(IProps barrel) { }
+        public void RegisterProps(Stack<IProps> props)
+        {
+        }
+
+        public void RegisterProp(IProps barrel)
+        {
+        }
     }
 }

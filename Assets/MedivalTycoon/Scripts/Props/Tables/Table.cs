@@ -11,7 +11,7 @@ namespace Tables
         public int Price { get; private set; }
 
 
-        public void Initialize(int startPrice, TableBuilderAnimation tableBuilderAnimation)
+        public void Initialize(int startPrice)
         {
             Price = startPrice;
         }

@@ -2,13 +2,15 @@
 
 namespace Lever
 {
-    public class LeverAnimator
+    public class LeverBarrelAnimator
     {
         private Animator _animator;
+        private bool _isActive;
 
-        public LeverAnimator(Animator animator)
+        public LeverBarrelAnimator(Animator animator, bool isActive)
         {
             _animator = animator;
+            _isActive = isActive;
             EventBus.Subscribe<PropsMoverFullingPointEvent>(ChangeValue);
         }
 
@@ -21,7 +23,8 @@ namespace Lever
         {
             if (value.SourceId != "Barrel") return;
             
-            AnimatorExtensions.Set(_animator, AnimatorParameters.IsOn);
+            _isActive = !_isActive;
+            AnimatorExtensions.Set(_animator, AnimatorParameters.LeverIsOn, _isActive);
         }
     }
 }

@@ -21,7 +21,7 @@ namespace Propses
             _pool.Release(barrel);
         }
         
-        public BarrelPool Initialize( int defaultSize, int maxSize)
+        public BarrelPool Initialize(int defaultSize, int maxSize)
         {
             _pool = new ObjectPool<Barrel>(
                 CreateBarrel,

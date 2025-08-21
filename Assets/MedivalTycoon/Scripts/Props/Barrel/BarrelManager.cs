@@ -1,13 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using Beers;
 using Lever;
 using Propses;
-using Propses.Beer;
+using Beers;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Barrels
 {
     public class BarrelManager : MonoBehaviour
     {
+        [Header("Barrel CubeSpawnPointSize")]
         [SerializeField] private Vector3 _spaceSize;
         [SerializeField] private int _spawnCount;
         [SerializeField] private float _spacing;
@@ -15,8 +17,9 @@ namespace Barrels
         [SerializeField] private LeverInstaller _leverInstaller;
         [SerializeField] private BarrelGiver _barrelGiver;
         [SerializeField] private BarrelTaker _barrelTaker;
-        [SerializeField] private BeerBuffer _beerBuffer;
+        [SerializeField] private BarrelBeerBuffer barrelBeerBuffer;
         [SerializeField] private PropsSpawner _propsSpawner;
+        [SerializeField] private LayerMask _layerMask;
 
         private BarrelPool _barrelPool;
 
@@ -26,15 +29,21 @@ namespace Barrels
             _barrelPool = _propsSpawner.GetBarrelPool();
             _barrelBuffer.Initialize("Barrel", _barrelPool);
             _leverInstaller.Initialize(_barrelBuffer);
-            _barrelGiver.Initialize(_barrelBuffer);
-            _beerBuffer.Initialize("Beer",  _barrelPool);
-            _barrelTaker.Initialize(_beerBuffer);
+            _barrelGiver.Initialize(_barrelBuffer, _layerMask);
+            barrelBeerBuffer.Initialize("Beer",  _barrelPool);
+            _barrelTaker.Initialize(barrelBeerBuffer, _layerMask);
         }
 
         public void CreatePoints()
         {
             _barrelBuffer.CreatePoints(_spawnCount, _spacing, _spaceSize);
-            _beerBuffer.CreatePoints(_spawnCount, _spacing, _spaceSize);
+            barrelBeerBuffer.CreatePoints(_spawnCount, _spacing, _spaceSize);
+        }
+
+        public void CheckHits()
+        {
+            _barrelGiver.CheckHits();
+           _barrelTaker.CheckHits();
         }
         
 

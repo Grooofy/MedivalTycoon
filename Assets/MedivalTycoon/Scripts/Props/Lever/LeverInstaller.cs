@@ -1,6 +1,4 @@
-﻿using System;
-using Propses;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Lever
 {
@@ -11,18 +9,18 @@ namespace Lever
         [SerializeField] private GroundUI _groundUI;
         [SerializeField] private LeverGetBarrel _leverGetBarrel;
 
-        private LeverAnimator _leverAnimator;
+        private LeverBarrelAnimator _leverBarrelAnimator;
 
         public void Initialize(IPropsMover propsMover)
         {
-            _leverAnimator = new LeverAnimator(_animator);
+            _leverBarrelAnimator = new LeverBarrelAnimator(_animator, false);
             _groundUI.Initialize();
             _leverGetBarrel.Initialize(propsMover, _collider, _groundUI);
         }
 
         private void OnDestroy()
         {
-            _leverAnimator.OnDestroy();
+            _leverBarrelAnimator.OnDestroy();
         }
     }
 }

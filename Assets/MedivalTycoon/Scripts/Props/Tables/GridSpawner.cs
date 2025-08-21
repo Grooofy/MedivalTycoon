@@ -28,21 +28,13 @@ namespace Tables
 
         public void SpawnGrid(ConstructionHandler handler, int[] startPrice)
         {
-            if (_triggerZonePrefab == null)
-            {
-                Debug.LogError("Prefab не назначен!");
-                return;
-            }
+            if (_triggerZonePrefab == null) return;
 
             int countX = Mathf.FloorToInt(areaSize.x / spacing);
             int countZ = Mathf.FloorToInt(areaSize.y / spacing);
             int totalCells = countX * countZ;
 
-            if (totalCells == 0)
-            {
-                Debug.LogWarning("Область слишком мала или spacing слишком велик.");
-                return;
-            }
+            if (totalCells == 0) return;
 
             List<Vector3> gridPositions = new List<Vector3>();
 
@@ -56,7 +48,6 @@ namespace Tables
                 }
             }
 
-
             for (int i = gridPositions.Count - 1; i > 0; i--)
             {
                 int j = Random.Range(0, i + 1);
@@ -67,13 +58,12 @@ namespace Tables
 
             for (int i = 0; i < spawnCount; i++)
             {
-                Debug.Log(startPrice[i]+" Цена!!!");
                 var createObject = Instantiate(_triggerZonePrefab, gridPositions[i], Quaternion.identity, transform);
                 var viewTable = createObject.Initialize(handler);
                 var tableBuilderAnimation = createObject.GetComponent<TableBuilderAnimation>();
                 var table = createObject.CreateTable(_tablePrefab);
                 tableBuilderAnimation.Initialize();
-                table.Initialize(startPrice[i], tableBuilderAnimation);
+                table.Initialize(startPrice[i]);
                 viewTable.Initialize(table, tableBuilderAnimation);
                 _tables.Add(table);
                 _viewTables.Add(viewTable);

@@ -3,20 +3,25 @@ using UnityEngine;
 
 public class BarrelGiver : MonoBehaviour
 {
-    [SerializeField] private float _detectionRadius = 1.5f;
-    [SerializeField] private LayerMask _handLayer;
+    private LayerMask _handLayer;
 
+    private float _detectionRadius = 0.35f;
     private IPropsMover _regulating;
     private Hand _currentHand;
     private Coroutine _activeCoroutine;
+    private bool _isActive;
 
-    public void Initialize(IPropsMover regulating)
+    public void Initialize(IPropsMover regulating, LayerMask handLayer)
     {
         _regulating = regulating;
+        _handLayer = handLayer;
+        _isActive = true;
     }
 
-    private void Update()
+    public void CheckHits()
     {
+        if (_isActive == false) return;
+        
         Collider[] hits = Physics.OverlapSphere(transform.position, _detectionRadius, _handLayer);
 
         if (hits.Length > 0)

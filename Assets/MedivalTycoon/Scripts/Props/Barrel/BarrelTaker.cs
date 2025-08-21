@@ -1,37 +1,61 @@
 ﻿using Characters;
 using UnityEngine;
 
-public class BarrelTaker : MonoBehaviour, ITrigger
+public class BarrelTaker : MonoBehaviour
 {
+    private LayerMask _handLayer;
     private IPropsMover _regulating;
-    
-    public void Initialize(IPropsMover regulating)
+    private Hand _currentHand;
+    private Coroutine _activeCoroutine;
+
+    private float _detectionRadius = 0.35f;
+    private bool _hasGiven = false;
+
+    public void Initialize(IPropsMover regulating, LayerMask handLayer)
     {
         _regulating = regulating;
+        _handLayer = handLayer;
     }
-    
-    
-    public void OnTriggerEnter(Collider other)
+
+    public void CheckHits()
     {
-        if (!other.TryGetComponent(out Hand hand)) return;
+        Collider[] hits = Physics.OverlapSphere(transform.position, _detectionRadius, _handLayer);
 
-        var props = hand.GetTo(hand.Amount); 
-
-        if (props == null || props.Count == 0)
+        if (hits.Length > 0)
         {
-            Debug.LogWarning("No props to transfer from Hand to Regulating.");
-            return;
+            foreach (var hit in hits)
+            {
+                if (_hasGiven) break;
+                
+                if (hit.TryGetComponent(out Hand hand))
+                {
+                    _currentHand = hand;
+
+                    var props = _currentHand.GetTo(_currentHand.Amount);
+
+                    if (props == null || props.Count == 0) return;
+                    _regulating.RegisterProps(props);
+                    _activeCoroutine = StartCoroutine(_regulating.FillingPoints());
+                    _hasGiven = true;
+                }
+            }
         }
-
-        _regulating.RegisterProps(props);
-        StartCoroutine(_regulating.FillingPoints());
+        else if (_hasGiven)
+        {
+            _hasGiven = false;
+            
+            if (_activeCoroutine != null) 
+                _activeCoroutine = null;
+            
+            _currentHand = null;
+        }
     }
 
-    public void OnTriggerStay(Collider other)
+#if UNITY_EDITOR
+    private void OnDrawGizmosSelected()
     {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, _detectionRadius);
     }
-
-    public void OnTriggerExit(Collider other)
-    {
-    }
+#endif
 }

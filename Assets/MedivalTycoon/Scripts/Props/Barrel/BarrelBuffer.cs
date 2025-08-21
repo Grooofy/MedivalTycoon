@@ -7,8 +7,6 @@ using UnityEngine;
 
 public class BarrelBuffer : MonoBehaviour, IPropsMover
 {
-    public bool IsTake { get; set; }
-
     private WaitForSeconds _wait = new WaitForSeconds(0.3f);
     private Queue<IProps> _props = new Queue<IProps>();
     private Stack<IProps> _pointsProps = new Stack<IProps>();
@@ -19,6 +17,7 @@ public class BarrelBuffer : MonoBehaviour, IPropsMover
     private int _amountPoint;
     private bool _isFull;
     private string _sourceId;
+    public bool IsTake { get; set; }
 
     public void Initialize(string sourceId, BarrelPool barrelPool)
     {

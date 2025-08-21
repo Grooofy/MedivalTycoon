@@ -13,12 +13,12 @@ namespace Barrels
 
         public void MoveEnd()
         {
-            AnimatorExtensions.Set(_animator, AnimatorParameters.MoveEnd);
+            AnimatorExtensions.Set(_animator, AnimatorParameters.BarrelMoveEnd);
         }
 
         public void Reset()
         {
-            AnimatorExtensions.Set(_animator, AnimatorParameters.Reset);
+            AnimatorExtensions.Set(_animator, AnimatorParameters.ResetBarrel);
         }
     }
 }

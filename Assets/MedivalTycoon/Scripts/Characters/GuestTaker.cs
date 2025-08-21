@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Propses;
 using UnityEngine;
 using UnityEngine.Events;
+using Visitors;
 
 
 namespace Characters
@@ -15,9 +16,9 @@ namespace Characters
     
         private void OnTriggerEnter(Collider other)
         {
-            if (other.TryGetComponent(out TavernGuest guest))
+            if (other.TryGetComponent(out TavernVisitor guest))
             {
-                guest.InteractWithGuard(_points[0].transform);
+              //  guest.InteractWithGuard(_points[0].transform);
             }
         }
 

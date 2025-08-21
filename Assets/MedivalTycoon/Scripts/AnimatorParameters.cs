@@ -1,6 +1,10 @@
-public enum AnimatorParameters
+public enum AnimatorParameters 
 {
-    IsOn,
-    MoveEnd,
-    Reset
+    LeverIsOn,
+    BarrelMoveEnd,
+    ResetBarrel,
+    VisitorIdle,
+    VisitorWalk,
+    VisitorDrink,
+    VisitorSleep
 }

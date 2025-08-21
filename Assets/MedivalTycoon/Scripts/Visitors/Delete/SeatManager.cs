@@ -2,7 +2,7 @@
 using UnityEngine;
 
 public class SeatManager : MonoBehaviour
-{
+{/*
     [SerializeField] private QueueManager queueManager;
     private List<Seat> seats = new List<Seat>();
 
@@ -18,5 +18,5 @@ public class SeatManager : MonoBehaviour
     {
         seats.Remove(seat);
         seat.OnSeatVacated -=  queueManager.AssignSeatToNextGuest;
-    }
+    }*/
 }
