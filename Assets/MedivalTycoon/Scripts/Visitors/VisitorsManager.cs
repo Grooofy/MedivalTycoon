@@ -8,22 +8,29 @@ namespace Visitors
         [SerializeField] private TavernVisitor _tavernVisitor;
         [SerializeField] private RandomVisitorModel _randomVisitorModel;
         
-        private readonly List<VisitorController> _controllers = new List<VisitorController>();
+        private readonly List<TavernVisitor> _tavernVisitors = new List<TavernVisitor>();
 
-        public void CreateVisitor(Transform position, float speed, int maxBeerCount)
+        public TavernVisitor CreateVisitor(Transform position, float speed, int maxBeerCount)
         {
             var currentTavernVisitor = Instantiate(_tavernVisitor, position);
             _randomVisitorModel.SpawnRandomModel(currentTavernVisitor.transform);
-            var controller = new VisitorController(currentTavernVisitor, speed, maxBeerCount);
-            _controllers.Add(controller);
+            currentTavernVisitor.Initialize(speed, maxBeerCount);
+            _tavernVisitors.Add(currentTavernVisitor);
+            return currentTavernVisitor;
+        }
+        
+        public void SetAllVisitorsState(StateEvent newState)
+        {
+            foreach (var controller in _tavernVisitors)
+                controller.ChangeState(newState);
         }
 
         public void UpdateState()
         {
-            if (_controllers == null) return;
+            if (_tavernVisitors == null) return;
 
-            foreach (var controller in _controllers)
-                controller.UpdateState();
+            foreach (var tavernVisitor in _tavernVisitors)
+                tavernVisitor.UpdateState();
         }
     }
 }

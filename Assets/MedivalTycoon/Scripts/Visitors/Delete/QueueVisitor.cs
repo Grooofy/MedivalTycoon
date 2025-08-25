@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Characters;
+using Events;
 using UnityEngine;
 using Visitors;
 
@@ -25,6 +26,14 @@ public class QueueVisitor : MonoBehaviour
         _speed = speed;
         _maxBeerCount = maxBeerCount;
         _isInitialized = true;
+        EventBus.Subscribe<SeatPointClear>(MoveTest);
+    }
+
+    private void MoveTest(SeatPointClear value)
+    {
+        Debug.Log("ENTER");
+        _guestQueue.Peek().SetFinishPosition(value.Position);
+        _guestQueue.Peek().ChangeState(StateEvent.Move);
     }
    
     
@@ -38,7 +47,8 @@ public class QueueVisitor : MonoBehaviour
             var point = ObjectFactory.CreateObjectWithComponent<Point>($"Point {i}");
             point.transform.SetParent(transform);
             point.transform.position = spawnPosition;
-            _visitorsManager.CreateVisitor(point.transform, _speed, _maxBeerCount);
+            var visitor = _visitorsManager.CreateVisitor(point.transform, _speed, _maxBeerCount);
+            _guestQueue.Enqueue(visitor);
             _createdPoints.Add(point);
         }
     }
@@ -47,60 +57,5 @@ public class QueueVisitor : MonoBehaviour
     {
         _visitorsManager.UpdateState();
     }
-    
-    
-    
-    
-    
-    
 
-   /* private void Start()
-    {
-        foreach (var pos in queuePositions)
-        {
-            if (pos == null)
-            {
-                Debug.LogError("Queue position not set!");
-                continue;
-            }
-            AddGuestToQueue();
-        }
-    }
-
-    public void AddGuestToQueue()
-    {
-        if (guestQueue.Count >= maxQueueLength)
-        {
-            Debug.LogWarning("Max queue length reached.");
-            return;
-        }
-
-        var guest = Instantiate(_guest.gameObject, spawnPoint.position, Quaternion.identity).GetComponent<TavernVisitor>();
-        guestQueue.Enqueue(guest);
-        Debug.Log(guestQueue.Count + " Guest added to queue");
-       // UpdateQueuePositions();
-    }
-
-   /* public void AssignSeatToNextGuest(Seat seat)
-    {
-            
-        if (guestQueue.Count > 0 && seat != null && !seat.IsOccupied)
-        {
-            seat.Occupy(guestQueue.Peek());
-            var guest = guestQueue.Dequeue();
-            guest.AssignSeat(seat); // 👈 Запускает движение
-            UpdateQueuePositions();
-        }
-    }
-
-    private void UpdateQueuePositions()
-    {
-        int index = 0;
-        foreach (var guest in guestQueue)
-        {
-            if (index < queuePositions.Length)
-                guest.MoveToQueuePosition(queuePositions[index]);
-            index++;
-        }
-    }*/
 }

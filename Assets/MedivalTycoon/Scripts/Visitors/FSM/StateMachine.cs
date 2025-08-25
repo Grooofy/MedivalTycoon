@@ -7,8 +7,9 @@ namespace Visitors
     public class StateMachine
     {
         private IVisitorsState currentState;
-       
-        private Dictionary<(Type, StateEvent), Func<IVisitorsState>> transitions = new Dictionary<(Type, StateEvent), Func<IVisitorsState>>();
+
+        private Dictionary<(Type, StateEvent), Func<IVisitorsState>> transitions =
+            new Dictionary<(Type, StateEvent), Func<IVisitorsState>>();
 
         public void SetInitialState(IVisitorsState state)
         {
@@ -16,7 +17,8 @@ namespace Visitors
             currentState.Enter();
         }
 
-        public void AddTransition<TState>(StateEvent stateEvent, Func<IVisitorsState> targetStateFactory) where TState : IVisitorsState
+        public void AddTransition<TState>(StateEvent stateEvent, Func<IVisitorsState> targetStateFactory)
+            where TState : IVisitorsState
         {
             transitions[(typeof(TState), stateEvent)] = targetStateFactory;
         }
@@ -32,9 +34,10 @@ namespace Visitors
             }
         }
 
-        public void Update()
+        public void UpdateState()
         {
             currentState?.UpdateState();
         }
     }
+
 }

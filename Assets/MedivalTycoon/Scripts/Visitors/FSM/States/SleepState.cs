@@ -14,7 +14,7 @@ namespace Visitors
         
         public void Enter()
         {
-            AnimatorExtensions.Play(_tavernVisitor.Animator, AnimatorParameters.VisitorSleep);
+            AnimatorExtensions.Set(_tavernVisitor.Animator, AnimatorParameters.VisitorSleep);
         }
 
         public void UpdateState()

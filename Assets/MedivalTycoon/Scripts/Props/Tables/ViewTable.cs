@@ -19,7 +19,6 @@ namespace Tables
             _table = table;
             _tableBuilder = tableBuilder;
             _table.PriceChanged += ShowPrice;
-            _table.LinedUp += Hide;
             _table.LinedUp += OnBuilt;
             _slider.minValue = 0;
             _slider.maxValue = Convert.ToSingle(_table.Price);
@@ -32,20 +31,15 @@ namespace Tables
             _slider.value = _slider.maxValue - price;
         }
 
-        private void Hide()
-        {
-            gameObject.SetActive(false);
-        }
-
         private void OnBuilt()
         {
+            gameObject.SetActive(false);
             _tableBuilder.Play(_table);
         }
 
         private void OnDestroy()
         {
             _table.PriceChanged -= ShowPrice;
-            _table.LinedUp -= Hide;
             _table.LinedUp -= OnBuilt;
         }
     }

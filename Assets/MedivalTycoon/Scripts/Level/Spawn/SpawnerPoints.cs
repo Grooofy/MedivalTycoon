@@ -20,8 +20,6 @@ public class SpawnerPoints
     public List<Point> SpawnObjectsInCube(Vector3 spaceSize)
     {
         var createdPoints = new List<Point>();
-
-        // Более точный расчет количества объектов на ось
         int objectsPerAxis = Mathf.CeilToInt(Mathf.Pow(_spawnCount, 1f / 3f));
         Vector3 halfSize = spaceSize / 2f;
         Vector3 startPos = -halfSize + new Vector3(_spacing / 2f, _spacing / 2f, _spacing / 2f);
@@ -38,7 +36,6 @@ public class SpawnerPoints
                     Vector3 offset = new Vector3(x * _spacing, y * _spacing, z * _spacing);
                     Vector3 spawnPos = startPos + offset;
 
-                    // Явная проверка границ
                     if (spawnPos.x > halfSize.x || spawnPos.x < -halfSize.x ||
                         spawnPos.y > halfSize.y || spawnPos.y < -halfSize.y ||
                         spawnPos.z > halfSize.z || spawnPos.z < -halfSize.z)

@@ -1,5 +1,4 @@
-﻿using MedivalTycoon.Scripts.Events;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Propses
 {
@@ -15,7 +14,6 @@ namespace Propses
 
             if (IsMinDistance(transform.position, endPoint.transform.position))
             {
-                EventBus.Raise(new PointFillingEvent());
                 endPoint.Fill();
             }
         }
@@ -26,4 +24,6 @@ namespace Propses
             return Vector3.Distance(startPosition, endPosition) < minDistance;
         }
     }
+
+    
 }
