@@ -30229,7 +30229,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7038891403986418778, guid: 909ebd970bf26ab4485ed164ba355895, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 4.641449
+      value: 4.6414795
       objectReference: {fileID: 0}
     - target: {fileID: 7038891404728702251, guid: 909ebd970bf26ab4485ed164ba355895, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -47925,7 +47925,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1745621719}
-  - component: {fileID: 1745621720}
   m_Layer: 0
   m_Name: SeatPointManager
   m_TagString: Untagged
@@ -47948,18 +47947,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1745621720
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1745621718}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f303b243192a435a9e252a73e7d16ba8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1746807580
 GameObject:
   m_ObjectHideFlags: 0
@@ -51493,7 +51480,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _visitorsManager: {fileID: 361554733}
-  _seatManager: {fileID: 1745621720}
 --- !u!4 &1866957612
 Transform:
   m_ObjectHideFlags: 0
@@ -56570,7 +56556,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 106.9
+  m_fontSize: 107.5
   m_fontSizeBase: 90
   m_fontWeight: 400
   m_enableAutoSizing: 1

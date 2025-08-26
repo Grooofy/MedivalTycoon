@@ -27,7 +27,7 @@ namespace MedivalTycoon
             _tableManager.CreateTables(_loadingGameSettings);
             _barrelManager.Initialize();
             _barrelManager.CreatePoints();
-            queueVisitor.Initialize(10, 0.5f, 0.2f,10);
+            queueVisitor.Initialize(10, 0.5f, 4f,10);
             queueVisitor.SpawnVisitorsInLine(queueVisitor.transform.position);
         }
 

@@ -14,8 +14,6 @@ public class Seat : MonoBehaviour
     private int deliveredBeer;
 
     
-    public Action<Seat> OnSeatVacated;
-  
 
     public void Occupy(TavernVisitor guest)
     {
@@ -26,14 +24,17 @@ public class Seat : MonoBehaviour
         }
     }
 
+    public Vector3 GetPosition()
+    {
+        return transform.localPosition + transform.position;
+    }
+
     public void Vacate()
     {
         IsOccupied = false;
-        
-       
         _guest = null;
        // SetActiveText(false);
-        OnSeatVacated?.Invoke(this);
+       
     }
 
     public IEnumerator DeliverBeer(int amount)

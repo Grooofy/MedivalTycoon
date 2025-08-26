@@ -28,7 +28,8 @@ namespace Tables
             if (Price <= 0)
             {
                 LinedUp?.Invoke();
-                EventBus.Raise(new SeatPointClear(_seat.transform.localPosition + _seat.transform.position));
+                EventBus.Raise(new TableBuilt(_seat));
+                EventBus.Raise(new SeatFreed(_seat));
             }
         }
     }

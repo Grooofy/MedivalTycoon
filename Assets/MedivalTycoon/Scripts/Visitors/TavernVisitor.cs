@@ -12,6 +12,7 @@ namespace Visitors
         private StateMachine _stateMachine;
         private float _speed;
         private Vector3 _finishPosition;
+        private bool _isMoving;
         
         public void Initialize(float speed, int maxBeerAmount)
         {
@@ -28,16 +29,25 @@ namespace Visitors
             BeerAmount = Random.Range(_minBeerAmount, _maxBeerAmount);
         }
 
-        public void SetFinishPosition(Vector3 position)
+        public void GoTo(Vector3 position)
         {
             _finishPosition = position;
+            _isMoving = true;
+            ChangeState(StateEvent.Move);
         }
        
         public void MoveToPoint()
         {
-            if (_finishPosition == Vector3.zero) return;
-            
-            transform.position = Vector3.MoveTowards(transform.position, _finishPosition, _speed * Time.deltaTime);
+            if (_isMoving)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, _finishPosition, _speed * Time.deltaTime);
+                
+                if (Vector3.Distance(transform.position, _finishPosition) < 0.05f)
+                {
+                    transform.position = _finishPosition;
+                    _isMoving = false;
+                }
+            }
         }
 
         private void AddTransitions()

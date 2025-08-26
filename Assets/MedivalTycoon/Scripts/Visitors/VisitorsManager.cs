@@ -19,12 +19,6 @@ namespace Visitors
             return currentTavernVisitor;
         }
         
-        public void SetAllVisitorsState(StateEvent newState)
-        {
-            foreach (var controller in _tavernVisitors)
-                controller.ChangeState(newState);
-        }
-
         public void UpdateState()
         {
             if (_tavernVisitors == null) return;
