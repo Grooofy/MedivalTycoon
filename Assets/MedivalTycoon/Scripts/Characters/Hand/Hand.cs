@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using MedivalTycoon;
 using Propses;
 using UnityEngine;
 
@@ -18,7 +19,7 @@ namespace Characters
 
         private int _index;
 
-
+       
         public void CreatePoints(int count, float offset, Vector3 spaceSize)
         {
             for (int i = 0; i < count; i++)
@@ -106,11 +107,10 @@ namespace Characters
             }
         }
 
-
-        public void Initialize(string sourceId, BarrelPool barrelPool)
+        public void Initialize(string sourceId, IPropsPool barrelPool)
         {
         }
-
+      
         public void RegisterProps(Stack<IProps> props)
         {
         }

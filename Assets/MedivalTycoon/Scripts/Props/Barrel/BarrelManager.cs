@@ -2,6 +2,7 @@
 using Lever;
 using Propses;
 using Beers;
+using MedivalTycoon;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -21,7 +22,7 @@ namespace Barrels
         [SerializeField] private PropsSpawner _propsSpawner;
         [SerializeField] private LayerMask _layerMask;
 
-        private BarrelPool _barrelPool;
+        private IPropsPool _barrelPool;
 
 
         public void Initialize()

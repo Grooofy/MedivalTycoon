@@ -1,18 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
+using Propses;
 using UnityEngine;
 
-public class Beer : Barrel
+public class Beer : MonoBehaviour, IProps
 {
-    /*internal override IEnumerator TryMoveTo(Point endPoint)
+    public GameObject Prefab { get; }
+    
+    
+    public void Initilization(Transform parent, float moveSpeed, Animator animator)
     {
-        if (endPoint == null) yield break;
-        
-        while (endPoint.IsFill == false)
-        {
-            MoveTo(endPoint);
-            yield return null;
-        }
-        transform.position = endPoint.transform.position;
-    }*/
+        throw new System.NotImplementedException();
+    }
+
+    public IEnumerator TryMoveTo(Point endPoint)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Reset(IPropsMover propsMover, Point point)
+    {
+        throw new System.NotImplementedException();
+    }
 }

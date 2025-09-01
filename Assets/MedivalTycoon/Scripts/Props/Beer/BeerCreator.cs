@@ -22,7 +22,7 @@ public class BeerCreator : MonoBehaviour, IPropsMover
     private int _currentCountBeerPoint;
 
 
-    public void Initialize(string sourceId, BarrelPool barrelPool)
+    public void Initialize(string sourceId, PropsPool<Barrel> barrelPool)
     {
         throw new NotImplementedException();
     }

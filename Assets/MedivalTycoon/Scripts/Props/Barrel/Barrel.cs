@@ -12,7 +12,7 @@ public class Barrel : MonoBehaviour, IProps
     private float _moveSpeed;
     private bool _isFirstAnimationPlaying;
 
-    public GameObject Prefab { get; }
+    //public GameObject Prefab { get; }
 
     public void Initilization(Transform parent, float moveSpeed, Animator animator)
     {

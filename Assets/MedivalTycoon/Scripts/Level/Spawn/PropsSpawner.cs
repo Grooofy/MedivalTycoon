@@ -1,4 +1,5 @@
 using System;
+using MedivalTycoon;
 using Propses;
 using UnityEngine;
 
@@ -6,11 +7,11 @@ using UnityEngine;
 public class PropsSpawner : MonoBehaviour
 {
     [Header("BarrelPool")]
-    [SerializeField] private BarrelPool _barrelPool;
+    [SerializeField] private PropsPool<Barrel> _barrelPool;
     [SerializeField] private int _defaultSize;
     [SerializeField] private int _maxSize;
 
-    public BarrelPool GetBarrelPool()
+    public IProps GetBarrelPool()
     {
         return _barrelPool.Initialize(_defaultSize, _maxSize);
     }

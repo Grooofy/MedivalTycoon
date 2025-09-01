@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using MedivalTycoon;
 using Propses;
 using UnityEngine;
 using UnityEngine.Events;
@@ -22,10 +23,12 @@ namespace Characters
             }
         }
 
-        public void Initialize(string sourceId, BarrelPool barrelPool)
+
+        public void Initialize(string sourceId, IPropsPool barrelPool)
         {
-            throw new NotImplementedException();
+            
         }
+
 
         public void CreatePoints(int cout, float offset, Vector3 spaceSize)
         {

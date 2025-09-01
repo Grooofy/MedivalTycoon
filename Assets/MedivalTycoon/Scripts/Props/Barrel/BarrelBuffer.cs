@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using MedivalTycoon;
 using Propses;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ public class BarrelBuffer : MonoBehaviour, IPropsMover
     private Queue<IProps> _props = new Queue<IProps>();
     private Stack<IProps> _pointsProps = new Stack<IProps>();
     private SpawnerPoints _spawnerPoints = new SpawnerPoints();
-    private BarrelPool _barrelPool;
+    private IPropsPool _barrelPool;
     private List<Point> _points;
     private int _index;
     private int _amountPoint;
@@ -19,7 +20,8 @@ public class BarrelBuffer : MonoBehaviour, IPropsMover
     private string _sourceId;
     public bool IsTake { get; set; }
 
-    public void Initialize(string sourceId, BarrelPool barrelPool)
+
+    public void Initialize(string sourceId, IPropsPool barrelPool)
     {
         _sourceId = sourceId;
         _barrelPool = barrelPool;
@@ -62,7 +64,7 @@ public class BarrelBuffer : MonoBehaviour, IPropsMover
         {
             if (_index >= _amountPoint) break;
 
-            var prop = _barrelPool.SpawnBarrel();
+            var prop = _barrelPool.Spawn();
 
             yield return prop.TryMoveTo(_points[_index]);
 
