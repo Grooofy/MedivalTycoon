@@ -11,7 +11,7 @@ public class PropsSpawner : MonoBehaviour
     [SerializeField] private int _defaultSize;
     [SerializeField] private int _maxSize;
 
-    public IProps GetBarrelPool()
+    public IPropsPool GetBarrelPool()
     {
         return _barrelPool.Initialize(_defaultSize, _maxSize);
     }

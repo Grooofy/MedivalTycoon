@@ -5,5 +5,5 @@ using UnityEngine.Pool;
 
 namespace Propses
 {
-    public class BarrelPool : PropsPool<Barrel>, IPropsPool { }
+    public class BarrelPool : PropsPool<Barrel> { }
 }

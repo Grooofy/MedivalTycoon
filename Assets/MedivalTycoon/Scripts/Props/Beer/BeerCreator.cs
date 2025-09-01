@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using MedivalTycoon;
 using Propses;
 using UnityEngine;
 using UnityEngine.Events;
@@ -20,9 +21,9 @@ public class BeerCreator : MonoBehaviour, IPropsMover
     private int _index;
     private bool _isFull;
     private int _currentCountBeerPoint;
+  
 
-
-    public void Initialize(string sourceId, PropsPool<Barrel> barrelPool)
+    public void Initialize(string sourceId, IPropsPool barrelPool)
     {
         throw new NotImplementedException();
     }
@@ -86,7 +87,7 @@ public class BeerCreator : MonoBehaviour, IPropsMover
                 _isFull = true;
             }
             _pointsProps = new Queue<IProps>(temporaryQueue.Reverse());
-            yield return _wait;
+            yield return null;
         }
 
         if (_index == _currentCountBeerPoint)

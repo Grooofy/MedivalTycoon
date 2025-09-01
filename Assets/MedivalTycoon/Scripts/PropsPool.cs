@@ -4,7 +4,7 @@ using UnityEngine.Pool;
 
 namespace Propses
 {
-    public class PropsPool<T> : MonoBehaviour where T : Component, IProps
+    public class PropsPool<T> : MonoBehaviour, IPropsPool where T : Component, IProps
     {
         [SerializeField] private T _prefab;     
         [SerializeField] private float _moveSpeed;

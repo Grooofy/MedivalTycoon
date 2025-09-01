@@ -76,7 +76,7 @@ namespace Beers
                 {
                     _isFull = true;
                 }
-                yield return _wait;
+                yield return null;
             }
         }
 
@@ -95,7 +95,6 @@ namespace Beers
         
         public void RegisterProp(IProps barrel)
         {
-            throw new System.NotImplementedException();
         }
     }
 }

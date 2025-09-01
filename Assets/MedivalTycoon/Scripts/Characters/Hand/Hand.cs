@@ -61,11 +61,9 @@ namespace Characters
                 if (prop == null) continue;
 
                 var point = _points[_index];
-                StartCoroutine(prop.TryMoveTo(point));
+                yield return prop.TryMoveTo(point);
                 _carriedProps.Push(prop);
                 _index++;
-
-                yield return _wait;
             }
 
             if (_carriedProps.Count == _points.Count)

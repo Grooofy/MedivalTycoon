@@ -76,8 +76,6 @@ public class BarrelBuffer : MonoBehaviour, IPropsMover
                 _isFull = true;
                 EventBus.Raise(new PropsMoverFullingPointEvent(true, _sourceId));
             }
-
-            yield return _wait;
         }
     }
 

@@ -13,7 +13,7 @@ public class Beer : MonoBehaviour, IProps
         throw new System.NotImplementedException();
     }
 
-    public IEnumerator TryMoveTo(Point endPoint)
+    public IEnumerator TryMoveTo(Point endPoints)
     {
         throw new System.NotImplementedException();
     }

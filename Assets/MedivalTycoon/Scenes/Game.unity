@@ -759,7 +759,6 @@ Transform:
   - {fileID: 819556161}
   - {fileID: 1957869658}
   - {fileID: 871871679}
-  - {fileID: 1930721604}
   m_Father: {fileID: 681550140}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &51976285
@@ -3590,10 +3589,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b95135f9ebee4bd6bcde540f3b1f2660, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _collider: {fileID: 3399816450162927344}
-  _animator: {fileID: 1780939514}
-  _groundUI: {fileID: 307822172}
+  _barrelCollider: {fileID: 3399816450162927344}
+  _barrelAnimator: {fileID: 1780939514}
+  _barrelGroundUI: {fileID: 307822172}
   _leverGetBarrel: {fileID: 3399816450162927343}
+  _beerCollider: {fileID: 0}
+  _beerAnimator: {fileID: 0}
+  _beerGroundUI: {fileID: 0}
+  _leverGetBeer: {fileID: 0}
 --- !u!4 &179564857
 Transform:
   m_ObjectHideFlags: 0
@@ -11616,15 +11619,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2f5d905e86e79c499a6331fa76af40e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _firstSpawn: {fileID: 428411083}
-  _barrelPoint: {fileID: 1944904837}
-  _beerCreator: {fileID: 51976285}
-  _groundUIbartender: {fileID: 517368232}
-  _groundUIwaiter: {fileID: 1726880894}
-  _animator: {fileID: 896659020}
-  _smoke: {fileID: 0}
-  barrelBuffer: {fileID: 0}
-  _collider: {fileID: 500643477}
 --- !u!135 &500643477
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -14835,7 +14829,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e433edefb5854d13927eebe5e38500cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _prefab: {fileID: 0}
+  _prefab: {fileID: 3166413933466699781, guid: 2f6c2838ded511549931bdeadae0a917, type: 3}
   _moveSpeed: 3
 --- !u!4 &641602947
 Transform:
@@ -53104,7 +53098,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1930721604}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: BeerPool
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -53118,12 +53112,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1930721603}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.33, y: 0.333, z: 0.119}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.6534476, y: 1.3907392, z: -1.571871}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 51976284}
+  m_Father: {fileID: 2104728499}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1933590376 stripped
 Transform:
@@ -56597,7 +56591,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 107.5
+  m_fontSize: 103.45
   m_fontSizeBase: 90
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -57749,6 +57743,7 @@ Transform:
   - {fileID: 1100382899}
   - {fileID: 641602947}
   - {fileID: 179564857}
+  - {fileID: 1930721604}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2109451281
