@@ -13,7 +13,7 @@ public class BeerCreator : MonoBehaviour, IPropsMover
     public UnityAction<bool> Fulling { get; set; }
     [SerializeField] private int _amountBarrelToBeer;
     [SerializeField] private List<Point> _points = new List<Point>();
-    
+
     private Queue<IProps> _props = new Queue<IProps>();
     private Queue<IProps> _pointsProps = new Queue<IProps>();
     private WaitForSeconds _wait = new WaitForSeconds(1f);
@@ -21,7 +21,7 @@ public class BeerCreator : MonoBehaviour, IPropsMover
     private int _index;
     private bool _isFull;
     private int _currentCountBeerPoint;
-  
+
 
     public void Initialize(string sourceId, IPropsPool barrelPool)
     {
@@ -36,18 +36,18 @@ public class BeerCreator : MonoBehaviour, IPropsMover
     public void RegisterProps(Stack<IProps> props)
     {
         _currentCountBeerPoint = _amountBarrelToBeer;
-        
+
         if (props == null) return;
         if (props.Count == 0) return;
-       
+
         foreach (var prop in props)
         {
-            if (prop == null) continue; 
+            if (prop == null) continue;
 
             _props.Enqueue(prop);
         }
     }
-    
+
     public int GetEmptyPointsCount()
     {
         var index = 0;
@@ -75,19 +75,19 @@ public class BeerCreator : MonoBehaviour, IPropsMover
             if (_props.Count == 0) yield break;
             var prop = _props.Peek();
             if (prop == null) yield break;
-            
-            StartCoroutine(prop.TryMoveTo(_points[_index]));
+
+            yield return prop.TryMoveTo(_points[_index]);
             temporaryQueue.Enqueue(_props.Dequeue());
             _index++;
-            
+
             if (_index == _points.Count)
             {
                 _index = _points.Count - 1;
                 _currentCountBeerPoint = _amountBarrelToBeer;
                 _isFull = true;
             }
+
             _pointsProps = new Queue<IProps>(temporaryQueue.Reverse());
-            yield return null;
         }
 
         if (_index == _currentCountBeerPoint)
@@ -129,6 +129,7 @@ public class BeerCreator : MonoBehaviour, IPropsMover
                 ResetPoints();
             }
         }
+
         return queue;
     }
 

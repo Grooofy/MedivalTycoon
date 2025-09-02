@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Events;
+using UnityEngine;
 
 namespace Lever
 {
@@ -11,15 +12,15 @@ namespace Lever
         {
             _isActive = isActive;
             _animator = animator;
-            EventBus.Subscribe<PropsMoverFullingPointEvent>(ChangeValue);
+            EventBus.Subscribe<CharacterGetBeer>(ChangeValue);
         }
 
         public void OnDestroy()
         {
-            EventBus.Unsubscribe<PropsMoverFullingPointEvent>(ChangeValue);
+            EventBus.Unsubscribe<CharacterGetBeer>(ChangeValue);
         }
 
-        private void ChangeValue(PropsMoverFullingPointEvent value)
+        private void ChangeValue(CharacterGetBeer value)
         {
             _isActive = !_isActive;
             AnimatorExtensions.Set(_animator, AnimatorParameters.LeverIsOn, _isActive);

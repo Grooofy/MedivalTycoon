@@ -8,7 +8,6 @@ using UnityEngine;
 
 public class BarrelBuffer : MonoBehaviour, IPropsMover
 {
-    private WaitForSeconds _wait = new WaitForSeconds(0.3f);
     private Queue<IProps> _props = new Queue<IProps>();
     private Stack<IProps> _pointsProps = new Stack<IProps>();
     private SpawnerPoints _spawnerPoints = new SpawnerPoints();
@@ -86,15 +85,14 @@ public class BarrelBuffer : MonoBehaviour, IPropsMover
 
         for (int i = 0; i < itemsToTake; i++)
         {
-            var prop = _pointsProps.Pop();
-            if (prop == null) return null;
-            
+            _pointsProps.TryPop(out var prop);
+           
             result.Push(prop);
 
             if (_index > 0)
             {
-                _index--;
                 _points[_index].Free();
+                _index--;
             }
             
             if (_pointsProps.Count == 0)

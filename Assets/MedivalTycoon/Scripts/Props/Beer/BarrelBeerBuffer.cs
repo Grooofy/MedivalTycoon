@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Events;
 using MedivalTycoon;
 using Propses;
 using UnityEngine;
@@ -8,7 +9,6 @@ namespace Beers
 {
     public class BarrelBeerBuffer : MonoBehaviour, IPropsMover
     {
-        private WaitForSeconds _wait = new WaitForSeconds(0.2f);
         private Stack<IProps> _props = new Stack<IProps>();
         private Stack<IProps> _pointsProps = new Stack<IProps>();
         private SpawnerPoints _spawnerPoints = new SpawnerPoints();
@@ -17,6 +17,7 @@ namespace Beers
         private int _index;
         private int _amountPoint;
         private bool _isFull;
+        private bool _isEmpty = true;
         private string _sourceId;
         
         
@@ -53,7 +54,6 @@ namespace Beers
             {
                 if (point.IsFill) index++;
             }
-
             return index;
         }
 
@@ -62,6 +62,11 @@ namespace Beers
         {
             while (_isFull == false && _props.Count > 0)
             {
+                if (_isEmpty)
+                {
+                    EventBus.Raise(new CharacterGetBeer(_isEmpty));
+                    _isEmpty = false;
+                }
                 if (_index >= _amountPoint) break;
                 
                 _props.TryPop(out var props);
@@ -74,9 +79,9 @@ namespace Beers
 
                 if (_index >= _amountPoint)
                 {
+                    _index = _amountPoint;
                     _isFull = true;
                 }
-                yield return null;
             }
         }
 

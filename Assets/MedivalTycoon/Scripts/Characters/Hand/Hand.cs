@@ -57,12 +57,10 @@ namespace Characters
 
             while (_index < _points.Count && _incomingProps.Count > 0)
             {
-                var prop = _incomingProps.Pop();
-                if (prop == null) continue;
-
+                _incomingProps.TryPop(out var props);
                 var point = _points[_index];
-                yield return prop.TryMoveTo(point);
-                _carriedProps.Push(prop);
+                yield return props.TryMoveTo(point);
+                _carriedProps.Push(props);
                 _index++;
             }
 

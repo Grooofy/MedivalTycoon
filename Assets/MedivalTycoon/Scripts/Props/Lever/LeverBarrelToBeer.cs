@@ -1,5 +1,6 @@
 using Beers;
 using Characters;
+using Events;
 using UnityEngine;
 
 namespace Lever
@@ -18,7 +19,7 @@ namespace Lever
             _uiObject = uiObject;
         }
 
-        private void TurnObject(PropsMoverFullingPointEvent value)
+        private void TurnObject(CharacterGetBeer value)
         {
             _collider.enabled = !value.IsFull;
             
