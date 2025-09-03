@@ -1,28 +1,33 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using MedivalTycoon;
 using Propses;
 using UnityEngine;
+using UnityEngine.Events;
 
 
-public class BarrelBuffer : MonoBehaviour, IPropsMover
+public class BeerBuffer : MonoBehaviour, IPropsMover
 {
-    private Queue<IProps> _props = new Queue<IProps>();
+    private List<Point> _points = new List<Point>();
+    private SpawnerPoints _spawnerPoints = new  SpawnerPoints();
+    private Stack<IProps> _props = new Stack<IProps>();
     private Stack<IProps> _pointsProps = new Stack<IProps>();
-    private SpawnerPoints _spawnerPoints = new SpawnerPoints();
-    private IPropsPool _barrelPool;
-    private List<Point> _points;
     private int _index;
-    private int _amountPoint;
     private bool _isFull;
+    private int _currentCountBeerPoint;
+    private int _amountPoint;
     private string _sourceId;
-    public bool IsTake { get; set; }
+    private int _amountBeerToBarrel;
+    private IPropsPool _barrelPool;
 
 
-    public void Initialize(string sourceId, IPropsPool barrelPool)
+    public void Initialize(string sourceId, IPropsPool barrelPool, int amountBarrelToBeer)
     {
         _sourceId = sourceId;
         _barrelPool = barrelPool;
+        _amountBeerToBarrel = amountBarrelToBeer;
     }
 
     public void CreatePoints(int cout, float offset, Vector3 spaceSize)
@@ -40,7 +45,7 @@ public class BarrelBuffer : MonoBehaviour, IPropsMover
         foreach (var prop in props)
         {
             if (prop == null) continue;
-            _props.Enqueue(prop);
+            _props.Push(prop);
         }
     }
 
@@ -56,23 +61,26 @@ public class BarrelBuffer : MonoBehaviour, IPropsMover
         return index;
     }
 
+    
     public IEnumerator FillingPoints()
     {
-        while (_isFull == false && IsTake)
+        while (_isFull == false && _props.Count > 0)
         {
             if (_index >= _amountPoint) break;
+            
+                
+            _props.TryPop(out var props);
+            if (props == null) break;
+                
+            yield return  props.TryMoveTo(_points[_index]);
 
-            var prop = _barrelPool.Spawn();
-
-            yield return prop.TryMoveTo(_points[_index]);
-
-            _pointsProps.Push(prop);
+            _pointsProps.Push(props);
             _index++;
 
             if (_index >= _amountPoint)
             {
+                _index = _amountPoint;
                 _isFull = true;
-                EventBus.Raise(new PropsMoverFullingPointEvent(true, _sourceId));
             }
         }
     }
@@ -104,7 +112,6 @@ public class BarrelBuffer : MonoBehaviour, IPropsMover
         }
         return result;
     }
-
 
     private void ResetPoints()
     {

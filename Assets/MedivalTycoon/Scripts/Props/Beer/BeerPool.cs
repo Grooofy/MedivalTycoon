@@ -1,9 +1,7 @@
-﻿using UnityEngine;
+﻿using Propses;
+using UnityEngine;
 
 namespace Beers
 {
-    public class BeerPool : MonoBehaviour
-    {
-        
-    }
+    public class BarrelPool : PropsPool<Beer> { }
 }

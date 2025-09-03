@@ -25,7 +25,7 @@ namespace Lever
         private void TurnObject(BeerBufferOpen value)
         {
             _collider.enabled = value.IsEmpty;
-            
+
             if (value.IsEmpty)
                 _uiObject.FadeIn();
             else
@@ -37,7 +37,7 @@ namespace Lever
             if (other.TryGetComponent(out Waiter waiter))
             {
                 _barrelBeerBuffer.IsTake = true;
-              StartCoroutine(_barrelBeerBuffer.ResetBarrel());
+                StartCoroutine(_barrelBeerBuffer.ResetBarrel());
             }
         }
 
@@ -50,6 +50,6 @@ namespace Lever
         private void OnDestroy()
         {
             EventBus.Unsubscribe<BeerBufferOpen>(TurnObject);
-        }       
+        }
     }
 }

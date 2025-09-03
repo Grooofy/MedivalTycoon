@@ -16,7 +16,7 @@ public class PropsMoverInitializator : MonoBehaviour
     [Header("To Beer")] 
     [SerializeField] private BarrelTaker _beerTaker;
     [SerializeField] private BarrelGiver _beerGiver;
-    [SerializeField] private BeerCreator _beerRegulating;
+    [SerializeField] private BeerBuffer _beerRegulating;
     
     [Header("To Table")]
     [SerializeField] private BarrelTaker _tableTaker;
