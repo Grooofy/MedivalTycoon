@@ -9,9 +9,12 @@ namespace Beers
 {
     public class BarrelBeerBuffer : MonoBehaviour, IPropsMover
     {
+        public bool IsTake;
         private Stack<IProps> _props = new Stack<IProps>();
         private Stack<IProps> _pointsProps = new Stack<IProps>();
         private SpawnerPoints _spawnerPoints = new SpawnerPoints();
+        private Point _barrelFinishPoint;
+        private WaitForSeconds _delayBarrelReset;
         private IPropsPool _barrelPool;
         private List<Point> _points;
         private int _index;
@@ -19,12 +22,14 @@ namespace Beers
         private bool _isFull;
         private bool _isEmpty = true;
         private string _sourceId;
-        
-        
-        public void Initialize(string sourceId, IPropsPool barrelPool)
+
+
+        public void Initialize(string sourceId, IPropsPool barrelPool, Point barrelFinishPoint, WaitForSeconds delayBarrelReset)
         {
             _sourceId = sourceId;
             _barrelPool = barrelPool;
+            _barrelFinishPoint = barrelFinishPoint;
+            _delayBarrelReset = delayBarrelReset;
         }
 
         public void CreatePoints(int cout, float offset, Vector3 spaceSize = new Vector3())
@@ -64,7 +69,7 @@ namespace Beers
             {
                 if (_isEmpty)
                 {
-                    EventBus.Raise(new CharacterGetBeer(_isEmpty));
+                    EventBus.Raise(new BeerBufferOpen(_isEmpty));
                     _isEmpty = false;
                 }
                 if (_index >= _amountPoint) break;
@@ -85,6 +90,30 @@ namespace Beers
             }
         }
 
+        public IEnumerator ResetBarrel()
+        {
+            while (IsTake && _isEmpty == false)
+            {
+                _pointsProps.TryPop(out var props);
+                if (props == null) break;
+                
+                yield return props.TryMoveTo(_barrelFinishPoint);
+                yield return _delayBarrelReset;
+                _barrelFinishPoint.Free();
+                _barrelPool.Despawn(props);
+                _index--;
+                _points[_index].Free();
+                if (_index < 0)
+                {
+                    _index = 0;
+                    EventBus.Raise(new BeerBufferOpen(_isEmpty));
+                    _isEmpty = true;
+                }
+            }
+        }
+        
+        
+        
         public Stack<IProps> GetTo(int amount)
         {
             throw new System.NotImplementedException();

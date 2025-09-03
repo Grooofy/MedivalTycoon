@@ -21,14 +21,11 @@ public class Barrel : MonoBehaviour, IProps
         _startPoint = parent;
     }
 
-    public void Reset(IPropsMover propsMover, Point point)
+    public void Reset()
     {
-        point.Free();
-        transform.SetParent(_startPoint);
         transform.position = _startPoint.position;
         _barrelAnimation.Reset();
         _isFirstAnimationPlaying = false;
-        //propsMover.RegisterProp(this);
     }
     
     public IEnumerator TryMoveTo(Point endPoint)

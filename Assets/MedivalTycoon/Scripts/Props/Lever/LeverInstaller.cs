@@ -16,18 +16,26 @@ namespace Lever
         [SerializeField] private SphereCollider _beerCollider;
         [SerializeField] private Animator _beerAnimator;
         [SerializeField] private GroundUI _beerGroundUI;
-        [SerializeField] private LeverGetBarrel _leverGetBeer;
+        [SerializeField] private LeverBeer leverBeer;
+        private LeverBeerAnimation _leverBeerAnimation;
 
-        public void Initialize(IPropsMover propsMover)
+        public void InitializeBarrelLever(IPropsMover propsMover)
         {
             _leverBarrelAnimator = new LeverBarrelAnimator(_barrelAnimator, false);
             _barrelGroundUI.Initialize();
             _leverGetBarrel.Initialize(propsMover, _barrelCollider, _barrelGroundUI);
-            
+        }
+
+        public void InitializeBeerLever(IPropsMover propsMover)
+        {
+            _leverBarrelAnimator = new  LeverBarrelAnimator(_beerAnimator, false);
+            _beerGroundUI.Initialize();
+            leverBeer.Initialize(propsMover,  _beerCollider, _beerGroundUI);
         }
 
         private void OnDestroy()
         {
+            _leverBarrelAnimator.OnDestroy();
             _leverBarrelAnimator.OnDestroy();
         }
     }

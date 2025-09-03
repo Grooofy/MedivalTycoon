@@ -89,10 +89,10 @@ public class BarrelBuffer : MonoBehaviour, IPropsMover
            
             result.Push(prop);
 
-            if (_index > 0)
+            if (_index >= 0)
             {
-                _points[_index].Free();
                 _index--;
+                _points[_index].Free();
             }
             
             if (_pointsProps.Count == 0)

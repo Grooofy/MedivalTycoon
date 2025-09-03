@@ -18,7 +18,7 @@ public class Beer : MonoBehaviour, IProps
         throw new System.NotImplementedException();
     }
 
-    public void Reset(IPropsMover propsMover, Point point)
+    public void Reset()
     {
         throw new System.NotImplementedException();
     }

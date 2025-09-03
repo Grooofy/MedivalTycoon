@@ -12,15 +12,15 @@ namespace Lever
         {
             _isActive = isActive;
             _animator = animator;
-            EventBus.Subscribe<CharacterGetBeer>(ChangeValue);
+            EventBus.Subscribe<BeerBufferOpen>(ChangeValue);
         }
 
         public void OnDestroy()
         {
-            EventBus.Unsubscribe<CharacterGetBeer>(ChangeValue);
+            EventBus.Unsubscribe<BeerBufferOpen>(ChangeValue);
         }
 
-        private void ChangeValue(CharacterGetBeer value)
+        private void ChangeValue(BeerBufferOpen value)
         {
             _isActive = !_isActive;
             AnimatorExtensions.Set(_animator, AnimatorParameters.LeverIsOn, _isActive);

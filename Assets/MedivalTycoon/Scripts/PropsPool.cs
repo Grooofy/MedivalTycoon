@@ -53,6 +53,7 @@ namespace Propses
         {
             var component = prop as T;
             component.gameObject.SetActive(false);
+            component.Reset();
         }
 
         private void OnDestroyProp(IProps prop)

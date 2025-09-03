@@ -10,7 +10,7 @@ namespace Barrels
 {
     public class BarrelManager : MonoBehaviour
     {
-        [Header("Barrel CubeSpawnPointSize")]
+        [Header("Barrel CubeSpawnPointSize")] 
         [SerializeField] private Vector3 _spaceSize;
         [SerializeField] private int _spawnCount;
         [SerializeField] private float _spacing;
@@ -18,8 +18,10 @@ namespace Barrels
         [SerializeField] private LeverInstaller _leverInstaller;
         [SerializeField] private BarrelGiver _barrelGiver;
         [SerializeField] private BarrelTaker _barrelTaker;
-        [SerializeField] private BarrelBeerBuffer barrelBeerBuffer;
+        [SerializeField] private BarrelBeerBuffer _barrelBeerBuffer;
         [SerializeField] private PropsSpawner _propsSpawner;
+        [SerializeField] private Point _finishPositionToBarrel;
+        [SerializeField] private float _delayBarrelReset;
         [SerializeField] private LayerMask _layerMask;
 
         private IPropsPool _barrelPool;
@@ -29,24 +31,25 @@ namespace Barrels
         {
             _barrelPool = _propsSpawner.GetBarrelPool();
             _barrelBuffer.Initialize("Barrel", _barrelPool);
-            _leverInstaller.Initialize(_barrelBuffer);
+            _leverInstaller.InitializeBarrelLever(_barrelBuffer);
             _barrelGiver.Initialize(_barrelBuffer, _layerMask);
-            barrelBeerBuffer.Initialize("Beer",  _barrelPool);
-            _barrelTaker.Initialize(barrelBeerBuffer, _layerMask);
+            _barrelBeerBuffer.Initialize("Beer", _barrelPool, _finishPositionToBarrel,new WaitForSeconds(_delayBarrelReset));
+            _barrelTaker.Initialize(_barrelBeerBuffer, _layerMask);
+            _leverInstaller.InitializeBeerLever(_barrelBeerBuffer);
         }
 
         public void CreatePoints()
         {
             _barrelBuffer.CreatePoints(_spawnCount, _spacing, _spaceSize);
-            barrelBeerBuffer.CreatePoints(_spawnCount, _spacing, _spaceSize);
+            _barrelBeerBuffer.CreatePoints(_spawnCount, _spacing, _spaceSize);
         }
 
         public void CheckHits()
         {
             _barrelGiver.CheckHits();
-           _barrelTaker.CheckHits();
+            _barrelTaker.CheckHits();
         }
-        
+
 
         /*private void OnDrawGizmos()
         {
