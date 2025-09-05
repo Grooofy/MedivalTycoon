@@ -3,12 +3,12 @@ using UnityEngine;
 
 namespace Lever
 {
-    public class LeverBeerAnimation
+    public class LeverBeerAnimator
     {
         private Animator _animator;
         private bool _isActive;
 
-        public LeverBeerAnimation(Animator animator, bool isActive)
+        public LeverBeerAnimator(Animator animator, bool isActive)
         {
             _isActive = isActive;
             _animator = animator;

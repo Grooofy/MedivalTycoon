@@ -3337,37 +3337,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f365d94354e698f47a24eb31ce14c4bd, type: 3}
   m_PrefabInstance: {fileID: 166269592}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &168647346
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 168647347}
-  m_Layer: 0
-  m_Name: Pool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &168647347
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 168647346}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.27088553, y: -0.018040895, z: -1.1716982}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &169041632
 GameObject:
   m_ObjectHideFlags: 0
@@ -7924,6 +7893,62 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8be4dcaf6b4245341b59481c573c1ada, type: 3}
+--- !u!1 &375923872
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 375923874}
+  - component: {fileID: 375923873}
+  m_Layer: 0
+  m_Name: BeerManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &375923873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 375923872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c423763291d740bf8ef1f8b55d777309, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spaceSize: {x: 0.6, y: 0.4, z: 0.5}
+  _spawnCount: 30
+  _spacing: 0.1
+  _beerBuffer: {fileID: 469541416}
+  _barrelBeerBuffer: {fileID: 1010662467}
+  _leverInstaller: {fileID: 179564856}
+  _beerGiver: {fileID: 819556168}
+  _propsSpawner: {fileID: 1100382900}
+  _amountBeerToBarrel: 6
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 128
+--- !u!4 &375923874
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 375923872}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.5848396, y: 0.47909924, z: -1.0852289}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &378229631
 GameObject:
   m_ObjectHideFlags: 0
@@ -11401,6 +11426,7 @@ MonoBehaviour:
   _propsSpawner: {fileID: 1100382900}
   _finishPositionToBarrel: {fileID: 1944904837}
   _delayBarrelReset: 3
+  _amountBeerToBarrel: 0
   _layerMask:
     serializedVersion: 2
     m_Bits: 64
@@ -15563,7 +15589,7 @@ Transform:
   m_GameObject: {fileID: 681550139}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.776, y: 0, z: 1.722}
+  m_LocalPosition: {x: -1.5115523, y: 1.0577393, z: 1.711129}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -15573,7 +15599,7 @@ Transform:
   - {fileID: 56995126}
   - {fileID: 1669454041}
   - {fileID: 51976284}
-  m_Father: {fileID: 2120647594}
+  m_Father: {fileID: 2104728499}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &681895046
 PrefabInstance:
@@ -19171,9 +19197,9 @@ GameObject:
   - component: {fileID: 819556166}
   - component: {fileID: 819556165}
   - component: {fileID: 819556164}
-  - component: {fileID: 819556163}
+  - component: {fileID: 819556168}
   m_Layer: 0
-  m_Name: BeerZone
+  m_Name: BeerGiver
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19200,18 +19226,6 @@ RectTransform:
   m_AnchoredPosition: {x: 1.149, y: 0.049}
   m_SizeDelta: {x: 0.6285, y: 0.5893}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &819556163
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 819556160}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9734e0cc6f45bfa43aa7c5f874a85b46, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!225 &819556164
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -19287,6 +19301,18 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &819556168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 819556160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d79c756286f4c708b537fb94e5d07fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &822963590
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23821,7 +23847,7 @@ GameObject:
   - component: {fileID: 1010662466}
   - component: {fileID: 1010662467}
   m_Layer: 0
-  m_Name: BeerBuffer
+  m_Name: BarrelBeerBuffer
   m_TagString: Untagged
   m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -25897,6 +25923,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _barrelPool: {fileID: 641602946}
+  _beerPool: {fileID: 1930721605}
   _defaultSize: 10
   _maxSize: 30
 --- !u!1001 &1102728259
@@ -26371,6 +26398,7 @@ MonoBehaviour:
   _gameUIManager: {fileID: 79604543}
   _tableManager: {fileID: 16643949}
   _barrelManager: {fileID: 493533109}
+  _beerManager: {fileID: 375923873}
   queueVisitor: {fileID: 1866957611}
 --- !u!1001 &1117242404
 PrefabInstance:
@@ -52846,6 +52874,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1930721604}
+  - component: {fileID: 1930721605}
   m_Layer: 0
   m_Name: BeerPool
   m_TagString: Untagged
@@ -52868,6 +52897,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2104728499}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1930721605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1930721603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 423febf9166746e3a5563bf8e72976fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _prefab: {fileID: 3461345208420241781, guid: 79633c3a66f3c0145987219b53ab91fd, type: 3}
+  _moveSpeed: 3
 --- !u!4 &1933590376 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1107406304231971054, guid: 1fdb83abe97881945a999271a05f4c52, type: 3}
@@ -57342,6 +57385,7 @@ Transform:
   - {fileID: 1100382899}
   - {fileID: 641602947}
   - {fileID: 1930721604}
+  - {fileID: 681550140}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2109451281
@@ -57653,7 +57697,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 681550140}
   - {fileID: 716708561}
   - {fileID: 379372295}
   - {fileID: 869857201}
@@ -58612,6 +58655,7 @@ SceneRoots:
   - {fileID: 1280256299}
   - {fileID: 1888693657}
   - {fileID: 493533110}
+  - {fileID: 375923874}
   - {fileID: 16643950}
   - {fileID: 179564857}
   - {fileID: 1467678142}
@@ -58629,4 +58673,3 @@ SceneRoots:
   - {fileID: 361554732}
   - {fileID: 1866957612}
   - {fileID: 1745621719}
-  - {fileID: 168647347}

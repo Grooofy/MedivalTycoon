@@ -1,4 +1,5 @@
 ﻿using Barrels;
+using Beers;
 using Characters;
 using Tables;
 using UI;
@@ -15,6 +16,7 @@ namespace MedivalTycoon
         [SerializeField] private GameUIManager _gameUIManager;
         [SerializeField] private TableManager _tableManager;
         [SerializeField] private BarrelManager _barrelManager;
+        [SerializeField] private BeerManager _beerManager;
         [SerializeField] private QueueVisitor queueVisitor;
         
         
@@ -27,6 +29,8 @@ namespace MedivalTycoon
             _tableManager.CreateTables(_loadingGameSettings);
             _barrelManager.Initialize();
             _barrelManager.CreatePoints();
+            _beerManager.Initialize();
+            _beerManager.CreatePoints();
             queueVisitor.Initialize(10, 0.5f, 4f,10);
             queueVisitor.SpawnVisitorsInLine(queueVisitor.transform.position);
         }
@@ -36,6 +40,7 @@ namespace MedivalTycoon
             _gameUIManager.UpdateUIInfo();
             _characterManager.MoveCharacter();
             _barrelManager.CheckHits();
+            _beerManager.CheckHits();
             queueVisitor.UpdateState();
         }
     }

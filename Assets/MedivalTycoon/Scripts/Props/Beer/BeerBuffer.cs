@@ -10,6 +10,7 @@ using UnityEngine.Events;
 
 public class BeerBuffer : MonoBehaviour, IPropsMover
 {
+    public bool IsTake { get; set; }
     private List<Point> _points = new List<Point>();
     private SpawnerPoints _spawnerPoints = new  SpawnerPoints();
     private Stack<IProps> _props = new Stack<IProps>();
@@ -19,15 +20,14 @@ public class BeerBuffer : MonoBehaviour, IPropsMover
     private int _currentCountBeerPoint;
     private int _amountPoint;
     private string _sourceId;
-    private int _amountBeerToBarrel;
-    private IPropsPool _barrelPool;
+    private IPropsPool _beerPool;
 
 
-    public void Initialize(string sourceId, IPropsPool barrelPool, int amountBarrelToBeer)
+    public void Initialize(string sourceId, IPropsPool beerPool)
     {
         _sourceId = sourceId;
-        _barrelPool = barrelPool;
-        _amountBeerToBarrel = amountBarrelToBeer;
+        _beerPool = beerPool;
+        
     }
 
     public void CreatePoints(int cout, float offset, Vector3 spaceSize)
@@ -64,26 +64,25 @@ public class BeerBuffer : MonoBehaviour, IPropsMover
     
     public IEnumerator FillingPoints()
     {
-        while (_isFull == false && _props.Count > 0)
+        while (_isFull == false)
         {
             if (_index >= _amountPoint) break;
-            
-                
-            _props.TryPop(out var props);
-            if (props == null) break;
-                
-            yield return  props.TryMoveTo(_points[_index]);
 
-            _pointsProps.Push(props);
+            var prop = _beerPool.Spawn();
+
+            yield return prop.TryMoveTo(_points[_index]);
+
+            _pointsProps.Push(prop);
             _index++;
 
             if (_index >= _amountPoint)
             {
-                _index = _amountPoint;
                 _isFull = true;
+                EventBus.Raise(new PropsMoverFullingPointEvent(true, _sourceId));
             }
         }
     }
+
 
     public Stack<IProps> GetTo(int amount)
     {
@@ -106,7 +105,7 @@ public class BeerBuffer : MonoBehaviour, IPropsMover
             {
                 _index = 0;
                 _isFull = false;
-                EventBus.Raise(new PropsMoverFullingPointEvent(false, _sourceId));
+              
                 ResetPoints();
             }
         }
