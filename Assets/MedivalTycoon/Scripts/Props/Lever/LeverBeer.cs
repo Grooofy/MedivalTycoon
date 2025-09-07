@@ -10,12 +10,14 @@ namespace Lever
     {
         private GroundUI _uiObject;
         private BarrelBeerBuffer _barrelBeerBuffer;
+        private BeerBuffer _beerBuffer;
         private SphereCollider _collider;
         private Coroutine _delayBarrelReset;
 
 
-        public void Initialize(IPropsMover propsMover, SphereCollider collider, GroundUI uiObject)
+        public void Initialize(IPropsMover beerBuffer, IPropsMover propsMover, SphereCollider collider, GroundUI uiObject)
         {
+            _beerBuffer = beerBuffer as BeerBuffer;
             _barrelBeerBuffer = propsMover as BarrelBeerBuffer;
             _collider = collider;
             _uiObject = uiObject;
@@ -32,13 +34,21 @@ namespace Lever
                 _uiObject.FadeOut();
         }
 
-        public void OnTriggerEnter(Collider other)
+        private void OnTriggerEnter(Collider other)
         {
             if (other.TryGetComponent(out Waiter waiter))
             {
+                if (_beerBuffer.GetEmptyPointsCount() == 0) return;
                 _barrelBeerBuffer.IsTake = true;
                 StartCoroutine(_barrelBeerBuffer.ResetBarrel());
             }
+        }
+
+        private void OnTriggerStay(Collider other)
+        {
+            if (other.TryGetComponent(out Waiter waiter))
+                if (_beerBuffer.GetEmptyPointsCount() == 0) 
+                    _barrelBeerBuffer.IsTake = false;
         }
 
         private void OnTriggerExit(Collider other)

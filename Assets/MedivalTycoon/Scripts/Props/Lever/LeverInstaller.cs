@@ -26,11 +26,11 @@ namespace Lever
             _leverGetBarrel.Initialize(propsMover, _barrelCollider, _barrelGroundUI);
         }
 
-        public void InitializeBeerLever(IPropsMover propsMover)
+        public void InitializeBeerLever(IPropsMover beerBuffer, IPropsMover propsMover)
         {
             _leverBeerAnimator = new LeverBeerAnimator(_beerAnimator, false);
             _beerGroundUI.Initialize();
-            leverBeer.Initialize(propsMover,  _beerCollider, _beerGroundUI);
+            leverBeer.Initialize(beerBuffer, propsMover,  _beerCollider, _beerGroundUI);
         }
 
         private void OnDestroy()

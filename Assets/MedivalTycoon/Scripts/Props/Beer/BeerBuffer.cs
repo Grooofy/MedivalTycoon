@@ -18,11 +18,13 @@ public class BeerBuffer : MonoBehaviour, IPropsMover
     private Stack<IProps> _pointsProps = new Stack<IProps>();
     private int _index;
     private bool _isFull;
+    private bool _isFilling;
     private int _currentCountBeerPoint;
     private int _amountPoint;
     private int _startAmountBeerToBarrel;
     private int currentAmountBeerToBarrel;
     private string _sourceId;
+    private Coroutine _filingCoroutine;
     private IPropsPool _beerPool;
 
 
@@ -60,22 +62,24 @@ public class BeerBuffer : MonoBehaviour, IPropsMover
 
         foreach (var point in _points)
         {
-            if (point.IsFill) index++;
+            if (point.IsFill == false) index++;
         }
-
+        
         return index;
     }
 
     private void StartFilingPoints(BeerCreated beerCreated)
     {
-        StartCoroutine(FillingPoints());
+        if (_isFilling) return; 
+
+        _filingCoroutine = StartCoroutine(FillingPoints());
     }
     
     public IEnumerator FillingPoints()
     {
         while (_isFull == false && _currentCountBeerPoint >= 0)
         {
-            if (_index >= _amountPoint) break;
+            _isFilling = true;
 
             var prop = _beerPool.Spawn();
 
@@ -86,11 +90,10 @@ public class BeerBuffer : MonoBehaviour, IPropsMover
             _currentCountBeerPoint--;
             
             if (_index >= _amountPoint)
-            {
                 _isFull = true;
-                EventBus.Raise(new BeerBufferOpen(false));
-            }
         }
+        _isFilling = false;
+        _filingCoroutine = null;
         _currentCountBeerPoint = _startAmountBeerToBarrel;
     }
 
@@ -110,13 +113,12 @@ public class BeerBuffer : MonoBehaviour, IPropsMover
             {
                 _index--;
                 _points[_index].Free();
+                _isFull = false;
             }
             
             if (_pointsProps.Count == 0)
             {
                 _index = 0;
-                _isFull = false;
-              
                 ResetPoints();
             }
         }

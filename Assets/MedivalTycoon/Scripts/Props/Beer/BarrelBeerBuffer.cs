@@ -102,10 +102,12 @@ namespace Beers
                 yield return props.TryMoveTo(_barrelFinishPoint);
                 EventBus.Raise(new BeerCreated());
                 yield return _delayBarrelReset;
+                
                 _barrelFinishPoint.Free();
                 _barrelPool.Despawn(props);
                 _index--;
                 _points[_index].Free();
+               
                 if (_index < 0)
                 {
                     _index = 0;

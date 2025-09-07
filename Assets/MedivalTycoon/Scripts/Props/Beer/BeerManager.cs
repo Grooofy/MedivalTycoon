@@ -25,7 +25,7 @@ namespace Beers
             _beerPool = _propsSpawner.GetBeerPool();
             _beerBuffer.Initialize("Beer", _beerPool, _amountBeerToBarrel);
             _beerGiver.Initialize(_beerBuffer, _layerMask);
-            _leverInstaller.InitializeBeerLever(_barrelBeerBuffer);
+            _leverInstaller.InitializeBeerLever(_beerBuffer, _barrelBeerBuffer);
         }
 
         public void CreatePoints()
