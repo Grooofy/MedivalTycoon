@@ -1,27 +1,42 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Lever
 {
     public class LeverInstaller : MonoBehaviour
     {
-        [SerializeField] private SphereCollider _collider;
-        [SerializeField] private Animator _animator;
-        [SerializeField] private GroundUI _groundUI;
+        [Header("LeverBarrel")] 
+        [SerializeField] private SphereCollider _barrelCollider;
+        [SerializeField] private Animator _barrelAnimator;
+        [SerializeField] private GroundUI _barrelGroundUI;
         [SerializeField] private LeverGetBarrel _leverGetBarrel;
+        private LeverBarrelAnimator _leverBarrelAnimator;
 
-        private LeverAnimator _leverAnimator;
+        [Header("LeverBarrelToBeer")] 
+        [SerializeField] private SphereCollider _beerCollider;
+        [SerializeField] private Animator _beerAnimator;
+        [SerializeField] private GroundUI _beerGroundUI;
+        [SerializeField] private LeverBeer leverBeer;
+        private LeverBeerAnimator _leverBeerAnimator;
 
-        public void Initialize(IPropsMover propsMover)
+        public void InitializeBarrelLever(IPropsMover propsMover)
         {
-            _leverAnimator = new LeverAnimator(_animator);
-            _groundUI.Initialize();
-            _leverGetBarrel.Initialize(propsMover, _collider, _groundUI);
+            _leverBarrelAnimator = new LeverBarrelAnimator(_barrelAnimator, false);
+            _barrelGroundUI.Initialize();
+            _leverGetBarrel.Initialize(propsMover, _barrelCollider, _barrelGroundUI);
+        }
+
+        public void InitializeBeerLever(IPropsMover beerBuffer, IPropsMover propsMover)
+        {
+            _leverBeerAnimator = new LeverBeerAnimator(_beerAnimator, false);
+            _beerGroundUI.Initialize();
+            leverBeer.Initialize(beerBuffer, propsMover,  _beerCollider, _beerGroundUI);
         }
 
         private void OnDestroy()
         {
-            _leverAnimator.OnDestroy();
+            _leverBarrelAnimator.OnDestroy();
+            _leverBeerAnimator.OnDestroy();
         }
     }
 }

@@ -1,38 +1,24 @@
-using System.Collections.Generic;
+using System;
+using MedivalTycoon;
+using Propses;
 using UnityEngine;
+
 
 public class PropsSpawner : MonoBehaviour
 {
-    [Header("Barrels")]
-    [SerializeField] private Props _barrel;
-    [SerializeField] private Transform _spawnBarrelPoint;
-    [SerializeField] private Regulating _regulating;
-    
-    
-    [Header("Beers")]
-    [SerializeField] private Props _beer;
-    [SerializeField] private Transform _spawnBeerPoint;
-    [SerializeField] private BeerCreator _beerCreator;
-    
-    
-    private Queue<Props> _props = new Queue<Props>();
-    private readonly int _amount = 30;
+    [Header("BarrelPool")]
+    [SerializeField] private PropsPool<Barrel> _barrelPool;
+    [SerializeField] private PropsPool<Beer> _beerPool;
+    [SerializeField] private int _defaultSize;
+    [SerializeField] private int _maxSize;
 
-    private void Awake()
+    public IPropsPool GetBarrelPool()
     {
-        CreateObjects(_barrel, _regulating, _spawnBarrelPoint);
-        CreateObjects(_beer, _beerCreator, _spawnBeerPoint);
+        return _barrelPool.Initialize(_defaultSize, _maxSize);
     }
-
-    private void CreateObjects(Props props, IPropsMover mover, Transform spawnPoint)
+    
+    public IPropsPool GetBeerPool()
     {
-        for (int i = 0; i < _amount; i++)
-        {
-            var newProps = Instantiate(props, spawnPoint);
-            newProps.Initilization(_spawnBarrelPoint, 3);
-            _props.Enqueue(newProps);
-        }
-        mover.RegisterProps(_props);
-        _props.Clear();
+        return _beerPool.Initialize(_defaultSize, _maxSize);
     }
 }

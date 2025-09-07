@@ -1,12 +1,12 @@
+using System.Collections.Generic;
 using Characters;
 using UnityEngine;
 
 public class SpawnerPoints
 {
     private Transform _parent;
-    private int _spawnCount = 100;
-    private float _spacing = 2f;
-
+    private int _spawnCount;
+    private float _spacing;
     private int _remainingToSpawn;
 
     public void Initialize(int spawnCount , float spacing, Transform parent)
@@ -17,10 +17,12 @@ public class SpawnerPoints
         _remainingToSpawn = _spawnCount;
     }
 
-    public void SpawnObjectsInCube(Vector3 spaceSize)
+    public List<Point> SpawnObjectsInCube(Vector3 spaceSize)
     {
+        var createdPoints = new List<Point>();
         int objectsPerAxis = Mathf.CeilToInt(Mathf.Pow(_spawnCount, 1f / 3f));
-        Vector3 startOffset = -spaceSize / 2f + Vector3.one * (_spacing / 2f); 
+        Vector3 halfSize = spaceSize / 2f;
+        Vector3 startPos = -halfSize + new Vector3(_spacing / 2f, _spacing / 2f, _spacing / 2f);
 
         for (int x = 0; x < objectsPerAxis; x++)
         {
@@ -29,20 +31,21 @@ public class SpawnerPoints
                 for (int z = 0; z < objectsPerAxis; z++)
                 {
                     if (_remainingToSpawn <= 0)
-                        return;
+                        return createdPoints;
 
                     Vector3 offset = new Vector3(x * _spacing, y * _spacing, z * _spacing);
-                    Vector3 localPos = startOffset + offset;
-                    
-                    if (Mathf.Abs(localPos.x) > spaceSize.x / 2f ||
-                        Mathf.Abs(localPos.y) > spaceSize.y / 2f ||
-                        Mathf.Abs(localPos.z) > spaceSize.z / 2f)
+                    Vector3 spawnPos = startPos + offset;
+
+                    if (spawnPos.x > halfSize.x || spawnPos.x < -halfSize.x ||
+                        spawnPos.y > halfSize.y || spawnPos.y < -halfSize.y ||
+                        spawnPos.z > halfSize.z || spawnPos.z < -halfSize.z)
                         continue;
 
                     var point = ObjectFactory.CreateObjectWithComponent<Point>($"Point {x},{y},{z}");
-                    point.transform.parent = _parent;
-                    point.transform.localPosition = localPos;
+                    point.transform.SetParent(_parent, false);
+                    point.transform.localPosition = spawnPos;
 
+                    createdPoints.Add(point);
                     _remainingToSpawn--;
                 }
             }
@@ -50,9 +53,14 @@ public class SpawnerPoints
 
         if (_remainingToSpawn > 0)
         {
-            Debug.LogWarning($"Не все объекты заспавнены ({_remainingToSpawn} остались). Увеличь размеры области или уменьшай spacing.");
+            Debug.LogWarning($"Не удалось разместить {_remainingToSpawn} объектов. " +
+                             $"Увеличьте пространство (текущий размер: {spaceSize}) " +
+                             $"или уменьшите расстояние между объектами (текущее: {_spacing})");
         }
+
+        return createdPoints;
     }
+    
 }
 
 

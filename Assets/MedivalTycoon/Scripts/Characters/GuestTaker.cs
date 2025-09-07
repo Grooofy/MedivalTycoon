@@ -1,8 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using MedivalTycoon;
+using Propses;
 using UnityEngine;
 using UnityEngine.Events;
+using Visitors;
 
 
 namespace Characters
@@ -14,30 +17,49 @@ namespace Characters
     
         private void OnTriggerEnter(Collider other)
         {
-            if (other.TryGetComponent(out TavernGuest guest))
+            if (other.TryGetComponent(out TavernVisitor guest))
             {
-                guest.InteractWithGuard(_points[0].transform);
+              //  guest.InteractWithGuard(_points[0].transform);
             }
         }
 
-        public void CreatePoints(int cout, float offset)
+
+        public void Initialize(string sourceId, IPropsPool barrelPool)
+        {
+            
+        }
+
+
+        public void CreatePoints(int cout, float offset, Vector3 spaceSize)
         {
             for (int i = 0; i < cout; i++)
             {
                 var point = ObjectFactory.CreateObjectWithComponent<Point>("Point" + i);
                 point.transform.parent = transform;
                 point.transform.localPosition =  Vector3.up * (i* offset);
-                point.IsFill = false;
+                point.Free();
                 _points.Add(point);
             }
         }
+        
+        public int GetEmptyPointsCount()
+        {
+            var index = 0;
 
-        public void RegisterProps(Queue<Props> props)
+            foreach (var point in _points)
+            {
+                if (point.IsFill) index++;
+            }
+
+            return index;
+        }
+
+        public void RegisterProps(Stack<IProps> props)
         {
             throw new NotImplementedException();
         }
 
-        public void RegisterProp(Props props)
+        public void RegisterProp(IProps barrel)
         {
             throw new NotImplementedException();
         }
@@ -48,7 +70,12 @@ namespace Characters
             throw new NotImplementedException();
         }
 
-        public Queue<Props> GetTo(int amount)
+        public Stack<IProps> GetTo(int amount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IProps GetTos()
         {
             throw new NotImplementedException();
         }

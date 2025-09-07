@@ -1,3 +1,4 @@
+using System;
 using Characters;
 using UnityEngine;
 
@@ -6,12 +7,12 @@ namespace Lever
     public class LeverGetBarrel : MonoBehaviour
     {
         private GroundUI _uiObject;
-        private Regulating _regulating;
+        private BarrelBuffer _barrelBuffer;
         private SphereCollider _collider;
 
         public void Initialize(IPropsMover propsMover, SphereCollider collider, GroundUI uiObject)
         {
-            _regulating = propsMover as Regulating;
+            _barrelBuffer = propsMover as BarrelBuffer;
             _collider = collider;
             _uiObject = uiObject;
             EventBus.Subscribe<PropsMoverFullingPointEvent>(TurnObject);
@@ -38,8 +39,15 @@ namespace Lever
         {
             if (other.TryGetComponent(out Bartender bartender))
             {
-                StartCoroutine(_regulating.FillingPoints());
+                _barrelBuffer.IsTake = true;
+                StartCoroutine(_barrelBuffer.FillingPoints());
             }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.TryGetComponent(out Bartender bartender))
+                _barrelBuffer.IsTake = false;
         }
     }
 }

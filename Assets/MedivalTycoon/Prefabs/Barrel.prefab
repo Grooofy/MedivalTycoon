@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 1951637592164495051}
   - component: {fileID: 3905992545013167266}
   - component: {fileID: 7752795885770795079}
-  - component: {fileID: 2531666485477460451}
+  - component: {fileID: 3166413933466699781}
   - component: {fileID: 347996022427630596}
   m_Layer: 0
   m_Name: Barrel
@@ -169,7 +169,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.20261903, y: 0.24875945, z: 0.20261903}
   m_Center: {x: 0, y: 0.03, z: 0}
---- !u!114 &2531666485477460451
+--- !u!114 &3166413933466699781
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -178,12 +178,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2835679033264244420}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de4b3528513e10c4391ce5d5f1ab82fd, type: 3}
+  m_Script: {fileID: 11500000, guid: af70f153b36f85246b76cad35d1f43b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 2
-  _parabolaHeight: 0.5
-  _animator: {fileID: 347996022427630596}
 --- !u!95 &347996022427630596
 Animator:
   serializedVersion: 5
