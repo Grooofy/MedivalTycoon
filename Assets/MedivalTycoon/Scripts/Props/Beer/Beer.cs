@@ -5,21 +5,33 @@ using UnityEngine;
 
 public class Beer : MonoBehaviour, IProps
 {
-    public GameObject Prefab { get; }
-    
+    private TransformMover _mover = new TransformMover();
+    private Transform _startPoint;
+  
+    private float _moveSpeed;
+    private bool _isFirstAnimationPlaying;
     
     public void Initilization(Transform parent, float moveSpeed, Animator animator)
     {
-        throw new System.NotImplementedException();
+      
+        _moveSpeed =  moveSpeed;
+        _startPoint = parent;
     }
 
-    public IEnumerator TryMoveTo(Point endPoints)
+    public IEnumerator TryMoveTo(Point endPoint)
     {
-        throw new System.NotImplementedException();
+        if (endPoint.IsFill) yield break;
+        
+        while (endPoint.IsFill == false)
+        {
+            _mover.MoveTo(transform, endPoint, _moveSpeed);
+            yield return null;
+        }
     }
 
     public void Reset()
     {
-        throw new System.NotImplementedException();
+        transform.position = _startPoint.position;
+        _isFirstAnimationPlaying = false;
     }
 }

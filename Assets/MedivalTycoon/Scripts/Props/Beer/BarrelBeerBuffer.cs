@@ -100,7 +100,7 @@ namespace Beers
                 if (props == null) break;
                 
                 yield return props.TryMoveTo(_barrelFinishPoint);
-                
+                EventBus.Raise(new BeerCreated());
                 yield return _delayBarrelReset;
                 _barrelFinishPoint.Free();
                 _barrelPool.Despawn(props);

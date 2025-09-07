@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Events;
 using MedivalTycoon;
 using Propses;
 using UnityEngine;
@@ -19,15 +20,19 @@ public class BeerBuffer : MonoBehaviour, IPropsMover
     private bool _isFull;
     private int _currentCountBeerPoint;
     private int _amountPoint;
+    private int _startAmountBeerToBarrel;
+    private int currentAmountBeerToBarrel;
     private string _sourceId;
     private IPropsPool _beerPool;
 
 
-    public void Initialize(string sourceId, IPropsPool beerPool)
+    public void Initialize(string sourceId, IPropsPool beerPool, int amountBeerToBarrel)
     {
         _sourceId = sourceId;
         _beerPool = beerPool;
-        
+        _startAmountBeerToBarrel = amountBeerToBarrel;
+        _currentCountBeerPoint = _startAmountBeerToBarrel;
+        EventBus.Subscribe<BeerCreated>(StartFilingPoints);
     }
 
     public void CreatePoints(int cout, float offset, Vector3 spaceSize)
@@ -61,10 +66,14 @@ public class BeerBuffer : MonoBehaviour, IPropsMover
         return index;
     }
 
+    private void StartFilingPoints(BeerCreated beerCreated)
+    {
+        StartCoroutine(FillingPoints());
+    }
     
     public IEnumerator FillingPoints()
     {
-        while (_isFull == false)
+        while (_isFull == false && _currentCountBeerPoint >= 0)
         {
             if (_index >= _amountPoint) break;
 
@@ -74,13 +83,15 @@ public class BeerBuffer : MonoBehaviour, IPropsMover
 
             _pointsProps.Push(prop);
             _index++;
-
+            _currentCountBeerPoint--;
+            
             if (_index >= _amountPoint)
             {
                 _isFull = true;
-                EventBus.Raise(new PropsMoverFullingPointEvent(true, _sourceId));
+                EventBus.Raise(new BeerBufferOpen(false));
             }
         }
+        _currentCountBeerPoint = _startAmountBeerToBarrel;
     }
 
 
@@ -118,5 +129,10 @@ public class BeerBuffer : MonoBehaviour, IPropsMover
         {
             point.Free();
         }
+    }
+
+    private void OnDestroy()
+    {
+        EventBus.Unsubscribe<BeerCreated>(StartFilingPoints);
     }
 }
