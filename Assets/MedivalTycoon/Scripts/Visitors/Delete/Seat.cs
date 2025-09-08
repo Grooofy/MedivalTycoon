@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using Propses;
 using TMPro;
 using UnityEngine;
 using Visitors;
 
-public class Seat : MonoBehaviour
+public class Seat : MonoBehaviour, IPropsMover
 {
     [SerializeField] private TextMeshProUGUI beerText;
+    
     public bool IsOccupied  { get; private set; }
     private TavernVisitor _guest;
     private int requiredBeer;
@@ -62,5 +65,30 @@ public class Seat : MonoBehaviour
     private void UpdateBeerDisplay(int remaining)
     {
         beerText.text = $"Пиво: {remaining}";
+    }
+
+    public void CreatePoints(int cout, float offset, Vector3 spaceSize = new Vector3())
+    {
+        throw new NotImplementedException();
+    }
+
+    public void RegisterProps(Stack<IProps> props)
+    {
+        throw new NotImplementedException();
+    }
+
+    public int GetEmptyPointsCount()
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerator FillingPoints()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Stack<IProps> GetTo(int amount)
+    {
+        throw new NotImplementedException();
     }
 }

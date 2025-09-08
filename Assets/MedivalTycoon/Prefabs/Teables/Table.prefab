@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4759016433129319049}
   - component: {fileID: 2521896619471600221}
   - component: {fileID: 7842582310293443356}
-  m_Layer: 5
+  m_Layer: 4
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86,7 +86,7 @@ GameObject:
   - component: {fileID: 6509676992322057950}
   - component: {fileID: 7233475768299982570}
   - component: {fileID: 5189084143147105843}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -221,7 +221,7 @@ GameObject:
   - component: {fileID: 1896694275673900641}
   - component: {fileID: 788549569971454415}
   - component: {fileID: 3604735608887612349}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: Furniture_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -323,7 +323,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3182838550352844392}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: Table
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -356,7 +356,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5672943722656101597}
   - component: {fileID: 6257703597341762719}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: Table
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -380,7 +380,6 @@ Transform:
   - {fileID: 4699524600679615017}
   - {fileID: 8957104379661056285}
   - {fileID: 3182838550352844392}
-  - {fileID: 5324760256091483217}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6257703597341762719
@@ -395,6 +394,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5795c9cd3f9719644b8b886948892cd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _waiterLayer:
+    serializedVersion: 2
+    m_Bits: 16
 --- !u!1 &2645538966022189100
 GameObject:
   m_ObjectHideFlags: 0
@@ -409,8 +411,8 @@ GameObject:
   - component: {fileID: 4631657833139709734}
   - component: {fileID: 2435972370423665421}
   - component: {fileID: 7828725288589959723}
-  m_Layer: 5
-  m_Name: Guest
+  m_Layer: 4
+  m_Name: BarrelTaker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -524,50 +526,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9320fe703f042ae973909c392eb6d2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &4449371353636299336
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5324760256091483217}
-  - component: {fileID: 4183635792958890573}
-  m_Layer: 0
-  m_Name: Regulation
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5324760256091483217
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4449371353636299336}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5672943722656101597}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4183635792958890573
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4449371353636299336}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d79c756286f4c708b537fb94e5d07fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4785208788397372971
 GameObject:
   m_ObjectHideFlags: 0
@@ -579,7 +537,7 @@ GameObject:
   - component: {fileID: 9164634713506402652}
   - component: {fileID: 7278826908148053445}
   - component: {fileID: 4791324267426395273}
-  m_Layer: 5
+  m_Layer: 4
   m_Name: Barrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -655,7 +613,7 @@ GameObject:
   - component: {fileID: 8577233100006268926}
   - component: {fileID: 3140263881546076928}
   - component: {fileID: 3093688947185516634}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -755,7 +713,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6599769248139012284}
   - component: {fileID: 3718926039563815844}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: SeatPoint
   m_TagString: Untagged
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
@@ -771,7 +729,7 @@ Transform:
   m_GameObject: {fileID: 5987141422494640913}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.006000042, y: 0.058, z: -0.319}
+  m_LocalPosition: {x: 0.006000042, y: 0.235, z: -0.023}
   m_LocalScale: {x: 0.71716, y: 0.71716, z: 0.71716}
   m_ConstrainProportionsScale: 0
   m_Children: []

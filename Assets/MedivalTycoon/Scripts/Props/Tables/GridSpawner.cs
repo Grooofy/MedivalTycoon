@@ -1,17 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using Beers;
 using UnityEngine.Serialization;
 
 namespace Tables
 {
     public class GridSpawner : MonoBehaviour
     {
-        public readonly List<ViewTable> _viewTables = new List<ViewTable>();
-        public readonly List<Table> _tables = new List<Table>();
-
         private Vector2 areaSize = new Vector2(2f, 3f);
         private Vector3 _prefabOffset = new Vector3(0.25f, 0.02f, 0.25f);
         private float spacing = 1f;
+        private readonly List<ViewTable> _viewTables = new List<ViewTable>();
+        private readonly List<Table> _tables = new List<Table>();
+        private readonly List<BeerTaker> _beerTakers = new List<BeerTaker>();
         private TableTrigger _triggerZonePrefab;
         private Table _tablePrefab;
         private int _objectsToSpawn;
@@ -64,9 +65,18 @@ namespace Tables
                 var table = createObject.CreateTable(_tablePrefab);
                 tableBuilderAnimation.Initialize();
                 table.Initialize(startPrice[i]);
+                table.InitializeBeerTaker();
                 viewTable.Initialize(table, tableBuilderAnimation);
                 _tables.Add(table);
                 _viewTables.Add(viewTable);
+            }
+        }
+
+        public void CheckHits()
+        {
+            foreach (var beerTaker in _tables)
+            {
+                beerTaker.CheckHits();
             }
         }
 

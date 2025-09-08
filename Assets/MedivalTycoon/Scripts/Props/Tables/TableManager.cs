@@ -22,5 +22,10 @@ namespace Tables
             
             _gridSpawner.SpawnGrid(_constructionHandler, loadingGameSettings.GetTableCost());
         }
+
+        public void CheckHits()
+        {
+            _gridSpawner.CheckHits();
+        }
     }
 }

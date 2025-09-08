@@ -41,6 +41,7 @@ namespace MedivalTycoon
             _characterManager.MoveCharacter();
             _barrelManager.CheckHits();
             _beerManager.CheckHits();
+            _tableManager.CheckHits();
             queueVisitor.UpdateState();
         }
     }
