@@ -5,45 +5,39 @@ using UnityEngine;
 
 public class BeerMachineAnimation : MonoBehaviour
 {
-    [Tooltip("Время одного полного цикла (увеличение + уменьшение) в секундах")]
-    public float durationPerCycle = 1f;
-
-    [Tooltip("Максимальный масштаб по Y, до которого будет увеличиваться объект")]
-    public float maxScaleY = 2f; // например, удвоить
-
-    public float maxScaleX = 2f; // например, удвоить
-
+    private float _durationPerCycle = 1f;
+    private float _maxScaleY = 0.7f; 
+    private float _maxScaleX = 0.7f; 
     private Vector3 originalScale;
     private Sequence scaleSequence;
+    private ParticleSystem _particleSystem;
 
-    void Awake()
+    public void Initialize()
     {
-       
         originalScale = transform.localScale;
+        _particleSystem = GetComponentInChildren<ParticleSystem>();
     }
 
    
 
     void OnDisable()
     {
-        // Останавливаем анимацию, чтобы не было «зависших» tweens
         if (scaleSequence != null)
             scaleSequence.Kill();
     }
 
 
-    private void PlayAnimation(int loopCount)
+    public void PlayAnimation()
     {
         if (scaleSequence != null && scaleSequence.IsActive())
             scaleSequence.Kill();
 
         scaleSequence = DOTween.Sequence();
         scaleSequence.Append(transform
-            .DOScale(new Vector3(maxScaleX, maxScaleY, originalScale.z), durationPerCycle / 2f).SetEase(Ease.OutQuad));
+            .DOScale(new Vector3(_maxScaleX, _maxScaleY, originalScale.z), _durationPerCycle / 2f).SetEase(Ease.OutQuad));
+        
+        _particleSystem.Play();
 
-        scaleSequence.Append(transform.DOScale(originalScale, durationPerCycle / 2f).SetEase(Ease.InQuad));
-
-        scaleSequence.SetLoops(loopCount, LoopType.Restart);
-        scaleSequence.Play();
+        scaleSequence.Append(transform.DOScale(originalScale, _durationPerCycle / 2f).SetEase(Ease.InQuad));
     }
 }

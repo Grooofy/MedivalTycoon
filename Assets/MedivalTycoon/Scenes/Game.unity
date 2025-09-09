@@ -757,7 +757,6 @@ Transform:
   - {fileID: 1944904835}
   - {fileID: 500643475}
   - {fileID: 819556161}
-  - {fileID: 1957869658}
   - {fileID: 871871679}
   m_Father: {fileID: 681550140}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -10819,7 +10818,8 @@ Transform:
   m_LocalPosition: {x: 0.458, y: 0.314, z: 0.193}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1957869658}
   m_Father: {fileID: 51976284}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &469541416
@@ -33038,12 +33038,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1368291346}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0.06, y: 0.31379998, z: 0.0849998}
-  m_LocalScale: {x: 1.1999998, y: 1.2, z: 1.1999999}
+  m_LocalRotation: {x: -0.5, y: -0.5, z: -0.5, w: 0.5}
+  m_LocalPosition: {x: -0.08, y: -0.063, z: 0.566}
+  m_LocalScale: {x: 1.6666662, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1957869658}
+  m_Father: {fileID: 5356612775762382582}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!199 &1368291348
 ParticleSystemRenderer:
@@ -33132,9 +33132,9 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
-  looping: 1
+  looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -52909,7 +52909,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 423febf9166746e3a5563bf8e72976fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _prefab: {fileID: 3461345208420241781, guid: 79633c3a66f3c0145987219b53ab91fd, type: 3}
+  _prefab: {fileID: 7638864196465498174, guid: 5a5d77da2f801d8499dcab02377adff4, type: 3}
   _moveSpeed: 3
 --- !u!4 &1933590376 stripped
 Transform:
@@ -53665,14 +53665,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1957869657}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.458, y: -0.314, z: -0.193}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5356612775762382582}
-  - {fileID: 1368291347}
-  m_Father: {fileID: 51976284}
+  m_Father: {fileID: 469541415}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1957869659
 BoxCollider:
@@ -56233,7 +56232,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 103.45
+  m_fontSize: 107.5
   m_fontSizeBase: 90
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -58624,10 +58623,11 @@ Transform:
   m_GameObject: {fileID: 177317365965507205}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0.422, y: 0.435, z: 0.03699994}
+  m_LocalPosition: {x: -0.422, y: 0.484, z: 0.03699994}
   m_LocalScale: {x: 0.6, y: 0.6, z: 0.71999997}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1368291347}
   m_Father: {fileID: 1957869658}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!114 &5356612775762382583
@@ -58642,9 +58642,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0413e78879239746b7d0fff4c65e485, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  durationPerCycle: 1
-  maxScaleY: 0.7
-  maxScaleX: 0.7
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -31,7 +31,7 @@ namespace MedivalTycoon
             _barrelManager.CreatePoints();
             _beerManager.Initialize();
             _beerManager.CreatePoints();
-            queueVisitor.Initialize(10, 0.5f, 4f,10);
+            queueVisitor.Initialize(10, 0.5f, 3f,10);
             queueVisitor.SpawnVisitorsInLine(queueVisitor.transform.position);
         }
 

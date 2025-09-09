@@ -26,6 +26,7 @@ public class BeerBuffer : MonoBehaviour, IPropsMover
     private string _sourceId;
     private Coroutine _filingCoroutine;
     private IPropsPool _beerPool;
+    private BeerMachineAnimation _beerMachineAnimation;
 
 
     public void Initialize(string sourceId, IPropsPool beerPool, int amountBeerToBarrel)
@@ -34,6 +35,8 @@ public class BeerBuffer : MonoBehaviour, IPropsMover
         _beerPool = beerPool;
         _startAmountBeerToBarrel = amountBeerToBarrel;
         _currentCountBeerPoint = _startAmountBeerToBarrel;
+        _beerMachineAnimation = GetComponentInChildren<BeerMachineAnimation>();
+        _beerMachineAnimation.Initialize();
         EventBus.Subscribe<BeerCreated>(StartFilingPoints);
     }
 
@@ -87,6 +90,7 @@ public class BeerBuffer : MonoBehaviour, IPropsMover
 
             _pointsProps.Push(prop);
             _index++;
+            _beerMachineAnimation.PlayAnimation();
             _currentCountBeerPoint--;
             
             if (_index >= _amountPoint)

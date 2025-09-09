@@ -13,7 +13,6 @@ public class Beer : MonoBehaviour, IProps
     
     public void Initilization(Transform parent, float moveSpeed, Animator animator)
     {
-      
         _moveSpeed =  moveSpeed;
         _startPoint = parent;
     }

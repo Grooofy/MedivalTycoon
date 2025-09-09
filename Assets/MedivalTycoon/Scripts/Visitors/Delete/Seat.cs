@@ -8,8 +8,8 @@ using Visitors;
 
 public class Seat : MonoBehaviour, IPropsMover
 {
-    [SerializeField] private TextMeshProUGUI beerText;
-    
+    [SerializeField] private TextMeshProUGUI _beerText;
+    [SerializeField] private Transform _seatTransform;
     public bool IsOccupied  { get; private set; }
     private TavernVisitor _guest;
     private int requiredBeer;
@@ -29,7 +29,8 @@ public class Seat : MonoBehaviour, IPropsMover
 
     public Vector3 GetPosition()
     {
-        return transform.localPosition + transform.position;
+        return _seatTransform.position + _seatTransform.localPosition;
+
     }
 
     public void Vacate()
@@ -58,13 +59,13 @@ public class Seat : MonoBehaviour, IPropsMover
 
     private void SetActiveText(bool value, int remainingBeer = 0)
     {
-        beerText.gameObject.SetActive(value);
+        _beerText.gameObject.SetActive(value);
         UpdateBeerDisplay(remainingBeer);
     }
 
     private void UpdateBeerDisplay(int remaining)
     {
-        beerText.text = $"Пиво: {remaining}";
+        _beerText.text = $"Пиво: {remaining}";
     }
 
     public void CreatePoints(int cout, float offset, Vector3 spaceSize = new Vector3())
