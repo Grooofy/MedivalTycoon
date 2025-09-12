@@ -30,7 +30,6 @@ public class Seat : MonoBehaviour, IPropsMover
     public Vector3 GetPosition()
     {
         return _seatTransform.position + _seatTransform.localPosition;
-
     }
 
     public void Vacate()
