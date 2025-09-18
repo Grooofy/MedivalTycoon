@@ -35,8 +35,12 @@ namespace Tables
 
         public void CheckHits()
         {
-            if(_beerTaker != null)
+            if (_beerTaker != null)
+            {
+                Debug.Log("adsdasd");
                 _beerTaker.CheckHits();
+                _seat.CheckHists();
+            }             
         }
 
         public void ReducePrice(int step)

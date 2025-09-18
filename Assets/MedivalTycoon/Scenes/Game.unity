@@ -9368,7 +9368,7 @@ MonoBehaviour:
   _leverInstaller: {fileID: 179564856}
   _beerGiver: {fileID: 819556168}
   _propsSpawner: {fileID: 1100382900}
-  _amountBeerToBarrel: 6
+  _amountBeerToBarrel: 3
   _layerMask:
     serializedVersion: 2
     m_Bits: 128

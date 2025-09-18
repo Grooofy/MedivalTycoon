@@ -80,7 +80,7 @@ public class BeerBuffer : MonoBehaviour, IPropsMover
     
     public IEnumerator FillingPoints()
     {
-        while (_isFull == false && _currentCountBeerPoint >= 0)
+        while (_isFull == false && _currentCountBeerPoint > 0)
         {
             _isFilling = true;
 
@@ -95,6 +95,7 @@ public class BeerBuffer : MonoBehaviour, IPropsMover
             
             if (_index >= _amountPoint)
                 _isFull = true;
+            yield return new WaitForSeconds(0.2f);
         }
         _isFilling = false;
         _filingCoroutine = null;

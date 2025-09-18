@@ -9,7 +9,7 @@ using Visitors;
 public class Seat : MonoBehaviour, IPropsMover
 {
     [SerializeField] private TextMeshProUGUI _beerText;
-    [SerializeField] private Transform _seatTransform;
+    [SerializeField] private VisitorSeatPoint _seatTransform;
     public bool IsOccupied  { get; private set; }
     private TavernVisitor _guest;
     private int requiredBeer;
@@ -29,7 +29,15 @@ public class Seat : MonoBehaviour, IPropsMover
 
     public Vector3 GetPosition()
     {
-        return _seatTransform.position + _seatTransform.localPosition;
+        return _seatTransform.GetPosition();
+    }
+
+    public void CheckHists()
+    {
+        if(_seatTransform != null) 
+            _seatTransform.CheckHits();
+
+        Debug.Log("QQWEQWE");
     }
 
     public void Vacate()
