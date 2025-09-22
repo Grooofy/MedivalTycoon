@@ -22,9 +22,10 @@ namespace Beers
         public void CheckHits()
         {
             Collider[] hits = Physics.OverlapSphere(transform.position, _detectionRadius, _handLayer);
-
+           
             if (hits.Length > 0)
             {
+
                 foreach (var hit in hits)
                 {
                     if (_hasGiven) break;
@@ -39,7 +40,7 @@ namespace Beers
                         _regulating.RegisterProps(props);
                         _activeCoroutine = StartCoroutine(_regulating.FillingPoints());
                         _hasGiven = true;
-                    }
+                    }                   
                 }
             }
             else if (_hasGiven)

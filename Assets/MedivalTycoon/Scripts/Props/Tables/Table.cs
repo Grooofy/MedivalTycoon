@@ -37,8 +37,7 @@ namespace Tables
             if(_seat != null)
             {
                 _seat.Initialize(_visitorLayer);               
-            }
-                
+            } 
         }
 
         public void CheckHits()

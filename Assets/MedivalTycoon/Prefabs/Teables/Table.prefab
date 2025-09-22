@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4759016433129319049}
   - component: {fileID: 2521896619471600221}
   - component: {fileID: 7842582310293443356}
-  m_Layer: 4
+  m_Layer: 0
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86,7 +86,7 @@ GameObject:
   - component: {fileID: 6509676992322057950}
   - component: {fileID: 7233475768299982570}
   - component: {fileID: 5189084143147105843}
-  m_Layer: 4
+  m_Layer: 0
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -221,7 +221,7 @@ GameObject:
   - component: {fileID: 1896694275673900641}
   - component: {fileID: 788549569971454415}
   - component: {fileID: 3604735608887612349}
-  m_Layer: 4
+  m_Layer: 0
   m_Name: Furniture_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -323,7 +323,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3182838550352844392}
-  m_Layer: 4
+  m_Layer: 0
   m_Name: Table
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -356,7 +356,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5672943722656101597}
   - component: {fileID: 6257703597341762719}
-  m_Layer: 4
+  m_Layer: 0
   m_Name: Table
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -395,7 +395,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _waiterLayer:
     serializedVersion: 2
-    m_Bits: 16
+    m_Bits: 128
   _visitorLayer:
     serializedVersion: 2
     m_Bits: 512
@@ -413,7 +413,7 @@ GameObject:
   - component: {fileID: 4631657833139709734}
   - component: {fileID: 2435972370423665421}
   - component: {fileID: 982090756065254424}
-  m_Layer: 4
+  m_Layer: 0
   m_Name: BeerTaker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -539,7 +539,7 @@ GameObject:
   - component: {fileID: 9164634713506402652}
   - component: {fileID: 7278826908148053445}
   - component: {fileID: 4791324267426395273}
-  m_Layer: 4
+  m_Layer: 0
   m_Name: Barrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -615,7 +615,7 @@ GameObject:
   - component: {fileID: 8577233100006268926}
   - component: {fileID: 3140263881546076928}
   - component: {fileID: 3093688947185516634}
-  m_Layer: 4
+  m_Layer: 0
   m_Name: CanvasText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -715,7 +715,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6599769248139012284}
   - component: {fileID: 3718926039563815844}
-  m_Layer: 4
+  m_Layer: 0
   m_Name: SeatSystem
   m_TagString: Untagged
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
@@ -761,7 +761,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2827665104007793674}
   - component: {fileID: 5899173441822099387}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: SeatPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}

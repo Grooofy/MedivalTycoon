@@ -60,7 +60,21 @@ public class SpawnerPoints
 
         return createdPoints;
     }
-    
+
+    public List<Point> SpawnVerticalColumn(float heightSpacing, int count)
+    {
+        var points = new List<Point>();
+        for (int i = 0; i < count; i++)
+        {
+            Vector3 pos = new Vector3(0, i * heightSpacing, 0);
+            var point = ObjectFactory.CreateObjectWithComponent<Point>($"Point {i}");
+            point.transform.SetParent(_parent, false);
+            point.transform.localPosition = pos;
+            points.Add(point);
+        }
+        return points;
+    }
+
 }
 
 

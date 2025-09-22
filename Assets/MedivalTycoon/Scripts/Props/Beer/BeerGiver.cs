@@ -5,7 +5,7 @@ namespace Beers
 {
     public class BeerGiver : MonoBehaviour
     {
-        private LayerMask _handLayer;
+        private LayerMask _waiterLayer;
 
         private float _detectionRadius = 0.35f;
         private IPropsMover _regulating;
@@ -13,10 +13,10 @@ namespace Beers
         private Coroutine _activeCoroutine;
         private bool _isActive;
 
-        public void Initialize(IPropsMover regulating, LayerMask handLayer)
+        public void Initialize(IPropsMover regulating, LayerMask waiterLayer)
         {
             _regulating = regulating;
-            _handLayer = handLayer;
+            _waiterLayer = waiterLayer;
             _isActive = true;
         }
 
@@ -24,7 +24,7 @@ namespace Beers
         {
             if (_isActive == false) return;
 
-            Collider[] hits = Physics.OverlapSphere(transform.position, _detectionRadius, _handLayer);
+            Collider[] hits = Physics.OverlapSphere(transform.position, _detectionRadius, _waiterLayer);
 
             if (hits.Length > 0)
             {

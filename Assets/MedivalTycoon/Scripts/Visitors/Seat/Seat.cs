@@ -1,4 +1,5 @@
-﻿using Events;
+﻿using Characters;
+using Events;
 using Propses;
 using System;
 using System.Collections;
@@ -11,24 +12,23 @@ using Visitors;
 public class Seat : MonoBehaviour, IPropsMover
 {
     private TextMeshProUGUI _beerText;
-    private SeatPoint _seatPoint;   
+    private SeatPoint _seatPoint;
     private TavernVisitor _visitor;
     private Stack<IProps> _props = new Stack<IProps>();
     private Stack<IProps> _pointsProps = new Stack<IProps>();
-    private List<Point> _points;
+    private List<Point> _points = new List<Point>();
     private SpawnerPoints _spawnerPoints = new SpawnerPoints();
     private bool _isFull;
     private bool _isEmpty;
     private int _index;
     private int _amountPoint;
-    private Vector3 _spaceSize = new Vector3(0.25f, 3, 0.25f);
-
+   
     public void Initialize(LayerMask visitorMask)
     {
         _beerText = GetComponentInChildren<TextMeshProUGUI>();
         _seatPoint = GetComponentInChildren<SeatPoint>();
         _seatPoint.Initialize(visitorMask);
-        _seatPoint.VisitorSet += GetVisitor; //ОТПИШИСЬ
+        _seatPoint.VisitorSet += GetVisitor;
     }
 
     public Vector3 GetPosition()
@@ -43,14 +43,13 @@ public class Seat : MonoBehaviour, IPropsMover
     }
 
     private void GetVisitor(TavernVisitor tavernVisitor)
-    {       
+    {
+        if (_visitor != null) return;
         _visitor = tavernVisitor;
-        if (_visitor != null)
-        {
-            UpdateBeerDisplay(_visitor.BeerAmount);            
-        }
-           
+        CreatePoints(_visitor.BeerAmount, 0.15f);
+        UpdateBeerDisplay(_visitor.BeerAmount);
     }
+
 
     private void SetActiveText(bool value, int remainingBeer = 0)
     {
@@ -61,12 +60,18 @@ public class Seat : MonoBehaviour, IPropsMover
     private void UpdateBeerDisplay(int remaining)
     {
         _beerText.text = $"Пиво: {remaining}";
-    }   
+    }
 
-    public void CreatePoints(int cout, float offset, Vector3 spaceSize = new Vector3())
+    public void CreatePoints(int count, float offset, Vector3 spaceSize = new Vector3())
     {
-        _spawnerPoints.Initialize(100, 0.25f, transform);
-        _points = _spawnerPoints.SpawnObjectsInCube(_spaceSize);
+        for (int i = 0; i < count; i++)
+        {
+            var point = ObjectFactory.CreateObjectWithComponent<Point>("Point_" + i);
+            point.transform.parent = transform;
+            point.transform.localPosition = Vector3.up * (i * offset);
+            point.Free();
+            _points.Add(point);
+        }
         _amountPoint = _points.Count;
     }
 
@@ -79,7 +84,7 @@ public class Seat : MonoBehaviour, IPropsMover
         {
             if (prop == null) continue;
             _props.Push(prop);
-        }
+        }        
     }
 
     public int GetEmptyPointsCount()
@@ -96,12 +101,7 @@ public class Seat : MonoBehaviour, IPropsMover
     public IEnumerator FillingPoints()
     {
         while (_isFull == false && _props.Count > 0)
-        {
-            if (_isEmpty)
-            {
-                EventBus.Raise(new BeerBufferOpen(_isEmpty));
-                _isEmpty = false;
-            }
+        {           
             if (_index >= _amountPoint) break;
 
             _props.TryPop(out var props);
@@ -118,6 +118,11 @@ public class Seat : MonoBehaviour, IPropsMover
                 _isFull = true;
             }
         }
+    }
+
+    private void OnDestroy()
+    {
+        _seatPoint.VisitorSet -= GetVisitor;
     }
 
     public Stack<IProps> GetTo(int amount)
