@@ -1,67 +1,55 @@
-﻿using System;
+﻿using Events;
+using Propses;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using Propses;
+using System.Reflection;
 using TMPro;
 using UnityEngine;
 using Visitors;
 
 public class Seat : MonoBehaviour, IPropsMover
 {
-    [SerializeField] private TextMeshProUGUI _beerText;
-    [SerializeField] private VisitorSeatPoint _seatTransform;
-    public bool IsOccupied  { get; private set; }
-    private TavernVisitor _guest;
-    private int requiredBeer;
-    private WaitForSeconds _delay = new WaitForSeconds(0.5f);
-    private int deliveredBeer;
+    private TextMeshProUGUI _beerText;
+    private SeatPoint _seatPoint;   
+    private TavernVisitor _visitor;
+    private Stack<IProps> _props = new Stack<IProps>();
+    private Stack<IProps> _pointsProps = new Stack<IProps>();
+    private List<Point> _points;
+    private SpawnerPoints _spawnerPoints = new SpawnerPoints();
+    private bool _isFull;
+    private bool _isEmpty;
+    private int _index;
+    private int _amountPoint;
+    private Vector3 _spaceSize = new Vector3(0.25f, 3, 0.25f);
 
-    
-
-    public void Occupy(TavernVisitor guest)
+    public void Initialize(LayerMask visitorMask)
     {
-        if (IsOccupied == false && guest != null)
-        {
-            IsOccupied = true; 
-            _guest = guest;
-        }
+        _beerText = GetComponentInChildren<TextMeshProUGUI>();
+        _seatPoint = GetComponentInChildren<SeatPoint>();
+        _seatPoint.Initialize(visitorMask);
+        _seatPoint.VisitorSet += GetVisitor; //ОТПИШИСЬ
     }
 
     public Vector3 GetPosition()
     {
-        return _seatTransform.GetPosition();
+        return _seatPoint.GetPosition();
     }
 
     public void CheckHists()
     {
-        if(_seatTransform != null) 
-            _seatTransform.CheckHits();
-
-        Debug.Log("QQWEQWE");
+        if (_seatPoint != null)
+            _seatPoint.CheckHits();
     }
 
-    public void Vacate()
-    {
-        IsOccupied = false;
-        _guest = null;
-       // SetActiveText(false);
-       
-    }
-
-    public IEnumerator DeliverBeer(int amount)
-    {
-        while (deliveredBeer < requiredBeer)
+    private void GetVisitor(TavernVisitor tavernVisitor)
+    {       
+        _visitor = tavernVisitor;
+        if (_visitor != null)
         {
-            deliveredBeer += amount;
-            var currentAmount = requiredBeer - deliveredBeer;
-            //SetActiveText(true, currentAmount);
-
-            if (currentAmount <= 0)
-            {
-             
-            }
-            yield return _delay;
+            UpdateBeerDisplay(_visitor.BeerAmount);            
         }
+           
     }
 
     private void SetActiveText(bool value, int remainingBeer = 0)
@@ -73,26 +61,63 @@ public class Seat : MonoBehaviour, IPropsMover
     private void UpdateBeerDisplay(int remaining)
     {
         _beerText.text = $"Пиво: {remaining}";
-    }
+    }   
 
     public void CreatePoints(int cout, float offset, Vector3 spaceSize = new Vector3())
     {
-        throw new NotImplementedException();
+        _spawnerPoints.Initialize(100, 0.25f, transform);
+        _points = _spawnerPoints.SpawnObjectsInCube(_spaceSize);
+        _amountPoint = _points.Count;
     }
 
     public void RegisterProps(Stack<IProps> props)
     {
-        throw new NotImplementedException();
+        if (props == null) return;
+        if (props.Count == 0) return;
+
+        foreach (var prop in props)
+        {
+            if (prop == null) continue;
+            _props.Push(prop);
+        }
     }
 
     public int GetEmptyPointsCount()
     {
-        throw new NotImplementedException();
+        var index = 0;
+
+        foreach (var point in _points)
+        {
+            if (point.IsFill) index++;
+        }
+        return index;
     }
 
     public IEnumerator FillingPoints()
     {
-        throw new NotImplementedException();
+        while (_isFull == false && _props.Count > 0)
+        {
+            if (_isEmpty)
+            {
+                EventBus.Raise(new BeerBufferOpen(_isEmpty));
+                _isEmpty = false;
+            }
+            if (_index >= _amountPoint) break;
+
+            _props.TryPop(out var props);
+            if (props == null) break;
+
+            yield return props.TryMoveTo(_points[_index]);
+
+            _pointsProps.Push(props);
+            _index++;
+
+            if (_index >= _amountPoint)
+            {
+                _index = _amountPoint;
+                _isFull = true;
+            }
+        }
     }
 
     public Stack<IProps> GetTo(int amount)

@@ -27,6 +27,7 @@ namespace Tables
             tableBuilderAnimation.Initialize();
             table.Initialize(startPrice);
             table.InitializeBeerTaker();
+            table.InitializeSeatSystem();
             viewTable.Initialize(table, tableBuilderAnimation);
 
             return (table, viewTable);

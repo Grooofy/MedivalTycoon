@@ -142,8 +142,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 49201ae18b23a7c40ada924238c4d4d2, type: 2}
-  m_sharedMaterial: {fileID: 6177471138193479507, guid: 49201ae18b23a7c40ada924238c4d4d2, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 853e224366915e240bf53cbcf30c3976, type: 2}
+  m_sharedMaterial: {fileID: -7886966662093174183, guid: 853e224366915e240bf53cbcf30c3976, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -376,10 +376,8 @@ Transform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 2827665104007793674}
   - {fileID: 6599769248139012284}
   - {fileID: 4699524600679615017}
-  - {fileID: 8957104379661056285}
   - {fileID: 3182838550352844392}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -398,6 +396,9 @@ MonoBehaviour:
   _waiterLayer:
     serializedVersion: 2
     m_Bits: 16
+  _visitorLayer:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!1 &2645538966022189100
 GameObject:
   m_ObjectHideFlags: 0
@@ -411,9 +412,9 @@ GameObject:
   - component: {fileID: 2085807811592802352}
   - component: {fileID: 4631657833139709734}
   - component: {fileID: 2435972370423665421}
-  - component: {fileID: 7828725288589959723}
+  - component: {fileID: 982090756065254424}
   m_Layer: 4
-  m_Name: BarrelTaker
+  m_Name: BeerTaker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -515,7 +516,7 @@ CanvasGroup:
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
---- !u!114 &7828725288589959723
+--- !u!114 &982090756065254424
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -524,7 +525,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2645538966022189100}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9320fe703f042ae973909c392eb6d2d, type: 3}
+  m_Script: {fileID: 11500000, guid: 11d3db352be84856bb0c770e187f8e46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &4785208788397372971
@@ -615,7 +616,7 @@ GameObject:
   - component: {fileID: 3140263881546076928}
   - component: {fileID: 3093688947185516634}
   m_Layer: 4
-  m_Name: Canvas
+  m_Name: CanvasText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -629,16 +630,16 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5445694911905433039}
   m_LocalRotation: {x: -0, y: -0.35471225, z: -0, w: 0.93497556}
-  m_LocalPosition: {x: 0, y: 0, z: -0.30831432}
+  m_LocalPosition: {x: 0, y: 0, z: 0.01}
   m_LocalScale: {x: 0.0062106056, y: 0.006210605, z: 0.0062106056}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6509676992322057950}
-  m_Father: {fileID: 5672943722656101597}
+  m_Father: {fileID: 6599769248139012284}
   m_LocalEulerAnglesHint: {x: 0, y: -41.552, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0.017976612, y: 0.41179326}
+  m_AnchoredPosition: {x: 0.028, y: 0.288}
   m_SizeDelta: {x: 69.5792, y: 27.1333}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &8577233100006268926
@@ -715,7 +716,7 @@ GameObject:
   - component: {fileID: 6599769248139012284}
   - component: {fileID: 3718926039563815844}
   m_Layer: 4
-  m_Name: SeatPoint
+  m_Name: SeatSystem
   m_TagString: Untagged
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -731,9 +732,11 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.235, z: 0}
-  m_LocalScale: {x: 0.71716, y: 0.71716, z: 0.71716}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2827665104007793674}
+  - {fileID: 8957104379661056285}
   m_Father: {fileID: 5672943722656101597}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3718926039563815844
@@ -748,8 +751,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d632756f4625420ea7e8e950e17c6310, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _beerText: {fileID: 5189084143147105843}
-  _seatTransform: {fileID: 5899173441822099387}
 --- !u!1 &8494103463641895824
 GameObject:
   m_ObjectHideFlags: 0
@@ -776,11 +777,11 @@ Transform:
   m_GameObject: {fileID: 8494103463641895824}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.013, z: -0.296}
-  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.296}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5672943722656101597}
+  m_Father: {fileID: 6599769248139012284}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5899173441822099387
 MonoBehaviour:

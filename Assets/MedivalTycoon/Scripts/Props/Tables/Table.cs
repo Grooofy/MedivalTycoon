@@ -9,15 +9,14 @@ namespace Tables
     public class Table : MonoBehaviour
     {
         [SerializeField] private LayerMask _waiterLayer;
+        [SerializeField] private LayerMask _visitorLayer;
         public event UnityAction<int> PriceChanged;
         public event UnityAction LinedUp;
         public bool IsBuilt => Price <= 0;
         public int Price { get; private set; }
 
         private Seat _seat;
-        private BeerTaker _beerTaker;
-        private bool _isInitialized;
-        private bool _isChecking;
+        private BeerTaker _beerTaker;      
 
 
         public void Initialize(int startPrice)
@@ -33,11 +32,19 @@ namespace Tables
                 _beerTaker.Initialize(_seat, _waiterLayer);
         }
 
+        public void InitializeSeatSystem()
+        {
+            if(_seat != null)
+            {
+                _seat.Initialize(_visitorLayer);               
+            }
+                
+        }
+
         public void CheckHits()
         {
-            if (_beerTaker != null)
+            if (_beerTaker != null && _seat != null)
             {
-                Debug.Log("adsdasd");
                 _beerTaker.CheckHits();
                 _seat.CheckHists();
             }             

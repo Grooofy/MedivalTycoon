@@ -1,15 +1,26 @@
+using Events;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Visitors;
 
-public class VisitorSeatPoint : MonoBehaviour
+public class SeatPoint : MonoBehaviour
 {
-    private LayerMask _handLayer = LayerMask.GetMask();
-   
+    public Action<TavernVisitor> VisitorSet;
+    private LayerMask _visitorsLayer;
     private TavernVisitor _currentVisitor;
-    private float _detectionRadius = 0.35f;
+    private float _detectionRadius = 0.05f;
     private bool _hasGiven = false;
+    private bool _isInitialize;
+
+
+    public void Initialize(LayerMask visitorMask)
+    {
+        _visitorsLayer = visitorMask;
+        _isInitialize = true;
+    }
+
     public Vector3 GetPosition()
     {
         return transform.position + transform.localPosition;
@@ -17,7 +28,9 @@ public class VisitorSeatPoint : MonoBehaviour
 
     public void CheckHits()
     {
-        Collider[] hits = Physics.OverlapSphere(transform.position, _detectionRadius, _handLayer);
+        if (_isInitialize == false) return;
+
+        Collider[] hits = Physics.OverlapSphere(transform.position, _detectionRadius, _visitorsLayer);
 
         if (hits.Length > 0)
         {
@@ -27,15 +40,15 @@ public class VisitorSeatPoint : MonoBehaviour
 
                 if (hit.TryGetComponent(out TavernVisitor visitor))
                 {
-                    Debug.Log("EEEE");
                     _currentVisitor = visitor;
-                    _currentVisitor.ChangeState(StateEvent.Idle); 
+                    _currentVisitor.ChangeState(StateEvent.Idle);
+                    VisitorSet?.Invoke(_currentVisitor);
                 }
             }
         }
         else if (_hasGiven)
         {
-            _hasGiven = false; 
+            _hasGiven = false;
             _currentVisitor = null;
         }
     }

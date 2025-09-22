@@ -7,7 +7,7 @@ namespace Visitors
         public Animator Animator { get; private set; }
         public int BeerAmount { get; private set; }
         private StateEvent _currentStateEvent;
-        private int _minBeerAmount = 0;
+        private int _minBeerAmount = 1;
         private int _maxBeerAmount;
         private StateMachine _stateMachine;
         private float _speed;
@@ -41,6 +41,7 @@ namespace Visitors
             if (_isMoving)
             {
                 transform.position = Vector3.MoveTowards(transform.position, _finishPosition, _speed * Time.deltaTime);
+                transform.LookAt(_finishPosition);
                 
                 if (Vector3.Distance(transform.position, _finishPosition) < 0.05f)
                 {
