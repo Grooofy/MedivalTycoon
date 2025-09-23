@@ -59,7 +59,7 @@ namespace Beers
 
             foreach (var point in _points)
             {
-                if (point.IsFill) index++;
+                if (point.IsFill == false) index++;
             }
             return index;
         }
@@ -113,15 +113,9 @@ namespace Beers
                     _index = 0;
                     EventBus.Raise(new BeerBufferOpen(_isEmpty));
                     _isEmpty = true;
+                    ResetPoints();
                 }
             }
-        }
-        
-        
-        
-        public Stack<IProps> GetTo(int amount)
-        {
-            throw new System.NotImplementedException();
         }
         
         private void ResetPoints()
@@ -131,6 +125,13 @@ namespace Beers
                 point.Free();
             }
         }
+        
+        
+        public Stack<IProps> GetTo(int amount)
+        {
+            throw new System.NotImplementedException();
+        }
+        
         
         public void RegisterProp(IProps barrel)
         {

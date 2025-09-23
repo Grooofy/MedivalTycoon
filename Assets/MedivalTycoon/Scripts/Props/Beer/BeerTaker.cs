@@ -33,8 +33,8 @@ namespace Beers
                     if (hit.TryGetComponent(out Hand hand))
                     {
                         _currentHand = hand;
-
-                        var props = _currentHand.GetTo(_currentHand.Amount);
+                        var amount = Mathf.Min(_currentHand.Amount, _regulating.GetEmptyPointsCount());
+                        var props = _currentHand.GetTo(amount);
 
                         if (props == null || props.Count == 0) return;
                         _regulating.RegisterProps(props);
