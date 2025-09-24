@@ -1,4 +1,7 @@
-﻿using Characters;
+﻿using Beers;
+using Characters;
+using Events;
+using MedivalTycoon;
 using Propses;
 using System;
 using System.Collections;
@@ -13,9 +16,20 @@ namespace SeatSyst
         private Stack<IProps> _props = new Stack<IProps>();
         private Stack<IProps> _pointsProps = new Stack<IProps>();
         private List<Point> _points = new List<Point>();
+        private Point _resetBeerPoint;
+        private IPropsPool _beerPool;
         private int _index;
         private int _amountPoint;
         private bool _isFull;
+        private bool _isEmpty = false;
+
+        public bool IsDrink { get; private set; }
+
+        public void Initialize(IPropsPool beerPool)
+        {
+            _resetBeerPoint = GetComponentInChildren<Point>();
+            _beerPool = beerPool;
+        }
 
         public void CreatePoints(int count, float offset, Vector3 spaceSize = new Vector3())
         {
@@ -56,20 +70,7 @@ namespace SeatSyst
 
                 yield return WaitFor.TenthSecond;
             }
-        }
-
-        public Stack<IProps> GetTo(int amount)
-        {
-            var result = new Stack<IProps>();
-            for (int i = 0; i < amount && _pointsProps.Count > 0; i++)
-            {
-                result.Push(_pointsProps.Pop());
-                _index--;
-                _isFull = false;
-            }
-            return result;
-        }
-
+        }        
        
 
         public int GetEmptyPointsCount()
@@ -84,5 +85,44 @@ namespace SeatSyst
             }
             return index;
         }
+
+        public IEnumerator ResetBeer()
+        {
+            while (true)
+            {
+                _pointsProps.TryPop(out var props);
+                if (props == null) break;
+
+                yield return props.TryMoveTo(_resetBeerPoint);
+
+                yield return WaitFor.Seconds(1);
+
+                _resetBeerPoint.Free();
+                _beerPool.Despawn(props);
+                _index--;
+                _points[_index].Free();
+
+                if (_index < 0)
+                {
+                    _index = 0;                    
+                    _isEmpty = true;
+                    ResetPoints();
+                }
+            }
+        }
+
+        private void ResetPoints()
+        {
+            foreach (var point in _points)
+            {
+                point.Free();
+            }
+        }
+
+        public Stack<IProps> GetTo(int amount)
+        {
+            throw new System.NotImplementedException();
+        }
+
     }
 }

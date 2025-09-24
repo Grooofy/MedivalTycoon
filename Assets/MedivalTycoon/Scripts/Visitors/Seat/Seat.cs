@@ -1,4 +1,5 @@
-﻿using SeatSyst;
+﻿using MedivalTycoon;
+using SeatSyst;
 using UnityEngine;
 using Visitors;
 
@@ -11,9 +12,10 @@ public class Seat : MonoBehaviour
     private float _pointDistance = 0.1f;
     private int _beerDisplayAmount;
 
-    public void Initialize(LayerMask visitorMask, SeatInventory seatInventory)
+    public void Initialize(LayerMask visitorMask, SeatInventory seatInventory, IPropsPool beerPool)
     {
         _inventory = seatInventory;
+        _inventory.Initialize(beerPool);
 
         _seatPoint = GetComponentInChildren<SeatPoint>();
         _seatUI = GetComponentInChildren<SeatUI>();
@@ -38,6 +40,14 @@ public class Seat : MonoBehaviour
     {
         _beerDisplayAmount -= count;
         _seatUI.UpdateBeerDisplay(_beerDisplayAmount);
+
+        if (_beerDisplayAmount == 0)
+        {
+            Debug.Log("!!!!");
+            _visitor.ChangeState(StateEvent.Drink);
+            StartCoroutine(_inventory.ResetBeer());
+        }
+
     }
 
     public Vector3 GetPosition()

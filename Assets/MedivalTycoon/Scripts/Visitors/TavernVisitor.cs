@@ -55,7 +55,7 @@ namespace Visitors
         {
             _stateMachine.AddTransition<IdleState>(StateEvent.Move, ()=> new MoveState(this));
             _stateMachine.AddTransition<MoveState>(StateEvent.Idle, ()=> new IdleState(this));
-            _stateMachine.AddTransition<MoveState>(StateEvent.Drink, ()=> new DrinkState(this));
+            _stateMachine.AddTransition<IdleState>(StateEvent.Drink, ()=> new DrinkState(this));
             _stateMachine.AddTransition<DrinkState>(StateEvent.Sleep, ()=> new SleepState(this));
         }
         

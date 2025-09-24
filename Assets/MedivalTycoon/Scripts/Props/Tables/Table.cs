@@ -1,7 +1,8 @@
-using System;
 using Beers;
 using Events;
+using MedivalTycoon;
 using SeatSyst;
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -36,11 +37,11 @@ namespace Tables
                 _beerTaker.Initialize(_inventory, _waiterLayer);
         }
 
-        public void InitializeSeatSystem()
+        public void InitializeSeatSystem(IPropsPool propsPool)
         {
             if(_seat != null)
             {
-                _seat.Initialize(_visitorLayer, _inventory);               
+                _seat.Initialize(_visitorLayer, _inventory, propsPool);               
             } 
         }
 

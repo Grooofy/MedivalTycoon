@@ -787,6 +787,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2827665104007793674}
   - component: {fileID: 5899173441822099387}
+  - component: {fileID: 5045041960493452488}
   m_Layer: 0
   m_Name: SeatPosition
   m_TagString: Untagged
@@ -819,5 +820,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3a5e72e43ed9acd43b29f36998787f6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5045041960493452488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8494103463641895824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6ebddad44912c544a47cf16733fb559, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

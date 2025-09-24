@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using MedivalTycoon;
+using System.Collections;
 using Tables;
 using UnityEngine;
 
@@ -16,7 +17,7 @@ namespace Tables
             _tablePrefab = tablePrefab;
         }
 
-        public (Table table, ViewTable view) CreateTable(Vector3 position, Transform parent, ConstructionHandler handler, int startPrice)
+        public (Table table, ViewTable view) CreateTable(Vector3 position, Transform parent, ConstructionHandler handler, int startPrice, IPropsPool propsPool)
         {
             var triggerZone = Object.Instantiate(_triggerPrefab, position, Quaternion.identity, parent);
 
@@ -27,7 +28,7 @@ namespace Tables
             tableBuilderAnimation.Initialize();
             table.Initialize(startPrice);
             table.InitializeBeerTaker();
-            table.InitializeSeatSystem();
+            table.InitializeSeatSystem(propsPool);
             viewTable.Initialize(table, tableBuilderAnimation);
 
             return (table, viewTable);

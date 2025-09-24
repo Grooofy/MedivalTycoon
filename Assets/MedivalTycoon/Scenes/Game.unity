@@ -329,6 +329,7 @@ MonoBehaviour:
   _tableTrigger: {fileID: 7646615994979119666, guid: 44e9b754b0428c14a8af0103213529f1, type: 3}
   _constructionHandler: {fileID: 1099427312}
   _wallet: {fileID: 1888693656}
+  _propsPool: {fileID: 1100382900}
 --- !u!4 &16643950
 Transform:
   m_ObjectHideFlags: 0
@@ -61749,7 +61750,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 111.25
+  m_fontSize: 101.4
   m_fontSizeBase: 90
   m_fontWeight: 400
   m_enableAutoSizing: 1

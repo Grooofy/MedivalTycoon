@@ -1,4 +1,5 @@
 ﻿using Beers;
+using MedivalTycoon;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -26,7 +27,7 @@ namespace Tables
             _origin = transform.position;
         }
 
-        public void SpawnGrid(ConstructionHandler handler, int[] startPrice)
+        public void SpawnGrid(ConstructionHandler handler, int[] startPrice, IPropsPool propsPool)
         {
             var positions = GridCalculator.GetGridPositions(_origin, areaSize, spacing, _prefabOffset);
             positions = positions.OrderBy(_ => Random.value).ToList(); 
@@ -35,7 +36,7 @@ namespace Tables
 
             for (int i = 0; i < spawnCount; i++)
             {
-                var (table, viewTable) = _factory.CreateTable(positions[i], transform, handler, startPrice[i]);
+                var (table, viewTable) = _factory.CreateTable(positions[i], transform, handler, startPrice[i], propsPool);
                 _tables.Add(table);
                 _viewTables.Add(viewTable);
             }
