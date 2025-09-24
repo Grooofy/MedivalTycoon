@@ -21,7 +21,7 @@ public class BarrelGiver : MonoBehaviour
     public void CheckHits()
     {
         if (_isActive == false) return;
-        
+
         Collider[] hits = Physics.OverlapSphere(transform.position, _detectionRadius, _handLayer);
 
         if (hits.Length > 0)

@@ -79,7 +79,7 @@ namespace Beers
                 _props.TryPop(out var props);
                 if (props == null) break;
                 
-                yield return  props.TryMoveTo(_points[_index]);
+               StartCoroutine(props.TryMoveTo(_points[_index]));
 
                 _pointsProps.Push(props);
                 _index++;
@@ -89,6 +89,7 @@ namespace Beers
                     _index = _amountPoint;
                     _isFull = true;
                 }
+                yield return WaitFor.TenthSecond;
             }
         }
 

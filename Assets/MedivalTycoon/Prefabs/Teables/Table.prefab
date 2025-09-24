@@ -728,6 +728,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6599769248139012284}
   - component: {fileID: 3718926039563815844}
+  - component: {fileID: 1650940008297751895}
   m_Layer: 0
   m_Name: SeatSystem
   m_TagString: Untagged
@@ -762,6 +763,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d632756f4625420ea7e8e950e17c6310, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1650940008297751895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5987141422494640913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50a15d0ad03733e4988fd2d2b185921a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8494103463641895824

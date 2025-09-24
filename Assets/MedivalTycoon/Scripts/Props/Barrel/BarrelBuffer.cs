@@ -7,6 +7,7 @@ using UnityEngine;
 
 public class BarrelBuffer : MonoBehaviour, IPropsMover
 {
+    public bool IsTake { get; set; }
     private Queue<IProps> _props = new Queue<IProps>();
     private Stack<IProps> _pointsProps = new Stack<IProps>();
     private SpawnerPoints _spawnerPoints = new SpawnerPoints();
@@ -16,7 +17,6 @@ public class BarrelBuffer : MonoBehaviour, IPropsMover
     private int _amountPoint;
     private bool _isFull;
     private string _sourceId;
-    public bool IsTake { get; set; }
 
 
     public void Initialize(string sourceId, IPropsPool barrelPool)
@@ -52,7 +52,7 @@ public class BarrelBuffer : MonoBehaviour, IPropsMover
         {
             if (point.IsFill) index++;
         }
-
+        
         return index;
     }
 
@@ -64,7 +64,7 @@ public class BarrelBuffer : MonoBehaviour, IPropsMover
 
             var prop = _barrelPool.Spawn();
 
-            yield return prop.TryMoveTo(_points[_index]);
+            StartCoroutine(prop.TryMoveTo(_points[_index]));
 
             _pointsProps.Push(prop);
             _index++;
@@ -74,6 +74,7 @@ public class BarrelBuffer : MonoBehaviour, IPropsMover
                 _isFull = true;
                 EventBus.Raise(new PropsMoverFullingPointEvent(true, _sourceId));
             }
+            yield return WaitFor.HalfSecond;
         }
     }
 

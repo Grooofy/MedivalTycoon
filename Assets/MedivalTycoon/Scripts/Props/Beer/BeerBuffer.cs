@@ -86,7 +86,7 @@ public class BeerBuffer : MonoBehaviour, IPropsMover
 
             var prop = _beerPool.Spawn();
 
-            yield return prop.TryMoveTo(_points[_index]);
+            StartCoroutine(prop.TryMoveTo(_points[_index]));
 
             _pointsProps.Push(prop);
             _index++;
@@ -95,7 +95,7 @@ public class BeerBuffer : MonoBehaviour, IPropsMover
             
             if (_index >= _amountPoint)
                 _isFull = true;
-            yield return new WaitForSeconds(0.2f);
+            yield return WaitFor.QuarterSecond;
         }
         _isFilling = false;
         _filingCoroutine = null;

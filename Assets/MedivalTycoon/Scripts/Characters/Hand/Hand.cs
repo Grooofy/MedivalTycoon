@@ -15,11 +15,10 @@ namespace Characters
         private List<Point> _points = new List<Point>();
         private Stack<IProps> _incomingProps = new Stack<IProps>();
         private Stack<IProps> _carriedProps = new Stack<IProps>();
-        private WaitForSeconds _wait = new WaitForSeconds(0.2f);
+        
 
         private int _index;
 
-       
         public void CreatePoints(int count, float offset, Vector3 spaceSize)
         {
             for (int i = 0; i < count; i++)
@@ -59,9 +58,10 @@ namespace Characters
             {
                 _incomingProps.TryPop(out var props);
                 var point = _points[_index];
-                yield return props.TryMoveTo(point);
+                StartCoroutine(props.TryMoveTo(point));
                 _carriedProps.Push(props);
                 _index++;
+                yield return WaitFor.TenthSecond; 
             }
 
             if (_carriedProps.Count == _points.Count)
@@ -103,16 +103,9 @@ namespace Characters
             }
         }
 
-        public void Initialize(string sourceId, IPropsPool barrelPool)
-        {
-        }
-      
+        
         public void RegisterProps(Stack<IProps> props)
         {
-        }
-
-        public void RegisterProp(IProps barrel)
-        {
-        }
+        }       
     }
 }
