@@ -44,7 +44,7 @@ namespace Characters
         
         private void MoveController(Vector3 normalizeDirection)
         {
-            _controller.Move((normalizeDirection + _velocity) * _worker.Speed * Time.deltaTime);
+            _controller.Move((normalizeDirection + _velocity) * _worker.MoveSpeed * Time.deltaTime);
             
             if (!_controller.isGrounded)
                 _velocity.y += -9.81f * Time.deltaTime;
@@ -61,10 +61,15 @@ namespace Characters
 
         private void TryRotate(Vector3 direction)
         {
-            if (direction != Vector3.zero)
-            {
-                transform.rotation = Quaternion.LookRotation(direction);
-            }
+            if (direction == Vector3.zero) return;
+
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                targetRotation,
+                _worker.RotationSpeed * Time.deltaTime
+            );
         }
     }
 }

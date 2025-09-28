@@ -34,7 +34,7 @@ namespace Barrels
             _barrelBuffer.Initialize("Barrel", _barrelPool);
             _leverInstaller.InitializeBarrelLever(_barrelBuffer);
             _barrelGiver.Initialize(_barrelBuffer, _layerMask);
-            _barrelBeerBuffer.Initialize("BarrelToBeer", _barrelPool, _finishPositionToBarrel, new WaitForSeconds(_delayBarrelReset), _amountBeerToBarrel);
+            _barrelBeerBuffer.Initialize("BarrelToBeer", _barrelPool, _finishPositionToBarrel, _delayBarrelReset, _amountBeerToBarrel);
             _barrelTaker.Initialize(_barrelBeerBuffer, _layerMask);
         }
 

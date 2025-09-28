@@ -17,6 +17,7 @@ namespace Beers
         {
             _regulating = regulating;
             _handLayer = handLayer;
+           
         }
 
         public void CheckHits()
@@ -25,7 +26,6 @@ namespace Beers
            
             if (hits.Length > 0)
             {
-
                 foreach (var hit in hits)
                 {
                     if (_hasGiven) break;
@@ -34,10 +34,11 @@ namespace Beers
                     {
                         _currentHand = hand;
                         
-                        var amount = Mathf.Min(_currentHand.Amount, _regulating.GetEmptyPointsCount());
+                        var amount = Mathf.Min(_currentHand.Amount - _currentHand.GetEmptyPointsCount(), _regulating.GetEmptyPointsCount());
                         var props = _currentHand.GetTo(amount);
 
                         if (props == null || props.Count == 0) return;
+                        Debug.Log(amount + " КОЛИЧЕСтВО");
                         _regulating.RegisterProps(props);
                         _activeCoroutine = StartCoroutine(_regulating.FillingPoints());
                         _hasGiven = true;

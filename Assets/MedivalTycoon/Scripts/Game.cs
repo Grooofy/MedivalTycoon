@@ -17,7 +17,8 @@ namespace MedivalTycoon
         [SerializeField] private TableManager _tableManager;
         [SerializeField] private BarrelManager _barrelManager;
         [SerializeField] private BeerManager _beerManager;
-        [SerializeField] private QueueVisitor queueVisitor;
+        [SerializeField] private VisitorsManager _visitorsManager;
+        
         
         
         private void Start()
@@ -27,12 +28,11 @@ namespace MedivalTycoon
             _gameUIManager.ShowUIInfo(_loadingGameSettings);
             _tableManager.Initialize(_loadingGameSettings);
             _tableManager.CreateTables(_loadingGameSettings);
+            _visitorsManager.Initialize(_loadingGameSettings);
             _barrelManager.Initialize();
             _barrelManager.CreatePoints();
             _beerManager.Initialize();
             _beerManager.CreatePoints();
-            queueVisitor.Initialize(10, 0.5f, 3f,10);
-            queueVisitor.SpawnVisitorsInLine(queueVisitor.transform.position);
         }
 
         private void Update()
@@ -42,7 +42,7 @@ namespace MedivalTycoon
             _barrelManager.CheckHits();
             _beerManager.CheckHits();
             _tableManager.CheckHits();
-            queueVisitor.UpdateState();
+            _visitorsManager.UpdateState();
         }
     }
 }

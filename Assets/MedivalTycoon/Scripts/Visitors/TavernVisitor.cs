@@ -13,7 +13,7 @@ namespace Visitors
         private float _speed;
         private Vector3 _finishPosition;
         private bool _isMoving;
-        
+
         public void Initialize(float speed, int maxBeerAmount)
         {
             Animator = GetComponentInChildren<Animator>();
@@ -23,7 +23,7 @@ namespace Visitors
             _stateMachine.SetInitialState(new IdleState(this));
             AddTransitions();
         }
-       
+
         public void SetRandomAmountBeer()
         {
             BeerAmount = Random.Range(_minBeerAmount, _maxBeerAmount);
@@ -35,14 +35,14 @@ namespace Visitors
             _isMoving = true;
             ChangeState(StateEvent.Move);
         }
-       
+
         public void MoveToPoint()
         {
             if (_isMoving)
             {
                 transform.position = Vector3.MoveTowards(transform.position, _finishPosition, _speed * Time.deltaTime);
                 transform.LookAt(_finishPosition);
-                
+
                 if (Vector3.Distance(transform.position, _finishPosition) < 0.05f)
                 {
                     transform.position = _finishPosition;
@@ -53,37 +53,24 @@ namespace Visitors
 
         private void AddTransitions()
         {
-            _stateMachine.AddTransition<IdleState>(StateEvent.Move, ()=> new MoveState(this));
-            _stateMachine.AddTransition<MoveState>(StateEvent.Idle, ()=> new IdleState(this));
-            _stateMachine.AddTransition<IdleState>(StateEvent.Drink, ()=> new DrinkState(this));
-            _stateMachine.AddTransition<DrinkState>(StateEvent.Sleep, ()=> new SleepState(this));
+            _stateMachine.AddTransition<IdleState>(StateEvent.Move, () => new MoveState(this));
+            _stateMachine.AddTransition<MoveState>(StateEvent.Idle, () => new IdleState(this));
+            _stateMachine.AddTransition<MoveState>(StateEvent.Drink, () => new DrinkState(this));
+            _stateMachine.AddTransition<IdleState>(StateEvent.Drink, () => new DrinkState(this));
+            _stateMachine.AddTransition<DrinkState>(StateEvent.Sleep, () => new SleepState(this));
         }
-        
+
         public void UpdateState()
         {
-            switch (_currentStateEvent)
-            {
-                case StateEvent.Idle:
-                    _stateMachine.ChangeState(StateEvent.Idle);
-                    break;
-                case StateEvent.Move :
-                    _stateMachine.ChangeState(StateEvent.Move);
-                    break;
-                case StateEvent.Drink :
-                    _stateMachine.ChangeState(StateEvent.Drink);
-                    break;
-                case StateEvent.Sleep :
-                    _stateMachine.ChangeState(StateEvent.Sleep);
-                    break;
-            }
             _stateMachine.UpdateState();
         }
-        
+
         public void ChangeState(StateEvent stateEvent)
         {
             if (_currentStateEvent == stateEvent) return;
-            
+
             _currentStateEvent = stateEvent;
+            _stateMachine.ChangeState(_currentStateEvent);
         }
     }
 }

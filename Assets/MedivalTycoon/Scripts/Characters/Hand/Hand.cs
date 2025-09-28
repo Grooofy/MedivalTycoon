@@ -66,7 +66,7 @@ namespace Characters
 
             if (_carriedProps.Count == _points.Count)
             {
-                IsFull = true;
+                IsFull = true;                
             }
         }
 

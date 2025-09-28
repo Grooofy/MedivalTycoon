@@ -6,7 +6,8 @@ namespace Characters
     [CreateAssetMenu(fileName = "Worker", menuName = "Workers", order = 41)]
     public class Worker : ScriptableObject
     {
-        [SerializeField] private float _speed;
+        [SerializeField] private float _moveSpeed;
+        [SerializeField] private float _rotateSpeed;
         [SerializeField] private Sprite _icon;
         [SerializeField] private int _id;
         [SerializeField] private int _numberWearableObjects;
@@ -14,7 +15,8 @@ namespace Characters
     
         public bool IsSelect;
     
-        public float Speed => _speed;
+        public float MoveSpeed => _moveSpeed;
+        public float RotationSpeed => _rotateSpeed;
         public int NumberWearableObjects => _numberWearableObjects;
         public float DistanceBetweenPoints => _distanceBetweenPoints;
         public Sprite Icon => _icon;

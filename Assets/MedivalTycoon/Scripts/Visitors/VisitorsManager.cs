@@ -1,30 +1,26 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 
 namespace Visitors
 {
     public class VisitorsManager : MonoBehaviour
     {
-        [SerializeField] private TavernVisitor _tavernVisitor;
-        [SerializeField] private RandomVisitorModel _randomVisitorModel;
-        
-        private readonly List<TavernVisitor> _tavernVisitors = new List<TavernVisitor>();
+        [SerializeField] private QueueVisitor _queueVisitor;
 
-        public TavernVisitor CreateVisitor(Transform position, float speed, int maxBeerCount)
+        [SerializeField] private float _spacing;
+        [SerializeField] private float _speed;
+        [SerializeField] private int _maxBeerCount;
+
+        public void Initialize(LoadingGameSettings loadingGameSettings)
         {
-            var currentTavernVisitor = Instantiate(_tavernVisitor, position);
-            _randomVisitorModel.SpawnRandomModel(currentTavernVisitor.transform);
-            currentTavernVisitor.Initialize(speed, maxBeerCount);
-            _tavernVisitors.Add(currentTavernVisitor);
-            return currentTavernVisitor;
+            _queueVisitor.Initialize(loadingGameSettings.GetVisitors(), _spacing, _speed, _maxBeerCount);
+            _queueVisitor.SpawnVisitorsInLine(_queueVisitor.transform.position);
         }
-        
+
         public void UpdateState()
         {
-            if (_tavernVisitors == null) return;
-
-            foreach (var tavernVisitor in _tavernVisitors)
-                tavernVisitor.UpdateState();
+            _queueVisitor.UpdateState();
         }
+
     }
 }

@@ -1,7 +1,7 @@
-using UnityEngine;
-using System.Collections;
 using Barrels;
 using Propses;
+using System.Collections;
+using UnityEngine;
 
 
 public class Barrel : MonoBehaviour, IProps
@@ -15,7 +15,7 @@ public class Barrel : MonoBehaviour, IProps
     public void Initilization(Transform parent, float moveSpeed, Animator animator)
     {
         _barrelAnimation = new BarrelAnimation(animator);
-        _moveSpeed =  moveSpeed;
+        _moveSpeed = moveSpeed;
         _startPoint = parent;
     }
 
@@ -25,11 +25,11 @@ public class Barrel : MonoBehaviour, IProps
         _barrelAnimation.Reset();
         _isFirstAnimationPlaying = false;
     }
-    
+
     public IEnumerator TryMoveTo(Point endPoint)
     {
         if (endPoint.IsFill) yield break;
-        
+
         while (endPoint.IsFill == false)
         {
             _mover.MoveTo(transform, endPoint, _moveSpeed);
@@ -43,5 +43,5 @@ public class Barrel : MonoBehaviour, IProps
         }
     }
 
-   
+
 }

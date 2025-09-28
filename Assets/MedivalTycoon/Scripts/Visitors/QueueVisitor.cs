@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
-using Characters;
+﻿using Characters;
 using Events;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Visitors;
 
 public class QueueVisitor : MonoBehaviour
 {
-    [SerializeField] private VisitorsManager _visitorsManager;
+    [SerializeField] private VisitorsSpawner _visitorsSpawner;
     
     private SeatAggregator _seatAggregator;
     private Queue<TavernVisitor> _guestQueue = new Queue<TavernVisitor>();
@@ -40,22 +41,54 @@ public class QueueVisitor : MonoBehaviour
             var point = ObjectFactory.CreateObjectWithComponent<Point>($"Point {i}");
             point.transform.SetParent(transform);
             point.transform.position = spawnPosition;
-            var visitor = _visitorsManager.CreateVisitor(point.transform, _speed, _maxBeerCount);
+            var visitor = _visitorsSpawner.CreateVisitor(point.transform, _speed, _maxBeerCount);
             _guestQueue.Enqueue(visitor);
             _createdPoints.Add(point);
         }
     }
     
+    public void UpdateState()
+    {
+        _visitorsSpawner.UpdateState();
+    }
+
     private void OnSeatFreed(SeatFreed _)
     {
         TryAssignSeats();
+        MoveQueue();
     }
 
     private void MoveQueue()
     {
-        
+        if (_guestQueue.Count == 0) return;
+
+       
+        var visitors = new List<TavernVisitor>(_guestQueue);
+
+        for (int i = 0; i < visitors.Count; i++)
+        {
+            var visitor = visitors[i];
+            Vector3 targetPosition = _createdPoints[i].transform.position;
+            
+            StartCoroutine(MoveToPosition(visitor, targetPosition));
+        }
     }
-   
+
+    private IEnumerator MoveToPosition(TavernVisitor visitor, Vector3 targetPosition)
+    {
+        while (Vector3.Distance(visitor.transform.position, targetPosition) > 0.05f)
+        {
+            visitor.transform.position = Vector3.MoveTowards(
+                visitor.transform.position,
+                targetPosition,
+                _speed * Time.deltaTime
+            );
+            yield return null;
+        }
+
+        visitor.transform.position = targetPosition;
+    }
+
     private void TryAssignSeats()
     {
         while (_guestQueue.Count > 0 && _seatAggregator.FreeSeats.Count > 0)
@@ -69,11 +102,6 @@ public class QueueVisitor : MonoBehaviour
         }
     }
 
-
-    public void UpdateState()
-    {
-        _visitorsManager.UpdateState();
-    }
 
     private void OnDestroy()
     {

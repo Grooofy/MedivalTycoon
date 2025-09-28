@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class BarrelGiver : MonoBehaviour
 {
-    private LayerMask _handLayer;
+    private LayerMask _bartenderLayer;
 
     private float _detectionRadius = 0.35f;
     private IPropsMover _regulating;
@@ -14,7 +14,7 @@ public class BarrelGiver : MonoBehaviour
     public void Initialize(IPropsMover regulating, LayerMask handLayer)
     {
         _regulating = regulating;
-        _handLayer = handLayer;
+        _bartenderLayer = handLayer;
         _isActive = true;
     }
 
@@ -22,7 +22,7 @@ public class BarrelGiver : MonoBehaviour
     {
         if (_isActive == false) return;
 
-        Collider[] hits = Physics.OverlapSphere(transform.position, _detectionRadius, _handLayer);
+        Collider[] hits = Physics.OverlapSphere(transform.position, _detectionRadius, _bartenderLayer);
 
         if (hits.Length > 0)
         {

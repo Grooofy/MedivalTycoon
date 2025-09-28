@@ -1,21 +1,25 @@
 ﻿using MedivalTycoon;
 using SeatSyst;
+using System;
+using System.Collections;
 using UnityEngine;
 using Visitors;
 
 public class Seat : MonoBehaviour
 {
+    public Action InventoryFulling;
     private SeatPoint _seatPoint;
     private TavernVisitor _visitor;
     private SeatInventory _inventory;
     private SeatUI _seatUI;
     private float _pointDistance = 0.1f;
     private int _beerDisplayAmount;
+    private Coroutine _beerReset;
 
-    public void Initialize(LayerMask visitorMask, SeatInventory seatInventory, IPropsPool beerPool)
+    public void Initialize(LayerMask visitorMask, SeatInventory seatInventory, IPropsPool beerPool, float resetDelay)
     {
         _inventory = seatInventory;
-        _inventory.Initialize(beerPool);
+        _inventory.Initialize(beerPool, resetDelay);
 
         _seatPoint = GetComponentInChildren<SeatPoint>();
         _seatUI = GetComponentInChildren<SeatUI>();
@@ -24,7 +28,7 @@ public class Seat : MonoBehaviour
         _seatUI.Initialize(this);
 
         _seatPoint.VisitorSet += OnVisitorSet;        
-        _inventory.NeedTextUpdate += UpdateBeerText;
+        _inventory.NeedTextUpdate += UpdateBeerText;        
     }    
 
     private void OnVisitorSet(TavernVisitor visitor)
@@ -43,13 +47,17 @@ public class Seat : MonoBehaviour
 
         if (_beerDisplayAmount == 0)
         {
-            Debug.Log("!!!!");
             _visitor.ChangeState(StateEvent.Drink);
-            StartCoroutine(_inventory.ResetBeer());
-        }
 
+            if (_beerReset != null)
+                StopCoroutine(_beerReset);
+
+            _beerReset = StartCoroutine(_inventory.ResetBeer());
+            InventoryFulling?.Invoke();
+        }
     }
 
+   
     public Vector3 GetPosition()
     {
         return _seatPoint.GetPosition();

@@ -7,14 +7,22 @@ public class Beer : MonoBehaviour, IProps
 {
     private TransformMover _mover = new TransformMover();
     private Transform _startPoint;
+    private Animator _animator;
   
     private float _moveSpeed;
-    private bool _isFirstAnimationPlaying;
+    
     
     public void Initilization(Transform parent, float moveSpeed, Animator animator)
     {
-        _moveSpeed =  moveSpeed;
         _startPoint = parent;
+        _moveSpeed =  moveSpeed;
+        _animator = animator;       
+    }
+
+    public void Reset()
+    {
+        transform.position = _startPoint.position;
+        AnimatorExtensions.Set(_animator, AnimatorParameters.ResetBeer);
     }
 
     public IEnumerator TryMoveTo(Point endPoint)
@@ -28,9 +36,4 @@ public class Beer : MonoBehaviour, IProps
         }
     }
 
-    public void Reset()
-    {
-        transform.position = _startPoint.position;
-        _isFirstAnimationPlaying = false;
-    }
 }

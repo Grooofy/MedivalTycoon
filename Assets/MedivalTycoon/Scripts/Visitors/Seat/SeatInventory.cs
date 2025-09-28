@@ -1,6 +1,4 @@
-﻿using Beers;
-using Characters;
-using Events;
+﻿using Characters;
 using MedivalTycoon;
 using Propses;
 using System;
@@ -22,13 +20,15 @@ namespace SeatSyst
         private int _amountPoint;
         private bool _isFull;
         private bool _isEmpty = false;
+        private float _resetDelay;
 
         public bool IsDrink { get; private set; }
 
-        public void Initialize(IPropsPool beerPool)
+        public void Initialize(IPropsPool beerPool, float resetDelay)
         {
             _resetBeerPoint = GetComponentInChildren<Point>();
             _beerPool = beerPool;
+            _resetDelay = resetDelay;
         }
 
         public void CreatePoints(int count, float offset, Vector3 spaceSize = new Vector3())
@@ -70,8 +70,8 @@ namespace SeatSyst
 
                 yield return WaitFor.TenthSecond;
             }
-        }        
-       
+        }
+
 
         public int GetEmptyPointsCount()
         {
@@ -88,23 +88,22 @@ namespace SeatSyst
 
         public IEnumerator ResetBeer()
         {
-            while (true)
+            while (_isEmpty == false)
             {
+                yield return WaitFor.Seconds(_resetDelay);
                 _pointsProps.TryPop(out var props);
+
                 if (props == null) break;
 
                 yield return props.TryMoveTo(_resetBeerPoint);
 
-                yield return WaitFor.Seconds(1);
-
-                _resetBeerPoint.Free();
                 _beerPool.Despawn(props);
+                _resetBeerPoint.Free();
                 _index--;
-                _points[_index].Free();
 
-                if (_index < 0)
+                if (_index <= 0)
                 {
-                    _index = 0;                    
+                    _index = 0;
                     _isEmpty = true;
                     ResetPoints();
                 }
@@ -115,7 +114,7 @@ namespace SeatSyst
         {
             foreach (var point in _points)
             {
-                point.Free();
+               point.Free();
             }
         }
 

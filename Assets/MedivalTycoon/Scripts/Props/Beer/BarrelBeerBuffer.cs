@@ -14,7 +14,7 @@ namespace Beers
         private Stack<IProps> _pointsProps = new Stack<IProps>();
         private SpawnerPoints _spawnerPoints = new SpawnerPoints();
         private Point _barrelFinishPoint;
-        private WaitForSeconds _delayBarrelReset;
+        private float _delayBarrelReset;
         private IPropsPool _barrelPool;
         private List<Point> _points;
         private int _index;
@@ -25,7 +25,7 @@ namespace Beers
         private string _sourceId;
 
 
-        public void Initialize(string sourceId, IPropsPool barrelPool, Point barrelFinishPoint, WaitForSeconds delayBarrelReset, int amountBeerToBarrel)
+        public void Initialize(string sourceId, IPropsPool barrelPool, Point barrelFinishPoint, float delayBarrelReset, int amountBeerToBarrel)
         {
             _sourceId = sourceId;
             _barrelPool = barrelPool;
@@ -102,7 +102,7 @@ namespace Beers
                 
                 yield return props.TryMoveTo(_barrelFinishPoint);
                 EventBus.Raise(new BeerCreated());
-                yield return _delayBarrelReset;
+                yield return WaitFor.Seconds(_delayBarrelReset);
                 
                 _barrelFinishPoint.Free();
                 _barrelPool.Despawn(props);

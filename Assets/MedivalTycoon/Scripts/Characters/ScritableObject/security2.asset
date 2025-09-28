@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4462d441f2ae44e2b28ea2b10d520472, type: 3}
   m_Name: security2
   m_EditorClassIdentifier: 
-  _speed: 1
+  _moveSpeed: 1
+  _rotateSpeed: 7
   _icon: {fileID: 1205385516, guid: 55bdbaeea32983a4ebed2f8d8e41627e, type: 3}
   _id: 1
   _numberWearableObjects: 1
