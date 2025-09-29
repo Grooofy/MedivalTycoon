@@ -41,7 +41,7 @@ public class SeatPoint : MonoBehaviour
                 if (hit.TryGetComponent(out TavernVisitor visitor))
                 {
                     _currentVisitor = visitor;
-                    _currentVisitor.ChangeState(StateEvent.Idle);
+                    _currentVisitor.ChangeState(StateEvent.Waite);
                     VisitorSet?.Invoke(_currentVisitor);
                 }
             }

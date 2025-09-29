@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Visitors
 {
@@ -7,7 +8,8 @@ namespace Visitors
         public Animator Animator { get; private set; }
         public int BeerAmount { get; private set; }
         private StateEvent _currentStateEvent;
-        private int _minBeerAmount = 1;
+        private WaitTimerUI _fiilImage;
+        private int _minBeerAmount = 3;
         private int _maxBeerAmount;
         private StateMachine _stateMachine;
         private float _speed;
@@ -17,11 +19,13 @@ namespace Visitors
         public void Initialize(float speed, int maxBeerAmount)
         {
             Animator = GetComponentInChildren<Animator>();
+            _fiilImage = GetComponentInChildren<WaitTimerUI>();
             _maxBeerAmount = maxBeerAmount;
             _speed = speed;
             _stateMachine = new StateMachine();
             _stateMachine.SetInitialState(new IdleState(this));
             AddTransitions();
+            //_fiilImage.Initialize();
         }
 
         public void SetRandomAmountBeer()
@@ -54,9 +58,8 @@ namespace Visitors
         private void AddTransitions()
         {
             _stateMachine.AddTransition<IdleState>(StateEvent.Move, () => new MoveState(this));
-            _stateMachine.AddTransition<MoveState>(StateEvent.Idle, () => new IdleState(this));
-            _stateMachine.AddTransition<MoveState>(StateEvent.Drink, () => new DrinkState(this));
-            _stateMachine.AddTransition<IdleState>(StateEvent.Drink, () => new DrinkState(this));
+            _stateMachine.AddTransition<MoveState>(StateEvent.Waite, () => new WaitWaiterState(this, _fiilImage));
+            _stateMachine.AddTransition<WaitWaiterState>(StateEvent.Drink, () => new DrinkState(this));
             _stateMachine.AddTransition<DrinkState>(StateEvent.Sleep, () => new SleepState(this));
         }
 

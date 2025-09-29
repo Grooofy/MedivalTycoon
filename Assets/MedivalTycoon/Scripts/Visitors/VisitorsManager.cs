@@ -21,6 +21,5 @@ namespace Visitors
         {
             _queueVisitor.UpdateState();
         }
-
     }
 }
