@@ -8,6 +8,7 @@ using Visitors;
 public class QueueVisitor : MonoBehaviour
 {
     [SerializeField] private VisitorsSpawner _visitorsSpawner;
+    [SerializeField] private Transform _exitPoint;
     
     private SeatAggregator _seatAggregator;
     private Queue<TavernVisitor> _guestQueue = new Queue<TavernVisitor>();
@@ -15,16 +16,18 @@ public class QueueVisitor : MonoBehaviour
     private int _numberOfObjects;     
     private float _spacing; 
     private float _speed;
+    private float _maxWaitTime;
     private int _maxBeerCount;
     private Vector3 _lineDirection = Vector3.right;
     private bool _isInitialized;
 
 
-    public void Initialize(int numberOfObjects, float spacing, float speed, int maxBeerCount)
+    public void Initialize(int numberOfObjects, float spacing, float speed, int maxBeerCount, float maxWaitTime)
     {
         _numberOfObjects = numberOfObjects;
         _spacing = spacing;
         _speed = speed;
+        _maxWaitTime = maxWaitTime;
         _maxBeerCount = maxBeerCount;
         _isInitialized = true;
         _seatAggregator =  new SeatAggregator();
@@ -41,7 +44,7 @@ public class QueueVisitor : MonoBehaviour
             var point = ObjectFactory.CreateObjectWithComponent<Point>($"Point {i}");
             point.transform.SetParent(transform);
             point.transform.position = spawnPosition;
-            var visitor = _visitorsSpawner.CreateVisitor(point.transform, _speed, _maxBeerCount);
+            var visitor = _visitorsSpawner.CreateVisitor(point.transform, _speed, _maxBeerCount, _maxWaitTime, _exitPoint.position);
             _guestQueue.Enqueue(visitor);
             _createdPoints.Add(point);
         }

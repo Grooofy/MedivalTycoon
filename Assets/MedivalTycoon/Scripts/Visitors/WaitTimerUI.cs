@@ -5,27 +5,30 @@ namespace Visitors
 {
     public class WaitTimerUI : MonoBehaviour
     {
-       [SerializeField] private Image _fillImage;         
+        [SerializeField] private Image _fillImage;
+       
+        private Camera _mainCamera;
 
         public void Initialize()
         {
-            _fillImage = GetComponentInChildren<Image>();
-        }      
+            _mainCamera = Camera.main;
+        }
 
         public void SetFill(float normalizedTime)
         {
-            if (_fillImage != null)
+            if (_mainCamera != null && _fillImage != null)
             {
-                _fillImage.fillAmount = normalizedTime; 
+                transform.LookAt(transform.position + _mainCamera.transform.rotation * Vector3.forward,
+                                 _mainCamera.transform.rotation * Vector3.up);
+
+                _fillImage.fillAmount = normalizedTime;
             }
         }
-       
+
         public void SetActive(bool active)
         {
-            Debug.Log("SETACTIVE_NOT");
             if (_fillImage != null)
             {
-                Debug.Log("SETACTIVE");
                 _fillImage.gameObject.SetActive(active);
             }
         }

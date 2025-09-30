@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
 namespace Visitors
 {
@@ -7,28 +6,31 @@ namespace Visitors
     {
         private TavernVisitor _tavernVisitor;
         private WaitTimerUI _waitTimerUI;
-        private float _maxWaitTime = 30f;
+        private Vector3 _exitPoint;
+        private float _maxWaitTime;
 
-        private float elapsed = 0f;
+        private float _elapsed;
+        private float _progress;
 
 
-        public WaitWaiterState(TavernVisitor tavernVisitor, WaitTimerUI image)
+        public WaitWaiterState(TavernVisitor tavernVisitor, WaitTimerUI image, float maxWaitTime, Vector3 exitPoint)
         {
+            _maxWaitTime = maxWaitTime;
             _waitTimerUI = image;
             _tavernVisitor = tavernVisitor;
+            _exitPoint = exitPoint;
+            _waitTimerUI.Initialize();
         }
 
         public void Enter()
         {
             AnimatorExtensions.Set(_tavernVisitor.Animator, AnimatorParameters.VisitorIdle);
             StartWaitingForOrder();
-            Debug.Log("START WAITE");
         }
 
         public void UpdateState()
         {
             WaitForOrderRoutine();
-            Debug.Log("WAITE");
         }
 
         public void Exit()
@@ -38,15 +40,20 @@ namespace Visitors
 
         private void WaitForOrderRoutine()
         {
+            _elapsed += Time.deltaTime;
 
-            elapsed += Time.deltaTime;
-            float progress = 1f - (elapsed / _maxWaitTime);
+             _progress = 1f - (_elapsed / _maxWaitTime);
 
             if (_waitTimerUI != null)
             {
-                _waitTimerUI.SetFill(progress);
+                _waitTimerUI.SetFill(_progress);
             }
-           
+
+            if(_progress <= 0)
+            {
+                _tavernVisitor.GoTo(_exitPoint);
+                _tavernVisitor.ChangeState(StateEvent.Move);
+            }
         }
 
         private void OnOrderDelivered()

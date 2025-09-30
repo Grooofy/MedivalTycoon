@@ -72,7 +72,6 @@ namespace SeatSyst
             }
         }
 
-
         public int GetEmptyPointsCount()
         {
             if (_points.Count == 0) return 0;
