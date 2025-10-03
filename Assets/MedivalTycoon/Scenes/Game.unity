@@ -10839,6 +10839,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 422065976}
+  - component: {fileID: 422065977}
   m_Layer: 0
   m_Name: ExitPoint
   m_TagString: Untagged
@@ -10855,12 +10856,24 @@ Transform:
   m_GameObject: {fileID: 422065975}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.71, y: 0.7026254, z: 0.21394855}
+  m_LocalPosition: {x: 3.17, y: 0.7026254, z: 0.21394855}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1070567732}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &422065977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 422065975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 543655ef80a0fd84c857a64eb7bf3e66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &423777859 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6841525593827895693, guid: 8be4dcaf6b4245341b59481c573c1ada, type: 3}
@@ -43139,7 +43152,7 @@ MonoBehaviour:
   _queueVisitor: {fileID: 1866957611}
   _spacing: 0.5
   _speed: 1
-  _maxWaitTime: 40
+  _maxWaitTime: 20
   _maxBeerCount: 10
 --- !u!4 &1402639840
 Transform:
@@ -56707,7 +56720,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _visitorsSpawner: {fileID: 361554733}
-  _exitPoint: {fileID: 422065976}
+  _exitPoint: {fileID: 422065977}
+  _visitorsLayer:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!4 &1866957612
 Transform:
   m_ObjectHideFlags: 0

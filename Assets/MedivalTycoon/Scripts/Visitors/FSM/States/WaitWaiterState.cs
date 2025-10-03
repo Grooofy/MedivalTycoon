@@ -52,7 +52,6 @@ namespace Visitors
             if(_progress <= 0)
             {
                 _tavernVisitor.GoTo(_exitPoint);
-                _tavernVisitor.ChangeState(StateEvent.Move);
             }
         }
 

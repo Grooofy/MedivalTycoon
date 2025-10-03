@@ -8,7 +8,8 @@ using Visitors;
 public class QueueVisitor : MonoBehaviour
 {
     [SerializeField] private VisitorsSpawner _visitorsSpawner;
-    [SerializeField] private Transform _exitPoint;
+    [SerializeField] private ExitPoint _exitPoint;
+    [SerializeField] private LayerMask _visitorsLayer;
     
     private SeatAggregator _seatAggregator;
     private Queue<TavernVisitor> _guestQueue = new Queue<TavernVisitor>();
@@ -29,6 +30,7 @@ public class QueueVisitor : MonoBehaviour
         _speed = speed;
         _maxWaitTime = maxWaitTime;
         _maxBeerCount = maxBeerCount;
+        _exitPoint.Initialize(_visitorsLayer);
         _isInitialized = true;
         _seatAggregator =  new SeatAggregator();
         EventBus.Subscribe<SeatFreed>(OnSeatFreed);
@@ -44,7 +46,7 @@ public class QueueVisitor : MonoBehaviour
             var point = ObjectFactory.CreateObjectWithComponent<Point>($"Point {i}");
             point.transform.SetParent(transform);
             point.transform.position = spawnPosition;
-            var visitor = _visitorsSpawner.CreateVisitor(point.transform, _speed, _maxBeerCount, _maxWaitTime, _exitPoint.position);
+            var visitor = _visitorsSpawner.CreateVisitor(point.transform, _speed, _maxBeerCount, _maxWaitTime, _exitPoint.GetPosition());
             _guestQueue.Enqueue(visitor);
             _createdPoints.Add(point);
         }
@@ -53,6 +55,7 @@ public class QueueVisitor : MonoBehaviour
     public void UpdateState()
     {
         _visitorsSpawner.UpdateState();
+        _exitPoint.CheckHits();
     }
 
     private void OnSeatFreed(SeatFreed _)

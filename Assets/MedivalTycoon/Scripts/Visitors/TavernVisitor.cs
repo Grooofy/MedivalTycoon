@@ -1,5 +1,5 @@
+using System;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Visitors
 {
@@ -7,7 +7,8 @@ namespace Visitors
     {
         public Animator Animator { get; private set; }
         public int BeerAmount { get; private set; }
-
+        public Action LeavingTavern;
+        private StateEvent _previousStateEvent;
         private StateEvent _currentStateEvent;
         private WaitTimerUI _fiilImage;
         private Vector3 _finishPosition;
@@ -18,8 +19,6 @@ namespace Visitors
         private float _speed;
         private float _maxWaitTime;
         private bool _isMoving;
-
-
 
         public void Initialize(float speed, int maxBeerAmount, float maxWaitTime, Vector3 exitPoint)
         {
@@ -36,7 +35,7 @@ namespace Visitors
 
         public void SetRandomAmountBeer()
         {
-            BeerAmount = Random.Range(_minBeerAmount, _maxBeerAmount);
+            BeerAmount = UnityEngine.Random.Range(_minBeerAmount, _maxBeerAmount);
         }
 
         public void GoTo(Vector3 position)
@@ -64,7 +63,7 @@ namespace Visitors
         private void AddTransitions()
         {
             _stateMachine.AddTransition<IdleState>(StateEvent.Move, () => new MoveState(this));
-            _stateMachine.AddTransition<MoveState>(StateEvent.Waite, () => new WaitWaiterState(this, _fiilImage, _maxWaitTime, _exitPoint));
+            _stateMachine.AddTransition<MoveState>(StateEvent.Wait, () => new WaitWaiterState(this, _fiilImage, _maxWaitTime, _exitPoint));
             _stateMachine.AddTransition<WaitWaiterState>(StateEvent.Move, () => new MoveState(this));
             _stateMachine.AddTransition<WaitWaiterState>(StateEvent.Drink, () => new DrinkState(this));
             _stateMachine.AddTransition<DrinkState>(StateEvent.Sleep, () => new SleepState(this));
@@ -79,8 +78,12 @@ namespace Visitors
         {
             if (_currentStateEvent == stateEvent) return;
 
+            _previousStateEvent = _currentStateEvent;
             _currentStateEvent = stateEvent;
             _stateMachine.ChangeState(_currentStateEvent);
+
+            if (_currentStateEvent == StateEvent.Move && _previousStateEvent == StateEvent.Wait)
+                LeavingTavern?.Invoke();
         }
     }
 }

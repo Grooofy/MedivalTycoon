@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using Events;
 
 public class VisitorsUI : MonoBehaviour
 {
@@ -12,12 +13,17 @@ public class VisitorsUI : MonoBehaviour
     {
         _visitorsAmount = loadingGameSettings.GetVisitors();
         _visitorsText = GetComponentInChildren<TextMeshProUGUI>();
-        
-        ShowTextVisitors();//Временно, пока не обновлен обработчик гостей
+        ShowTextVisitors();
+        EventBus.Subscribe<VisitorLeaveTavern>(UpdateTextVisitors);
     }
 
     private void ShowTextVisitors()
     {
         _visitorsText.text = _visitorsAmount.ToString();
+    }
+
+    private void UpdateTextVisitors(VisitorLeaveTavern visitorLeaveTavern)
+    {
+        _visitorsText.text = (_visitorsAmount -= 1).ToString();
     }
 }

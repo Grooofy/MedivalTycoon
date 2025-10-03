@@ -7,7 +7,7 @@ namespace Visitors
     {
         Idle,
         Move,
-        Waite,
+        Wait,
         Drink,
         Sleep
     }

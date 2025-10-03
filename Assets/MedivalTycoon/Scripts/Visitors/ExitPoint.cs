@@ -5,9 +5,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Visitors;
 
-public class SeatPoint : MonoBehaviour
+public class ExitPoint : MonoBehaviour
 {
-    public Action<TavernVisitor> VisitorSet;
     private LayerMask _visitorsLayer;
     private TavernVisitor _currentVisitor;
     private float _detectionRadius = 0.05f;
@@ -23,8 +22,9 @@ public class SeatPoint : MonoBehaviour
 
     public Vector3 GetPosition()
     {
-        return transform.position + transform.localPosition;
+        return transform.position;
     }
+
 
     public void CheckHits()
     {
@@ -39,10 +39,10 @@ public class SeatPoint : MonoBehaviour
                 if (_hasGiven) break;
 
                 if (hit.TryGetComponent(out TavernVisitor visitor))
-                {
+                {          
                     _currentVisitor = visitor;
-                    _currentVisitor.ChangeState(StateEvent.Wait);
-                    VisitorSet?.Invoke(_currentVisitor);
+                   _currentVisitor.gameObject.SetActive(false);
+                    EventBus.Raise(new VisitorLeaveTavern());
                 }
             }
         }

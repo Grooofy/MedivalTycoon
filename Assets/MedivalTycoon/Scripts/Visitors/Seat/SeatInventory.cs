@@ -43,6 +43,14 @@ namespace SeatSyst
             _amountPoint = _points.Count;
         }
 
+        public void DeletePoints()
+        {
+            foreach(var point in _points)
+                Destroy(point);
+
+            _amountPoint = _points.Count;
+        }
+
         public void RegisterProps(Stack<IProps> props)
         {
             if (props == null || props.Count == 0) return;
