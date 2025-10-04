@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Events;
+using System.Collections;
 using UnityEngine;
 
 namespace Tables
@@ -17,15 +18,15 @@ namespace Tables
             _buildParticles = GetComponentInChildren<ParticleSystem>();
         }
 
-        public void Play(Table table)
+        public void Play(Table table, Seat seat)
         {
             if (_animationRoutine != null)
                 StopCoroutine(_animationRoutine);
 
-            _animationRoutine = StartCoroutine(AnimateBuild(table));
+            _animationRoutine = StartCoroutine(AnimateBuild(table, seat));
         }
 
-        private IEnumerator AnimateBuild(Table table)
+        private IEnumerator AnimateBuild(Table table, Seat seat)
         {
             float elapsed = 0f;
 
@@ -43,6 +44,7 @@ namespace Tables
             }
 
             table.transform.localScale = _initialScale;
+            EventBus.Raise(new SeatFreed(seat));
         }
     }
 }

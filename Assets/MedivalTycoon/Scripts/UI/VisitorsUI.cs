@@ -26,4 +26,9 @@ public class VisitorsUI : MonoBehaviour
     {
         _visitorsText.text = (_visitorsAmount -= 1).ToString();
     }
+
+    private void OnDestroy()
+    {
+        EventBus.Unsubscribe<VisitorLeaveTavern>(UpdateTextVisitors);
+    }
 }

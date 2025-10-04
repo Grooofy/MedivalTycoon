@@ -45,7 +45,7 @@ public class TableTrigger : MonoBehaviour
         }
     }
 
-    private void EnableCollider()
+    private void EnableCollider(Seat seat)
     {
         _isBuild = true;
     }

@@ -10,20 +10,22 @@ public class SeatPoint : MonoBehaviour
     public Action<TavernVisitor> VisitorSet;
     private LayerMask _visitorsLayer;
     private TavernVisitor _currentVisitor;
+    private Seat _seat;
     private float _detectionRadius = 0.05f;
     private bool _hasGiven = false;
     private bool _isInitialize;
 
 
-    public void Initialize(LayerMask visitorMask)
+    public void Initialize(LayerMask visitorMask, Seat seat)
     {
         _visitorsLayer = visitorMask;
+        _seat = seat;
         _isInitialize = true;
     }
 
     public Vector3 GetPosition()
     {
-        return transform.position + transform.localPosition;
+        return transform.position;
     }
 
     public void CheckHits()
@@ -42,7 +44,7 @@ public class SeatPoint : MonoBehaviour
                 {
                     _currentVisitor = visitor;
                     _currentVisitor.ChangeState(StateEvent.Wait);
-                    VisitorSet?.Invoke(_currentVisitor);
+                    _seat.OnVisitorSet(_currentVisitor);
                 }
             }
         }

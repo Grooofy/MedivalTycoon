@@ -31,10 +31,10 @@ namespace Tables
             _slider.value = _slider.maxValue - price;
         }
 
-        private void OnBuilt()
+        private void OnBuilt(Seat seat = null)
         {
             gameObject.SetActive(false);
-            _tableBuilder.Play(_table);
+            _tableBuilder.Play(_table, seat);
         }
 
         private void OnDestroy()

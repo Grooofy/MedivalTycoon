@@ -14,7 +14,7 @@ namespace Tables
         [SerializeField] private LayerMask _visitorLayer;
         [SerializeField] private float _resetDelay;
         public event UnityAction<int> PriceChanged;
-        public event UnityAction LinedUp;
+        public event UnityAction<Seat> LinedUp;
         public bool IsBuilt => Price <= 0;
         public int Price { get; private set; }
 
@@ -73,11 +73,10 @@ namespace Tables
 
             if (Price <= 0)
             {
-                LinedUp?.Invoke();
                 _isBuilding = true;
                 _isTakeEnable = true;
                 EventBus.Raise(new TableBuilt(_seat));
-                EventBus.Raise(new SeatFreed(_seat));
+                LinedUp?.Invoke(_seat);
             }
         }
 

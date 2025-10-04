@@ -16,6 +16,7 @@ public class Seat : MonoBehaviour
     private int _beerDisplayAmount;
     private Coroutine _beerReset;
     private bool _isEmpty;
+    
 
     public void Initialize(LayerMask visitorMask, SeatInventory seatInventory, IPropsPool beerPool, float resetDelay)
     {
@@ -25,14 +26,14 @@ public class Seat : MonoBehaviour
         _seatPoint = GetComponentInChildren<SeatPoint>();
         _seatUI = GetComponentInChildren<SeatUI>();
 
-        _seatPoint.Initialize(visitorMask);
+        _seatPoint.Initialize(visitorMask, this);
         _seatUI.Initialize(this);
+        
+        _inventory.NeedTextUpdate += UpdateBeerCount;
+    } 
+    
 
-        _seatPoint.VisitorSet += OnVisitorSet;        
-        _inventory.NeedTextUpdate += UpdateBeerCount;        
-    }    
-
-    private void OnVisitorSet(TavernVisitor visitor)
+    public void OnVisitorSet(TavernVisitor visitor)
     {
         if (_visitor != null) return;
         _visitor = visitor;
@@ -40,6 +41,7 @@ public class Seat : MonoBehaviour
         _beerDisplayAmount = _visitor.BeerAmount;
         _inventory.CreatePoints(_beerDisplayAmount, _pointDistance);
         _seatUI.UpdateBeerDisplay(_beerDisplayAmount);
+        EventBus.Subscribe<VisitorLeaveTavern>(OpenSeat);
         _isEmpty = true;
     }
 
@@ -63,18 +65,23 @@ public class Seat : MonoBehaviour
     private void OpenSeat(VisitorLeaveTavern visitor)
     {
         _isEmpty = false;
+        _visitor = null;
+        EventBus.Raise<SeatFreed>(new SeatFreed(this));
+        EventBus.Unsubscribe<VisitorLeaveTavern>(OpenSeat);
     }
 
     private void LeaveTavern()
     {
         _seatUI.UpdateBeerDisplay(0);
-        _inventory.DeletePoints();
-        _visitor.LeavingTavern -= LeaveTavern;
+        _inventory.DeletePoints();                
     }
 
    
     public Vector3 GetPosition()
     {
+        if(_visitor != null)
+            _visitor.LeavingTavern -= LeaveTavern;
+
         return _seatPoint.GetPosition();
     }
 
@@ -88,8 +95,8 @@ public class Seat : MonoBehaviour
     {
         if (_seatPoint != null && _inventory != null)
         {
-            _inventory.NeedTextUpdate -= UpdateBeerCount;
             _seatPoint.VisitorSet -= OnVisitorSet;
+            _inventory.NeedTextUpdate -= UpdateBeerCount;
         }
 
     }
