@@ -42,6 +42,8 @@ public class SeatPoint : MonoBehaviour
 
                 if (hit.TryGetComponent(out TavernVisitor visitor))
                 {
+                    if (visitor.IsTrigger == false) break;
+
                     _currentVisitor = visitor;
                     _currentVisitor.ChangeState(StateEvent.Wait);
                     _seat.OnVisitorSet(_currentVisitor);

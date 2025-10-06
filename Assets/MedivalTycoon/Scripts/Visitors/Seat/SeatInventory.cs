@@ -4,6 +4,7 @@ using Propses;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 namespace SeatSyst
@@ -38,6 +39,7 @@ namespace SeatSyst
                 var point = ObjectFactory.CreateObjectWithComponent<Point>("Point_" + i);
                 point.transform.parent = transform;
                 point.transform.localPosition = Vector3.up * (i * offset);
+                point.Free();   
                 _points.Add(point);
             }
             _amountPoint = _points.Count;
@@ -45,10 +47,10 @@ namespace SeatSyst
 
         public void DeletePoints()
         {
-            foreach(var point in _points)
-                Destroy(point);
+            foreach (var point in _points)
+                Destroy(point.gameObject);
 
-            _amountPoint = _points.Count;
+            ResetProps();
         }
 
         public void RegisterProps(Stack<IProps> props)
@@ -123,6 +125,15 @@ namespace SeatSyst
             {
                point.Free();
             }
+        }
+
+        private void ResetProps()
+        {
+            _pointsProps.Clear();
+            _props.Clear();
+            _index = 0;
+            _points.Clear();
+            _amountPoint = _points.Count;
         }
 
         public Stack<IProps> GetTo(int amount)

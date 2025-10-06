@@ -35,7 +35,7 @@ public class Seat : MonoBehaviour
 
     public void OnVisitorSet(TavernVisitor visitor)
     {
-        if (_visitor != null) return;
+        if (_visitor != null) return;        
         _visitor = visitor;
         _visitor.LeavingTavern += LeaveTavern;
         _beerDisplayAmount = _visitor.BeerAmount;
@@ -64,9 +64,12 @@ public class Seat : MonoBehaviour
 
     private void OpenSeat(VisitorLeaveTavern visitor)
     {
+        if (_visitor != null)
+            _visitor.LeavingTavern -= LeaveTavern;
+        
         _isEmpty = false;
         _visitor = null;
-        EventBus.Raise<SeatFreed>(new SeatFreed(this));
+        EventBus.Raise(new SeatFreed(this));
         EventBus.Unsubscribe<VisitorLeaveTavern>(OpenSeat);
     }
 
@@ -78,10 +81,7 @@ public class Seat : MonoBehaviour
 
    
     public Vector3 GetPosition()
-    {
-        if(_visitor != null)
-            _visitor.LeavingTavern -= LeaveTavern;
-
+    {  
         return _seatPoint.GetPosition();
     }
 

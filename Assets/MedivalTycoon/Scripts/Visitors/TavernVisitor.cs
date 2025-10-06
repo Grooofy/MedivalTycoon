@@ -7,6 +7,7 @@ namespace Visitors
     {
         public Animator Animator { get; private set; }
         public int BeerAmount { get; private set; }
+        public bool IsTrigger = true;
         public Action LeavingTavern;
         private StateEvent _previousStateEvent;
         private StateEvent _currentStateEvent;
