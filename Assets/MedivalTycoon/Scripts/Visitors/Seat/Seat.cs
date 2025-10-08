@@ -30,6 +30,7 @@ public class Seat : MonoBehaviour
         _seatUI.Initialize(this);
         
         _inventory.NeedTextUpdate += UpdateBeerCount;
+        _inventory.BeersEnded += SwitchVisitorSleep;
     } 
     
 
@@ -73,6 +74,12 @@ public class Seat : MonoBehaviour
         EventBus.Unsubscribe<VisitorLeaveTavern>(OpenSeat);
     }
 
+    private void SwitchVisitorSleep()
+    {
+        _visitor.ChangeState(StateEvent.Sleep);
+    }
+
+
     private void LeaveTavern()
     {
         _seatUI.UpdateBeerDisplay(0);
@@ -97,6 +104,7 @@ public class Seat : MonoBehaviour
         {
             _seatPoint.VisitorSet -= OnVisitorSet;
             _inventory.NeedTextUpdate -= UpdateBeerCount;
+            _inventory.BeersEnded -= SwitchVisitorSleep;
         }
 
     }

@@ -4,7 +4,6 @@ using Propses;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
 
 namespace SeatSyst
@@ -12,6 +11,7 @@ namespace SeatSyst
     public class SeatInventory : MonoBehaviour, IPropsMover
     {
         public Action<int> NeedTextUpdate;
+        public Action BeersEnded;
         private Stack<IProps> _props = new Stack<IProps>();
         private Stack<IProps> _pointsProps = new Stack<IProps>();
         private List<Point> _points = new List<Point>();
@@ -112,6 +112,7 @@ namespace SeatSyst
 
                 if (_index <= 0)
                 {
+                    BeersEnded?.Invoke();
                     _index = 0;
                     _isEmpty = true;
                     ResetPoints();
