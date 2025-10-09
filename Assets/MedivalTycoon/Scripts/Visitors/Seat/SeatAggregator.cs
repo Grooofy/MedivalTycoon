@@ -13,8 +13,8 @@ public class SeatAggregator
     public SeatAggregator()
     {
         EventBus.Subscribe<TableBuilt>(OnTableBuilt);
-        EventBus.Subscribe<SeatTaken>(OnSeatTaken);
         EventBus.Subscribe<SeatFreed>(OnSeatFreed);
+        EventBus.Subscribe<SeatTaken>(OnSeatTaken);
     }
 
     private void OnTableBuilt(TableBuilt tableEvent)

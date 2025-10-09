@@ -10,17 +10,19 @@ public class QueueVisitor : MonoBehaviour
     [SerializeField] private VisitorsSpawner _visitorsSpawner;
     [SerializeField] private ExitPoint _exitPoint;
     [SerializeField] private LayerMask _visitorsLayer;
-    
-    private SeatAggregator _seatAggregator;
+
+    private SeatAggregator _seatAggregator = new SeatAggregator();
     private Queue<TavernVisitor> _guestQueue = new Queue<TavernVisitor>();
     private List<Point> _createdPoints = new List<Point>();
-    private int _numberOfObjects;     
-    private float _spacing; 
+    private int _numberOfObjects;
+    private float _spacing;
     private float _speed;
     private float _maxWaitTime;
     private int _maxBeerCount;
     private Vector3 _lineDirection = Vector3.right;
     private bool _isInitialized;
+    private TavernVisitor _currentVisitor;
+
 
 
     public void Initialize(int numberOfObjects, float spacing, float speed, int maxBeerCount, float maxWaitTime)
@@ -32,14 +34,13 @@ public class QueueVisitor : MonoBehaviour
         _maxBeerCount = maxBeerCount;
         _exitPoint.Initialize(_visitorsLayer);
         _isInitialized = true;
-        _seatAggregator =  new SeatAggregator();
         EventBus.Subscribe<SeatFreed>(OnSeatFreed);
     }
-    
+
     public void SpawnVisitorsInLine(Vector3 startPosition)
     {
         if (_isInitialized == false) return;
-        
+
         for (int i = 0; i < _numberOfObjects; i++)
         {
             Vector3 spawnPosition = startPosition + _lineDirection.normalized * (_spacing * i);
@@ -51,16 +52,17 @@ public class QueueVisitor : MonoBehaviour
             _createdPoints.Add(point);
         }
     }
-    
+
     public void UpdateState()
     {
         _visitorsSpawner.UpdateState();
         _exitPoint.CheckHits();
     }
 
-    private void OnSeatFreed(SeatFreed _)
+    private void OnSeatFreed(SeatFreed seatFreed)
     {
-        TryAssignSeats();
+        TryAssignSeats(seatFreed.Seat);
+
         MoveQueue();
     }
 
@@ -68,14 +70,14 @@ public class QueueVisitor : MonoBehaviour
     {
         if (_guestQueue.Count == 0) return;
 
-       
+
         var visitors = new List<TavernVisitor>(_guestQueue);
 
         for (int i = 0; i < visitors.Count; i++)
         {
             var visitor = visitors[i];
             Vector3 targetPosition = _createdPoints[i].transform.position;
-            
+
             StartCoroutine(MoveToPosition(visitor, targetPosition));
         }
     }
@@ -95,18 +97,19 @@ public class QueueVisitor : MonoBehaviour
         visitor.transform.position = targetPosition;
     }
 
-    private void TryAssignSeats()
+    private void TryAssignSeats(Seat seat)
     {
-        while (_guestQueue.Count > 0 && _seatAggregator.FreeSeats.Count > 0)
+        if (_seatAggregator.FreeSeats.Count == 0) return;
+
+        if (_guestQueue.TryPeek(out _currentVisitor))
         {
-            if (_seatAggregator.TryGetFreeSeat(out var seat))
-            {
-                var visitor = _guestQueue.Dequeue();
-                visitor.GoTo(seat.GetPosition());
-                EventBus.Raise(new SeatTaken(seat));
-            }
+            _currentVisitor.GoTo(seat.GetPosition());
+            EventBus.Raise(new SeatTaken(seat));
+            _guestQueue.Dequeue();
         }
+
     }
+
 
 
     private void OnDestroy()

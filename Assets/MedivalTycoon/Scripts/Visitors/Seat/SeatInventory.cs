@@ -65,7 +65,7 @@ namespace SeatSyst
         {
             while (_isFull == false && _props.Count > 0)
             {
-                if (_index >= _amountPoint) break;
+                if (_index == _amountPoint) break;
 
                 if (_props.TryPop(out var prop))
                 {
@@ -75,7 +75,7 @@ namespace SeatSyst
                     NeedTextUpdate?.Invoke(1);
                 }
 
-                if (_index >= _amountPoint)
+                if (_index == _amountPoint)
                     _isFull = true;
 
                 yield return WaitFor.TenthSecond;

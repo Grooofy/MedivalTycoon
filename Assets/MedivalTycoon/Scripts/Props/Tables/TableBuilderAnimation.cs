@@ -37,8 +37,8 @@ namespace Tables
                     _buildParticles.Play();
                 }
 
-                float t = elapsed / _buildDuration;
-                table.transform.localScale = Vector3.Lerp(Vector3.zero, _initialScale, t);
+                float time = elapsed / _buildDuration;
+                table.transform.localScale = Vector3.Lerp(Vector3.zero, _initialScale, time);
                 elapsed += Time.deltaTime;
                 yield return null;
             }

@@ -1,13 +1,10 @@
 using Events;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Visitors;
 
 public class SeatPoint : MonoBehaviour
-{
-    public Action<TavernVisitor> VisitorSet;
+{   
     private LayerMask _visitorsLayer;
     private TavernVisitor _currentVisitor;
     private Seat _seat;
@@ -46,7 +43,7 @@ public class SeatPoint : MonoBehaviour
 
                     _currentVisitor = visitor;
                     _currentVisitor.ChangeState(StateEvent.Wait);
-                    _seat.OnVisitorSet(_currentVisitor);
+                    _seat.VisitorSet(_currentVisitor);
                 }
             }
         }

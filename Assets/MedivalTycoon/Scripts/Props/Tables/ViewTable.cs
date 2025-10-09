@@ -31,7 +31,7 @@ namespace Tables
             _slider.value = _slider.maxValue - price;
         }
 
-        private void OnBuilt(Seat seat = null)
+        private void OnBuilt(Seat seat)
         {
             gameObject.SetActive(false);
             _tableBuilder.Play(_table, seat);

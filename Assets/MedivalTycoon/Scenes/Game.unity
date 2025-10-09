@@ -10856,7 +10856,7 @@ Transform:
   m_GameObject: {fileID: 422065975}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.17, y: 0.7026254, z: 0.21394855}
+  m_LocalPosition: {x: -1, y: 0.7026254, z: -0.28}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -43152,7 +43152,7 @@ MonoBehaviour:
   _queueVisitor: {fileID: 1866957611}
   _spacing: 0.5
   _speed: 1
-  _maxWaitTime: 15
+  _maxWaitTime: 3
   _maxBeerCount: 10
 --- !u!4 &1402639840
 Transform:

@@ -15,7 +15,7 @@ public class Seat : MonoBehaviour
     private float _pointDistance = 0.1f;
     private int _beerDisplayAmount;
     private Coroutine _beerReset;
-    private bool _isEmpty;
+    private bool _isEmpty = true;
     
 
     public void Initialize(LayerMask visitorMask, SeatInventory seatInventory, IPropsPool beerPool, float resetDelay)
@@ -34,16 +34,15 @@ public class Seat : MonoBehaviour
     } 
     
 
-    public void OnVisitorSet(TavernVisitor visitor)
+    public void VisitorSet(TavernVisitor visitor)
     {
-        if (_visitor != null) return;        
         _visitor = visitor;
         _visitor.LeavingTavern += LeaveTavern;
         _beerDisplayAmount = _visitor.BeerAmount;
         _inventory.CreatePoints(_beerDisplayAmount, _pointDistance);
-        _seatUI.UpdateBeerDisplay(_beerDisplayAmount);
-        EventBus.Subscribe<VisitorLeaveTavern>(OpenSeat);
-        _isEmpty = true;
+        _seatUI.UpdateBeerDisplay(_beerDisplayAmount);        
+        EventBus.Subscribe<VisitorLeaveTavern>(OnVisitorLeftTavern);
+        _isEmpty = false;
     }
 
     private void UpdateBeerCount(int count)
@@ -63,15 +62,15 @@ public class Seat : MonoBehaviour
         }
     }
 
-    private void OpenSeat(VisitorLeaveTavern visitor)
+    private void OnVisitorLeftTavern(VisitorLeaveTavern visitor)
     {
         if (_visitor != null)
             _visitor.LeavingTavern -= LeaveTavern;
-        
-        _isEmpty = false;
-        _visitor = null;
+
         EventBus.Raise(new SeatFreed(this));
-        EventBus.Unsubscribe<VisitorLeaveTavern>(OpenSeat);
+        _isEmpty = true;
+        _visitor = null;
+        EventBus.Unsubscribe<VisitorLeaveTavern>(OnVisitorLeftTavern);
     }
 
     private void SwitchVisitorSleep()
@@ -94,7 +93,7 @@ public class Seat : MonoBehaviour
 
     public void CheckHits()
     {
-        if(_isEmpty == false)
+        if(_isEmpty)
             _seatPoint?.CheckHits();
     }
 
@@ -102,10 +101,8 @@ public class Seat : MonoBehaviour
     {
         if (_seatPoint != null && _inventory != null)
         {
-            _seatPoint.VisitorSet -= OnVisitorSet;
             _inventory.NeedTextUpdate -= UpdateBeerCount;
             _inventory.BeersEnded -= SwitchVisitorSleep;
         }
-
     }
 }
