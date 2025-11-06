@@ -12,6 +12,7 @@ namespace Tables
 
         private Vector3 _initialScale = new Vector3(1f, 1f, 1f);
         private Coroutine _animationRoutine;
+        private bool _isBuilding;
 
         public void Initialize()
         {
@@ -19,7 +20,10 @@ namespace Tables
         }
 
         public void Play(Table table, Seat seat)
-        {
+        {  
+            if (_isBuilding) return; 
+
+            _isBuilding = true;
             if (_animationRoutine != null)
                 StopCoroutine(_animationRoutine);
 
@@ -44,7 +48,7 @@ namespace Tables
             }
 
             table.transform.localScale = _initialScale;
-            EventBus.Raise(new SeatFreed(seat));
+            EventBus.Raise(new TableBuilt(seat));
         }
     }
 }

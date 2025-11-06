@@ -70,11 +70,10 @@ namespace Tables
             Price = Mathf.Max(Price - step, 0);
             PriceChanged?.Invoke(Price);
 
-            if (Price <= 0)
+            if (Price <= 0 && !_isBuilding) 
             {
                 _isBuilding = true;
                 _isTakeEnable = true;
-                EventBus.Raise(new TableBuilt(_seat));
                 LinedUp?.Invoke(_seat);
             }
         }

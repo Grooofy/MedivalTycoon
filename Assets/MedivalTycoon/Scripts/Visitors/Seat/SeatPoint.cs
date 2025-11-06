@@ -35,7 +35,7 @@ public class SeatPoint : MonoBehaviour
         {
             foreach (var hit in hits)
             {
-                if (_hasGiven) break;
+                if (_hasGiven) break; 
 
                 if (hit.TryGetComponent(out TavernVisitor visitor))
                 {
@@ -44,6 +44,8 @@ public class SeatPoint : MonoBehaviour
                     _currentVisitor = visitor;
                     _currentVisitor.ChangeState(StateEvent.Wait);
                     _seat.VisitorSet(_currentVisitor);
+
+                    _hasGiven = true; 
                 }
             }
         }

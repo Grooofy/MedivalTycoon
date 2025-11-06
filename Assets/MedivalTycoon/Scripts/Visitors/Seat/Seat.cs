@@ -2,6 +2,7 @@
 using MedivalTycoon;
 using SeatSyst;
 using System;
+using System.Collections;
 using UnityEngine;
 using Visitors;
 
@@ -36,6 +37,7 @@ public class Seat : MonoBehaviour
 
     public void VisitorSet(TavernVisitor visitor)
     {
+        Debug.Log($"[Seat] {name} - посетитель {visitor.name} сел.");
         _visitor = visitor;
         _visitor.LeavingTavern += LeaveTavern;
         _beerDisplayAmount = _visitor.BeerAmount;
@@ -65,12 +67,32 @@ public class Seat : MonoBehaviour
     private void OnVisitorLeftTavern(VisitorLeaveTavern visitor)
     {
         if (_visitor != null)
+        {
             _visitor.LeavingTavern -= LeaveTavern;
+        }
+       
+        StartCoroutine(DelayedSeatFreed());
 
-        EventBus.Raise(new SeatFreed(this));
         _isEmpty = true;
         _visitor = null;
         EventBus.Unsubscribe<VisitorLeaveTavern>(OnVisitorLeftTavern);
+    }
+
+    private IEnumerator DelayedSeatFreed()
+    {
+        // Ждём немного, чтобы гость "успел уйти"
+        yield return new WaitForSeconds(0.2f); // <-- Настрой под себя: 0.1f, 0.3f и т.д.
+
+        // Проверяем, что место всё ещё "свободно" (т.е. никто новый не сел)
+        if (_isEmpty)
+        {
+            // Только теперь уведомляем систему, что место действительно свободно
+            EventBus.Raise(new SeatFreed(this));
+        }
+        else
+        {
+            Debug.LogWarning($"[Seat] Место {_seatPoint?.name ?? "unknown"} стало занято до отправки SeatFreed. Пропускаем.");
+        }
     }
 
     private void SwitchVisitorSleep()

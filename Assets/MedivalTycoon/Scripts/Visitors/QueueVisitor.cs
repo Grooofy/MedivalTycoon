@@ -2,6 +2,7 @@
 using Events;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Visitors;
 
@@ -11,7 +12,7 @@ public class QueueVisitor : MonoBehaviour
     [SerializeField] private ExitPoint _exitPoint;
     [SerializeField] private LayerMask _visitorsLayer;
 
-    private SeatAggregator _seatAggregator = new SeatAggregator();
+    private SeatAggregator _seatAggregator;
     private Queue<TavernVisitor> _guestQueue = new Queue<TavernVisitor>();
     private List<Point> _createdPoints = new List<Point>();
     private int _numberOfObjects;
@@ -27,6 +28,7 @@ public class QueueVisitor : MonoBehaviour
 
     public void Initialize(int numberOfObjects, float spacing, float speed, int maxBeerCount, float maxWaitTime)
     {
+        _seatAggregator = SeatAggregator.Instance;
         _numberOfObjects = numberOfObjects;
         _spacing = spacing;
         _speed = speed;
@@ -35,6 +37,7 @@ public class QueueVisitor : MonoBehaviour
         _exitPoint.Initialize(_visitorsLayer);
         _isInitialized = true;
         EventBus.Subscribe<SeatFreed>(OnSeatFreed);
+        EventBus.Subscribe<TableBuilt>(OnTableBuilt);
     }
 
     public void SpawnVisitorsInLine(Vector3 startPosition)
@@ -61,14 +64,29 @@ public class QueueVisitor : MonoBehaviour
 
     private void OnSeatFreed(SeatFreed seatFreed)
     {
-        TryAssignSeats(seatFreed.Seat);
+        Debug.Log($"[QueueVisitor] Получено событие SeatFreed для места {seatFreed.Seat.name}, Instance ID: {seatFreed.Seat.GetInstanceID()}");
+
+        if (_seatAggregator.FreeSeats.Contains(seatFreed.Seat))
+        {
+            Debug.Log($"[QueueVisitor] Место {seatFreed.Seat.name} свободно. Отправляем гостя.");
+            TryAssignSpecificSeat(seatFreed.Seat);
+        }
+        else
+        {
+            Debug.LogWarning($"[QueueVisitor] Место {seatFreed.Seat.name} уже занято. Пропускаем.");
+        }
 
         MoveQueue();
     }
 
+    private void OnTableBuilt(TableBuilt tableBuilt)
+    {
+        TryAssignSpecificSeat(tableBuilt.SeatPoint);
+    }   
+
     private void MoveQueue()
     {
-        if (_guestQueue.Count == 0) return;
+       if (_guestQueue.Count == 0) return;
 
 
         var visitors = new List<TavernVisitor>(_guestQueue);
@@ -97,24 +115,43 @@ public class QueueVisitor : MonoBehaviour
         visitor.transform.position = targetPosition;
     }
 
-    private void TryAssignSeats(Seat seat)
+    private void TryAssignSpecificSeat(Seat seat)
     {
-        if (_seatAggregator.FreeSeats.Count == 0) return;
-
-        if (_guestQueue.TryPeek(out _currentVisitor))
+        // Проверяем, что место действительно в списке свободных у SeatAggregator
+        if (!_seatAggregator.FreeSeats.Contains(seat))
         {
-            _currentVisitor.GoTo(seat.GetPosition());
-            EventBus.Raise(new SeatTaken(seat));
-            _guestQueue.Dequeue();
+            Debug.LogWarning($"[QueueVisitor] Место {seat.name} больше не свободно. Пропускаем.");
+            return;
         }
 
+        if (_guestQueue.Count == 0)
+        {
+            Debug.Log("[QueueVisitor] Очередь пуста, никто не садится.");
+            return;
+        }
+
+        if (_guestQueue.TryDequeue(out var visitor))
+        {
+            Vector3 targetPosition = seat.GetPosition(); // <- Проверь эту позицию
+            Debug.Log($"[QueueVisitor] Отправляем {visitor.name} к месту {seat.name} на позицию {targetPosition}");
+
+            visitor.GoTo(targetPosition); // <- Проверь, что GoTo корректно обрабатывает это
+
+            EventBus.Raise(new SeatTaken(seat));
+        }
+        else
+        {
+            Debug.Log("[QueueVisitor] Не удалось извлечь посетителя из очереди.");
+        }
     }
 
 
 
     private void OnDestroy()
     {
+        _seatAggregator.OnDestroy();
         EventBus.Unsubscribe<SeatFreed>(OnSeatFreed);
+        EventBus.Unsubscribe<TableBuilt>(OnTableBuilt);
     }
 
 }
