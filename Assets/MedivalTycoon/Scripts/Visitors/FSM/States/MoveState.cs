@@ -6,15 +6,14 @@ namespace Visitors
     public class MoveState : IVisitorsState
     {
         private readonly TavernVisitor _tavernVisitor;
-
         public MoveState(TavernVisitor tavernVisitor)
         {
-            _tavernVisitor = tavernVisitor;
+            _tavernVisitor = tavernVisitor;           
         }
 
         public void Enter()
         {
-            AnimatorExtensions.Set(_tavernVisitor.Animator, AnimatorParameters.VisitorWalk);
+            AnimatorExtensions.Set(_tavernVisitor.Animator, AnimatorParameters.VisitorWalk);           
         }
 
         public void UpdateState()

@@ -42,8 +42,7 @@ public class Seat : MonoBehaviour
         _visitor.LeavingTavern += LeaveTavern;
         _beerDisplayAmount = _visitor.BeerAmount;
         _inventory.CreatePoints(_beerDisplayAmount, _pointDistance);
-        _seatUI.UpdateBeerDisplay(_beerDisplayAmount);        
-        EventBus.Subscribe<VisitorLeaveTavern>(OnVisitorLeftTavern);
+        _seatUI.UpdateBeerDisplay(_beerDisplayAmount); 
         _isEmpty = false;
     }
 
@@ -64,36 +63,19 @@ public class Seat : MonoBehaviour
         }
     }
 
-    private void OnVisitorLeftTavern(VisitorLeaveTavern visitor)
+    public void OnVisitorLeftTavern()
     {
         if (_visitor != null)
-        {
             _visitor.LeavingTavern -= LeaveTavern;
-        }
-       
-        StartCoroutine(DelayedSeatFreed());
+
+        EventBus.Raise(new SeatFreed(this));
 
         _isEmpty = true;
-        _visitor = null;
-        EventBus.Unsubscribe<VisitorLeaveTavern>(OnVisitorLeftTavern);
+        _visitor = null;        
     }
 
-    private IEnumerator DelayedSeatFreed()
-    {
-        // Ждём немного, чтобы гость "успел уйти"
-        yield return new WaitForSeconds(0.2f); // <-- Настрой под себя: 0.1f, 0.3f и т.д.
-
-        // Проверяем, что место всё ещё "свободно" (т.е. никто новый не сел)
-        if (_isEmpty)
-        {
-            // Только теперь уведомляем систему, что место действительно свободно
-            EventBus.Raise(new SeatFreed(this));
-        }
-        else
-        {
-            Debug.LogWarning($"[Seat] Место {_seatPoint?.name ?? "unknown"} стало занято до отправки SeatFreed. Пропускаем.");
-        }
-    }
+  
+  
 
     private void SwitchVisitorSleep()
     {

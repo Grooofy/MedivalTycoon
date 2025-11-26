@@ -12,6 +12,7 @@ namespace Tables
         [SerializeField] private LayerMask _waiterLayer;
         [SerializeField] private LayerMask _visitorLayer;
         [SerializeField] private float _resetDelay;
+
         public event UnityAction<int> PriceChanged;
         public event UnityAction<Seat> LinedUp;
         public bool IsBuilt => Price <= 0;

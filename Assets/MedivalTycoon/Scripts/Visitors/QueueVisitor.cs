@@ -64,19 +64,10 @@ public class QueueVisitor : MonoBehaviour
 
     private void OnSeatFreed(SeatFreed seatFreed)
     {
-        Debug.Log($"[QueueVisitor] Получено событие SeatFreed для места {seatFreed.Seat.name}, Instance ID: {seatFreed.Seat.GetInstanceID()}");
-
         if (_seatAggregator.FreeSeats.Contains(seatFreed.Seat))
         {
-            Debug.Log($"[QueueVisitor] Место {seatFreed.Seat.name} свободно. Отправляем гостя.");
             TryAssignSpecificSeat(seatFreed.Seat);
-        }
-        else
-        {
-            Debug.LogWarning($"[QueueVisitor] Место {seatFreed.Seat.name} уже занято. Пропускаем.");
-        }
-
-        MoveQueue();
+        }  
     }
 
     private void OnTableBuilt(TableBuilt tableBuilt)
@@ -104,6 +95,8 @@ public class QueueVisitor : MonoBehaviour
     {
         while (Vector3.Distance(visitor.transform.position, targetPosition) > 0.05f)
         {
+            if (visitor.GetState() == StateEvent.Move) break;
+
             visitor.transform.position = Vector3.MoveTowards(
                 visitor.transform.position,
                 targetPosition,
@@ -116,33 +109,22 @@ public class QueueVisitor : MonoBehaviour
     }
 
     private void TryAssignSpecificSeat(Seat seat)
-    {
-        // Проверяем, что место действительно в списке свободных у SeatAggregator
-        if (!_seatAggregator.FreeSeats.Contains(seat))
-        {
-            Debug.LogWarning($"[QueueVisitor] Место {seat.name} больше не свободно. Пропускаем.");
+    {        
+        if (!_seatAggregator.FreeSeats.Contains(seat))        
             return;
-        }
 
         if (_guestQueue.Count == 0)
-        {
-            Debug.Log("[QueueVisitor] Очередь пуста, никто не садится.");
             return;
-        }
+        
 
         if (_guestQueue.TryDequeue(out var visitor))
         {
-            Vector3 targetPosition = seat.GetPosition(); // <- Проверь эту позицию
-            Debug.Log($"[QueueVisitor] Отправляем {visitor.name} к месту {seat.name} на позицию {targetPosition}");
-
-            visitor.GoTo(targetPosition); // <- Проверь, что GoTo корректно обрабатывает это
-
+            Vector3 targetPosition = seat.GetPosition();
+            visitor.GoTo(targetPosition);            
+            MoveQueue();
             EventBus.Raise(new SeatTaken(seat));
         }
-        else
-        {
-            Debug.Log("[QueueVisitor] Не удалось извлечь посетителя из очереди.");
-        }
+       
     }
 
 

@@ -14,6 +14,8 @@ public class SeatAggregator
     public IReadOnlyList<Seat> FreeSeats => _freeSeats.AsReadOnly();
     public IReadOnlyList<Seat> OccupiedSeats => _occupiedSeats.AsReadOnly();
 
+    
+
     public SeatAggregator()
     {
         EventBus.Subscribe<TableBuilt>(OnTableBuilt);
@@ -24,7 +26,6 @@ public class SeatAggregator
     private void OnTableBuilt(TableBuilt tableEvent)
     {
         var seat = tableEvent.SeatPoint;
-
 
         if (seat != null && !_freeSeats.Contains(seat) && !_occupiedSeats.Contains(seat))
         {

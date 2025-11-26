@@ -50,8 +50,7 @@ namespace Visitors
             }
 
             if(_progress <= 0)
-            {
-                _tavernVisitor.IsTrigger = false;
+            {                
                 _tavernVisitor.GoTo(_exitPoint);                
             }
         }

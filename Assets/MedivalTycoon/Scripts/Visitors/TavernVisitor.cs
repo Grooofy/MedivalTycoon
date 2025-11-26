@@ -1,3 +1,4 @@
+using Events;
 using System;
 using UnityEngine;
 
@@ -7,8 +8,8 @@ namespace Visitors
     {
         public Animator Animator { get; private set; }
         public int BeerAmount { get; private set; }
-        public bool IsTrigger = true;
         public Action LeavingTavern;
+        public bool IsMoving;
         private StateEvent _previousStateEvent;
         private StateEvent _currentStateEvent;
         private WaitTimerUI _fiilImage;
@@ -19,7 +20,7 @@ namespace Visitors
         private int _maxBeerAmount;
         private float _speed;
         private float _maxWaitTime;
-        private bool _isMoving;
+        private Seat _seat;
 
         public void Initialize(float speed, int maxBeerAmount, float maxWaitTime, Vector3 exitPoint)
         {
@@ -42,13 +43,29 @@ namespace Visitors
         public void GoTo(Vector3 position)
         {
             _finishPosition = position;
-            _isMoving = true;
+            IsMoving = true;
             ChangeState(StateEvent.Move);
+        }
+
+        public void SavePoint(Seat seat)
+        {
+            _seat = seat;
+        }
+
+        public void ClearPoint()
+        {
+            _seat.OnVisitorLeftTavern();
+            EventBus.Raise(new VisitorLeaveTavern());
+        }
+
+        public StateEvent GetState()
+        {
+            return _currentStateEvent;
         }
 
         public void MoveToPoint()
         {
-            if (_isMoving)
+            if (IsMoving)
             {
                 transform.position = Vector3.MoveTowards(transform.position, _finishPosition, _speed * Time.deltaTime);
                 transform.LookAt(_finishPosition);
@@ -56,7 +73,7 @@ namespace Visitors
                 if (Vector3.Distance(transform.position, _finishPosition) < 0.05f)
                 {
                     transform.position = _finishPosition;
-                    _isMoving = false;
+                    IsMoving = false;
                 }
             }
         }

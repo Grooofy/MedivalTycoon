@@ -39,10 +39,11 @@ public class SeatPoint : MonoBehaviour
 
                 if (hit.TryGetComponent(out TavernVisitor visitor))
                 {
-                    if (visitor.IsTrigger == false) break;
+                    if (visitor.IsMoving) break;
 
-                    _currentVisitor = visitor;
+                    _currentVisitor = visitor;                   
                     _currentVisitor.ChangeState(StateEvent.Wait);
+                    _currentVisitor.SavePoint(_seat);
                     _seat.VisitorSet(_currentVisitor);
 
                     _hasGiven = true; 

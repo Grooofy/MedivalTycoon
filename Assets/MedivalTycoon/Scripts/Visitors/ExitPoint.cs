@@ -39,7 +39,7 @@ public class ExitPoint : MonoBehaviour
                 {          
                     _currentVisitor = visitor;
                    _currentVisitor.gameObject.SetActive(false);
-                    EventBus.Raise(new VisitorLeaveTavern());
+                    _currentVisitor.ClearPoint();
                 }
             }
         }
