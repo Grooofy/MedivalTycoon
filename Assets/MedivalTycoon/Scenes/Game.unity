@@ -43153,7 +43153,7 @@ MonoBehaviour:
   _queueVisitor: {fileID: 1866957611}
   _spacing: 0.5
   _speed: 1
-  _maxWaitTime: 60
+  _maxWaitTime: 3
   _maxBeerCount: 10
 --- !u!4 &1402639840
 Transform:
