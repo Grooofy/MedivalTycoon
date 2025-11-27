@@ -2,6 +2,7 @@ using Beers;
 using Events;
 using MedivalTycoon;
 using SeatSyst;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -23,6 +24,7 @@ namespace Tables
         private SeatInventory _inventory;
         private bool _isBuilding;
         private bool _isTakeEnable;
+        private List<Point> _wayPoints = new List<Point>();
 
         public void Initialize(int startPrice)
         {
