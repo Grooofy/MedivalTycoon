@@ -6,6 +6,11 @@ public class Point : MonoBehaviour
 {
    public bool IsFill { get; private set; }
 
+    public Vector3 GetPostition()
+    {
+        return transform.position;
+    }
+
    public void Fill()
    {
       IsFill = true;

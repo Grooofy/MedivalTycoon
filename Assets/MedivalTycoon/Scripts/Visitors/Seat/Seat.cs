@@ -3,6 +3,7 @@ using MedivalTycoon;
 using SeatSyst;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Visitors;
 
@@ -16,11 +17,14 @@ public class Seat : MonoBehaviour
     private float _pointDistance = 0.1f;
     private int _beerDisplayAmount;
     private Coroutine _beerReset;
+    private Queue<Point> _wayPoints;
     private bool _isEmpty = true;
     
 
-    public void Initialize(LayerMask visitorMask, SeatInventory seatInventory, IPropsPool beerPool, float resetDelay)
+    public void Initialize(Queue<Point> wayPoint, LayerMask visitorMask, SeatInventory seatInventory, IPropsPool beerPool, float resetDelay)
     {
+        _wayPoints = wayPoint;
+
         _inventory = seatInventory;
         _inventory.Initialize(beerPool, resetDelay);
 
@@ -90,9 +94,15 @@ public class Seat : MonoBehaviour
     }
 
    
-    public Vector3 GetPosition()
-    {  
-        return _seatPoint.GetPosition();
+    public Queue<Vector3> GetWay()
+    {
+        var way = new Queue<Vector3>();
+
+        foreach (var point in _wayPoints)
+            way.Enqueue(point.GetPostition());
+
+        way.Enqueue(_seatPoint.GetPosition());
+        return way;
     }
 
     public void CheckHits()

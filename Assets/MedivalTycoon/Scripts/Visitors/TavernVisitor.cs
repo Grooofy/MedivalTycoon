@@ -1,6 +1,8 @@
 using Events;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Visitors
 {
@@ -15,6 +17,8 @@ namespace Visitors
         private WaitTimerUI _fiilImage;
         private Vector3 _finishPosition;
         private Vector3 _exitPoint;
+        private Stack<Vector3> _exitWay = new();
+        private Queue<Vector3> _wayPoint;
         private StateMachine _stateMachine;
         private int _minBeerAmount = 3;
         private int _maxBeerAmount;
@@ -40,9 +44,9 @@ namespace Visitors
             BeerAmount = UnityEngine.Random.Range(_minBeerAmount, _maxBeerAmount);
         }
 
-        public void GoTo(Vector3 position)
+        public void GoTo(Queue<Vector3> way)
         {
-            _finishPosition = position;
+            _wayPoint = way;
             IsMoving = true;
             ChangeState(StateEvent.Move);
         }
@@ -66,22 +70,38 @@ namespace Visitors
         public void MoveToPoint()
         {
             if (IsMoving)
-            {
+            {    
+                _wayPoint.TryPeek(out _finishPosition);
+                
                 transform.position = Vector3.MoveTowards(transform.position, _finishPosition, _speed * Time.deltaTime);
                 transform.LookAt(_finishPosition);
 
                 if (Vector3.Distance(transform.position, _finishPosition) < 0.05f)
                 {
                     transform.position = _finishPosition;
-                    IsMoving = false;
+                    RememberExitWay(_wayPoint.Dequeue());
+                    
+                    if(_wayPoint.Count == 0)
+                    {
+                        IsMoving = false;
+                    }                    
                 }
+                
             }
+        }
+
+        private void RememberExitWay(Vector3 point)
+        {
+            if(_exitWay.Count == 0)
+                _exitWay.Push(_exitPoint);
+
+            _exitWay.Push(point);
         }
 
         private void AddTransitions()
         {
             _stateMachine.AddTransition<IdleState>(StateEvent.Move, () => new MoveState(this));
-            _stateMachine.AddTransition<MoveState>(StateEvent.Wait, () => new WaitWaiterState(this, _fiilImage, _maxWaitTime, _exitPoint));
+            _stateMachine.AddTransition<MoveState>(StateEvent.Wait, () => new WaitWaiterState(this, _fiilImage, _maxWaitTime, _exitWay));
             _stateMachine.AddTransition<WaitWaiterState>(StateEvent.Move, () => new MoveState(this));
             _stateMachine.AddTransition<WaitWaiterState>(StateEvent.Drink, () => new DrinkState(this));
             _stateMachine.AddTransition<DrinkState>(StateEvent.Sleep, () => new SleepState(this));

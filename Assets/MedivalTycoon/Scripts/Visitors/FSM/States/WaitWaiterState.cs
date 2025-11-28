@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace Visitors
 {
@@ -6,19 +8,19 @@ namespace Visitors
     {
         private TavernVisitor _tavernVisitor;
         private WaitTimerUI _waitTimerUI;
-        private Vector3 _exitPoint;
+        private Queue<Vector3> _exitWay;
         private float _maxWaitTime;
 
         private float _elapsed;
         private float _progress;
 
 
-        public WaitWaiterState(TavernVisitor tavernVisitor, WaitTimerUI image, float maxWaitTime, Vector3 exitPoint)
+        public WaitWaiterState(TavernVisitor tavernVisitor, WaitTimerUI image, float maxWaitTime, Stack<Vector3> exitWay)
         {
             _maxWaitTime = maxWaitTime;
             _waitTimerUI = image;
             _tavernVisitor = tavernVisitor;
-            _exitPoint = exitPoint;
+            _exitWay = new Queue<Vector3>(exitWay); 
             _waitTimerUI.Initialize();
         }
 
@@ -51,7 +53,7 @@ namespace Visitors
 
             if(_progress <= 0)
             {                
-                _tavernVisitor.GoTo(_exitPoint);                
+                _tavernVisitor.GoTo(_exitWay);                
             }
         }
 

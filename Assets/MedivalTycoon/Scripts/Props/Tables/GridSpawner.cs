@@ -9,12 +9,14 @@ namespace Tables
 {
     public class GridSpawner : MonoBehaviour
     {
+        [SerializeField] private WayPointsCreater _wayPointsCreater;
         private Vector2 areaSize = new Vector2(2f, 3f);
         private Vector3 _prefabOffset = new Vector3(0.25f, 0.02f, 0.25f);
         private float spacing = 1f;
 
         private readonly List<ViewTable> _viewTables = new();
         private readonly List<Table> _tables = new();
+        private List<GridCell> cells;
 
         private TableFactory _factory;
         private int _objectsToSpawn;
@@ -27,18 +29,23 @@ namespace Tables
             _origin = transform.position;
         }
 
+
+
         public void SpawnGrid(ConstructionHandler handler, int[] startPrice, IPropsPool propsPool)
         {
-            var positions = GridCalculator.GetGridPositions(_origin, areaSize, spacing, _prefabOffset);
-            positions = positions.OrderBy(_ => Random.value).ToList(); 
+            var entries = GridCalculator.GetGridEntries(_origin, areaSize, spacing, _prefabOffset);
+            entries = entries.OrderBy(_ => Random.value).ToList(); 
 
-            int spawnCount = Mathf.Min(_objectsToSpawn, positions.Count);
+            int spawnCount = Mathf.Min(_objectsToSpawn, entries.Count);
 
             for (int i = 0; i < spawnCount; i++)
             {
-                var (table, viewTable) = _factory.CreateTable(positions[i], transform, handler, startPrice[i], propsPool);
-                _tables.Add(table);
+                var entry = entries[i];
+
+                var way = _wayPointsCreater.CreatePoints(entry.cell);
+                var (table, viewTable) = _factory.CreateTable(way,entry.position,transform,handler,startPrice[i],propsPool);
                 _viewTables.Add(viewTable);
+                _tables.Add(table);
             }
         }
 

@@ -24,11 +24,12 @@ namespace Tables
         private SeatInventory _inventory;
         private bool _isBuilding;
         private bool _isTakeEnable;
-        private List<Point> _wayPoints = new List<Point>();
+        private Queue<Point> _wayPoints = new Queue<Point>();
 
-        public void Initialize(int startPrice)
+        public void Initialize(int startPrice, Queue<Point> wayPoint)
         {
             Price = startPrice;
+            _wayPoints = wayPoint;
             _seat = GetComponentInChildren<Seat>();
             _beerTaker = GetComponentInChildren<BeerTaker>();
             _inventory = GetComponentInChildren<SeatInventory>();
@@ -52,13 +53,13 @@ namespace Tables
         public void InitializeSeatSystem(IPropsPool propsPool)
         {
             if (_seat != null)
-                _seat.Initialize(_visitorLayer, _inventory, propsPool, _resetDelay);
+                _seat.Initialize(_wayPoints, _visitorLayer, _inventory, propsPool, _resetDelay);
         }
 
         public void CheckHits()
         {
             if (_seat == null && _beerTaker == null) return;
-           
+
             if (_isBuilding && _isTakeEnable)
             {
                 _beerTaker.CheckHits();
@@ -73,7 +74,7 @@ namespace Tables
             Price = Mathf.Max(Price - step, 0);
             PriceChanged?.Invoke(Price);
 
-            if (Price <= 0 && !_isBuilding) 
+            if (Price <= 0 && !_isBuilding)
             {
                 _isBuilding = true;
                 _isTakeEnable = true;

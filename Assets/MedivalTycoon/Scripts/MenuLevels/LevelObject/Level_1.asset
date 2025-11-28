@@ -17,5 +17,5 @@ MonoBehaviour:
   _numberVisitors: 20
   _seconds: 600
   _isComplete: 1
-  _tableAmount: 6
-  _tableCost: 10,10,10,10,10,10
+  _tableAmount: 3
+  _tableCost: 10,10,10

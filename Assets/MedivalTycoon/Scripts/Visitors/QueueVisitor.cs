@@ -119,7 +119,7 @@ public class QueueVisitor : MonoBehaviour
 
         if (_guestQueue.TryDequeue(out var visitor))
         {
-            Vector3 targetPosition = seat.GetPosition();
+            Queue<Vector3> targetPosition = seat.GetWay();
             visitor.GoTo(targetPosition);            
             MoveQueue();
             EventBus.Raise(new SeatTaken(seat));
