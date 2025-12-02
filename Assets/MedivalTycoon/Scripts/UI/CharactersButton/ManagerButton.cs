@@ -1,3 +1,5 @@
+using System;
+using Characters;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -5,32 +7,37 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Button), typeof(ViewButton), typeof(ModelButton))]
 public class ManagerButton : MonoBehaviour
 {
-    [SerializeField] private Button _button;
-    [SerializeField] private ViewButton _view;
-    [SerializeField] private ModelButton _model;
+    private Button _button;
+    private ViewButton _view;
+    private ModelButton _model;
 
     public UnityAction<int> ReceivingPressedButtonId;
-    
-    private void OnEnable()
+
+    public void Initilaze(Button button, ViewButton view, ModelButton model, Image image, Worker worker)
     {
+        _view = view;
+        _view.Initialize(image);
+        _model = model;
+        _model.Initialize(worker);
+        _button = button;
         _button.onClick.AddListener(ClickButton);
     }
-
+    
     private void OnDisable()
     {
         _button.onClick.RemoveListener(ClickButton);
     }
 
-    private void Awake()
+    public void ShowInformation()
     {
         _view.ShowInfoObject(_button, _model.GetStatus(), _model.GetIcon());
     }
 
-    public bool GetStatus()
+    public bool GetButtonStatus()
     {
-      return  _model.GetStatus();
+        return _model.GetStatus();
     }
-    
+
     public void RefreshButton()
     {
         _model.SelectWorker();
@@ -42,4 +49,5 @@ public class ManagerButton : MonoBehaviour
         RefreshButton();
         ReceivingPressedButtonId?.Invoke(_model.GetId());
     }
+
 }

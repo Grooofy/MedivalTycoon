@@ -1,19 +1,47 @@
+using Barrels;
+using Propses;
 using System.Collections;
-using DG.Tweening;
 using UnityEngine;
 
-public class Barrel : Props
+
+public class Barrel : MonoBehaviour, IProps
 {
-    internal override IEnumerator TryMoveTo(Point endPoint)
+    private TransformMover _mover = new TransformMover();
+    private Transform _startPoint;
+    private BarrelAnimation _barrelAnimation;
+    private float _moveSpeed;
+    private bool _isFirstAnimationPlaying;
+
+    public void Initilization(Transform parent, float moveSpeed, Animator animator)
     {
-        if (endPoint == null) yield break;
-        
+        _barrelAnimation = new BarrelAnimation(animator);
+        _moveSpeed = moveSpeed;
+        _startPoint = parent;
+    }
+
+    public void Reset()
+    {
+        transform.position = _startPoint.position;
+        _barrelAnimation.Reset();
+        _isFirstAnimationPlaying = false;
+    }
+
+    public IEnumerator TryMoveTo(Point endPoint)
+    {
+        if (endPoint.IsFill) yield break;
+
         while (endPoint.IsFill == false)
         {
-            MoveTo(endPoint);
+            _mover.MoveTo(transform, endPoint, _moveSpeed);
             yield return null;
         }
-        transform.position = endPoint.transform.position;
+
+        if (_isFirstAnimationPlaying == false)
+        {
+            _barrelAnimation.MoveEnd();
+            _isFirstAnimationPlaying = true;
+        }
     }
-    
+
+
 }

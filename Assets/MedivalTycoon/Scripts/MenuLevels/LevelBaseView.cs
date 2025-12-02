@@ -13,7 +13,7 @@ public class LevelBaseView : MonoBehaviour
         for (int i = 0; i < _levelButtonCreator.GetIconsCount(); i++)
         {
             ShowIconText(i);
-            if (_levelButtonCreator.GetInfoComplited(i))
+            if (_levelButtonCreator.GetInfoCompleted(i))
             {
                 ShowButtonInteractable(i);
             }

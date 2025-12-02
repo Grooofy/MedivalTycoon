@@ -21,7 +21,7 @@ public class LevelUI : MonoBehaviour
     {
         _level = level;
     }
-   
+
     public void SwitchButtonInteractable()
     {
         _button.interactable = !_button.interactable;
@@ -31,22 +31,22 @@ public class LevelUI : MonoBehaviour
     {
         switch (countCoins)
         {
-                case 1:
-                    PaintCoin(_coinImages[0]);
-                    break;
-                
-                case 2:
-                    for (int i = 0; i < 2; i++)
-                        PaintCoin(_coinImages[i]);
-                    break;
-                
-                case 3:
-                    foreach (var coinImage in _coinImages)
-                        PaintCoin(coinImage);
-                    break;
+            case 1:
+                PaintCoin(_coinImages[0]);
+                break;
+
+            case 2:
+                for (int i = 0; i < 2; i++)
+                    PaintCoin(_coinImages[i]);
+                break;
+
+            case 3:
+                foreach (var coinImage in _coinImages)
+                    PaintCoin(coinImage);
+                break;
         }
     }
-    
+
     public void ShowNumber(int number)
     {
         number++;

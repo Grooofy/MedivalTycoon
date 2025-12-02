@@ -1,6 +1,10 @@
 using UnityEngine;
 
-public class Waiter : MonoBehaviour
+namespace Characters
 {
+    public class Waiter : MonoBehaviour
+    {
     
+    }
 }
+

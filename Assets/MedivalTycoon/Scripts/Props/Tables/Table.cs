@@ -1,82 +1,90 @@
-using System.Collections;
+using Beers;
+using Events;
+using MedivalTycoon;
+using SeatSyst;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
 using UnityEngine.Events;
 
-
-public class Table : MonoBehaviour
+namespace Tables
 {
-    [SerializeField] private int _price;
-    [SerializeField] private float _speedBuilding;
-    [SerializeField] private ParticleSystem _smoke;
-    [SerializeField] private List<Seat> _seatPoints = new List<Seat>();
-    [SerializeField] private SeatManager _seatManager;
-
-    public TweenCallback LinedUp;
-    public UnityAction<int> PriceChanged;
-    public int Price => _price;
-
-    private Coroutine _priceChanged;
-    private bool isInitialized;
-
-
-    private void OnEnable()
+    public class Table : MonoBehaviour
     {
-        LinedUp += InitializeSeats;
-    }
+        [SerializeField] private LayerMask _waiterLayer;
+        [SerializeField] private LayerMask _visitorLayer;
+        [SerializeField] private float _resetDelay;
 
-    private void OnDisable()
-    {
-        LinedUp -= InitializeSeats;
-    }
+        public event UnityAction<int> PriceChanged;
+        public event UnityAction<Seat> LinedUp;
+        public bool IsBuilt => Price <= 0;
+        public int Price { get; private set; }
 
-    public void ReducePrice(int step)
-    {
-        if (_priceChanged == null)
+        private Seat _seat;
+        private BeerTaker _beerTaker;
+        private SeatInventory _inventory;
+        private bool _isBuilding;
+        private bool _isTakeEnable;
+        private Queue<Point> _wayPoints = new Queue<Point>();
+
+        public void Initialize(int startPrice, Queue<Point> wayPoint)
         {
-            _priceChanged = StartCoroutine(ReducesPrice(step));
-        }
-        else
-        {
-            StopReducePrice();
-            _priceChanged = StartCoroutine(ReducesPrice(step));
-        }
-    }
-    
-    public void InitializeSeats()
-    {
-        if (isInitialized) return;
-
-        foreach (Seat seat in _seatPoints)
-        {
-            _seatManager.AddSeat(seat);
+            Price = startPrice;
+            _wayPoints = wayPoint;
+            _seat = GetComponentInChildren<Seat>();
+            _beerTaker = GetComponentInChildren<BeerTaker>();
+            _inventory = GetComponentInChildren<SeatInventory>();
+            _seat.InventoryFulling += SwitchCheckHits;
         }
 
-        isInitialized = true;
-    }
-
-    public void StopReducePrice()
-    {
-        if (_priceChanged != null) 
-            StopCoroutine(_priceChanged);
-    }
-    
-    private IEnumerator ReducesPrice(int step)
-    {
-        while (_price != 0)
+        public void SwitchCheckHits()
         {
-            _price -= step;
-            PriceChanged?.Invoke(_price);
-            yield return null;
+            if (_isTakeEnable)
+                _isTakeEnable = false;
+            else
+                _isTakeEnable = true;
         }
-        Build();
+
+        public void InitializeBeerTaker()
+        {
+            if (_beerTaker != null)
+                _beerTaker.Initialize(_inventory, _waiterLayer);
+        }
+
+        public void InitializeSeatSystem(IPropsPool propsPool)
+        {
+            if (_seat != null)
+                _seat.Initialize(_wayPoints, _visitorLayer, _inventory, propsPool, _resetDelay);
+        }
+
+        public void CheckHits()
+        {
+            if (_seat == null && _beerTaker == null) return;
+
+            if (_isBuilding && _isTakeEnable)
+            {
+                _beerTaker.CheckHits();
+            }
+
+            _seat.CheckHits();
+
+        }
+
+        public void ReducePrice(int step)
+        {
+            Price = Mathf.Max(Price - step, 0);
+            PriceChanged?.Invoke(Price);
+
+            if (Price <= 0 && !_isBuilding)
+            {
+                _isBuilding = true;
+                _isTakeEnable = true;
+                LinedUp?.Invoke(_seat);
+            }
+        }
+
+        private void OnDestroy()
+        {
+            _seat.InventoryFulling -= SwitchCheckHits;
+        }
     }
-    
-    private void Build()
-    {
-        _smoke.Play();
-        transform.DOScale(Vector3.one, _speedBuilding).OnComplete(LinedUp);
-    }
-    
 }

@@ -1,6 +1,10 @@
 using UnityEngine;
 
-public class Bartender : MonoBehaviour
+namespace Characters
 {
+    public class Bartender : MonoBehaviour
+    {
    
+    }
 }
+

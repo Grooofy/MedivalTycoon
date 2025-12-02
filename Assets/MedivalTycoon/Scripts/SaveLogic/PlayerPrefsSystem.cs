@@ -6,6 +6,8 @@ public class PlayerPrefsSystem: ISaveSystem
     private const string MONEYKEY = "startMoney";
     private const string VISITORSKEY = "numberVisitors";
     private const string SECONDSKEY = "seconds";
+    private const string TABLESAMOUNTKEY = "tableAmount";
+    private const string TABLESCOSTKEY = "tableCost";
 
     public void Save(SaveData data)
     {
@@ -13,6 +15,8 @@ public class PlayerPrefsSystem: ISaveSystem
         PlayerPrefs.SetInt(MONEYKEY, data.StartMoney);
         PlayerPrefs.SetInt(VISITORSKEY, data.NumberVisitors);
         PlayerPrefs.SetFloat(SECONDSKEY, data.Seconds);
+        PlayerPrefs.SetInt(TABLESAMOUNTKEY, data.TableAmount);
+        PlayerPrefs.SetString(TABLESCOSTKEY, data.TableCost); 
         PlayerPrefs.Save();
     }
 
@@ -35,6 +39,14 @@ public class PlayerPrefsSystem: ISaveSystem
         if (PlayerPrefs.HasKey(SECONDSKEY))
         {
             result.Seconds = PlayerPrefs.GetFloat(SECONDSKEY);
+        }
+        if (PlayerPrefs.HasKey(TABLESAMOUNTKEY))
+        {
+            result.TableAmount = PlayerPrefs.GetInt(TABLESAMOUNTKEY);
+        }
+        if (PlayerPrefs.HasKey(TABLESCOSTKEY))
+        {
+            result.TableCost = PlayerPrefs.GetString(TABLESCOSTKEY);
         }
         return result;
     }

@@ -70,3 +70,9 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+Assets/MedivalTycoon/Scripts/Visitors/Seat/VisitorSeatPoint.cs
+Assets/MedivalTycoon/Scripts/Visitors/Seat/Seat.cs
+Assets/MedivalTycoon/Scripts/Props/Tables/TableFactory.cs
+Assets/MedivalTycoon/Scripts/Props/Tables/Table.cs
+Assets/MedivalTycoon/Scripts/Props/Tables/GridSpawner.cs
+Assets/MedivalTycoon/Scripts/Props/Beer/BeerTaker.cs

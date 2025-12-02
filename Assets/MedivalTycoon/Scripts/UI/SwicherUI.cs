@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using Characters;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class SwicherUI : MonoBehaviour
 {
-    [SerializeField] private Transmitter _transmitter;
+    [FormerlySerializedAs("_transmitter")] [SerializeField] private ButtonsTransmitter buttonsTransmitter;
     [SerializeField] private List<GroundUI> _groundsUI;
 
     private GroundUI _activeGroundUI;

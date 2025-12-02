@@ -1,36 +1,34 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using Characters;
+using UnityEngine;
 
-public class CameraFollower : MonoBehaviour
+public class CameraFollower : MonoBehaviour, IDisposable
 {
-    [SerializeField] private Vector3 _offSet;
-    [SerializeField] private float _smoothing;
-    [SerializeField] private CameraTarget _target;
+    private Vector3 _offSet = new Vector3(2, 2, -1.73f);
+    private float _smoothing = 10;
+    private SwitcherSelectedCharacter _target;
 
-    private Transform _selectCharacter;
+    private List<ICharacter> _characters = new List<ICharacter>();
+    private ICharacter _selectedCharacter;
+   
 
-    private void OnEnable()
+    public void Initialize(List<ICharacter> characters, SwitcherSelectedCharacter target, ICharacter selectedCharacter = null)
     {
-        _target.TargetReady += ChangeTarget;
+        _characters = characters;  
+        _selectedCharacter = selectedCharacter;
+        _target = target;
+        _target.Activate += ChangeTarget;
     }
 
-    private void OnDisable()
+    public void Move()
     {
-        _target.TargetReady += ChangeTarget;
+        MovePosition(transform, _selectedCharacter.GetPosition());
     }
 
-    private void Awake()
+    private void MovePosition(Transform startTarget, Vector3 finishTarget)
     {
-        ChangeTarget(0);
-    }
-
-    private void Update()
-    {
-        Move(transform, _selectCharacter);
-    }
-
-    private void Move(Transform startTarget, Transform finishTarget)
-    {
-        Vector3 nextPosition = Vector3.Lerp(startTarget.position, finishTarget.position + _offSet,
+        Vector3 nextPosition = Vector3.Lerp(startTarget.position, finishTarget + _offSet,
             Time.deltaTime * _smoothing);
 
         transform.position = nextPosition;
@@ -38,6 +36,11 @@ public class CameraFollower : MonoBehaviour
 
     private void ChangeTarget(int id)
     {
-        _selectCharacter = _target.Get(id);
+        _selectedCharacter = _characters[id];
+    }
+
+    public void Dispose()
+    {
+        _target.Activate -= ChangeTarget;
     }
 }
