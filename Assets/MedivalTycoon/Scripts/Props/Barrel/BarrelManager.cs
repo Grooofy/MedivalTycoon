@@ -22,7 +22,6 @@ namespace Barrels
         [SerializeField] private PropsSpawner _propsSpawner;
         [SerializeField] private Point _finishPositionToBarrel;
         [SerializeField] private float _delayBarrelReset;
-        [SerializeField] private int _amountBeerToBarrel;
         [SerializeField] private LayerMask _layerMask;
 
         private IPropsPool _barrelPool;
@@ -34,7 +33,7 @@ namespace Barrels
             _barrelBuffer.Initialize("Barrel", _barrelPool);
             _leverInstaller.InitializeBarrelLever(_barrelBuffer);
             _barrelGiver.Initialize(_barrelBuffer, _layerMask);
-            _barrelBeerBuffer.Initialize("BarrelToBeer", _barrelPool, _finishPositionToBarrel, _delayBarrelReset, _amountBeerToBarrel);
+            _barrelBeerBuffer.Initialize("BarrelToBeer", _barrelPool, _finishPositionToBarrel, _delayBarrelReset);
             _barrelTaker.Initialize(_barrelBeerBuffer, _layerMask);
         }
 

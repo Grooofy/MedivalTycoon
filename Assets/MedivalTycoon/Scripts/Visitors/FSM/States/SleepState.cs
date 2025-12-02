@@ -6,15 +6,18 @@ namespace Visitors
     {
         
         private TavernVisitor _tavernVisitor;
+        public ParticleSystem _particalSystem; 
 
-        public SleepState(TavernVisitor tavernVisitor)
+        public SleepState(TavernVisitor tavernVisitor, ParticleSystem particleSystem)
         {
             _tavernVisitor = tavernVisitor;
+            _particalSystem = particleSystem;
         }
         
         public void Enter()
         {
             AnimatorExtensions.Set(_tavernVisitor.Animator, AnimatorParameters.VisitorSleep);
+            _particalSystem.Play();
         }
 
         public void UpdateState()
@@ -24,6 +27,7 @@ namespace Visitors
 
         public void Exit()
         {
+            _particalSystem.Stop();
         }
     }
 }

@@ -21,17 +21,15 @@ namespace Beers
         private int _amountPoint;
         private bool _isFull;
         private bool _isEmpty = true;
-        private int _amountBeerToBarrel;
         private string _sourceId;
 
 
-        public void Initialize(string sourceId, IPropsPool barrelPool, Point barrelFinishPoint, float delayBarrelReset, int amountBeerToBarrel)
+        public void Initialize(string sourceId, IPropsPool barrelPool, Point barrelFinishPoint, float delayBarrelReset)
         {
             _sourceId = sourceId;
             _barrelPool = barrelPool;
             _barrelFinishPoint = barrelFinishPoint;
             _delayBarrelReset = delayBarrelReset;
-            _amountBeerToBarrel = amountBeerToBarrel;
         }
 
         public void CreatePoints(int cout, float offset, Vector3 spaceSize = new Vector3())

@@ -2,6 +2,7 @@ using Events;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI.Extensions;
 using UnityEngine.UIElements;
 
 namespace Visitors
@@ -25,17 +26,22 @@ namespace Visitors
         private float _speed;
         private float _maxWaitTime;
         private Seat _seat;
+        private Beer _beerModel;
+        private ParticleSystem _particleSystem;
 
         public void Initialize(float speed, int maxBeerAmount, float maxWaitTime, Vector3 exitPoint)
         {
             Animator = GetComponentInChildren<Animator>();
             _fiilImage = GetComponentInChildren<WaitTimerUI>();
+            _beerModel = GetComponentInChildren<Beer>();
+            _particleSystem = GetComponentInChildren<ParticleSystem>();
             _maxBeerAmount = maxBeerAmount;
             _maxWaitTime = maxWaitTime;
             _exitPoint = exitPoint;
             _speed = speed;
             _stateMachine = new StateMachine();
             _stateMachine.SetInitialState(new IdleState(this));
+            _beerModel.gameObject.SetActive(false);
             AddTransitions();
         }
 
@@ -103,8 +109,8 @@ namespace Visitors
             _stateMachine.AddTransition<IdleState>(StateEvent.Move, () => new MoveState(this));
             _stateMachine.AddTransition<MoveState>(StateEvent.Wait, () => new WaitWaiterState(this, _fiilImage, _maxWaitTime, _exitWay));
             _stateMachine.AddTransition<WaitWaiterState>(StateEvent.Move, () => new MoveState(this));
-            _stateMachine.AddTransition<WaitWaiterState>(StateEvent.Drink, () => new DrinkState(this));
-            _stateMachine.AddTransition<DrinkState>(StateEvent.Sleep, () => new SleepState(this));
+            _stateMachine.AddTransition<WaitWaiterState>(StateEvent.Drink, () => new DrinkState(this, _beerModel));
+            _stateMachine.AddTransition<DrinkState>(StateEvent.Sleep, () => new SleepState(this, _particleSystem));
         }
 
         public void UpdateState()
