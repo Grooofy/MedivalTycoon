@@ -1,9 +1,11 @@
-﻿using Characters;
+using Characters;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-namespace Beers
+namespace Money
 {
-    public class BeerGiver : MonoBehaviour
+    public class CoinGiver : MonoBehaviour
     {
         private LayerMask _waiterLayer;
 
@@ -17,7 +19,6 @@ namespace Beers
         {
             _regulating = regulating;
             _waiterLayer = waiterLayer;
-            _isActive = true;
         }
 
         public void CheckHits()
@@ -39,7 +40,7 @@ namespace Beers
                             _currentHand = hand;
                             _currentHand.RegisterProps(_regulating);
                             _activeCoroutine = StartCoroutine(_currentHand.FillingPoints());
-                        } 
+                        }
                     }
                 }
             }
@@ -53,6 +54,12 @@ namespace Beers
 
                 _currentHand = null;
             }
+        }
+
+        public void SetActiveGameObject(bool value)
+        {
+            _isActive = value;
+            gameObject.SetActive(value);
         }
 
 #if UNITY_EDITOR

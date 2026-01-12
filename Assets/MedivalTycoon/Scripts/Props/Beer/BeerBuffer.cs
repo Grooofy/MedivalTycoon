@@ -5,6 +5,7 @@ using System.Linq;
 using Events;
 using MedivalTycoon;
 using Propses;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -12,6 +13,9 @@ using UnityEngine.Events;
 public class BeerBuffer : MonoBehaviour, IPropsMover
 {
     public bool IsTake { get; set; }
+
+    public PropsType Type => PropsType.Beer;
+
     private List<Point> _points = new List<Point>();
     private SpawnerPoints _spawnerPoints = new  SpawnerPoints();
     private Stack<IProps> _props = new Stack<IProps>();
@@ -137,7 +141,7 @@ public class BeerBuffer : MonoBehaviour, IPropsMover
             point.Free();
         }
     }
-
+    
     private void OnDestroy()
     {
         EventBus.Unsubscribe<BeerCreated>(StartFilingPoints);

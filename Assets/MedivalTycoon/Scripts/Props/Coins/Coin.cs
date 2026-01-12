@@ -1,0 +1,50 @@
+using Barrels;
+using Propses;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+
+namespace Money
+{
+    public class Coin : MonoBehaviour, IProps
+    {
+        private TransformMover _mover = new TransformMover();
+        private Transform _startPoint;
+        private BarrelAnimation _barrelAnimation;
+        private float _moveSpeed;
+        private bool _isFirstAnimationPlaying;
+
+        public void Initilization(Transform parent, float moveSpeed, Animator animator)
+        {
+            _barrelAnimation = new BarrelAnimation(animator);
+            _moveSpeed = moveSpeed;
+            _startPoint = parent;
+        }
+
+        public void Reset()
+        {
+            transform.position = _startPoint.position;
+            _barrelAnimation.Reset();
+            _isFirstAnimationPlaying = false;
+        }
+
+        public IEnumerator TryMoveTo(Point endPoint)
+        {
+            if (endPoint.IsFill) yield break;
+
+            while (endPoint.IsFill == false)
+            {
+                _mover.MoveTo(transform, endPoint, _moveSpeed);
+                yield return null;
+            }
+
+            if (_isFirstAnimationPlaying == false)
+            {
+                _barrelAnimation.MoveEnd();
+                _isFirstAnimationPlaying = true;
+            }
+        }
+
+    }
+}

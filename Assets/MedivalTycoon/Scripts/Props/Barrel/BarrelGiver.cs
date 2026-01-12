@@ -32,9 +32,12 @@ public class BarrelGiver : MonoBehaviour
 
                 if (hit.TryGetComponent(out Hand hand))
                 {
-                    _currentHand = hand;
-                    _currentHand.RegisterProps(_regulating);
-                    _activeCoroutine = StartCoroutine(_currentHand.FillingPoints());
+                    if (hand.CanAccept(_regulating.Type))
+                    {
+                        _currentHand = hand;
+                        _currentHand.RegisterProps(_regulating);
+                        _activeCoroutine = StartCoroutine(_currentHand.FillingPoints());
+                    }
                 }
             }
         }

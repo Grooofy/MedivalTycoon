@@ -61,10 +61,10 @@ public class SpawnerPoints
         return createdPoints;
     }
 
-    public List<Point> SpawnVerticalColumn(float heightSpacing, int count)
+    public List<Point> SpawnVerticalColumn(float heightSpacing)
     {
         var points = new List<Point>();
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < _spawnCount; i++)
         {
             Vector3 pos = new Vector3(0, i * heightSpacing, 0);
             var point = ObjectFactory.CreateObjectWithComponent<Point>($"Point {i}");
@@ -72,6 +72,8 @@ public class SpawnerPoints
             point.transform.localPosition = pos;
             points.Add(point);
         }
+        Debug.Log(points.Count + "созданное КолиЧесвто ТОЧЕК ДЛЯ МОНЕТ");
+        Debug.Log(_spawnCount + "заданное КолиЧесвто ТОЧЕК ДЛЯ МОНЕТ");
         return points;
     }
 

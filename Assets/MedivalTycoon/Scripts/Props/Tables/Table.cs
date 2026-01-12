@@ -1,6 +1,6 @@
 using Beers;
-using Events;
 using MedivalTycoon;
+using Money;
 using SeatSyst;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,12 +19,18 @@ namespace Tables
         public bool IsBuilt => Price <= 0;
         public int Price { get; private set; }
 
+        private Queue<Point> _wayPoints = new Queue<Point>();
         private Seat _seat;
         private BeerTaker _beerTaker;
+        private TableInteractionMode _tableInteractionMode;
+        private CoinManager _coinManager;
         private SeatInventory _inventory;
         private bool _isBuilding;
         private bool _isTakeEnable;
-        private Queue<Point> _wayPoints = new Queue<Point>();
+
+        private bool _isBeerTakerInitialize;
+        private bool _isCoinManagerInitialize;
+        private bool _isSeatSystemInitialize;
 
         public void Initialize(int startPrice, Queue<Point> wayPoint)
         {
@@ -34,6 +40,8 @@ namespace Tables
             _beerTaker = GetComponentInChildren<BeerTaker>();
             _inventory = GetComponentInChildren<SeatInventory>();
             _seat.InventoryFulling += SwitchCheckHits;
+            _tableInteractionMode = GetComponentInChildren<TableInteractionMode>();   
+            _coinManager = GetComponentInChildren<CoinManager>();
         }
 
         public void SwitchCheckHits()
@@ -46,19 +54,37 @@ namespace Tables
 
         public void InitializeBeerTaker()
         {
-            if (_beerTaker != null)
+            if (_beerTaker != null && _tableInteractionMode != null)
+            {
                 _beerTaker.Initialize(_inventory, _waiterLayer);
+                _tableInteractionMode.Initialize();
+                _isBeerTakerInitialize = true;
+            }
+        }
+
+        public void InitializeCoinManager(PropsSpawner propsSpawner)
+        {
+            if (_coinManager != null && _isBeerTakerInitialize)
+            {
+                _coinManager.Initialize(propsSpawner);
+                _isCoinManagerInitialize = true;
+            }
+                
         }
 
         public void InitializeSeatSystem(IPropsPool propsPool)
         {
-            if (_seat != null)
-                _seat.Initialize(_wayPoints, _visitorLayer, _inventory, propsPool, _resetDelay);
+            if (_seat != null && _beerTaker != null && _isCoinManagerInitialize && _isBeerTakerInitialize)
+            {
+                _seat.Initialize(_coinManager.GetIProps(), _tableInteractionMode, _wayPoints, _visitorLayer, _inventory, propsPool, _resetDelay);
+                _isSeatSystemInitialize = true;
+            }
+                
         }
 
         public void CheckHits()
         {
-            if (_seat == null && _beerTaker == null) return;
+            if (_seat == null && _beerTaker == null && _coinManager == null ) return;
 
             if (_isBuilding && _isTakeEnable)
             {
@@ -66,7 +92,7 @@ namespace Tables
             }
 
             _seat.CheckHits();
-
+            _coinManager.CheckHits();
         }
 
         public void ReducePrice(int step)

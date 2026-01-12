@@ -12,21 +12,22 @@ namespace Characters
 {
     public class GuestTaker : MonoBehaviour, IPropsMover
     {
-         private List<Point> _points = new List<Point>();
-    
-    
+        private List<Point> _points = new List<Point>();
+        public PropsType Type => throw new NotImplementedException();
+
+
         private void OnTriggerEnter(Collider other)
         {
             if (other.TryGetComponent(out TavernVisitor guest))
             {
-              //  guest.InteractWithGuard(_points[0].transform);
+                //  guest.InteractWithGuard(_points[0].transform);
             }
         }
 
 
         public void Initialize(string sourceId, IPropsPool barrelPool)
         {
-            
+
         }
 
 
@@ -36,12 +37,12 @@ namespace Characters
             {
                 var point = ObjectFactory.CreateObjectWithComponent<Point>("Point" + i);
                 point.transform.parent = transform;
-                point.transform.localPosition =  Vector3.up * (i* offset);
+                point.transform.localPosition = Vector3.up * (i * offset);
                 point.Free();
                 _points.Add(point);
             }
         }
-        
+
         public int GetEmptyPointsCount()
         {
             var index = 0;
@@ -65,6 +66,8 @@ namespace Characters
         }
 
         public UnityAction<bool> Fulling { get; set; }
+
+
         public IEnumerator FillingPoints()
         {
             throw new NotImplementedException();

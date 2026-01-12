@@ -23,6 +23,7 @@ namespace Beers
         private bool _isEmpty = true;
         private string _sourceId;
 
+        public PropsType Type => PropsType.Barrel;
 
         public void Initialize(string sourceId, IPropsPool barrelPool, Point barrelFinishPoint, float delayBarrelReset)
         {

@@ -12,10 +12,12 @@ namespace Characters
         public bool IsFull { get; private set; }
         public int Amount => _points.Count;
 
+        public PropsType Type => _currentType;
+
         private List<Point> _points = new List<Point>();
         private Stack<IProps> _incomingProps = new Stack<IProps>();
         private Stack<IProps> _carriedProps = new Stack<IProps>();
-        
+        private PropsType _currentType;        
 
         private int _index;
 
@@ -29,13 +31,22 @@ namespace Characters
                 point.Free();
                 _points.Add(point);
             }
+            _currentType = PropsType.None;
         }
 
         public void RegisterProps(IPropsMover regulating)
         {
             if (regulating == null) return;
 
-            _incomingProps = regulating.GetTo(GetEmptyPointsCount());
+            if(_currentType == PropsType.None)
+                _currentType = regulating.Type;
+
+            _incomingProps = regulating.GetTo(GetEmptyPointsCount());            
+        }
+
+        public bool CanAccept(PropsType type)
+        {
+            return _currentType == PropsType.None || _currentType == type;
         }
 
         public int GetEmptyPointsCount()
@@ -84,6 +95,7 @@ namespace Characters
                     _points[_index].Free();
                 }
             }
+            Debug.Log(_currentType.ToString() + "“»œ –” » ŒÚ‰‡˛");
 
             if (_carriedProps.Count == 0)
             {
@@ -91,12 +103,13 @@ namespace Characters
                 _index = 0;
                 ResetPoints();
             }
-
+            Debug.Log(_currentType.ToString() + "“»œ –” » ŒÚ‰‡Î");
             return result;
         }
 
         private void ResetPoints()
         {
+            _currentType = PropsType.None;
             foreach (var point in _points)
             {
                 point.Free();

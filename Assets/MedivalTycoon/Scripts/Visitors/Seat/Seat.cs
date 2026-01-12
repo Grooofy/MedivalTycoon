@@ -1,9 +1,11 @@
 ﻿using Events;
 using MedivalTycoon;
+using Money;
 using SeatSyst;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Tables;
 using UnityEngine;
 using Visitors;
 
@@ -11,22 +13,26 @@ public class Seat : MonoBehaviour
 {
     public Action InventoryFulling;
     private SeatPoint _seatPoint;
+    private IPropsMover _coinBuffer;    
     private TavernVisitor _visitor;
     private SeatInventory _inventory;
     private SeatUI _seatUI;
     private float _pointDistance = 0.1f;
     private int _beerDisplayAmount;
+    private int _pointAmount;
     private Coroutine _beerReset;
     private Queue<Point> _wayPoints;
     private bool _isEmpty = true;
     
 
-    public void Initialize(Queue<Point> wayPoint, LayerMask visitorMask, SeatInventory seatInventory, IPropsPool beerPool, float resetDelay)
+    public void Initialize(IPropsMover coinBuffer, TableInteractionMode tableInteractionMode, Queue<Point> wayPoint, LayerMask visitorMask, SeatInventory seatInventory, IPropsPool beerPool, float resetDelay)
     {
+        _coinBuffer = coinBuffer;  
+
         _wayPoints = wayPoint;
 
         _inventory = seatInventory;
-        _inventory.Initialize(beerPool, resetDelay);
+        _inventory.Initialize(tableInteractionMode, beerPool, resetDelay);
 
         _seatPoint = GetComponentInChildren<SeatPoint>();
         _seatUI = GetComponentInChildren<SeatUI>();
@@ -41,11 +47,12 @@ public class Seat : MonoBehaviour
 
     public void VisitorSet(TavernVisitor visitor)
     {
-        Debug.Log($"[Seat] {name} - посетитель {visitor.name} сел.");
         _visitor = visitor;
         _visitor.LeavingTavern += LeaveTavern;
         _beerDisplayAmount = _visitor.BeerAmount;
+        _pointAmount = _visitor.BeerAmount / 2;
         _inventory.CreatePoints(_beerDisplayAmount, _pointDistance);
+        _coinBuffer.CreatePoints(_pointAmount, _pointDistance);
         _seatUI.UpdateBeerDisplay(_beerDisplayAmount); 
         _isEmpty = false;
     }
@@ -76,14 +83,12 @@ public class Seat : MonoBehaviour
 
         _isEmpty = true;
         _visitor = null;        
-    }
-
-  
-  
+    }  
 
     private void SwitchVisitorSleep()
     {
         _visitor.ChangeState(StateEvent.Sleep);
+         StartCoroutine(_coinBuffer.FillingPoints());
     }
 
 

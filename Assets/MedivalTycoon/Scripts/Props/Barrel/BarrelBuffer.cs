@@ -8,6 +8,9 @@ using UnityEngine;
 public class BarrelBuffer : MonoBehaviour, IPropsMover
 {
     public bool IsTake { get; set; }
+
+    public PropsType Type => PropsType.Barrel;
+
     private Queue<IProps> _props = new Queue<IProps>();
     private Stack<IProps> _pointsProps = new Stack<IProps>();
     private SpawnerPoints _spawnerPoints = new SpawnerPoints();

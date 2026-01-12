@@ -17,7 +17,6 @@ namespace Beers
         {
             _regulating = regulating;
             _handLayer = handLayer;
-           
         }
 
         public void CheckHits()
@@ -54,6 +53,11 @@ namespace Beers
 
                 _currentHand = null;
             }
+        }
+
+        public void SetActiveGameObject(bool value)
+        {
+            gameObject.SetActive(value);
         }
 
 #if UNITY_EDITOR
