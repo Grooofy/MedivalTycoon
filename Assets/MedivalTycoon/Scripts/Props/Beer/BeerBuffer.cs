@@ -17,7 +17,7 @@ public class BeerBuffer : MonoBehaviour, IPropsMover
     public PropsType Type => PropsType.Beer;
 
     private List<Point> _points = new List<Point>();
-    private SpawnerPoints _spawnerPoints = new  SpawnerPoints();
+    private SpawnerPoints _spawnerPoints = new SpawnerPoints();
     private Stack<IProps> _props = new Stack<IProps>();
     private Stack<IProps> _pointsProps = new Stack<IProps>();
     private int _index;
@@ -71,24 +71,26 @@ public class BeerBuffer : MonoBehaviour, IPropsMover
         {
             if (point.IsFill == false) index++;
         }
-        
+
         return index;
     }
 
     private void StartFilingPoints(BeerCreated beerCreated)
     {
-        if (_isFilling) return; 
+        if (_isFilling) return;
 
         _filingCoroutine = StartCoroutine(FillingPoints());
     }
-    
+
     public IEnumerator FillingPoints()
     {
+
+
+
         while (_isFull == false && _currentCountBeerPoint > 0)
         {
             _isFilling = true;
-
-            var prop = _beerPool.Spawn();
+            var prop = _props.Peek();
 
             StartCoroutine(prop.TryMoveTo(_points[_index]));
 
@@ -96,7 +98,7 @@ public class BeerBuffer : MonoBehaviour, IPropsMover
             _index++;
             _beerMachineAnimation.PlayAnimation();
             _currentCountBeerPoint--;
-            
+
             if (_index >= _amountPoint)
                 _isFull = true;
             yield return WaitFor.QuarterSecond;
@@ -115,7 +117,7 @@ public class BeerBuffer : MonoBehaviour, IPropsMover
         for (int i = 0; i < itemsToTake; i++)
         {
             _pointsProps.TryPop(out var prop);
-           
+
             result.Push(prop);
 
             if (_index >= 0)
@@ -124,7 +126,7 @@ public class BeerBuffer : MonoBehaviour, IPropsMover
                 _points[_index].Free();
                 _isFull = false;
             }
-            
+
             if (_pointsProps.Count == 0)
             {
                 _index = 0;
@@ -141,7 +143,7 @@ public class BeerBuffer : MonoBehaviour, IPropsMover
             point.Free();
         }
     }
-    
+
     private void OnDestroy()
     {
         EventBus.Unsubscribe<BeerCreated>(StartFilingPoints);

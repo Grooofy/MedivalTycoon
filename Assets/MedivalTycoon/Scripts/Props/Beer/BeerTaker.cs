@@ -10,7 +10,7 @@ namespace Beers
         private Hand _currentHand;
         private Coroutine _activeCoroutine;
 
-        private float _detectionRadius = 0.35f;
+        private float _detectionRadius = 0.25f;
         private bool _hasGiven = false;
 
         public void Initialize(IPropsMover regulating, LayerMask handLayer)
