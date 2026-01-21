@@ -10,7 +10,7 @@ namespace Beers
         private Hand _currentHand;
         private Coroutine _activeCoroutine;
 
-        private float _detectionRadius = 0.25f;
+        private float _detectionRadius = 0.35f;
         private bool _hasGiven = false;
 
         public void Initialize(IPropsMover regulating, LayerMask handLayer)
@@ -31,16 +31,17 @@ namespace Beers
 
                     if (hit.TryGetComponent(out Hand hand))
                     {
-                        _currentHand = hand;
-                        
-                        var amount = Mathf.Min(_currentHand.Amount - _currentHand.GetEmptyPointsCount(), _regulating.GetEmptyPointsCount());
-                        var props = _currentHand.GetTo(amount);
-
-                        if (props == null || props.Count == 0) return;
-                        Debug.Log(amount + " КОЛИЧЕСтВО");
-                        _regulating.RegisterProps(props);
-                        _activeCoroutine = StartCoroutine(_regulating.FillingPoints());
-                        _hasGiven = true;
+                        if (hand.CanAccept(_regulating.Type))
+                        {
+                            _currentHand = hand;
+                            var amount = Mathf.Min(_currentHand.Amount - _currentHand.GetEmptyPointsCount(), _regulating.GetEmptyPointsCount());
+                            var props = _currentHand.GetTo(amount);
+                            if (props == null || props.Count == 0) return;
+                            _regulating.RegisterProps(props);
+                            _activeCoroutine = StartCoroutine(_regulating.FillingPoints());
+                            _hasGiven = true;
+                        }
+                            
                     }                   
                 }
             }

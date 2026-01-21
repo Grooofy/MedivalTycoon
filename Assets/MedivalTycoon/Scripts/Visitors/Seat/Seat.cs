@@ -17,7 +17,7 @@ public class Seat : MonoBehaviour
     private TavernVisitor _visitor;
     private SeatInventory _inventory;
     private SeatUI _seatUI;
-    private float _pointDistance = 0.1f;
+    private float _pointDistance = 0.07f;
     private int _beerDisplayAmount;
     private int _pointAmount;
     private Coroutine _beerReset;

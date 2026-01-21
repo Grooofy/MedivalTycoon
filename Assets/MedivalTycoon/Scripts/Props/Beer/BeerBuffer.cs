@@ -1,10 +1,11 @@
+using Beers;
+using Events;
+using MedivalTycoon;
+using Propses;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Events;
-using MedivalTycoon;
-using Propses;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
@@ -83,29 +84,49 @@ public class BeerBuffer : MonoBehaviour, IPropsMover
     }
 
     public IEnumerator FillingPoints()
-    {
-
-
-
-        while (_isFull == false && _currentCountBeerPoint > 0)
+    {       
+        if(_props.Count == 0)
         {
-            _isFilling = true;
-            var prop = _props.Peek();
+            while (_isFull == false && _currentCountBeerPoint > 0)
+            {
+                _isFilling = true;
+                var prop = _beerPool.Spawn();
 
-            StartCoroutine(prop.TryMoveTo(_points[_index]));
+                StartCoroutine(prop.TryMoveTo(_points[_index]));
 
-            _pointsProps.Push(prop);
-            _index++;
-            _beerMachineAnimation.PlayAnimation();
-            _currentCountBeerPoint--;
+                _pointsProps.Push(prop);
+                _index++;
+                _beerMachineAnimation.PlayAnimation();
+                _currentCountBeerPoint--;
 
-            if (_index >= _amountPoint)
-                _isFull = true;
-            yield return WaitFor.QuarterSecond;
+                if (_index >= _amountPoint)
+                    _isFull = true;
+                yield return WaitFor.QuarterSecond;
+            }
+            _isFilling = false;
+            _filingCoroutine = null;
+            _currentCountBeerPoint = _startAmountBeerToBarrel;
         }
-        _isFilling = false;
-        _filingCoroutine = null;
-        _currentCountBeerPoint = _startAmountBeerToBarrel;
+        else
+        {
+            while (_isFull == false && _props.Count > 0)
+            {
+                _props.TryPop(out var props);
+                if (props == null) break;
+
+                StartCoroutine(props.TryMoveTo(_points[_index]));
+
+                _pointsProps.Push(props);
+                _index++;
+
+                if (_index >= _amountPoint)
+                {
+                    _index = _amountPoint;
+                    _isFull = true;
+                }
+                yield return WaitFor.TenthSecond;
+            }
+        }        
     }
 
 

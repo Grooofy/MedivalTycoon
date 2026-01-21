@@ -23,7 +23,7 @@ namespace Tables
         private Seat _seat;
         private BeerTaker _beerTaker;
         private TableInteractionMode _tableInteractionMode;
-        private CoinManager _coinManager;
+        private TableCoinBufferSystem _coinManager;
         private SeatInventory _inventory;
         private bool _isBuilding;
         private bool _isTakeEnable;
@@ -41,7 +41,7 @@ namespace Tables
             _inventory = GetComponentInChildren<SeatInventory>();
             _seat.InventoryFulling += SwitchCheckHits;
             _tableInteractionMode = GetComponentInChildren<TableInteractionMode>();   
-            _coinManager = GetComponentInChildren<CoinManager>();
+            _coinManager = GetComponentInChildren<TableCoinBufferSystem>();
         }
 
         public void SwitchCheckHits()

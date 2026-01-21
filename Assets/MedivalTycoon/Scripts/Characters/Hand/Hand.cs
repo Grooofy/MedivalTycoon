@@ -46,6 +46,7 @@ namespace Characters
 
         public bool CanAccept(PropsType type)
         {
+            Debug.Log(type.ToString());
             return _currentType == PropsType.None || _currentType == type;
         }
 
@@ -95,7 +96,6 @@ namespace Characters
                     _points[_index].Free();
                 }
             }
-            Debug.Log(_currentType.ToString() + "“»œ –” » ŒÚ‰‡˛");
 
             if (_carriedProps.Count == 0)
             {
@@ -103,7 +103,6 @@ namespace Characters
                 _index = 0;
                 ResetPoints();
             }
-            Debug.Log(_currentType.ToString() + "“»œ –” » ŒÚ‰‡Î");
             return result;
         }
 

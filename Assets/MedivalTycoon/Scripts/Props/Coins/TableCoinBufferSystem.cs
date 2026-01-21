@@ -6,10 +6,8 @@ using UnityEngine;
 
 namespace Money
 {
-    public class CoinManager : MonoBehaviour
-    {
-        [Header("Coin ColumeSpawnPointSize")]        
-        [SerializeField] private float _spacing;
+    public class TableCoinBufferSystem : MonoBehaviour
+    {   
         [SerializeField] private CoinBuffer _coinBuffer;
         [SerializeField] private CoinGiver _coinGiver;
         
