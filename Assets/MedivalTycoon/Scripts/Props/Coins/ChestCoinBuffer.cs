@@ -45,12 +45,10 @@ public class ChestCoinBuffer : MonoBehaviour, IPropsMover
             if (props == null) break;
 
             StartCoroutine(props.TryMoveTo(_finishPoint));
-
-            _finishPoint.Free();
-            props.Reset();
+            yield return WaitFor.QuarterSecond;   
             _coinPool.Despawn(props);
-
-            yield return WaitFor.TenthSecond;
+            props.Reset();
+            _finishPoint.Free();
         }
     }
 
