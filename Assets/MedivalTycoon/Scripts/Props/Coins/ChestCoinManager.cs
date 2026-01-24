@@ -10,6 +10,7 @@ public class ChestCoinManager : MonoBehaviour
     [SerializeField] private CoinTaker _coinTaker;
     [SerializeField] private PropsSpawner _propsSpawner;
     [SerializeField] private Point _finishPoint;
+    [SerializeField] private Wallet _wallet;
 
     [SerializeField] private LayerMask _layerMask;
 
@@ -19,7 +20,7 @@ public class ChestCoinManager : MonoBehaviour
     public void Initialize()
     {
         _coinsPool = _propsSpawner.GetCoinPool();
-        _chestCoinBuffer.Initialize(_coinsPool, _finishPoint);
+        _chestCoinBuffer.Initialize(_coinsPool, _finishPoint, _wallet);
         _coinTaker.Initialize(_chestCoinBuffer, _layerMask);
     }        
 

@@ -72,7 +72,7 @@ namespace Money
                 {
                     _isFull = true;
                 }
-                yield return WaitFor.HalfSecond;
+                yield return WaitFor.QuarterSecond;
             }
         }
 

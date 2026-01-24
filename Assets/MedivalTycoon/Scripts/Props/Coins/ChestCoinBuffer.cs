@@ -14,15 +14,17 @@ public class ChestCoinBuffer : MonoBehaviour, IPropsMover
     private IPropsPool _coinPool;
     private Stack<IProps> _props = new Stack<IProps>();
     private Point _finishPoint;
+    private Wallet _wallet;
 
     public PropsType Type => PropsType.Coin;
 
 
 
-    internal void Initialize(IPropsPool coinsPool, Point finishPoint)
+    internal void Initialize(IPropsPool coinsPool, Point finishPoint, Wallet wallet)
     {
         _coinPool = coinsPool;
         _finishPoint = finishPoint;
+        _wallet = wallet;
     }
 
     public void RegisterProps(Stack<IProps> props)
@@ -45,7 +47,8 @@ public class ChestCoinBuffer : MonoBehaviour, IPropsMover
             if (props == null) break;
 
             StartCoroutine(props.TryMoveTo(_finishPoint));
-            yield return WaitFor.QuarterSecond;   
+            _wallet.StartAddCoins(30);
+            yield return WaitFor.QuarterSecond;
             _coinPool.Despawn(props);
             props.Reset();
             _finishPoint.Free();
