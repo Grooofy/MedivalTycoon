@@ -20,7 +20,7 @@ public class ChestCoinBuffer : MonoBehaviour, IPropsMover
 
 
 
-    internal void Initialize(IPropsPool coinsPool, Point finishPoint, Wallet wallet)
+    internal void Initialize(int coinPrice, IPropsPool coinsPool, Point finishPoint, Wallet wallet)
     {
         _coinPool = coinsPool;
         _finishPoint = finishPoint;
@@ -47,13 +47,14 @@ public class ChestCoinBuffer : MonoBehaviour, IPropsMover
             if (props == null) break;
 
             StartCoroutine(props.TryMoveTo(_finishPoint));
-            _wallet.StartAddCoins(30);
+            _wallet.StartAddCoins(10);
             yield return WaitFor.QuarterSecond;
             _coinPool.Despawn(props);
             props.Reset();
             _finishPoint.Free();
         }
     }
+
 
     public void CreatePoints(int cout, float offset, Vector3 spaceSize = default)
     {

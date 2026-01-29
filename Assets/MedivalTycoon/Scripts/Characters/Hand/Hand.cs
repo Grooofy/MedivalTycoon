@@ -46,7 +46,6 @@ namespace Characters
 
         public bool CanAccept(PropsType type)
         {
-            Debug.Log(type.ToString());
             return _currentType == PropsType.None || _currentType == type;
         }
 

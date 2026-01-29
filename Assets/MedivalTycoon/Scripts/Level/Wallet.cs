@@ -60,7 +60,9 @@ public class Wallet : MonoBehaviour
 
     private IEnumerator AddedCoins(int number)
     {
-        while (_coins != number)
+        int sum = _coins + number;
+
+        while (_coins != sum)
         {            
             _coins += _step;
             CoinsChanged?.Invoke(_coins);

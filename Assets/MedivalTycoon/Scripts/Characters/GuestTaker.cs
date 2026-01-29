@@ -12,6 +12,7 @@ namespace Characters
 {
     public class GuestTaker : MonoBehaviour, IPropsMover
     {
+        public UnityAction<bool> Fulling { get; set; }
         private List<Point> _points = new List<Point>();
         public PropsType Type => throw new NotImplementedException();
 
@@ -65,7 +66,6 @@ namespace Characters
             throw new NotImplementedException();
         }
 
-        public UnityAction<bool> Fulling { get; set; }
 
 
         public IEnumerator FillingPoints()

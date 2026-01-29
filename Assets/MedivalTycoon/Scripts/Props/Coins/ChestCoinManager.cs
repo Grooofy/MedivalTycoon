@@ -11,7 +11,8 @@ public class ChestCoinManager : MonoBehaviour
     [SerializeField] private PropsSpawner _propsSpawner;
     [SerializeField] private Point _finishPoint;
     [SerializeField] private Wallet _wallet;
-
+    [SerializeField] private int _coinPrice;
+     
     [SerializeField] private LayerMask _layerMask;
 
     private IPropsPool _coinsPool;
@@ -20,7 +21,7 @@ public class ChestCoinManager : MonoBehaviour
     public void Initialize()
     {
         _coinsPool = _propsSpawner.GetCoinPool();
-        _chestCoinBuffer.Initialize(_coinsPool, _finishPoint, _wallet);
+        _chestCoinBuffer.Initialize(_coinPrice, _coinsPool, _finishPoint, _wallet);
         _coinTaker.Initialize(_chestCoinBuffer, _layerMask);
     }        
 

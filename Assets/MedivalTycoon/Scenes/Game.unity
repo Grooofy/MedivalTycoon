@@ -23337,6 +23337,7 @@ MonoBehaviour:
   _propsSpawner: {fileID: 1100382900}
   _finishPoint: {fileID: 728289237}
   _wallet: {fileID: 1888693656}
+  _coinPrice: 10
   _layerMask:
     serializedVersion: 2
     m_Bits: 128
@@ -62293,7 +62294,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 107.5
+  m_fontSize: 100.85
   m_fontSizeBase: 90
   m_fontWeight: 400
   m_enableAutoSizing: 1

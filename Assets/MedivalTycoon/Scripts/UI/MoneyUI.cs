@@ -21,7 +21,6 @@ public class MoneyUI : MonoBehaviour
     
     private void ShowTextMoney(int number)
     {
-        Debug.Log(number + "Стартуем!!");
         _moneyText.text = number.ToString();
     }
     
