@@ -96,7 +96,7 @@ namespace Characters
                 }
             }
 
-            if (_carriedProps.Count == 0)
+            if (_index <= 0)
             {
                 IsFull = false;
                 _index = 0;
@@ -117,6 +117,11 @@ namespace Characters
         
         public void RegisterProps(Stack<IProps> props)
         {
+        }
+
+        private void Update()
+        {
+            Debug.Log(_currentType.ToString() + " “»п в руках");
         }
     }
 

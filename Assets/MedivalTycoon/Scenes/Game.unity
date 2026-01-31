@@ -24203,7 +24203,6 @@ GameObject:
   - component: {fileID: 901085700}
   - component: {fileID: 901085699}
   - component: {fileID: 901085698}
-  - component: {fileID: 901085703}
   - component: {fileID: 901085704}
   m_Layer: 5
   m_Name: Exit
@@ -24329,18 +24328,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!114 &901085703
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 901085696}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc0cb217b10c1174eb7a6226af5e7a34, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &901085704
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -62296,7 +62283,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 100.85
+  m_fontSize: 109.1
   m_fontSizeBase: 90
   m_fontWeight: 400
   m_enableAutoSizing: 1

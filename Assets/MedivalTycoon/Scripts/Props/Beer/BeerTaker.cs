@@ -34,7 +34,7 @@ namespace Beers
                         if (hand.CanAccept(_regulating.Type))
                         {
                             _currentHand = hand;
-                            var amount = Mathf.Min(_currentHand.Amount - _currentHand.GetEmptyPointsCount(), _regulating.GetEmptyPointsCount());
+                            var amount = Mathf.Min(_currentHand.Amount, _regulating.GetEmptyPointsCount());
                             var props = _currentHand.GetTo(amount);
                             if (props == null || props.Count == 0) return;
                             _regulating.RegisterProps(props);
