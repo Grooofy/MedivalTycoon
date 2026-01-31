@@ -4312,7 +4312,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b95135f9ebee4bd6bcde540f3b1f2660, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _barrelCollider: {fileID: 3399816450162927344}
+  _bartenderLayer:
+    serializedVersion: 2
+    m_Bits: 64
   _barrelAnimator: {fileID: 1780939514}
   _barrelGroundUI: {fileID: 307822172}
   _leverGetBarrel: {fileID: 3399816450162927343}
@@ -7117,7 +7119,7 @@ GameObject:
   - component: {fileID: 307822169}
   - component: {fileID: 307822168}
   - component: {fileID: 307822172}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: LeverPressed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -32848,7 +32850,7 @@ GameObject:
   - component: {fileID: 1208881475}
   - component: {fileID: 1208881477}
   - component: {fileID: 1208881476}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Background (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43084,7 +43086,7 @@ GameObject:
   - component: {fileID: 1387936508}
   - component: {fileID: 1387936510}
   - component: {fileID: 1387936509}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -54465,7 +54467,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1780939513}
   - component: {fileID: 1780939514}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LeverPivor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64711,8 +64713,7 @@ GameObject:
   - component: {fileID: 3399816450159787730}
   - component: {fileID: 3399816450160840594}
   - component: {fileID: 3399816450162927343}
-  - component: {fileID: 3399816450162927344}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Lever
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64731,27 +64732,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11074572023c16941b826aea498f7b8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!135 &3399816450162927344
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3399816450162927342}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.27
-  m_Center: {x: 0.15, y: 0.08847615, z: -0.18}
 --- !u!4 &4018178967378478957
 Transform:
   m_ObjectHideFlags: 0
@@ -64778,7 +64758,7 @@ GameObject:
   - component: {fileID: 4018178967378478957}
   - component: {fileID: 4018178967381934401}
   - component: {fileID: 4018178967380894071}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Wep_Tonfa_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -43,12 +43,7 @@ public class BarrelGiver : MonoBehaviour
         }
         else if (_currentHand != null)
         {
-            if (_activeCoroutine != null)
-            {
-                StopCoroutine(_activeCoroutine);
-                _activeCoroutine = null;
-            }
-
+            _activeCoroutine = null;
             _currentHand = null;
         }
     }

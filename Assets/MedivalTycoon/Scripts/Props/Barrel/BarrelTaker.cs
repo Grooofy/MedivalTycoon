@@ -34,8 +34,9 @@ public class BarrelTaker : MonoBehaviour
                     var props = _currentHand.GetTo(amount);
 
                     if (props == null || props.Count == 0) return;
-                    _regulating.RegisterProps(props);
-                    _activeCoroutine = StartCoroutine(_regulating.FillingPoints());
+
+                    _regulating.RegisterProps(props);                    
+                    _activeCoroutine = StartCoroutine(_regulating.FillingPoints());                   
                     _hasGiven = true;
                 }
             }

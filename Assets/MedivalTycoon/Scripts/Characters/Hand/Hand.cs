@@ -10,7 +10,7 @@ namespace Characters
     public class Hand : MonoBehaviour, IPropsMover
     {
         public bool IsFull { get; private set; }
-        public int Amount => _points.Count;
+        public int Amount => _carriedProps.Count;
 
         public PropsType Type => _currentType;
 
@@ -41,7 +41,7 @@ namespace Characters
             if(_currentType == PropsType.None)
                 _currentType = regulating.Type;
 
-            _incomingProps = regulating.GetTo(GetEmptyPointsCount());            
+            _incomingProps = regulating.GetTo(GetEmptyPointsCount());
         }
 
         public bool CanAccept(PropsType type)
@@ -117,6 +117,8 @@ namespace Characters
         
         public void RegisterProps(Stack<IProps> props)
         {
-        }       
+        }
     }
+
+    
 }
