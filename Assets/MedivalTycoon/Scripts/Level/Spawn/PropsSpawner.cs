@@ -37,9 +37,7 @@ public class PropsSpawner : MonoBehaviour
     {
         if (_currentCoinPool == null)
             _currentCoinPool = _coinPool.Initialize(_defaultSize, _maxSize);
-        else
-            Debug.Log("Не нашел");
-
+       
         return _currentCoinPool;
     }
 }

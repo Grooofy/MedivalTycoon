@@ -17,5 +17,5 @@ MonoBehaviour:
   _icon: {fileID: 844749381, guid: 630379eb11493114aa2ecae28f362d4f, type: 3}
   _id: 2
   _numberWearableObjects: 10
-  _distanceBetweenPoints: 0.1
+  _distanceBetweenPoints: 0.12
   IsSelect: 0

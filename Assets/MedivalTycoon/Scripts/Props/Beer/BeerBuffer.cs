@@ -28,15 +28,13 @@ public class BeerBuffer : MonoBehaviour, IPropsMover
     private int _amountPoint;
     private int _startAmountBeerToBarrel;
     private int currentAmountBeerToBarrel;
-    private string _sourceId;
     private Coroutine _filingCoroutine;
     private IPropsPool _beerPool;
     private BeerMachineAnimation _beerMachineAnimation;
 
 
-    public void Initialize(string sourceId, IPropsPool beerPool, int amountBeerToBarrel)
+    public void Initialize( IPropsPool beerPool, int amountBeerToBarrel)
     {
-        _sourceId = sourceId;
         _beerPool = beerPool;
         _startAmountBeerToBarrel = amountBeerToBarrel;
         _currentCountBeerPoint = _startAmountBeerToBarrel;

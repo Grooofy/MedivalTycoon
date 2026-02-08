@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using MedivalTycoon;
 using Propses;
 using UnityEngine;
 
@@ -117,13 +115,6 @@ namespace Characters
         
         public void RegisterProps(Stack<IProps> props)
         {
-        }
-
-        private void Update()
-        {
-            Debug.Log(_currentType.ToString() + " “»п в руках");
-        }
+        }       
     }
-
-    
 }

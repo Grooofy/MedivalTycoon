@@ -66,7 +66,7 @@ namespace Tables
         {
             if (_coinManager != null && _isBeerTakerInitialize)
             {
-                _coinManager.Initialize(propsSpawner);
+                _coinManager.Initialize(propsSpawner, _tableInteractionMode);
                 _isCoinManagerInitialize = true;
             }
                 
@@ -76,7 +76,7 @@ namespace Tables
         {
             if (_seat != null && _beerTaker != null && _isCoinManagerInitialize && _isBeerTakerInitialize)
             {
-                _seat.Initialize(_coinManager.GetIProps(), _tableInteractionMode, _wayPoints, _visitorLayer, _inventory, propsPool, _resetDelay);
+                _seat.Initialize(_coinManager.GetCoinBuffer(), _tableInteractionMode, _wayPoints, _visitorLayer, _inventory, propsPool, _resetDelay);
                 _isSeatSystemInitialize = true;
             }
                 

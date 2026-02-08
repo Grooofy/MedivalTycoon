@@ -16,14 +16,14 @@ namespace Money
         private IPropsPool _coinsPool;
 
 
-        public void Initialize(PropsSpawner propsSpawner)
+        public void Initialize(PropsSpawner propsSpawner, TableInteractionMode tableInteractionMode)
         {
             _coinsPool = propsSpawner.GetCoinPool();
-            _coinBuffer.Initialize(_coinsPool);           
+            _coinBuffer.Initialize(_coinsPool, tableInteractionMode);           
             _coinGiver.Initialize(_coinBuffer, _layerMask);
         }     
         
-        public IPropsMover GetIProps()
+        public CoinBuffer GetCoinBuffer()
         {
             return _coinBuffer;
         }

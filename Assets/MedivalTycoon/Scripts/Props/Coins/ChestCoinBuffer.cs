@@ -18,8 +18,6 @@ public class ChestCoinBuffer : MonoBehaviour, IPropsMover
 
     public PropsType Type => PropsType.Coin;
 
-
-
     internal void Initialize(int coinPrice, IPropsPool coinsPool, Point finishPoint, Wallet wallet)
     {
         _coinPool = coinsPool;
@@ -47,7 +45,7 @@ public class ChestCoinBuffer : MonoBehaviour, IPropsMover
             if (props == null) break;
 
             StartCoroutine(props.TryMoveTo(_finishPoint));
-            _wallet.StartAddCoins(10);
+            _wallet.StartAddCoins(10);                                       //Вынести цену за ОДИН КОШЕЛЬ
             yield return WaitFor.QuarterSecond;
             _coinPool.Despawn(props);
             props.Reset();

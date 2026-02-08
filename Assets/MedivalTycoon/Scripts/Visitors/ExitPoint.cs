@@ -1,10 +1,15 @@
 using Events;
+using Propses;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Visitors;
 
 public class ExitPoint : MonoBehaviour
 {
+    public PropsType Type => PropsType.Visitor;
     private LayerMask _visitorsLayer;
+    private Point _point;
     private TavernVisitor _currentVisitor;
     private float _detectionRadius = 0.05f;
     private bool _hasGiven = false;
@@ -14,12 +19,21 @@ public class ExitPoint : MonoBehaviour
     public void Initialize(LayerMask visitorMask)
     {
         _visitorsLayer = visitorMask;
+        _point = GetComponent<Point>();
         _isInitialize = true;
     }
 
     public Vector3 GetPosition()
     {
         return transform.position;
+    }
+
+    public Point GetPoint()
+    {
+        if (_point != null) 
+            return _point;
+        else
+            return null;
     }
 
 
@@ -36,9 +50,9 @@ public class ExitPoint : MonoBehaviour
                 if (_hasGiven) break;
 
                 if (hit.TryGetComponent(out TavernVisitor visitor))
-                {          
+                {
                     _currentVisitor = visitor;
-                   _currentVisitor.gameObject.SetActive(false);
+                    _currentVisitor.gameObject.SetActive(false);
                     _currentVisitor.ClearPoint();
                 }
             }
@@ -56,6 +70,8 @@ public class ExitPoint : MonoBehaviour
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, _detectionRadius);
-    }
+    }   
 #endif
+
+
 }

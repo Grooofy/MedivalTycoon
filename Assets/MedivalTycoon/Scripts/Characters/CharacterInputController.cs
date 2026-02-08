@@ -23,6 +23,7 @@ namespace Characters
             _characters = characters;
             _currentCharacter = currentCharacter;
             _joystick = joystick;
+            InitializeCosAndSin();
         }
 
         public void SwitchCharacter(ICharacter character)
@@ -30,7 +31,7 @@ namespace Characters
             _currentCharacter = character;
         }
     
-        private void Start()
+        private void InitializeCosAndSin()
         {
             _cosX = Mathf.Cos(_angelOffset);
             _sinX = Mathf.Sin(_angelOffset);

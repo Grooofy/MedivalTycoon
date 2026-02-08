@@ -13,7 +13,8 @@ public class Seat : MonoBehaviour
 {
     public Action InventoryFulling;
     private SeatPoint _seatPoint;
-    private IPropsMover _coinBuffer;    
+    private CoinBuffer _coinBuffer;
+    private IPropsMover _visitorBuffer;
     private TavernVisitor _visitor;
     private SeatInventory _inventory;
     private SeatUI _seatUI;
@@ -25,7 +26,7 @@ public class Seat : MonoBehaviour
     private bool _isEmpty = true;
     
 
-    public void Initialize(IPropsMover coinBuffer, TableInteractionMode tableInteractionMode, Queue<Point> wayPoint, LayerMask visitorMask, SeatInventory seatInventory, IPropsPool beerPool, float resetDelay)
+    public void Initialize(CoinBuffer coinBuffer, TableInteractionMode tableInteractionMode, Queue<Point> wayPoint, LayerMask visitorMask, SeatInventory seatInventory, IPropsPool beerPool, float resetDelay)
     {
         _coinBuffer = coinBuffer;  
 
@@ -33,6 +34,7 @@ public class Seat : MonoBehaviour
 
         _inventory = seatInventory;
         _inventory.Initialize(tableInteractionMode, beerPool, resetDelay);
+        
 
         _seatPoint = GetComponentInChildren<SeatPoint>();
         _seatUI = GetComponentInChildren<SeatUI>();
@@ -80,7 +82,6 @@ public class Seat : MonoBehaviour
             _visitor.LeavingTavern -= LeaveTavern;
 
         EventBus.Raise(new SeatFreed(this));
-
         _isEmpty = true;
         _visitor = null;        
     }  

@@ -1,9 +1,11 @@
 using Events;
+using Propses;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Net;
+using System.Reflection;
 using UnityEngine;
-using UnityEngine.UI.Extensions;
-using UnityEngine.UIElements;
 
 namespace Visitors
 {
@@ -13,6 +15,8 @@ namespace Visitors
         public int BeerAmount { get; private set; }
         public Action LeavingTavern;
         public bool IsMoving;
+        private bool _isIpropsInit;
+
         private StateEvent _previousStateEvent;
         private StateEvent _currentStateEvent;
         private WaitTimerUI _fiilImage;
@@ -21,13 +25,17 @@ namespace Visitors
         private Stack<Vector3> _exitWay = new();
         private Queue<Vector3> _wayPoint;
         private StateMachine _stateMachine;
+        private Seat _seat;
+        private Beer _beerModel;
+        private VisitorProps _visitorProps;
+        private SleepVisitorMover _sleepVisitorMover;
+        private SleepVisitorGiver _sleepVisitorTaker;
+        private ParticleSystem _particleSystem;
+        private LayerMask layerMask;
         private int _minBeerAmount = 3;
         private int _maxBeerAmount;
         private float _speed;
         private float _maxWaitTime;
-        private Seat _seat;
-        private Beer _beerModel;
-        private ParticleSystem _particleSystem;
 
         public void Initialize(float speed, int maxBeerAmount, float maxWaitTime, Vector3 exitPoint)
         {
@@ -43,6 +51,17 @@ namespace Visitors
             _stateMachine.SetInitialState(new IdleState(this));
             _beerModel.gameObject.SetActive(false);
             AddTransitions();
+        }
+
+        public void InitializeIpropsVisitor(float speed, LayerMask layerMask)
+        {
+            _visitorProps = GetComponent<VisitorProps>();
+            _sleepVisitorMover = GetComponent<SleepVisitorMover>();
+            _sleepVisitorTaker = GetComponent<SleepVisitorGiver>();
+
+            _visitorProps.Initilization(this.transform, speed, Animator);
+            _sleepVisitorTaker.Initialize(_sleepVisitorMover, layerMask);
+            _isIpropsInit = true;
         }
 
         public void SetRandomAmountBeer()
@@ -91,10 +110,9 @@ namespace Visitors
                     {
                         IsMoving = false;
                     }                    
-                }
-                
+                }                
             }
-        }
+        }       
 
         private void RememberExitWay(Vector3 point)
         {
@@ -110,7 +128,9 @@ namespace Visitors
             _stateMachine.AddTransition<MoveState>(StateEvent.Wait, () => new WaitWaiterState(this, _fiilImage, _maxWaitTime, _exitWay));
             _stateMachine.AddTransition<WaitWaiterState>(StateEvent.Move, () => new MoveState(this));
             _stateMachine.AddTransition<WaitWaiterState>(StateEvent.Drink, () => new DrinkState(this, _beerModel));
-            _stateMachine.AddTransition<DrinkState>(StateEvent.Sleep, () => new SleepState(this, _particleSystem));
+            
+            if(_isIpropsInit)
+                _stateMachine.AddTransition<DrinkState>(StateEvent.Sleep, () => new SleepState(this, _particleSystem, _sleepVisitorMover, _visitorProps, _sleepVisitorTaker));
         }
 
         public void UpdateState()
@@ -128,6 +148,6 @@ namespace Visitors
 
             if (_currentStateEvent == StateEvent.Move && _previousStateEvent == StateEvent.Wait)
                 LeavingTavern?.Invoke();
-        }
+        }       
     }
 }

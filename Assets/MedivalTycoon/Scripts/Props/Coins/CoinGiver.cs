@@ -41,6 +41,7 @@ namespace Money
                             _currentHand.RegisterProps(_regulating);
                             _activeCoroutine = StartCoroutine(_currentHand.FillingPoints());
                         }
+                            
                     }
                 }
             }

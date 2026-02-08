@@ -7,12 +7,14 @@ namespace Lever
 {
     public class LeverGetBarrel : MonoBehaviour
     {
+        private static float DetectionRadius = 0.30f;
+        private static Vector3 Offset = new Vector3(0.2f, 0, -0.4f);
         private LayerMask _handLayer;
         private IPropsMover _regulating;
         private Coroutine _activeCoroutine;
         private GroundUI _uiObject;
 
-        private float _detectionRadius = 0.30f;
+        private Vector3 _position;
         private bool _hasGiven = false;
 
         public void Initialize(IPropsMover regulating, GroundUI uiObject, LayerMask layer)
@@ -20,12 +22,13 @@ namespace Lever
             _handLayer = layer;
             _regulating = regulating;
             _uiObject = uiObject;
+            _position = transform.position + Offset;
             EventBus.Subscribe<PropsMoverFullingPointEvent>(TurnObject);
         }
 
         public void CheckHits()
         {
-            Collider[] hits = Physics.OverlapSphere(transform.position, _detectionRadius, _handLayer);
+            Collider[] hits = Physics.OverlapSphere(_position, DetectionRadius, _handLayer);
 
             if (hits.Length > 0)
             {
@@ -75,59 +78,8 @@ namespace Lever
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(transform.position, _detectionRadius);
+            Gizmos.DrawWireSphere(_position, DetectionRadius);
         }
 #endif
-
-
-
     }
 }
-
-
-/*    Старый Вариант Удалить после проверки!!!
-    
-     
-     private GroundUI _uiObject;
-       private BarrelBuffer _barrelBuffer;
-       private SphereCollider _collider;
-
-       public void Initialize(IPropsMover propsMover, SphereCollider collider, GroundUI uiObject)
-       {
-           _barrelBuffer = propsMover as BarrelBuffer;
-           _collider = collider;
-           _uiObject = uiObject;
-           EventBus.Subscribe<PropsMoverFullingPointEvent>(TurnObject);
-       }
-
-
-       private void OnDestroy()
-       {
-           EventBus.Unsubscribe<PropsMoverFullingPointEvent>(TurnObject);
-       }
-
-
-       private void TurnObject(PropsMoverFullingPointEvent value)
-       {
-           _collider.enabled = !value.IsFull;
-
-           if (value.IsFull)
-               _uiObject.FadeOut();
-           else
-               _uiObject.FadeIn();
-       }
-
-       public void OnTriggerEnter(Collider other)
-       {
-           if (other.TryGetComponent(out Bartender bartender))
-           {
-               _barrelBuffer.IsTake = true;
-               StartCoroutine(_barrelBuffer.FillingPoints());
-           }
-       }
-
-       private void OnTriggerExit(Collider other)
-       {
-           if (other.TryGetComponent(out Bartender bartender))
-               _barrelBuffer.IsTake = false;
-       }*/

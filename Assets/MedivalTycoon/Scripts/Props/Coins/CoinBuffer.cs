@@ -17,15 +17,17 @@ namespace Money
         private int _amountPoint;
         private bool _isFull;
         private int _index;
+        private TableInteractionMode _tableInteractionMode;
 
         public PropsType Type => PropsType.Coin;
 
         public bool IsTake { get; private set; }
 
-        public void Initialize(IPropsPool coinPool)
+        public void Initialize(IPropsPool coinPool, TableInteractionMode tableInteractionMode)
         {
             _coinPool = coinPool;
             _spawnerPoints = new SpawnerPoints();
+            _tableInteractionMode = tableInteractionMode;
         }
 
         public void CreatePoints(int cout, float offset, Vector3 spaceSize = default)
@@ -52,7 +54,7 @@ namespace Money
             foreach (var point in _points)
                 Destroy(point.gameObject);
 
-            ResetProps();
+            ResetProps();            
         }
 
         public IEnumerator FillingPoints()
@@ -97,7 +99,7 @@ namespace Money
                 {
                     _index = 0;
                     _isFull = false;
-                    ResetPoints();
+                    ResetPoints();                    
                 }
             }
             return result;
@@ -117,7 +119,7 @@ namespace Money
             _props.Clear();
             _index = 0;
             _points.Clear();
-            _amountPoint = _points.Count;
+            _amountPoint = _points.Count;            
         }
 
         public int GetEmptyPointsCount()

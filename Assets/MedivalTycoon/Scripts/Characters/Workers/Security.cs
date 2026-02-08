@@ -2,13 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum PropsType
+public class Security : MonoBehaviour
 {
-    None,
-    Barrel,
-    Beer,
-    Coin,
-    Visitor
+  
 }
-    
-
