@@ -15,6 +15,7 @@ namespace Characters
         private List<Point> _points = new List<Point>();
         private Stack<IProps> _incomingProps = new Stack<IProps>();
         private Stack<IProps> _carriedProps = new Stack<IProps>();
+        private PropsType _secondType;        
         private PropsType _currentType;        
 
         private int _index;
@@ -36,8 +37,8 @@ namespace Characters
         {
             if (regulating == null) return;
 
-            if(_currentType == PropsType.None)
-                _currentType = regulating.Type;
+            if (_currentType == PropsType.None)
+                _secondType = regulating.Type;
 
             _incomingProps = regulating.GetTo(GetEmptyPointsCount());
         }
@@ -70,6 +71,7 @@ namespace Characters
                 StartCoroutine(props.TryMoveTo(point));
                 _carriedProps.Push(props);
                 _index++;
+                _currentType = _secondType;
                 yield return WaitFor.TenthSecond; 
             }
 
@@ -115,6 +117,11 @@ namespace Characters
         
         public void RegisterProps(Stack<IProps> props)
         {
-        }       
+        }
+
+        private void Update()
+        {
+            Debug.Log(_currentType + " “»œ ‚ –ÛÍÂ");
+        }
     }
 }

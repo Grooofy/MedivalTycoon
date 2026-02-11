@@ -53,6 +53,13 @@ namespace Visitors
             AddTransitions();
         }
 
+        public void EnableRegdoll()
+        {
+            Animator.enabled = false;
+            foreach (var rb in GetComponentsInChildren<Rigidbody>())
+                rb.isKinematic = false; 
+        }
+
         public void InitializeIpropsVisitor(float speed, LayerMask layerMask)
         {
             _visitorProps = GetComponent<VisitorProps>();
@@ -61,6 +68,7 @@ namespace Visitors
 
             _visitorProps.Initilization(this.transform, speed, Animator);
             _sleepVisitorTaker.Initialize(_sleepVisitorMover, layerMask);
+            _visitorProps.SetVisitor(this);
             _isIpropsInit = true;
         }
 

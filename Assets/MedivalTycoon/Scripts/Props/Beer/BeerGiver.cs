@@ -34,8 +34,11 @@ namespace Beers
 
                     if (hit.TryGetComponent(out Hand hand))
                     {
+
+                        Debug.Log("ТРОГАЮ");
                         if (hand.CanAccept(_regulating.Type))
                         {
+                            Debug.Log("РЕГАЮ");
                             _currentHand = hand;
                             _currentHand.RegisterProps(_regulating);
                             _activeCoroutine = StartCoroutine(_currentHand.FillingPoints());

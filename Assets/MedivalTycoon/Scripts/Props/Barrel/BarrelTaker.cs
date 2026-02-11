@@ -31,6 +31,8 @@ public class BarrelTaker : MonoBehaviour
                 {
                     _currentHand = hand;
                     var amount = Mathf.Min(_currentHand.Amount, _regulating.GetEmptyPointsCount());
+                    if (amount == 0) return;
+
                     var props = _currentHand.GetTo(amount);
 
                     if (props == null || props.Count == 0) return;

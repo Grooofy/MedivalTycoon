@@ -1,7 +1,3 @@
-using Events;
-using Propses;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Visitors;
 
@@ -11,15 +7,15 @@ public class ExitPoint : MonoBehaviour
     private LayerMask _visitorsLayer;
     private Point _point;
     private TavernVisitor _currentVisitor;
-    private float _detectionRadius = 0.05f;
+    private float _detectionRadius = 0.005f;
     private bool _hasGiven = false;
     private bool _isInitialize;
 
 
     public void Initialize(LayerMask visitorMask)
     {
-        _visitorsLayer = visitorMask;
         _point = GetComponent<Point>();
+        _visitorsLayer = visitorMask;
         _isInitialize = true;
     }
 
@@ -30,12 +26,10 @@ public class ExitPoint : MonoBehaviour
 
     public Point GetPoint()
     {
-        if (_point != null) 
-            return _point;
-        else
-            return null;
-    }
+        if (_point == null) return null;
 
+        return _point; 
+    }
 
     public void CheckHits()
     {
@@ -52,10 +46,11 @@ public class ExitPoint : MonoBehaviour
                 if (hit.TryGetComponent(out TavernVisitor visitor))
                 {
                     _currentVisitor = visitor;
+                    _currentVisitor.ClearPoint();                   
                     _currentVisitor.gameObject.SetActive(false);
-                    _currentVisitor.ClearPoint();
                 }
             }
+            
         }
         else if (_hasGiven)
         {

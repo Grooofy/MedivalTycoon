@@ -79,6 +79,7 @@ namespace SeatSyst
                     _index++;
                     NeedTextUpdate?.Invoke(1);
                 }
+                _isEmpty = false;
 
                 if (_index == _amountPoint)
                     _isFull = true;
@@ -132,6 +133,7 @@ namespace SeatSyst
             {
                point.Free();
             }
+            _isFull = false;    
         }
 
         private void ResetProps()

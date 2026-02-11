@@ -10,11 +10,12 @@ namespace Money
     public class CoinBuffer : MonoBehaviour, IPropsMover
     {
         private IPropsPool _coinPool;
-        public SpawnerPoints _spawnerPoints; 
+        public SpawnerPoints _spawnerPoints;
         private List<Point> _points = new List<Point>();
         private Stack<IProps> _props = new Stack<IProps>();
         private Stack<IProps> _pointsProps = new Stack<IProps>();
         private int _amountPoint;
+        private int _amountWallet;
         private bool _isFull;
         private int _index;
         private TableInteractionMode _tableInteractionMode;
@@ -30,10 +31,15 @@ namespace Money
             _tableInteractionMode = tableInteractionMode;
         }
 
+        public void SetAmountVisitorWallet(int amount)
+        {
+            _amountWallet = amount + _index; 
+        }
+
         public void CreatePoints(int cout, float offset, Vector3 spaceSize = default)
         {
             _spawnerPoints.Initialize(cout, offset, transform);
-            _points = _spawnerPoints.SpawnVerticalColumn(offset);
+            _points.AddRange(_spawnerPoints.SpawnVerticalColumn(offset));
             _amountPoint = _points.Count;
         }
 
@@ -49,17 +55,9 @@ namespace Money
             }
         }
 
-        public void DeletePoints()
-        {
-            foreach (var point in _points)
-                Destroy(point.gameObject);
-
-            ResetProps();            
-        }
-
         public IEnumerator FillingPoints()
         {
-            while (_isFull == false)
+            while (_isFull == false && _index <= _amountWallet)
             {
                 if (_index >= _amountPoint) break;
 
@@ -69,13 +67,15 @@ namespace Money
 
                 _pointsProps.Push(prop);
                 _index++;
-
+                
                 if (_index >= _amountPoint)
-                {
                     _isFull = true;
-                }
+                
                 yield return WaitFor.QuarterSecond;
             }
+
+            if (_index >= _amountWallet)
+                _amountWallet = 0;
         }
 
         public Stack<IProps> GetTo(int amount)
@@ -99,7 +99,7 @@ namespace Money
                 {
                     _index = 0;
                     _isFull = false;
-                    ResetPoints();                    
+                    ResetPoints();
                 }
             }
             return result;
@@ -119,7 +119,7 @@ namespace Money
             _props.Clear();
             _index = 0;
             _points.Clear();
-            _amountPoint = _points.Count;            
+            _amountPoint = _points.Count;
         }
 
         public int GetEmptyPointsCount()

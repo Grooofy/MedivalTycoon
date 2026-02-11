@@ -4,16 +4,16 @@ using UnityEngine;
 public class SleepVisitorsTaker : MonoBehaviour
 {
     private LayerMask _handLayer;
-    private ExitPoint _exitPoint;
+    private SleepVisitorBuffer _sleepVisitorBuffer;
     private Hand _currentHand;
     private Coroutine _activeCoroutine;
 
     private float _detectionRadius = 0.35f;
     private bool _hasGiven = false;
 
-    public void Initialize(ExitPoint exitPoint, LayerMask handLayer)
+    public void Initialize(SleepVisitorBuffer exitPoint, LayerMask handLayer)
     {
-        _exitPoint = exitPoint;
+        _sleepVisitorBuffer = exitPoint;
         _handLayer = handLayer;
     }
 
@@ -32,11 +32,9 @@ public class SleepVisitorsTaker : MonoBehaviour
                     _currentHand = hand;
                     var props = _currentHand.GetTo(_currentHand.Amount);
                     if (props == null || props.Count == 0) return;
-
-                    for (int i = 0; i <= props.Count; i++)
-                    {
-                        StartCoroutine(props.Peek().TryMoveTo(_exitPoint.GetPoint()));
-                    }
+                    _sleepVisitorBuffer.RegisterProps(props);
+                    _activeCoroutine = StartCoroutine(_sleepVisitorBuffer.FillingPoints());
+                    _hasGiven = true;
                 }
             }
         }

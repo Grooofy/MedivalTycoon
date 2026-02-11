@@ -10,6 +10,7 @@ public class QueueVisitor : MonoBehaviour
 {
     [SerializeField] private VisitorsSpawner _visitorsSpawner;
     [SerializeField] private ExitPoint _exitPoint;
+    [SerializeField] private SleepVisitorBuffer _sleepVisitorBuffer;
     [SerializeField] private SleepVisitorsTaker _sleepVisitorsTaker;
     [SerializeField] private LayerMask _visitorsLayer;
     [SerializeField] private LayerMask _securityLayer;
@@ -37,7 +38,8 @@ public class QueueVisitor : MonoBehaviour
         _maxWaitTime = maxWaitTime;
         _maxBeerCount = maxBeerCount;
         _exitPoint.Initialize(_visitorsLayer);
-        _sleepVisitorsTaker.Initialize(_exitPoint, _securityLayer);
+        _sleepVisitorBuffer.Initialize(_exitPoint.GetPoint());
+        _sleepVisitorsTaker.Initialize(_sleepVisitorBuffer, _securityLayer);
         _isInitialized = true;
         EventBus.Subscribe<SeatFreed>(OnSeatFreed);
         EventBus.Subscribe<TableBuilt>(OnTableBuilt);

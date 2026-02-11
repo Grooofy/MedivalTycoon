@@ -9,12 +9,12 @@ public class TableInteractionMode : MonoBehaviour
     private CoinGiver _coinGiver;
     private bool _isBeerMode;
 
-    public void Initialize()
+    public void Initialize(BeerTaker beerTaker)
     {
-        _beerTaker = GetComponentInChildren<BeerTaker>();
+        _beerTaker = beerTaker;
         _coinGiver = GetComponentInChildren<CoinGiver>();
 
-        SetBeerMode(true);
+        SetBeerMode(false);
     }
 
     public void Switch()

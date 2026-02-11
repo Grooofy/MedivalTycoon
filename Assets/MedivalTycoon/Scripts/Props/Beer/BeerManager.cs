@@ -27,6 +27,7 @@ namespace Beers
             _beerBuffer.Initialize(_beerPool, _amountBeerToBarrel);
             _beerGiver.Initialize(_beerBuffer, _layerMask);
             _beerTaker.Initialize(_beerBuffer, _layerMask);
+            _beerTaker.SetActiveGameObject(true);
             _leverInstaller.InitializeBeerLever(_beerBuffer, _barrelBeerBuffer);
         }
 

@@ -18,4 +18,4 @@ MonoBehaviour:
   _id: 0
   _numberWearableObjects: 10
   _distanceBetweenPoints: 0.25
-  IsSelect: 1
+  IsSelect: 0

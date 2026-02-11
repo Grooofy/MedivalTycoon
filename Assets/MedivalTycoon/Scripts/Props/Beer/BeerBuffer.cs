@@ -167,4 +167,6 @@ public class BeerBuffer : MonoBehaviour, IPropsMover
     {
         EventBus.Unsubscribe<BeerCreated>(StartFilingPoints);
     }
+
+   
 }

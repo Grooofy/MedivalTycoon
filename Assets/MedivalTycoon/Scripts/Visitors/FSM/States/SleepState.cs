@@ -24,7 +24,8 @@ namespace Visitors
 
         public void Enter()
         {
-            AnimatorExtensions.Set(_tavernVisitor.Animator, AnimatorParameters.VisitorSleep);
+           // AnimatorExtensions.Set(_tavernVisitor.Animator, AnimatorParameters.VisitorSleep);
+           _tavernVisitor.EnableRegdoll();
             _sleepVisitorMover.RegistSleepVisitor(_sleepVisitor);
             _particalSystem.Play();
         }

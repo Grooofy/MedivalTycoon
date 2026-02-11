@@ -25,9 +25,8 @@ namespace Tables
         private TableInteractionMode _tableInteractionMode;
         private TableCoinBufferSystem _coinManager;
         private SeatInventory _inventory;
-        private bool _isBuilding;
-        private bool _isTakeEnable;
 
+        private bool _isBuilding;
         private bool _isBeerTakerInitialize;
         private bool _isCoinManagerInitialize;
         private bool _isSeatSystemInitialize;
@@ -39,25 +38,18 @@ namespace Tables
             _seat = GetComponentInChildren<Seat>();
             _beerTaker = GetComponentInChildren<BeerTaker>();
             _inventory = GetComponentInChildren<SeatInventory>();
-            _seat.InventoryFulling += SwitchCheckHits;
-            _tableInteractionMode = GetComponentInChildren<TableInteractionMode>();   
+            _tableInteractionMode = GetComponentInChildren<TableInteractionMode>();
             _coinManager = GetComponentInChildren<TableCoinBufferSystem>();
         }
 
-        public void SwitchCheckHits()
-        {
-            if (_isTakeEnable)
-                _isTakeEnable = false;
-            else
-                _isTakeEnable = true;
-        }
+      
 
         public void InitializeBeerTaker()
         {
             if (_beerTaker != null && _tableInteractionMode != null)
             {
                 _beerTaker.Initialize(_inventory, _waiterLayer);
-                _tableInteractionMode.Initialize();
+                _tableInteractionMode.Initialize(_beerTaker);
                 _isBeerTakerInitialize = true;
             }
         }
@@ -69,7 +61,7 @@ namespace Tables
                 _coinManager.Initialize(propsSpawner, _tableInteractionMode);
                 _isCoinManagerInitialize = true;
             }
-                
+
         }
 
         public void InitializeSeatSystem(IPropsPool propsPool)
@@ -77,20 +69,17 @@ namespace Tables
             if (_seat != null && _beerTaker != null && _isCoinManagerInitialize && _isBeerTakerInitialize)
             {
                 _seat.Initialize(_coinManager.GetCoinBuffer(), _tableInteractionMode, _wayPoints, _visitorLayer, _inventory, propsPool, _resetDelay);
+                _seat.CreateBigAmountPointToWallet();
                 _isSeatSystemInitialize = true;
             }
-                
+
         }
 
         public void CheckHits()
         {
-            if (_seat == null && _beerTaker == null && _coinManager == null ) return;
+            if (_seat == null && _beerTaker == null && _coinManager == null) return;
 
-            if (_isBuilding && _isTakeEnable)
-            {
-                _beerTaker.CheckHits();
-            }
-
+            _beerTaker.CheckHits();
             _seat.CheckHits();
             _coinManager.CheckHits();
         }
@@ -103,14 +92,8 @@ namespace Tables
             if (Price <= 0 && !_isBuilding)
             {
                 _isBuilding = true;
-                _isTakeEnable = true;
                 LinedUp?.Invoke(_seat);
             }
-        }
-
-        private void OnDestroy()
-        {
-            _seat.InventoryFulling -= SwitchCheckHits;
-        }
+        }       
     }
 }
