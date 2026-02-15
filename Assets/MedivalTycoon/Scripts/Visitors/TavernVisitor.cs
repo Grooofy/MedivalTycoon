@@ -62,7 +62,7 @@ namespace Visitors
 
         public void InitializeIpropsVisitor(float speed, LayerMask layerMask)
         {
-            _visitorProps = GetComponent<VisitorProps>();
+            _visitorProps = GetComponentInChildren<VisitorProps>();
             _sleepVisitorMover = GetComponent<SleepVisitorMover>();
             _sleepVisitorTaker = GetComponent<SleepVisitorGiver>();
 
@@ -156,6 +156,14 @@ namespace Visitors
 
             if (_currentStateEvent == StateEvent.Move && _previousStateEvent == StateEvent.Wait)
                 LeavingTavern?.Invoke();
-        }       
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                EnableRegdoll();
+            }
+        }
     }
 }
