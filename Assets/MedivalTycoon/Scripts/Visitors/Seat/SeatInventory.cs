@@ -4,6 +4,7 @@ using Propses;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Tables;
 using UnityEngine;
 
 namespace SeatSyst
@@ -22,12 +23,16 @@ namespace SeatSyst
         private bool _isFull;
         private bool _isEmpty = false;
         private float _resetDelay;
+        private TableInteractionMode _tableInteractionMode;
 
         public bool IsDrink { get; private set; }
 
-        public void Initialize(IPropsPool beerPool, float resetDelay)
+        public PropsType Type => PropsType.Beer;
+
+        public void Initialize(TableInteractionMode tableInteractionMode, IPropsPool beerPool, float resetDelay)
         {
             _resetBeerPoint = GetComponentInChildren<Point>();
+            _tableInteractionMode = tableInteractionMode;
             _beerPool = beerPool;
             _resetDelay = resetDelay;
         }
@@ -74,6 +79,7 @@ namespace SeatSyst
                     _index++;
                     NeedTextUpdate?.Invoke(1);
                 }
+                _isEmpty = false;
 
                 if (_index == _amountPoint)
                     _isFull = true;
@@ -111,11 +117,12 @@ namespace SeatSyst
                 _index--;
 
                 if (_index <= 0)
-                {
+                {                    
                     BeersEnded?.Invoke();
                     _index = 0;
                     _isEmpty = true;
                     ResetPoints();
+                    _tableInteractionMode.Switch();
                 }
             }
         }
@@ -126,6 +133,7 @@ namespace SeatSyst
             {
                point.Free();
             }
+            _isFull = false;    
         }
 
         private void ResetProps()

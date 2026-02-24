@@ -1,9 +1,11 @@
 ﻿using Events;
 using MedivalTycoon;
+using Money;
 using SeatSyst;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Tables;
 using UnityEngine;
 using Visitors;
 
@@ -11,22 +13,30 @@ public class Seat : MonoBehaviour
 {
     public Action InventoryFulling;
     private SeatPoint _seatPoint;
+    private CoinBuffer _coinBuffer;
+    private TableInteractionMode _tableInteraction;
     private TavernVisitor _visitor;
     private SeatInventory _inventory;
     private SeatUI _seatUI;
-    private float _pointDistance = 0.1f;
-    private int _beerDisplayAmount;
     private Coroutine _beerReset;
     private Queue<Point> _wayPoints;
+    private float _pointDistanceWallet = 0.07f;
+    private float _pointDistanceBeer = 0.1f;
+    private int _beerDisplayAmount;
+    private int _pointAmount = 100;
+    private int _walletAmount;
     private bool _isEmpty = true;
     
 
-    public void Initialize(Queue<Point> wayPoint, LayerMask visitorMask, SeatInventory seatInventory, IPropsPool beerPool, float resetDelay)
+    public void Initialize(CoinBuffer coinBuffer, TableInteractionMode tableInteractionMode, Queue<Point> wayPoint, LayerMask visitorMask, SeatInventory seatInventory, IPropsPool beerPool, float resetDelay)
     {
+        _coinBuffer = coinBuffer;  
         _wayPoints = wayPoint;
+        _tableInteraction = tableInteractionMode;
 
         _inventory = seatInventory;
-        _inventory.Initialize(beerPool, resetDelay);
+        _inventory.Initialize(_tableInteraction, beerPool, resetDelay);
+        
 
         _seatPoint = GetComponentInChildren<SeatPoint>();
         _seatUI = GetComponentInChildren<SeatUI>();
@@ -39,13 +49,21 @@ public class Seat : MonoBehaviour
     } 
     
 
+    public void CreateBigAmountPointToWallet()
+    {
+        _coinBuffer.CreatePoints(_pointAmount, _pointDistanceWallet);
+    }
+
     public void VisitorSet(TavernVisitor visitor)
     {
-        Debug.Log($"[Seat] {name} - посетитель {visitor.name} сел.");
+        _tableInteraction.Switch();
         _visitor = visitor;
         _visitor.LeavingTavern += LeaveTavern;
         _beerDisplayAmount = _visitor.BeerAmount;
-        _inventory.CreatePoints(_beerDisplayAmount, _pointDistance);
+        _walletAmount =_beerDisplayAmount / 2;
+
+        _coinBuffer.SetAmountVisitorWallet(_walletAmount);
+        _inventory.CreatePoints(_beerDisplayAmount, _pointDistanceBeer);
         _seatUI.UpdateBeerDisplay(_beerDisplayAmount); 
         _isEmpty = false;
     }
@@ -63,7 +81,6 @@ public class Seat : MonoBehaviour
                 StopCoroutine(_beerReset);
 
             _beerReset = StartCoroutine(_inventory.ResetBeer());
-            InventoryFulling?.Invoke();
         }
     }
 
@@ -73,24 +90,21 @@ public class Seat : MonoBehaviour
             _visitor.LeavingTavern -= LeaveTavern;
 
         EventBus.Raise(new SeatFreed(this));
-
+        _inventory.DeletePoints();
         _isEmpty = true;
         _visitor = null;        
-    }
-
-  
-  
+    }  
 
     private void SwitchVisitorSleep()
     {
         _visitor.ChangeState(StateEvent.Sleep);
+         StartCoroutine(_coinBuffer.FillingPoints());
     }
 
 
     private void LeaveTavern()
-    {
+    {        
         _seatUI.UpdateBeerDisplay(0);
-        _inventory.DeletePoints();                
     }
 
    

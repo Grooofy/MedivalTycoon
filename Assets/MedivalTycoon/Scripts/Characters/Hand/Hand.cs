@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using MedivalTycoon;
 using Propses;
 using UnityEngine;
 
@@ -10,12 +8,15 @@ namespace Characters
     public class Hand : MonoBehaviour, IPropsMover
     {
         public bool IsFull { get; private set; }
-        public int Amount => _points.Count;
+        public int Amount => _carriedProps.Count;
+
+        public PropsType Type => _currentType;
 
         private List<Point> _points = new List<Point>();
         private Stack<IProps> _incomingProps = new Stack<IProps>();
         private Stack<IProps> _carriedProps = new Stack<IProps>();
-        
+        private PropsType _secondType;        
+        private PropsType _currentType;        
 
         private int _index;
 
@@ -29,13 +30,22 @@ namespace Characters
                 point.Free();
                 _points.Add(point);
             }
+            _currentType = PropsType.None;
         }
 
         public void RegisterProps(IPropsMover regulating)
         {
             if (regulating == null) return;
 
+            if (_currentType == PropsType.None)
+                _secondType = regulating.Type;
+
             _incomingProps = regulating.GetTo(GetEmptyPointsCount());
+        }
+
+        public bool CanAccept(PropsType type)
+        {
+            return _currentType == PropsType.None || _currentType == type;
         }
 
         public int GetEmptyPointsCount()
@@ -61,6 +71,7 @@ namespace Characters
                 StartCoroutine(props.TryMoveTo(point));
                 _carriedProps.Push(props);
                 _index++;
+                _currentType = _secondType;
                 yield return WaitFor.TenthSecond; 
             }
 
@@ -85,18 +96,18 @@ namespace Characters
                 }
             }
 
-            if (_carriedProps.Count == 0)
+            if (_index <= 0)
             {
                 IsFull = false;
                 _index = 0;
                 ResetPoints();
             }
-
             return result;
         }
 
         private void ResetPoints()
         {
+            _currentType = PropsType.None;
             foreach (var point in _points)
             {
                 point.Free();
@@ -106,6 +117,11 @@ namespace Characters
         
         public void RegisterProps(Stack<IProps> props)
         {
-        }       
+        }
+
+        private void Update()
+        {
+            Debug.Log(_currentType + " “»œ ‚ –ÛÍÂ");
+        }
     }
 }

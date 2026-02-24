@@ -1,18 +1,20 @@
-using Events;
 using UnityEngine;
 using Visitors;
 
 public class ExitPoint : MonoBehaviour
 {
+    public PropsType Type => PropsType.Visitor;
     private LayerMask _visitorsLayer;
+    private Point _point;
     private TavernVisitor _currentVisitor;
-    private float _detectionRadius = 0.05f;
+    private float _detectionRadius = 0.005f;
     private bool _hasGiven = false;
     private bool _isInitialize;
 
 
     public void Initialize(LayerMask visitorMask)
     {
+        _point = GetComponent<Point>();
         _visitorsLayer = visitorMask;
         _isInitialize = true;
     }
@@ -22,6 +24,12 @@ public class ExitPoint : MonoBehaviour
         return transform.position;
     }
 
+    public Point GetPoint()
+    {
+        if (_point == null) return null;
+
+        return _point; 
+    }
 
     public void CheckHits()
     {
@@ -36,12 +44,13 @@ public class ExitPoint : MonoBehaviour
                 if (_hasGiven) break;
 
                 if (hit.TryGetComponent(out TavernVisitor visitor))
-                {          
+                {
                     _currentVisitor = visitor;
-                   _currentVisitor.gameObject.SetActive(false);
-                    _currentVisitor.ClearPoint();
+                    _currentVisitor.ClearPoint();                   
+                    _currentVisitor.gameObject.SetActive(false);
                 }
             }
+            
         }
         else if (_hasGiven)
         {
@@ -56,6 +65,8 @@ public class ExitPoint : MonoBehaviour
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, _detectionRadius);
-    }
+    }   
 #endif
+
+
 }

@@ -4,6 +4,7 @@ public enum AnimatorParameters
     BarrelMoveEnd,
     ResetBarrel,
     ResetBeer,
+    ResetCoin,
     VisitorIdle,
     VisitorWalk,
     VisitorDrink,

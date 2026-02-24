@@ -10,7 +10,10 @@ public class QueueVisitor : MonoBehaviour
 {
     [SerializeField] private VisitorsSpawner _visitorsSpawner;
     [SerializeField] private ExitPoint _exitPoint;
+    [SerializeField] private SleepVisitorBuffer _sleepVisitorBuffer;
+    [SerializeField] private SleepVisitorsTaker _sleepVisitorsTaker;
     [SerializeField] private LayerMask _visitorsLayer;
+    [SerializeField] private LayerMask _securityLayer;
 
     private SeatAggregator _seatAggregator;
     private Queue<TavernVisitor> _guestQueue = new Queue<TavernVisitor>();
@@ -35,6 +38,8 @@ public class QueueVisitor : MonoBehaviour
         _maxWaitTime = maxWaitTime;
         _maxBeerCount = maxBeerCount;
         _exitPoint.Initialize(_visitorsLayer);
+        _sleepVisitorBuffer.Initialize(_exitPoint.GetPoint());
+        _sleepVisitorsTaker.Initialize(_sleepVisitorBuffer, _securityLayer);
         _isInitialized = true;
         EventBus.Subscribe<SeatFreed>(OnSeatFreed);
         EventBus.Subscribe<TableBuilt>(OnTableBuilt);
@@ -50,7 +55,7 @@ public class QueueVisitor : MonoBehaviour
             var point = ObjectFactory.CreateObjectWithComponent<Point>($"Point {i}");
             point.transform.SetParent(transform);
             point.transform.position = spawnPosition;
-            var visitor = _visitorsSpawner.CreateVisitor(point.transform, _speed, _maxBeerCount, _maxWaitTime, _exitPoint.GetPosition());
+            var visitor = _visitorsSpawner.CreateVisitor(point.transform, _speed, _maxBeerCount, _maxWaitTime, _exitPoint.GetPosition(), _securityLayer);
             _guestQueue.Enqueue(visitor);
             _createdPoints.Add(point);
         }
@@ -60,6 +65,7 @@ public class QueueVisitor : MonoBehaviour
     {
         _visitorsSpawner.UpdateState();
         _exitPoint.CheckHits();
+        _sleepVisitorsTaker.CheckHits();
     }
 
     private void OnSeatFreed(SeatFreed seatFreed)

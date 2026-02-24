@@ -8,7 +8,7 @@ public class Wallet : MonoBehaviour
     public int Coins => _coins;
 
     private LoadingGameSettings _loadingGameSettings;
-    private int _step;
+    private int _step = 1;
     private int _coins;
     
     private Coroutine _addedCoins;
@@ -22,6 +22,7 @@ public class Wallet : MonoBehaviour
     
     public void StartAddCoins(int countCoins)
     {
+        Debug.Log(countCoins + " Прибавить");
         if (_addedCoins == null)
         {
             _addedCoins = StartCoroutine(AddedCoins(countCoins));
@@ -59,8 +60,10 @@ public class Wallet : MonoBehaviour
 
     private IEnumerator AddedCoins(int number)
     {
-        while (_coins != number)
-        {
+        int sum = _coins + number;
+
+        while (_coins != sum)
+        {            
             _coins += _step;
             CoinsChanged?.Invoke(_coins);
             yield return null;

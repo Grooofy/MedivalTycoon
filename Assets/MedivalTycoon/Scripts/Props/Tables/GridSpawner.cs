@@ -10,6 +10,7 @@ namespace Tables
     public class GridSpawner : MonoBehaviour
     {
         [SerializeField] private WayPointsCreater _wayPointsCreater;
+        [SerializeField] private PropsSpawner _propsSpawner;
         private Vector2 areaSize = new Vector2(2f, 3f);
         private Vector3 _prefabOffset = new Vector3(0.25f, 0.02f, 0.25f);
         private float spacing = 1f;
@@ -29,8 +30,6 @@ namespace Tables
             _origin = transform.position;
         }
 
-
-
         public void SpawnGrid(ConstructionHandler handler, int[] startPrice, IPropsPool propsPool)
         {
             var entries = GridCalculator.GetGridEntries(_origin, areaSize, spacing, _prefabOffset);
@@ -43,7 +42,7 @@ namespace Tables
                 var entry = entries[i];
 
                 var way = _wayPointsCreater.CreatePoints(entry.cell);
-                var (table, viewTable) = _factory.CreateTable(way,entry.position,transform,handler,startPrice[i],propsPool);
+                var (table, viewTable) = _factory.CreateTable(way,entry.position,transform,handler,startPrice[i],propsPool, _propsSpawner);
                 _viewTables.Add(viewTable);
                 _tables.Add(table);
             }

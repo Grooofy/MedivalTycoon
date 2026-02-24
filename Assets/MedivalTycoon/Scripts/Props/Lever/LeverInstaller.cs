@@ -6,7 +6,7 @@ namespace Lever
     public class LeverInstaller : MonoBehaviour
     {
         [Header("LeverBarrel")] 
-        [SerializeField] private SphereCollider _barrelCollider;
+        [SerializeField] private LayerMask _bartenderLayer;
         [SerializeField] private Animator _barrelAnimator;
         [SerializeField] private GroundUI _barrelGroundUI;
         [SerializeField] private LeverGetBarrel _leverGetBarrel;
@@ -21,16 +21,21 @@ namespace Lever
 
         public void InitializeBarrelLever(IPropsMover propsMover)
         {
-            _leverBarrelAnimator = new LeverBarrelAnimator(_barrelAnimator, false);
+            _leverBarrelAnimator = new LeverBarrelAnimator(_barrelAnimator);
             _barrelGroundUI.Initialize();
-            _leverGetBarrel.Initialize(propsMover, _barrelCollider, _barrelGroundUI);
+            _leverGetBarrel.Initialize(propsMover, _barrelGroundUI, _bartenderLayer);
         }
 
-        public void InitializeBeerLever(IPropsMover beerBuffer, IPropsMover propsMover)
+        public void InitializeBeerLever(IPropsMover beerBuffer, IPropsMover barrelBeerBuffer)
         {
             _leverBeerAnimator = new LeverBeerAnimator(_beerAnimator, false);
             _beerGroundUI.Initialize();
-            leverBeer.Initialize(beerBuffer, propsMover,  _beerCollider, _beerGroundUI);
+            leverBeer.Initialize(beerBuffer, barrelBeerBuffer,  _beerCollider, _beerGroundUI);
+        }
+
+        public void CheakHits()
+        {
+            _leverGetBarrel.CheckHits();
         }
 
         private void OnDestroy()

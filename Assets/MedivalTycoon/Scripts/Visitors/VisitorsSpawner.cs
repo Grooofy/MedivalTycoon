@@ -10,10 +10,11 @@ namespace Visitors
         
         private readonly List<TavernVisitor> _tavernVisitors = new List<TavernVisitor>();
 
-        public TavernVisitor CreateVisitor(Transform position, float speed, int maxBeerCount, float maxWaitTime, Vector3 exitPoint)
+        public TavernVisitor CreateVisitor(Transform position, float speed, int maxBeerCount, float maxWaitTime, Vector3 exitPoint, LayerMask securityLayer)
         {
             var currentTavernVisitor = Instantiate(_tavernVisitor, position);
             _randomVisitorModel.SpawnRandomModel(currentTavernVisitor.transform);
+            currentTavernVisitor.InitializeIpropsVisitor(speed, securityLayer);
             currentTavernVisitor.Initialize(speed, maxBeerCount, maxWaitTime, exitPoint);
             _tavernVisitors.Add(currentTavernVisitor);
             return currentTavernVisitor;

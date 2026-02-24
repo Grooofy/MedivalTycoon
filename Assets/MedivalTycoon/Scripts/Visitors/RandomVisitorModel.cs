@@ -14,7 +14,7 @@ namespace Visitors
             if (_visitorsModel == null) return;
             if (_visitorsModel.Count <= 0) return;
             
-           Instantiate(_visitorsModel[Random.Range(0, _visitorsModel.Count - 1)], position);
+           Instantiate(_visitorsModel[Random.Range(0, 1)], position);
         }
     }
 }

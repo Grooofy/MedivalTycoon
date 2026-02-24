@@ -1,11 +1,9 @@
 ﻿public struct PropsMoverFullingPointEvent
 {
     public bool IsFull { get; private set; }
-    public string SourceId { get; private set; }
 
-    public PropsMoverFullingPointEvent(bool isFull,  string sourceId)
+    public PropsMoverFullingPointEvent(bool isFull)
     {
-        SourceId = sourceId;
         IsFull = isFull;
     }
 }

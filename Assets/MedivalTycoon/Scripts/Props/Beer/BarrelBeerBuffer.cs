@@ -21,12 +21,11 @@ namespace Beers
         private int _amountPoint;
         private bool _isFull;
         private bool _isEmpty = true;
-        private string _sourceId;
 
+        public PropsType Type => PropsType.Barrel;
 
-        public void Initialize(string sourceId, IPropsPool barrelPool, Point barrelFinishPoint, float delayBarrelReset)
+        public void Initialize(IPropsPool barrelPool, Point barrelFinishPoint, float delayBarrelReset)
         {
-            _sourceId = sourceId;
             _barrelPool = barrelPool;
             _barrelFinishPoint = barrelFinishPoint;
             _delayBarrelReset = delayBarrelReset;
@@ -106,8 +105,10 @@ namespace Beers
                 _barrelPool.Despawn(props);
                 _index--;
                 _points[_index].Free();
-               
-                if (_index < 0)
+                
+                _isFull = false;
+
+                if (_index <= 0)
                 {
                     _index = 0;
                     EventBus.Raise(new BeerBufferOpen(_isEmpty));

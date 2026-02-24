@@ -8681,7 +8681,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: BeerNew
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -2722658517309527725, guid: 5a5d77da2f801d8499dcab02377adff4, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

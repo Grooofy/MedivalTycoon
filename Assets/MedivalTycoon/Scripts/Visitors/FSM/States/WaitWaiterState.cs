@@ -43,7 +43,6 @@ namespace Visitors
         private void WaitForOrderRoutine()
         {
             _elapsed += Time.deltaTime;
-
              _progress = 1f - (_elapsed / _maxWaitTime);
 
             if (_waitTimerUI != null)

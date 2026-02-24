@@ -32,20 +32,18 @@ public class BarrelGiver : MonoBehaviour
 
                 if (hit.TryGetComponent(out Hand hand))
                 {
-                    _currentHand = hand;
-                    _currentHand.RegisterProps(_regulating);
-                    _activeCoroutine = StartCoroutine(_currentHand.FillingPoints());
+                    if (hand.CanAccept(_regulating.Type))
+                    {
+                        _currentHand = hand;
+                        _currentHand.RegisterProps(_regulating);
+                        _activeCoroutine = StartCoroutine(_currentHand.FillingPoints());
+                    }
                 }
             }
         }
         else if (_currentHand != null)
         {
-            if (_activeCoroutine != null)
-            {
-                StopCoroutine(_activeCoroutine);
-                _activeCoroutine = null;
-            }
-
+            _activeCoroutine = null;
             _currentHand = null;
         }
     }
