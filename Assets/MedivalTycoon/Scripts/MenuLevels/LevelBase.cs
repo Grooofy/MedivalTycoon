@@ -8,6 +8,16 @@ public class LevelBase : MonoBehaviour
 
     public int LevelsCount => _levels.Count;
 
+    public bool TutorIsComlete()
+    {
+        return _levels[0].IsComplete; 
+    }
+
+    public Level GetTutorLevelData()
+    {
+        return _levels[0];
+    }
+
     public Level GetLevelData(int id)
     {
         return _levels[id];

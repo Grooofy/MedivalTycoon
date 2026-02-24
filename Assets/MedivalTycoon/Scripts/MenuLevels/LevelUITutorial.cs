@@ -1,11 +1,10 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 using UnityEngine.UI;
 
-public class LevelUI : MonoBehaviour
+public class LevelUITutorial : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _textMesh;
     [SerializeField] private Button _button;
     [SerializeField] private List<Image> _coinImages;
     [SerializeField] private LevelData _levelData;
@@ -25,12 +24,7 @@ public class LevelUI : MonoBehaviour
     public void SetLevel(Level level)
     {
         _level = level;
-    }
-
-    public void SwitchButtonInteractable()
-    {
-        _button.interactable = !_button.interactable;
-    }
+    }   
 
     public void PaintCoins(int countCoins)
     {
@@ -50,12 +44,7 @@ public class LevelUI : MonoBehaviour
                     PaintCoin(coinImage);
                 break;
         }
-    }
-
-    public void ShowNumber(int number)
-    {
-        _textMesh.text = number.ToString();
-    }
+    }   
 
     private void PaintCoin(Image coinImage)
     {

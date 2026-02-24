@@ -6,6 +6,7 @@ public class LevelButtonCreater : MonoBehaviour
     [SerializeField] private LevelBase _levelBase;
     [SerializeField] private Content _content;
     [SerializeField] private LevelUI _levelUI;
+    [SerializeField] private LevelUI _levelUITutorial;
     
     private readonly List<LevelUI> _levelIcons = new List<LevelUI>();
     
@@ -32,6 +33,8 @@ public class LevelButtonCreater : MonoBehaviour
 
     private void CreateLevelsList()
     {
+        _levelIcons.Add(_levelUITutorial);
+
         for (int i = 0; i < _levelBase.LevelsCount; i++)
         {
             var pref = Instantiate(_levelUI.gameObject, _content.transform);
@@ -43,7 +46,10 @@ public class LevelButtonCreater : MonoBehaviour
     {
         for (int i = 0; i < _levelBase.LevelsCount; i++)
         {
-            _levelIcons[i].SetLevel(_levelBase.GetLevelData(i));
+            if (i == 0)
+                _levelIcons[i].SetLevel(_levelBase.GetTutorLevelData());
+            else 
+                _levelIcons[i].SetLevel(_levelBase.GetLevelData(i));
         }
     }
     

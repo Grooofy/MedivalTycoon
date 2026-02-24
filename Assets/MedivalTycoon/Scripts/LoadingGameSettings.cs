@@ -4,7 +4,7 @@ using UnityEngine;
 public class LoadingGameSettings : MonoBehaviour
 {
     private ISaveSystem _iSaveSystem = new PlayerPrefsSystem();
-    private SaveData _saveData;
+    private SaveData _saveData;   
 
     public void Load()
     {

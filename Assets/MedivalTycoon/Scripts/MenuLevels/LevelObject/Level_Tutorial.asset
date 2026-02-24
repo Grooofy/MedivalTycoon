@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 58cfe4db91adaf845b14519fe36afd95, type: 3}
-  m_Name: Level_1
+  m_Name: Level_Tutorial
   m_EditorClassIdentifier: 
-  _numberLevel: 1
+  _numberLevel: 0
   _startMoney: 10
-  _numberVisitors: 20
-  _seconds: 600
+  _numberVisitors: 3
+  _seconds: 240
   _isComplete: 0
-  _tableAmount: 3
-  _tableCost: 10,10,10
+  _tableAmount: 1
+  _tableCost: 10
