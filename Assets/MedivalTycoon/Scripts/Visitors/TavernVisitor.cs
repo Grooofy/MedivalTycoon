@@ -51,14 +51,7 @@ namespace Visitors
             _stateMachine.SetInitialState(new IdleState(this));
             _beerModel.gameObject.SetActive(false);
             AddTransitions();
-        }
-
-        public void EnableRegdoll()
-        {
-            Animator.enabled = false;
-            foreach (var rb in GetComponentsInChildren<Rigidbody>())
-                rb.isKinematic = false; 
-        }
+        }       
 
         public void InitializeIpropsVisitor(float speed, LayerMask layerMask)
         {
@@ -156,14 +149,6 @@ namespace Visitors
 
             if (_currentStateEvent == StateEvent.Move && _previousStateEvent == StateEvent.Wait)
                 LeavingTavern?.Invoke();
-        }
-
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                EnableRegdoll();
-            }
-        }
+        }        
     }
 }
