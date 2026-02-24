@@ -36,12 +36,6 @@ public class SleepVisitorGiver : MonoBehaviour
         }
         else if (_currentHand != null)
         {
-            if (_activeCoroutine != null)
-            {
-                StopCoroutine(_activeCoroutine);
-                _activeCoroutine = null;
-            }
-
             _currentHand = null;
         }
     }

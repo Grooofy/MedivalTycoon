@@ -152,6 +152,7 @@ public class BeerBuffer : MonoBehaviour, IPropsMover
                 ResetPoints();
             }
         }
+        result = new Stack<IProps>(result);
         return result;
     }
 

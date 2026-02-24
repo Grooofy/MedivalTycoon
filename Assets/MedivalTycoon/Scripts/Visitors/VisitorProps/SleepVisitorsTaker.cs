@@ -41,10 +41,6 @@ public class SleepVisitorsTaker : MonoBehaviour
         else if (_hasGiven)
         {
             _hasGiven = false;
-
-            if (_activeCoroutine != null)
-                _activeCoroutine = null;
-
             _currentHand = null;
         }
     }

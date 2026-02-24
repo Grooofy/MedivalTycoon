@@ -102,6 +102,7 @@ namespace Money
                     ResetPoints();
                 }
             }
+            result = new Stack<IProps>(result);
             return result;
         }
 
