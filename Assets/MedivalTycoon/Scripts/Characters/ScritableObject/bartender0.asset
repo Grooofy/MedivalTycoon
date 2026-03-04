@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moveSpeed: 1.2
   _rotateSpeed: 7
-  _icon: {fileID: 2050253939, guid: 1e8944b800fd63b4eb84d9887d78e8f0, type: 3}
+  _icon: {fileID: 21300000, guid: 0fd6d49c97f9bba4fb485c1b73efd8ec, type: 3}
   _id: 0
   _numberWearableObjects: 10
   _distanceBetweenPoints: 0.25
-  IsSelect: 0
+  IsSelect: 1

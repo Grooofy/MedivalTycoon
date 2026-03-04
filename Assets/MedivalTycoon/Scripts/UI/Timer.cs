@@ -23,7 +23,7 @@ public class Timer : MonoBehaviour
     {
         if (_isRunning == false) return;
         
-        _minutes = (int)(_gameTime / 60);
+        _minutes =(int)(_gameTime / 60);
         _second = _gameTime % 60;
         _tickTimer += Time.deltaTime;
         ShowTimer();
@@ -52,6 +52,6 @@ public class Timer : MonoBehaviour
 
     private void ShowTimer()
     {
-        _gameCountTimeText.text = _minutes + ":" + string.Format("{0:00}", _second);
+        _gameCountTimeText.text = string.Format("{0:00}:{1:00}", _minutes, _second); ;
     }
 }
