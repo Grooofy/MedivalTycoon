@@ -10,7 +10,12 @@ public class LevelButtonCreater : MonoBehaviour
     
     private readonly List<LevelUI> _levelIcons = new List<LevelUI>();
     
-    private void OnEnable()
+    private void Start()
+    {
+        // Initialize(); // Будет вызываться из Menu.cs
+    }
+
+    public void Initialize()
     {
         CreateLevelsList();
         SetDataLevel();
