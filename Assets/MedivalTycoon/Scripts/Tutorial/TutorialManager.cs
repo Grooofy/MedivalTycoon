@@ -1,6 +1,8 @@
 using UnityEngine;
 using System;
 using Events;
+using UnityEngine.UI;
+using System.Collections.Generic;
 
 namespace Tutorial
 {
@@ -12,11 +14,32 @@ namespace Tutorial
         Complete
     }
 
+    [Serializable]
+    public struct TutorialStepData
+    {
+        public TutorialStep Step;
+        public string Message;
+        public Sprite Icon;
+        public RectTransform TargetHighlight;
+        public bool FullScreenOverlay;
+    }
+
     public class TutorialManager : MonoBehaviour
     {
         [SerializeField] private TutorialSpotlight _spotlight;
+        [SerializeField] private TutorialUI _tutorialUI;
         [SerializeField] private LoadingGameSettings _loadingGameSettings;
+        [SerializeField] private Canvas _mainCanvas;
+
+        [Header("Настройки шагов")]
+        [SerializeField] private List<TutorialStepData> _stepsData;
+
         private TutorialStep _currentStep = TutorialStep.Welcome;
+
+        public void Initialize()
+        {
+            _spotlight.Initialize(_mainCanvas);
+        }
 
         public void StartTutorial()
         {
@@ -26,20 +49,53 @@ namespace Tutorial
 
         private void ShowStep()
         {
+            TutorialStepData data = _stepsData.Find(s => s.Step == _currentStep);
+            
+            if (string.IsNullOrEmpty(data.Message) && _currentStep != TutorialStep.Complete)
+            {
+                Debug.LogWarning($"Tutorial: No data found for step {_currentStep}");
+            }
+
+            // Включаем логику шага (подсветку или оверлей) СРАЗУ
+            ProcessStepLogic(data);
+
+            if (!string.IsNullOrEmpty(data.Message))
+            {
+                _tutorialUI.ShowMessage(data.Message, () => 
+                {
+                    _tutorialUI.Close();
+                    
+                    // Шаг Welcome всегда переходит к следующему по нажатию кнопки "Далее"
+                    if (_currentStep == TutorialStep.Welcome)
+                    {
+                        NextStep();
+                    }
+                }, data.Icon);
+            }
+        }
+
+        private void ProcessStepLogic(TutorialStepData data)
+        {
+            if (data.FullScreenOverlay)
+            {
+                _spotlight.ShowFullScreen();
+            }
+            else if (data.TargetHighlight != null)
+            {
+                _spotlight.ShowSpotlight(data.TargetHighlight);
+            }
+            else
+            {
+                _spotlight.HideSpotlight();
+            }
+
             switch (_currentStep)
             {
-                case TutorialStep.Welcome:
-                    Debug.Log("Tutorial: Welcome!");
-                    // В реальном проекте здесь будет вызов UI окна
-                    // Для теста перейдем к следующему шагу через 2 секунды
-                    Invoke(nameof(NextStep), 2f);
-                    break;
                 case TutorialStep.BuildTable:
-                    Debug.Log("Tutorial: Build a table!");
                     EventBus.Subscribe<TableBuilt>(OnTableBuilt);
                     break;
+
                 case TutorialStep.WaitVisitor:
-                    Debug.Log("Tutorial: Wait for visitor to leave!");
                     EventBus.Subscribe<VisitorLeaveTavern>(OnVisitorLeave);
                     break;
             }
@@ -48,12 +104,14 @@ namespace Tutorial
         private void OnTableBuilt(TableBuilt data)
         {
             EventBus.Unsubscribe<TableBuilt>(OnTableBuilt);
+            _spotlight.HideSpotlight();
             NextStep();
         }
 
         private void OnVisitorLeave(VisitorLeaveTavern data)
         {
             EventBus.Unsubscribe<VisitorLeaveTavern>(OnVisitorLeave);
+            _spotlight.HideSpotlight();
             NextStep();
         }
 
