@@ -37,6 +37,7 @@ namespace MedivalTycoon
             _barrelManager.CreatePoints();
             _beerManager.Initialize();
             _beerManager.CreatePoints();
+            _tutorialManager.Initialize();
 
             if (!_loadingGameSettings.IsTutorialCompleted())
             {
