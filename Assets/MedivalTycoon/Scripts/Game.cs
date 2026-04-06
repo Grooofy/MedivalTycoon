@@ -6,6 +6,7 @@ using UI;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Visitors;
+using Tutorial;
 
 namespace MedivalTycoon
 {
@@ -19,6 +20,7 @@ namespace MedivalTycoon
         [SerializeField] private BarrelManager _barrelManager;
         [SerializeField] private BeerManager _beerManager;
         [SerializeField] private VisitorsManager _visitorsManager;
+        [SerializeField] private TutorialManager _tutorialManager;
         
         
         
@@ -35,6 +37,11 @@ namespace MedivalTycoon
             _barrelManager.CreatePoints();
             _beerManager.Initialize();
             _beerManager.CreatePoints();
+
+            if (!_loadingGameSettings.IsTutorialCompleted())
+            {
+                _tutorialManager.StartTutorial();
+            }
         }
 
         private void Update()

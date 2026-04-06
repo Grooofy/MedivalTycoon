@@ -36,5 +36,14 @@ public class LoadingGameSettings : MonoBehaviour
         return _saveData.TableCost.Split(',').Select(s => int.Parse(s)).ToArray();
     }
 
+    public bool IsTutorialCompleted()
+    {
+        return _saveData.IsTutorialCompleted;
+    }
 
+    public void SaveTutorialStatus(bool completed)
+    {
+        _saveData.IsTutorialCompleted = completed;
+        _iSaveSystem.Save(_saveData);
+    }
 }

@@ -9,4 +9,5 @@ public class SaveData
     public float Seconds;
     public int TableAmount;
     public string TableCost;
+    public bool IsTutorialCompleted;
 }

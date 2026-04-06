@@ -18,7 +18,7 @@ namespace UI.MainMenu
 
         public void UpdateUI()
         {
-            // Здесь можно добавить логику обновления UI, если она понадобится
+                        // Здесь можно добавить логику обновления UI, если она понадобится
         }
 
         private void OnDestroy()
