@@ -11135,13 +11135,13 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1579894321}
   - {fileID: 1274533126}
   - {fileID: 494869737}
   - {fileID: 716570383}
   - {fileID: 714495354}
   - {fileID: 423999405}
   - {fileID: 10536020}
-  - {fileID: 1579894321}
   - {fileID: 23746189}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -14565,7 +14565,25 @@ MonoBehaviour:
   _mainCanvas: {fileID: 418306349}
   _switcherSelectedCharacter: {fileID: 341427248}
   _wallet: {fileID: 1888693656}
-  _stepsData: []
+  _stepsData:
+  - Step: 0
+    Message: "\u041F\u0440\u0438\u0432\u0435\u0442 \u043F\u0438\u0442\u0443\u0448\u0435\u0441\u0442\u0432\u0435\u043D\u043D\u0438\u043A!"
+    Icon: {fileID: 21300000, guid: 912d2bed20f6a6b4d991cdb351e7f83b, type: 3}
+    TargetHighlight: {fileID: 0}
+    TargetButton: {fileID: 0}
+    FullScreenOverlay: 1
+  - Step: 1
+    Message: "\u0422\u0432\u043E\u0438 \u0435\u0431\u0430\u0438"
+    Icon: {fileID: 21300000, guid: 912d2bed20f6a6b4d991cdb351e7f83b, type: 3}
+    TargetHighlight: {fileID: 714495354}
+    TargetButton: {fileID: 0}
+    FullScreenOverlay: 0
+  - Step: 2
+    Message: "\u0412\u0440\u0435\u043C\u044F"
+    Icon: {fileID: 21300000, guid: 912d2bed20f6a6b4d991cdb351e7f83b, type: 3}
+    TargetHighlight: {fileID: 423999405}
+    TargetButton: {fileID: 0}
+    FullScreenOverlay: 0
 --- !u!4 &566249978
 Transform:
   m_ObjectHideFlags: 0
@@ -54422,8 +54440,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81040a6b85f4b94419f4b00bf1745eca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  overlayColor: {r: 0.63529414, g: 0.9098039, b: 1, a: 0.49803922}
-  padding: 40
+  overlayColor: {r: 0.63529414, g: 0.9098039, b: 1, a: 0.77254903}
+  padding: 10
   moveDuration: 1
 --- !u!222 &1579894320
 CanvasRenderer:

@@ -51,9 +51,8 @@ namespace Tutorial
                 rect.anchorMax = Vector2.one;
                 rect.pivot = new Vector2(0.5f, 0.5f);
 
-                // Перемещаем панель в начало иерархии, чтобы она была под UI
-                rect.SetAsFirstSibling();
-
+                // Перемещаем панель в конец иерархии, чтобы она была поверх UI
+                rect.SetAsLastSibling();
                 _panels.Add(img);            }
         }
 
@@ -70,9 +69,8 @@ namespace Tutorial
 
             // Растягиваем первую панель на весь экран
             _panels[0].gameObject.SetActive(true);
-            _panels[0].rectTransform.SetAsFirstSibling(); // Перемещаем под UI
+            _panels[0].rectTransform.SetAsLastSibling(); // Перемещаем поверх UI
             SetPanelRect(_panels[0], 0, 0, canvasWidth, canvasHeight, 0.5f, 0.5f);
-
             // Остальные скрываем
             for (int i = 1; i < _panels.Count; i++)
                 _panels[i].gameObject.SetActive(false);
@@ -88,9 +86,8 @@ namespace Tutorial
             foreach (var panel in _panels)
             {
                 panel.gameObject.SetActive(true);
-                panel.rectTransform.SetAsFirstSibling(); // Перемещаем под UI
+                panel.rectTransform.SetAsLastSibling(); // Перемещаем поверх UI
             }
-
             // Инициализируем позиции сразу
             _currentAnimPos = GetTargetScreenPosition();
             _currentAnimSize = GetHoleSize();

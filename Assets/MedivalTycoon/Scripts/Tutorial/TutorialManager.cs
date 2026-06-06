@@ -9,12 +9,11 @@ namespace Tutorial
     public enum TutorialStep
     {
         Welcome,
-        Characters,
-        SelectedBartender, 
+        Characters,        
         ShowUITimer,
         CreateBarrel,
         TakeBarrel,
-        GiveBarrel,
+        
         ShowUIVisitorAmount,
         BuildTable,
         WaitVisitor,
@@ -50,6 +49,7 @@ namespace Tutorial
         [SerializeField] private TutorialUI _tutorialUI;
         [SerializeField] private LoadingGameSettings _loadingGameSettings;
         [SerializeField] private Canvas _mainCanvas;
+
         [SerializeField] private Characters.SwitcherSelectedCharacter _switcherSelectedCharacter;
         [SerializeField] private Wallet _wallet;
 
@@ -60,14 +60,14 @@ namespace Tutorial
         public void Initialize()
         {
             _spotlight.Initialize(_mainCanvas);
-            _switcherSelectedCharacter.Activate += OnCharacterSelected;
+            _switcherSelectedCharacter.Activate += OnCharacterSelected;            
             _wallet.CoinsChanged += OnCoinsChanged;
         }
 
         private void OnDisable()
         {
             if (_switcherSelectedCharacter != null)
-                _switcherSelectedCharacter.Activate -= OnCharacterSelected;
+                _switcherSelectedCharacter.Activate -= OnCharacterSelected;                
             
             if (_wallet != null)
                 _wallet.CoinsChanged -= OnCoinsChanged;
@@ -118,13 +118,19 @@ namespace Tutorial
             }
             else if (data.TargetHighlight != null)
             {
-                _spotlight.ShowSpotlight(data.TargetHighlight);
+                if (_spotlight.gameObject.activeSelf)
+                {
+                    _spotlight.MoveSpotlight(data.TargetHighlight);
+                }
+                else
+                {
+                    _spotlight.ShowSpotlight(data.TargetHighlight);
+                }
             }
             else
             {
                 _spotlight.HideSpotlight();
             }
-
             // Подписка на кнопку, если она указана
             if (data.TargetButton != null)
             {
@@ -154,7 +160,7 @@ namespace Tutorial
                     break;
 
                 case TutorialStep.SleepVisitors:
-                    EventBus.Subscribe<SeatFreed>(OnSeatFreed);
+                    EventBus.Subscribe<SeatFreed>(OnSeatFreed);                    
                     break;
             }
         }
@@ -162,8 +168,7 @@ namespace Tutorial
         private void OnCharacterSelected(int id)
         {
             // id: 0 - Бармен, 1 - Официант, 2 - Охранник
-            if (_currentStep == TutorialStep.SelectedBartender && id == 0) NextStep();
-            else if (_currentStep == TutorialStep.SelectedWaiter && id == 1) NextStep();
+            if (_currentStep == TutorialStep.SelectedWaiter && id == 1) NextStep();            
             else if (_currentStep == TutorialStep.SelectedSecuryte && id == 2) NextStep();
         }
 
