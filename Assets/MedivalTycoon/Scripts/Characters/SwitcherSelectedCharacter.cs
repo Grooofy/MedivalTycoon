@@ -10,15 +10,22 @@ namespace Characters
         private CharacterInputController _characterInput;
         private List<ICharacter> _characters = new List<ICharacter>();
         private ICharacter _currentCharacter;
+        public ICharacter CurrentCharacter => _currentCharacter;
     
         public UnityAction<int> Activate;
         
-        public void Initialize(ButtonsTransmitter activeCharacter, CharacterInputController characterInput, List<ICharacter> characters)
+        public void Initialize(ButtonsTransmitter activeCharacter, CharacterInputController characterInput, List<ICharacter> characters, ICharacter startSelected = null)
         {
             _buttonsTransmitter = activeCharacter;
             _characterInput = characterInput;
             _characters = characters;
             _buttonsTransmitter.CharacterSelected += InitSelectedCharacter;
+            // If there is a start selected character, set it as current so other systems can query it
+            if (startSelected != null)
+            {
+                _currentCharacter = startSelected;
+                _characterInput.SwitchCharacter(_currentCharacter);
+            }
         }
         
         private void OnDisable()

@@ -1,6 +1,8 @@
-using System;
 using Characters;
+using Events;
 using JetBrains.Annotations;
+using System;
+using Tutorial;
 using UnityEngine;
 
 namespace Lever
@@ -38,6 +40,7 @@ namespace Lever
 
                     if (hit.TryGetComponent(out Bartender bartender))
                     {
+                        EventBus.Raise(new TutorialStepCompleted { Step = TutorialStep.Characters });
                         if (_activeCoroutine != null)
                         {
                             StopCoroutine(_activeCoroutine);

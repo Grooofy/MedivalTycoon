@@ -15,7 +15,7 @@ namespace Characters
         {
             _characterCreator.Create(_characterInputController, _joystick);
             _buttonsTransmitter.Initialize();
-            _switcherSelectedCharacter.Initialize(_buttonsTransmitter, _characterInputController, _characterCreator.Characters);
+            _switcherSelectedCharacter.Initialize(_buttonsTransmitter, _characterInputController, _characterCreator.Characters, _characterCreator.StartSelectedCharacter);
             _cameraFollower.Initialize(_characterCreator.Characters, _switcherSelectedCharacter, _characterCreator.StartSelectedCharacter);
         }
 

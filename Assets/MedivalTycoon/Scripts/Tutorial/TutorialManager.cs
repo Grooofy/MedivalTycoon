@@ -4,6 +4,7 @@ using Events;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
+
 namespace Tutorial
 {
     public enum TutorialStep
@@ -41,11 +42,15 @@ namespace Tutorial
         public RectTransform TargetHighlight;
         public Button TargetButton; // Кнопка для завершения шага
         public bool FullScreenOverlay;
+        // Для указателя пути: цель в мировых координатах и флаг отображения
+        public Transform PathTarget;
+        public bool ShowPathFromSelected;
     }
 
     public class TutorialManager : MonoBehaviour
     {
         [SerializeField] private TutorialSpotlight _spotlight;
+        [SerializeField] private TutorialPointer _pointer;
         [SerializeField] private TutorialUI _tutorialUI;
         [SerializeField] private LoadingGameSettings _loadingGameSettings;
         [SerializeField] private Canvas _mainCanvas;
@@ -56,12 +61,18 @@ namespace Tutorial
         [Header("Настройки шагов")]
         [SerializeField] private List<TutorialStepData> _stepsData;
         private TutorialStep _currentStep = TutorialStep.Welcome;
+        // Fields used for path pointer step
+        private bool _pointerActiveStep = false;
+        private Transform _pointerTarget = null;
 
         public void Initialize()
         {
             _spotlight.Initialize(_mainCanvas);
+            if (_pointer != null) _pointer.Initialize(_mainCanvas);
             _switcherSelectedCharacter.Activate += OnCharacterSelected;            
             _wallet.CoinsChanged += OnCoinsChanged;
+            // Подписываемся на событие завершения шага, чтобы внешний код мог его триггерить через EventBus
+            EventBus.Subscribe<Events.TutorialStepCompleted>(OnTutorialStepCompleted);
         }
 
         private void OnDisable()
@@ -71,6 +82,7 @@ namespace Tutorial
             
             if (_wallet != null)
                 _wallet.CoinsChanged -= OnCoinsChanged;
+            EventBus.Unsubscribe<Events.TutorialStepCompleted>(OnTutorialStepCompleted);
         }
 
         public void StartTutorial()
@@ -137,6 +149,23 @@ namespace Tutorial
                 data.TargetButton.onClick.AddListener(OnTargetButtonClicked);
             }
 
+            // Обработка указателя пути
+            if (data.ShowPathFromSelected && data.PathTarget != null)
+            {
+                _pointerActiveStep = true;
+                _pointerTarget = data.PathTarget;
+                if (_switcherSelectedCharacter.CurrentCharacter != null && _pointer != null)
+                {
+                    _pointer.ShowPointer(_switcherSelectedCharacter.CurrentCharacter, _pointerTarget);
+                }
+            }
+            else
+            {
+                _pointerActiveStep = false;
+                _pointerTarget = null;
+                if (_pointer != null) _pointer.HidePointer();
+            }
+
             switch (_currentStep)
             {
                 case TutorialStep.CreateBarrel:
@@ -170,6 +199,16 @@ namespace Tutorial
             // id: 0 - Бармен, 1 - Официант, 2 - Охранник
             if (_currentStep == TutorialStep.SelectedWaiter && id == 1) NextStep();            
             else if (_currentStep == TutorialStep.SelectedSecuryte && id == 2) NextStep();
+
+            // Обновляем указатель, если шаг требует отображения пути
+            if (_pointerActiveStep && _pointerTarget != null && _pointer != null)
+            {
+                var current = _switcherSelectedCharacter.CurrentCharacter;
+                if (current != null)
+                {
+                    _pointer.ShowPointer(current, _pointerTarget);
+                }
+            }
         }
 
         private void OnCoinsChanged(int amount)
@@ -218,7 +257,20 @@ namespace Tutorial
         {
             EventBus.Unsubscribe<TableBuilt>(OnTableBuilt);
             _spotlight.HideSpotlight();
+            if (_pointer != null) _pointer.HidePointer();
             NextStep();
+        }
+
+        private void OnTutorialStepCompleted(Events.TutorialStepCompleted data)
+        {
+            // Защита: только если событие для текущего шага
+            if (data.Step == _currentStep)
+            {
+                // Снимаем подсветки/указатель и переходим дальше
+                _spotlight.HideSpotlight();
+                if (_pointer != null) _pointer.HidePointer();
+                NextStep();
+            }
         }
 
         private void OnVisitorLeave(VisitorLeaveTavern data)
