@@ -1,4 +1,6 @@
 using Characters;
+using Events;
+using Tutorial;
 using UnityEngine;
 
 public class SleepVisitorGiver : MonoBehaviour
@@ -30,6 +32,7 @@ public class SleepVisitorGiver : MonoBehaviour
                 {
                     _currentHand = hand;
                     _currentHand.RegisterProps(_regulating);
+                    EventBus.Raise(new TutorialStepCompleted { Step = TutorialStep.TakeVisitor });
                     _activeCoroutine = StartCoroutine(_currentHand.FillingPoints());
                 }
             }

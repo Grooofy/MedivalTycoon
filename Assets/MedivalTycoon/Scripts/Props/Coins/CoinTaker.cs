@@ -1,4 +1,6 @@
 using Characters;
+using Events;
+using Tutorial;
 using UnityEngine;
 
 public class CoinTaker : MonoBehaviour
@@ -36,6 +38,7 @@ public class CoinTaker : MonoBehaviour
 
                         if (props == null || props.Count == 0) return;
 
+                        EventBus.Raise(new TutorialStepCompleted { Step = TutorialStep.GiveMoney });
                         _regulating.RegisterProps(props);
                         _activeCoroutine = StartCoroutine(_regulating.FillingPoints());
                         _hasGiven = true;

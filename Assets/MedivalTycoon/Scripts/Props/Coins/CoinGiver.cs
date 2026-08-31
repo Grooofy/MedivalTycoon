@@ -1,4 +1,6 @@
 using Characters;
+using Events;
+using Tutorial;
 using UnityEngine;
 
 namespace Money
@@ -37,6 +39,7 @@ namespace Money
                         {
                             _currentHand = hand;
                             _currentHand.RegisterProps(_regulating);
+                            EventBus.Raise(new TutorialStepCompleted { Step = TutorialStep.TakeMoney });
                             _activeCoroutine = StartCoroutine(_currentHand.FillingPoints());
                         }
                             

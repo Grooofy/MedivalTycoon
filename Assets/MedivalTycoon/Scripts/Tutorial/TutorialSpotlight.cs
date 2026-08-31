@@ -88,12 +88,30 @@ namespace Tutorial
                 panel.gameObject.SetActive(true);
                 panel.rectTransform.SetAsLastSibling(); // Перемещаем поверх UI
             }
-            // Инициализируем позиции сразу
-            _currentAnimPos = GetTargetScreenPosition();
-            _currentAnimSize = GetHoleSize();
 
-            UpdatePanelsLayout();
-        }        public void MoveSpotlight(RectTransform target)
+            // Подготовка анимации появления: анимируем с центра экрана и малого размера к целевой позиции
+            _endPos = GetTargetScreenPosition();
+            _endSize = GetHoleSize();
+
+            if (_moveTween != null && _moveTween.IsActive())
+                _moveTween.Kill();
+
+            RectTransform canvasRect = _canvas.GetComponent<RectTransform>();
+            _startPos = new Vector2(canvasRect.rect.width / 2f, canvasRect.rect.height / 2f);
+            _startSize = Vector2.one * 20f;
+
+            _currentAnimPos = _startPos;
+            _currentAnimSize = _startSize;
+
+            _moveTween = DOTween.To(
+                () => 0f,
+                OnAnimationUpdate,
+                1f,
+                moveDuration
+            ).SetEase(Ease.OutQuad);
+        }
+
+        public void MoveSpotlight(RectTransform target)
         {
             if (_targetRect == null)
             {

@@ -12,6 +12,8 @@ namespace MedivalTycoon
 {
     public class Game : MonoBehaviour
     {
+        [SerializeField] private bool IsTutorial;
+
         [SerializeField] private CharacterManager _characterManager;
         [SerializeField] private LoadingGameSettings _loadingGameSettings;
         [SerializeField] private GameUIManager _gameUIManager;
@@ -39,10 +41,15 @@ namespace MedivalTycoon
             _beerManager.CreatePoints();
             _tutorialManager.Initialize();
 
-            if (!_loadingGameSettings.IsTutorialCompleted())
+            /* if (!_loadingGameSettings.IsTutorialCompleted())
+             {
+                 _tutorialManager.StartTutorial();
+             }*/
+            if (IsTutorial)
             {
                 _tutorialManager.StartTutorial();
             }
+           
         }
 
         private void Update()

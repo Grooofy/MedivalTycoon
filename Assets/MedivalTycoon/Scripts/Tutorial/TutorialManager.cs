@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using System.Collections.Generic;
 using System.Collections;
+using Money;
+using Beers;
 
 
 namespace Tutorial
@@ -12,11 +14,11 @@ namespace Tutorial
     public enum TutorialStep
     {
         Welcome,
-        Characters,        
+        Characters,
         ShowUITimer,
         CreateBarrel,
         TakeBarrel,
-        MoveBarrel,        
+        MoveBarrel,
         ShowUIVisitorAmount,
         BuildTable,
         WaitVisitor,
@@ -32,6 +34,7 @@ namespace Tutorial
         SelectedSecuryte,
         TakeVisitor,
         GiveVisitor,
+        LastStep,
         Complete
 
     }
@@ -43,8 +46,8 @@ namespace Tutorial
         public string Message;
         public Sprite Icon;
         public RectTransform TargetHighlight;
-        public Button TargetButton; 
-        public bool FullScreenOverlay;       
+        public Button TargetButton;
+        public bool FullScreenOverlay;
         public Transform PathTarget;
         public bool ShowPathFromSelected;
     }
@@ -76,14 +79,14 @@ namespace Tutorial
             _spotlight.Initialize(_mainCanvas);
             if (_pointer != null) _pointer.Initialize(_mainCanvas);
             // Подписка будет выполняться для текущего шага при его показе
-            _switcherSelectedCharacter.Activate += OnCharacterSelected; 
+            _switcherSelectedCharacter.Activate += OnCharacterSelected;
             EventBus.Subscribe<TutorialStepCompleted>(OnTutorialStepCompleted);
         }
 
         private void OnDisable()
         {
             if (_switcherSelectedCharacter != null)
-                _switcherSelectedCharacter.Activate -= OnCharacterSelected; 
+                _switcherSelectedCharacter.Activate -= OnCharacterSelected;
 
             EventBus.Unsubscribe<TutorialStepCompleted>(OnTutorialStepCompleted);
             ClearSubscribedButton();
@@ -98,7 +101,7 @@ namespace Tutorial
         private void ShowStep()
         {
             TutorialStepData data = _stepsData.Find(s => s.Step == _currentStep);
-            
+
             if (string.IsNullOrEmpty(data.Message) && _currentStep != TutorialStep.Complete)
             {
                 Debug.LogWarning($"Tutorial: No data found for step {_currentStep}");
@@ -107,7 +110,7 @@ namespace Tutorial
             ProcessStepLogic(data);
 
             if (!string.IsNullOrEmpty(data.Message))
-            {               
+            {
                 var autoAdvanceSteps = new HashSet<TutorialStep>
                 {
                     TutorialStep.Welcome,
@@ -129,13 +132,14 @@ namespace Tutorial
         }
 
         private void ProcessStepLogic(TutorialStepData data)
-        { 
-            if (data.Step == TutorialStep.BuildTable || data.Step == TutorialStep.ServesesVisitor || data.Step == TutorialStep.TakeMoney && data.PathTarget == null)
+        {
+            if (data.Step == TutorialStep.BuildTable || data.Step == TutorialStep.TakeVisitor && data.PathTarget == null)
             {
                 var trigger = FindObjectOfType<TableTrigger>();
+
                 if (trigger != null)
                 {
-                    int idx = _stepsData.FindIndex(s => s.Step == TutorialStep.BuildTable);
+                    int idx = _stepsData.FindIndex(s => s.Step == _currentStep);
                     if (idx >= 0)
                     {
                         var newData = _stepsData[idx];
@@ -144,7 +148,28 @@ namespace Tutorial
                         data = newData;
                     }
                 }
-            }          
+            }
+
+            if ((data.Step == TutorialStep.ServesesVisitor || data.Step == TutorialStep.TakeMoney) && data.PathTarget == null)
+            {
+
+                var table = FindObjectOfType<TableTrigger>();
+                Component trigger = table?.GetComponentInChildren<BeerTaker>();
+                
+                if(trigger == null) trigger = table?.GetComponentInChildren<CoinTaker>();
+
+                if (trigger != null)
+                {
+                    int idx = _stepsData.FindIndex(s => s.Step == _currentStep);
+                    if (idx >= 0)
+                    {
+                        var newData = _stepsData[idx];
+                        newData.PathTarget = trigger.transform;
+                        _stepsData[idx] = newData;
+                        data = newData;
+                    }
+                }
+            }
 
             if (data.FullScreenOverlay)
             {
@@ -192,12 +217,12 @@ namespace Tutorial
                 _pointerActiveStep = false;
                 _pointerTarget = null;
                 if (_pointer != null) _pointer.HidePointer();
-            }           
+            }
         }
 
         private void OnCharacterSelected(int id)
         {
-            if (_currentStep == TutorialStep.SelectedWaiter && id == 1) NextStep();            
+            if (_currentStep == TutorialStep.SelectedWaiter && id == 1) NextStep();
             else if (_currentStep == TutorialStep.SelectedSecuryte && id == 2) NextStep();
 
             if (_pointerActiveStep && _pointerTarget != null && _pointer != null)
@@ -208,7 +233,7 @@ namespace Tutorial
                     _pointer.ShowPointer(current, _pointerTarget);
                 }
             }
-        }       
+        }
 
         private void OnAnyButtonClicked(Button clicked)
         {
