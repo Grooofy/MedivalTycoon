@@ -1,4 +1,6 @@
 using Characters;
+using Events;
+using Tutorial;
 using UnityEngine;
 
 public class BarrelGiver : MonoBehaviour
@@ -37,6 +39,7 @@ public class BarrelGiver : MonoBehaviour
                         _currentHand = hand;
                         _currentHand.RegisterProps(_regulating);
                         _activeCoroutine = StartCoroutine(_currentHand.FillingPoints());
+                        EventBus.Raise(new TutorialStepCompleted { Step = TutorialStep.TakeBarrel });
                     }
                 }
             }

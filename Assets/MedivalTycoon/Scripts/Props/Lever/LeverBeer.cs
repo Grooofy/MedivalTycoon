@@ -1,7 +1,7 @@
-using System;
 using Beers;
 using Characters;
 using Events;
+using Tutorial;
 using UnityEngine;
 
 namespace Lever
@@ -32,6 +32,7 @@ namespace Lever
                 _uiObject.FadeIn();
             else
                 _uiObject.FadeOut();
+
         }
 
         private void OnTriggerEnter(Collider other)
@@ -39,6 +40,7 @@ namespace Lever
             if (other.TryGetComponent(out Waiter waiter))
             {
                 if (_beerBuffer.GetEmptyPointsCount() == 0) return;
+                EventBus.Raise(new TutorialStepCompleted { Step = TutorialStep.CreateBeer });
                 _barrelBeerBuffer.IsTake = true;
                 StartCoroutine(_barrelBeerBuffer.ResetBarrel());
             }

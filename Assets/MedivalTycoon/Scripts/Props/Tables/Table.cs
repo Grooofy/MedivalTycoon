@@ -1,8 +1,10 @@
 using Beers;
+using Events;
 using MedivalTycoon;
 using Money;
 using SeatSyst;
 using System.Collections.Generic;
+using Tutorial;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -78,7 +80,6 @@ namespace Tables
         public void CheckHits()
         {
             if (_seat == null && _beerTaker == null && _coinManager == null) return;
-
             _beerTaker.CheckHits();
             _seat.CheckHits();
             _coinManager.CheckHits();
@@ -91,6 +92,7 @@ namespace Tables
 
             if (Price <= 0 && !_isBuilding)
             {
+                EventBus.Raise(new TutorialStepCompleted { Step = TutorialStep.BuildTable });
                 _isBuilding = true;
                 LinedUp?.Invoke(_seat);
             }

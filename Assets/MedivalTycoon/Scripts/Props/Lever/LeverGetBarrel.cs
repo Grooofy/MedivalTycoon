@@ -40,7 +40,7 @@ namespace Lever
 
                     if (hit.TryGetComponent(out Bartender bartender))
                     {
-                        EventBus.Raise(new TutorialStepCompleted { Step = TutorialStep.Characters });
+                        EventBus.Raise(new TutorialStepCompleted { Step = TutorialStep.CreateBarrel });
                         if (_activeCoroutine != null)
                         {
                             StopCoroutine(_activeCoroutine);

@@ -2,7 +2,9 @@ using UnityEngine;
 using System;
 using Events;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using System.Collections.Generic;
+using System.Collections;
 
 
 namespace Tutorial
@@ -14,12 +16,12 @@ namespace Tutorial
         ShowUITimer,
         CreateBarrel,
         TakeBarrel,
-        
+        MoveBarrel,        
         ShowUIVisitorAmount,
         BuildTable,
         WaitVisitor,
-        Visitor,    
         SelectedWaiter,
+        CreateBeer,
         TakeBeer,
         ServesesVisitor,
         GiveBeer,
@@ -31,6 +33,7 @@ namespace Tutorial
         TakeVisitor,
         GiveVisitor,
         Complete
+
     }
 
     [Serializable]
@@ -40,9 +43,8 @@ namespace Tutorial
         public string Message;
         public Sprite Icon;
         public RectTransform TargetHighlight;
-        public Button TargetButton; // Кнопка для завершения шага
-        public bool FullScreenOverlay;
-        // Для указателя пути: цель в мировых координатах и флаг отображения
+        public Button TargetButton; 
+        public bool FullScreenOverlay;       
         public Transform PathTarget;
         public bool ShowPathFromSelected;
     }
@@ -61,28 +63,30 @@ namespace Tutorial
         [Header("Настройки шагов")]
         [SerializeField] private List<TutorialStepData> _stepsData;
         private TutorialStep _currentStep = TutorialStep.Welcome;
-        // Fields used for path pointer step
         private bool _pointerActiveStep = false;
         private Transform _pointerTarget = null;
+        private Coroutine _popupCoroutine = null;
+        private Transform _popupTarget = null;
+        private Vector3 _popupOriginalScale = Vector3.one;
+        private Button _subscribedButton = null;
+        private UnityAction _subscribedAction = null;
 
         public void Initialize()
         {
             _spotlight.Initialize(_mainCanvas);
             if (_pointer != null) _pointer.Initialize(_mainCanvas);
-            _switcherSelectedCharacter.Activate += OnCharacterSelected;            
-            _wallet.CoinsChanged += OnCoinsChanged;
-            // Подписываемся на событие завершения шага, чтобы внешний код мог его триггерить через EventBus
-            EventBus.Subscribe<Events.TutorialStepCompleted>(OnTutorialStepCompleted);
+            // Подписка будет выполняться для текущего шага при его показе
+            _switcherSelectedCharacter.Activate += OnCharacterSelected; 
+            EventBus.Subscribe<TutorialStepCompleted>(OnTutorialStepCompleted);
         }
 
         private void OnDisable()
         {
             if (_switcherSelectedCharacter != null)
-                _switcherSelectedCharacter.Activate -= OnCharacterSelected;                
-            
-            if (_wallet != null)
-                _wallet.CoinsChanged -= OnCoinsChanged;
-            EventBus.Unsubscribe<Events.TutorialStepCompleted>(OnTutorialStepCompleted);
+                _switcherSelectedCharacter.Activate -= OnCharacterSelected; 
+
+            EventBus.Unsubscribe<TutorialStepCompleted>(OnTutorialStepCompleted);
+            ClearSubscribedButton();
         }
 
         public void StartTutorial()
@@ -100,21 +104,23 @@ namespace Tutorial
                 Debug.LogWarning($"Tutorial: No data found for step {_currentStep}");
             }
 
-            // Включаем логику шага (подсветку или оверлей) СРАЗУ
             ProcessStepLogic(data);
 
             if (!string.IsNullOrEmpty(data.Message))
-            {
-                _tutorialUI.ShowMessage(data.Message, () => 
+            {               
+                var autoAdvanceSteps = new HashSet<TutorialStep>
+                {
+                    TutorialStep.Welcome,
+                    TutorialStep.Characters,
+                    TutorialStep.ShowUITimer,
+                    TutorialStep.ShowUIVisitorAmount,
+                    TutorialStep.ShowUIMoneyAmout
+                };
+
+                _tutorialUI.ShowMessage(data.Message, () =>
                 {
                     _tutorialUI.Close();
-                    
-                    // Шаги, которые переходят по нажатию кнопки "Далее" в UI
-                    if (_currentStep == TutorialStep.Welcome || 
-                        _currentStep == TutorialStep.Characters ||
-                        _currentStep == TutorialStep.ShowUITimer ||
-                        _currentStep == TutorialStep.ShowUIVisitorAmount ||
-                        _currentStep == TutorialStep.ShowUIMoneyAmout)
+                    if (data.TargetButton != null || autoAdvanceSteps.Contains(_currentStep))
                     {
                         NextStep();
                     }
@@ -123,7 +129,23 @@ namespace Tutorial
         }
 
         private void ProcessStepLogic(TutorialStepData data)
-        {
+        { 
+            if (data.Step == TutorialStep.BuildTable || data.Step == TutorialStep.ServesesVisitor || data.Step == TutorialStep.TakeMoney && data.PathTarget == null)
+            {
+                var trigger = FindObjectOfType<TableTrigger>();
+                if (trigger != null)
+                {
+                    int idx = _stepsData.FindIndex(s => s.Step == TutorialStep.BuildTable);
+                    if (idx >= 0)
+                    {
+                        var newData = _stepsData[idx];
+                        newData.PathTarget = trigger.transform;
+                        _stepsData[idx] = newData;
+                        data = newData;
+                    }
+                }
+            }          
+
             if (data.FullScreenOverlay)
             {
                 _spotlight.ShowFullScreen();
@@ -143,10 +165,16 @@ namespace Tutorial
             {
                 _spotlight.HideSpotlight();
             }
-            // Подписка на кнопку, если она указана
+            // Подписываемся только на кнопку текущего шага
+            SetSubscribedButton(data.TargetButton);
+
+            // Запускаем анимацию "попап" для целевой кнопки
+            StopPopupAnimation();
             if (data.TargetButton != null)
             {
-                data.TargetButton.onClick.AddListener(OnTargetButtonClicked);
+                _popupTarget = data.TargetButton.transform;
+                _popupOriginalScale = _popupTarget.localScale;
+                _popupCoroutine = StartCoroutine(PopupAnimation(_popupTarget));
             }
 
             // Обработка указателя пути
@@ -164,43 +192,14 @@ namespace Tutorial
                 _pointerActiveStep = false;
                 _pointerTarget = null;
                 if (_pointer != null) _pointer.HidePointer();
-            }
-
-            switch (_currentStep)
-            {
-                case TutorialStep.CreateBarrel:
-                    EventBus.Subscribe<BeerCreated>(OnBeerCreated);
-                    break;
-
-                case TutorialStep.TakeBarrel:
-                    EventBus.Subscribe<BeerBufferOpen>(OnBeerBufferOpen);
-                    break;
-
-                case TutorialStep.BuildTable:
-                    EventBus.Subscribe<TableBuilt>(OnTableBuilt);
-                    break;
-
-                case TutorialStep.WaitVisitor:
-                    EventBus.Subscribe<VisitorLeaveTavern>(OnVisitorLeave);
-                    break;
-                
-                case TutorialStep.Visitor:
-                    EventBus.Subscribe<SeatTaken>(OnSeatTaken);
-                    break;
-
-                case TutorialStep.SleepVisitors:
-                    EventBus.Subscribe<SeatFreed>(OnSeatFreed);                    
-                    break;
-            }
+            }           
         }
 
         private void OnCharacterSelected(int id)
         {
-            // id: 0 - Бармен, 1 - Официант, 2 - Охранник
             if (_currentStep == TutorialStep.SelectedWaiter && id == 1) NextStep();            
             else if (_currentStep == TutorialStep.SelectedSecuryte && id == 2) NextStep();
 
-            // Обновляем указатель, если шаг требует отображения пути
             if (_pointerActiveStep && _pointerTarget != null && _pointer != null)
             {
                 var current = _switcherSelectedCharacter.CurrentCharacter;
@@ -209,75 +208,104 @@ namespace Tutorial
                     _pointer.ShowPointer(current, _pointerTarget);
                 }
             }
-        }
+        }       
 
-        private void OnCoinsChanged(int amount)
+        private void OnAnyButtonClicked(Button clicked)
         {
-            if (_currentStep == TutorialStep.TakeMoney || _currentStep == TutorialStep.GiveMoney)
+            if (_stepsData == null) return;
+            TutorialStepData data = _stepsData.Find(s => s.Step == _currentStep);
+            if (data.TargetButton == clicked)
             {
+                StopPopupAnimation();
                 NextStep();
             }
         }
-
-        private void OnTargetButtonClicked()
+        private void SetSubscribedButton(Button btn)
         {
-            TutorialStepData data = _stepsData.Find(s => s.Step == _currentStep);
-            if (data.TargetButton != null)
+            // Снимаем старую подписку
+            ClearSubscribedButton();
+
+            if (btn == null) return;
+
+            _subscribedButton = btn;
+            _subscribedAction = () => OnAnyButtonClicked(btn);
+            _subscribedButton.onClick.AddListener(_subscribedAction);
+        }
+
+        private void ClearSubscribedButton()
+        {
+            if (_subscribedButton != null && _subscribedAction != null)
             {
-                data.TargetButton.onClick.RemoveListener(OnTargetButtonClicked);
+                _subscribedButton.onClick.RemoveListener(_subscribedAction);
             }
-            NextStep();
+            _subscribedButton = null;
+            _subscribedAction = null;
         }
 
-        private void OnBeerCreated(BeerCreated data)
+        private void StopPopupAnimation()
         {
-            EventBus.Unsubscribe<BeerCreated>(OnBeerCreated);
-            NextStep();
+            if (_popupCoroutine != null)
+            {
+                StopCoroutine(_popupCoroutine);
+                _popupCoroutine = null;
+            }
+            if (_popupTarget != null)
+            {
+                _popupTarget.localScale = _popupOriginalScale;
+                _popupTarget = null;
+                _popupOriginalScale = Vector3.one;
+            }
         }
 
-        private void OnBeerBufferOpen(BeerBufferOpen data)
+        private IEnumerator PopupAnimation(Transform target)
         {
-            EventBus.Unsubscribe<BeerBufferOpen>(OnBeerBufferOpen);
-            NextStep();
+            if (target == null) yield break;
+
+            Vector3 originalScale = _popupOriginalScale;
+
+            float upScale = 1.15f;
+            float duration = 0.35f;
+
+            while (true)
+            {
+                // scale up
+                float t = 0f;
+                while (t < duration)
+                {
+                    t += Time.deltaTime;
+                    float v = Mathf.SmoothStep(1f, upScale, t / duration);
+                    if (target == null) yield break;
+                    target.localScale = originalScale * v;
+                    yield return null;
+                }
+
+                // small pause
+                yield return new WaitForSeconds(0.12f);
+
+                // scale down
+                t = 0f;
+                while (t < duration)
+                {
+                    t += Time.deltaTime;
+                    float v = Mathf.SmoothStep(upScale, 1f, t / duration);
+                    if (target == null) yield break;
+                    target.localScale = originalScale * v;
+                    yield return null;
+                }
+
+                // pause before next pulse
+                yield return new WaitForSeconds(0.6f);
+            }
         }
 
-        private void OnSeatTaken(SeatTaken data)
+        private void OnTutorialStepCompleted(TutorialStepCompleted data)
         {
-            EventBus.Unsubscribe<SeatTaken>(OnSeatTaken);
-            NextStep();
-        }
-
-        private void OnSeatFreed(SeatFreed data)
-        {
-            EventBus.Unsubscribe<SeatFreed>(OnSeatFreed);
-            NextStep();
-        }
-
-        private void OnTableBuilt(TableBuilt data)
-        {
-            EventBus.Unsubscribe<TableBuilt>(OnTableBuilt);
-            _spotlight.HideSpotlight();
-            if (_pointer != null) _pointer.HidePointer();
-            NextStep();
-        }
-
-        private void OnTutorialStepCompleted(Events.TutorialStepCompleted data)
-        {
-            // Защита: только если событие для текущего шага
             if (data.Step == _currentStep)
             {
-                // Снимаем подсветки/указатель и переходим дальше
                 _spotlight.HideSpotlight();
                 if (_pointer != null) _pointer.HidePointer();
                 NextStep();
             }
-        }
-
-        private void OnVisitorLeave(VisitorLeaveTavern data)
-        {
-            EventBus.Unsubscribe<VisitorLeaveTavern>(OnVisitorLeave);
-            _spotlight.HideSpotlight();
-            NextStep();
         }
 
         private void NextStep()

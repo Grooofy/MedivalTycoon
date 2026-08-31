@@ -1,4 +1,6 @@
 ﻿using Characters;
+using Events;
+using Tutorial;
 using UnityEngine;
 
 namespace Beers
@@ -40,6 +42,8 @@ namespace Beers
                             var amount = Mathf.Min(_currentHand.Amount, _regulating.GetEmptyPointsCount());
                             var props = _currentHand.GetTo(amount);
                             if (props == null || props.Count == 0) return;
+                            EventBus.Raise(new TutorialStepCompleted { Step = TutorialStep.GiveBeer });
+                            EventBus.Raise(new TutorialStepCompleted { Step = TutorialStep.ServesesVisitor });
                             _regulating.RegisterProps(props);
                              StartCoroutine(_regulating.FillingPoints());
                             _hasGiven = true;
