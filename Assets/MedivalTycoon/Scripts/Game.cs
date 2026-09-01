@@ -45,6 +45,7 @@ namespace MedivalTycoon
              {
                  _tutorialManager.StartTutorial();
              }*/
+            //ДЛЯ ТЕСТА
             if (IsTutorial)
             {
                 _tutorialManager.StartTutorial();

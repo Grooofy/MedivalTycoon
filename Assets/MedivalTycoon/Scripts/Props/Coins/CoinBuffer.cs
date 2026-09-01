@@ -1,6 +1,7 @@
 ﻿using Beers;
 using MedivalTycoon;
 using Propses;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,13 +10,14 @@ namespace Money
 {
     public class CoinBuffer : MonoBehaviour, IPropsMover
     {
+        public Action AllCoinsCreated;
         private IPropsPool _coinPool;
         public SpawnerPoints _spawnerPoints;
         private List<Point> _points = new List<Point>();
         private Stack<IProps> _props = new Stack<IProps>();
         private Stack<IProps> _pointsProps = new Stack<IProps>();
         private int _amountPoint;
-        private int _amountWallet;
+        private int _amountVisitorWallet;
         private bool _isFull;
         private int _index;
         private TableInteractionMode _tableInteractionMode;
@@ -33,7 +35,7 @@ namespace Money
 
         public void SetAmountVisitorWallet(int amount)
         {
-            _amountWallet = amount + _index; 
+            _amountVisitorWallet = amount + _index; 
         }
 
         public void CreatePoints(int cout, float offset, Vector3 spaceSize = default)
@@ -57,7 +59,7 @@ namespace Money
 
         public IEnumerator FillingPoints()
         {
-            while (_isFull == false && _index <= _amountWallet)
+            while (_isFull == false && _index <= _amountVisitorWallet)
             {
                 if (_index >= _amountPoint) break;
 
@@ -74,8 +76,12 @@ namespace Money
                 yield return WaitFor.QuarterSecond;
             }
 
-            if (_index >= _amountWallet)
-                _amountWallet = 0;
+            if (_index >= _amountVisitorWallet)
+            {
+                _amountVisitorWallet = 0;
+                AllCoinsCreated?.Invoke();
+            }
+                
         }
 
         public Stack<IProps> GetTo(int amount)

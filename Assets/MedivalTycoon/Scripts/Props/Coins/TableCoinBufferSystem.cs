@@ -19,8 +19,10 @@ namespace Money
         public void Initialize(PropsSpawner propsSpawner, TableInteractionMode tableInteractionMode)
         {
             _coinsPool = propsSpawner.GetCoinPool();
-            _coinBuffer.Initialize(_coinsPool, tableInteractionMode);           
+            _coinBuffer.Initialize(_coinsPool, tableInteractionMode);  
+            _coinGiver.SetActiveGameObject(false);
             _coinGiver.Initialize(_coinBuffer, _layerMask);
+            _coinBuffer.AllCoinsCreated += () => _coinGiver.SetActiveGameObject(true);
         }     
         
         public CoinBuffer GetCoinBuffer()

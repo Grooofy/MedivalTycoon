@@ -14,11 +14,21 @@ namespace Money
         private Hand _currentHand;
         private Coroutine _activeCoroutine;
         private bool _isActive;
+        private bool _isReady;
+        private bool _isActiveRequested;
 
         public void Initialize(IPropsMover regulating, LayerMask waiterLayer)
         {
             _regulating = regulating;
             _waiterLayer = waiterLayer;
+            _isReady = false;
+            _isActiveRequested = false;
+
+            // Если регулятор - это CoinBuffer, подпишемся на событие создания всех монет
+            if (regulating is Money.CoinBuffer coinBuffer)
+            {
+                coinBuffer.AllCoinsCreated += OnAllCoinsCreated;
+            }
         }
 
         public void CheckHits()
@@ -60,8 +70,24 @@ namespace Money
 
         public void SetActiveGameObject(bool value)
         {
-            _isActive = value;
-            gameObject.SetActive(value);
+            // Запрашиваем видимость; реальная видимость зависит также от готовности (коинов)
+            _isActiveRequested = value;
+
+            var shouldBeActive = _isActiveRequested && _isReady;
+            _isActive = shouldBeActive;
+            gameObject.SetActive(shouldBeActive);
+        }
+
+        private void OnAllCoinsCreated()
+        {
+            _isReady = true;
+
+            // Если уже был запрос на активацию — включаем
+            if (_isActiveRequested)
+            {
+                _isActive = true;
+                gameObject.SetActive(true);
+            }
         }
 
 #if UNITY_EDITOR

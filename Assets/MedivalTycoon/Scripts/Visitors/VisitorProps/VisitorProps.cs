@@ -16,7 +16,7 @@ public class VisitorProps : MonoBehaviour, IProps
 
     public void SetVisitor(TavernVisitor visitor)
     {
-        _visitor = visitor;
+        _visitor = visitor;        
     }
 
     public IEnumerator TryMoveTo(Point endPoint)
@@ -25,6 +25,7 @@ public class VisitorProps : MonoBehaviour, IProps
         while (endPoint.IsFill == false)
         {
             _mover.MoveTo(transform, endPoint, _moveSpeed);
+            AnimatorExtensions.Set(_visitor.Animator, AnimatorParameters.VisitorMoveSleep);
             yield return null;
         }
     }

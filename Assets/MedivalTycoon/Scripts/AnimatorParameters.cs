@@ -8,5 +8,6 @@ public enum AnimatorParameters
     VisitorIdle,
     VisitorWalk,
     VisitorDrink,
-    VisitorSleep
+    VisitorSleep,
+    VisitorMoveSleep
 }
