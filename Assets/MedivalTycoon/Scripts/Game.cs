@@ -23,6 +23,7 @@ namespace MedivalTycoon
         [SerializeField] private BeerManager _beerManager;
         [SerializeField] private VisitorsManager _visitorsManager;
         [SerializeField] private TutorialManager _tutorialManager;
+        [SerializeField] private UIAnimation _uiAnimation;
         
         
         
@@ -40,7 +41,7 @@ namespace MedivalTycoon
             _beerManager.Initialize();
             _beerManager.CreatePoints();
             _tutorialManager.Initialize();
-
+            _uiAnimation.Initialize();
             /* if (!_loadingGameSettings.IsTutorialCompleted())
              {
                  _tutorialManager.StartTutorial();
@@ -50,11 +51,21 @@ namespace MedivalTycoon
             {
                 _tutorialManager.StartTutorial();
             }
-           
+            _uiAnimation.Play();
+
         }
 
         private void Update()
         {
+            if(Input.GetKeyDown(KeyCode.Space))
+            {
+                _uiAnimation.Lift();
+            }
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                _uiAnimation.Play();
+            }
+
             _gameUIManager.UpdateUIInfo();
             _characterManager.MoveCharacter();
             _barrelManager.CheckHits();

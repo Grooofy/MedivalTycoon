@@ -1,4 +1,4 @@
-public enum AnimatorParameters 
+public enum AnimatorParameters
 {
     LeverIsOn,
     BarrelMoveEnd,
@@ -9,5 +9,7 @@ public enum AnimatorParameters
     VisitorWalk,
     VisitorDrink,
     VisitorSleep,
-    VisitorMoveSleep
+    VisitorMoveSleep,
+    UIPauseButtonPopOpen,
+    UIPauseButtonPopClose
 }
