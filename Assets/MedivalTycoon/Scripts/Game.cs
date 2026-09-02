@@ -13,6 +13,7 @@ namespace MedivalTycoon
     public class Game : MonoBehaviour
     {
         [SerializeField] private bool IsTutorial;
+        [SerializeField] private bool IsPause;
 
         [SerializeField] private CharacterManager _characterManager;
         [SerializeField] private LoadingGameSettings _loadingGameSettings;
@@ -57,7 +58,20 @@ namespace MedivalTycoon
 
         private void Update()
         {
-            if(Input.GetKeyDown(KeyCode.Space))
+            
+
+            if (Input.GetKey(KeyCode.Escape))
+            {
+                IsPause = !IsPause;
+                Time.timeScale = 0;
+            }
+            if (Input.GetKey(KeyCode.Q))
+            {
+                IsPause = !IsPause;
+                Time.timeScale = 1;
+            }
+
+            if (Input.GetKeyDown(KeyCode.Space))
             {
                 _uiAnimation.Lift();
             }
@@ -65,6 +79,8 @@ namespace MedivalTycoon
             {
                 _uiAnimation.Play();
             }
+
+            if (IsPause) return;
 
             _gameUIManager.UpdateUIInfo();
             _characterManager.MoveCharacter();
