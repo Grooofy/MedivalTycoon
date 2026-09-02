@@ -31,6 +31,8 @@ namespace MedivalTycoon
         private void Start()
         {
             _loadingGameSettings.Load();
+            // Убедимся, что время в нормальном состоянии при старте
+            Time.timeScale = 1f;
             _characterManager.CreateCharacters();
             _gameUIManager.ShowUIInfo(_loadingGameSettings);
             _tableManager.Initialize(_loadingGameSettings);
@@ -60,15 +62,18 @@ namespace MedivalTycoon
         {
             
 
-            if (Input.GetKey(KeyCode.Escape))
+            // Переключение паузы по нажатию Escape (GetKeyDown чтобы не срабатывать при удержании)
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
                 IsPause = !IsPause;
-                Time.timeScale = 0;
+               Time.timeScale = IsPause ? 0f : 1f;
             }
-            if (Input.GetKey(KeyCode.Q))
+            // Альтернативно можно использовать Q для принудительного снятия паузы
+            if (Input.GetKeyDown(KeyCode.Q))
             {
-                IsPause = !IsPause;
-                Time.timeScale = 1;
+                IsPause = false;
+
+                Time.timeScale = 1f;
             }
 
             if (Input.GetKeyDown(KeyCode.Space))
