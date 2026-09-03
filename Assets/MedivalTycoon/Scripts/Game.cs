@@ -24,13 +24,14 @@ namespace MedivalTycoon
         [SerializeField] private BeerManager _beerManager;
         [SerializeField] private VisitorsManager _visitorsManager;
         [SerializeField] private TutorialManager _tutorialManager;
-        [SerializeField] private UIAnimation _uiAnimation;
-        
-        
-        
+        [SerializeField] private UIController _uiController;
+
+
+
+
         private void Start()
         {
-          
+
             _loadingGameSettings.Load();
             // Убедимся, что время в нормальном состоянии при старте
             Time.timeScale = 1f;
@@ -45,7 +46,7 @@ namespace MedivalTycoon
             _beerManager.Initialize();
             _beerManager.CreatePoints();
             _tutorialManager.Initialize();
-            _uiAnimation.Initialize();
+            _uiController.Initialize();
             /* if (!_loadingGameSettings.IsTutorialCompleted())
              {
                  _tutorialManager.StartTutorial();
@@ -55,39 +56,11 @@ namespace MedivalTycoon
             {
                 _tutorialManager.StartTutorial();
             }
-            _uiAnimation.Play();
 
         }
 
         private void Update()
         {
-            
-
-            // Переключение паузы по нажатию Escape (GetKeyDown чтобы не срабатывать при удержании)
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                IsPause = !IsPause;
-               Time.timeScale = IsPause ? 0f : 1f;
-            }
-            // Альтернативно можно использовать Q для принудительного снятия паузы
-            if (Input.GetKeyDown(KeyCode.Q))
-            {
-                IsPause = false;
-
-                Time.timeScale = 1f;
-            }
-
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                _uiAnimation.Lift();
-            }
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                _uiAnimation.Play();
-            }
-
-            if (IsPause) return;
-
             _gameUIManager.UpdateUIInfo();
             _characterManager.MoveCharacter();
             _barrelManager.CheckHits();
