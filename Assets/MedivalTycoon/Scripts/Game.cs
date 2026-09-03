@@ -2,11 +2,11 @@
 using Beers;
 using Characters;
 using Tables;
+using Tutorial;
 using UI;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Visitors;
-using Tutorial;
+
 
 namespace MedivalTycoon
 {
@@ -30,6 +30,7 @@ namespace MedivalTycoon
         
         private void Start()
         {
+          
             _loadingGameSettings.Load();
             // Убедимся, что время в нормальном состоянии при старте
             Time.timeScale = 1f;
