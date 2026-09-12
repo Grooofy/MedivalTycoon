@@ -33,7 +33,6 @@ namespace MedivalTycoon
         {
 
             _loadingGameSettings.Load();
-            // Убедимся, что время в нормальном состоянии при старте
             Time.timeScale = 1f;
             _characterManager.CreateCharacters();
             _gameUIManager.ShowUIInfo(_loadingGameSettings);
@@ -61,6 +60,7 @@ namespace MedivalTycoon
 
         private void Update()
         {
+            if (Time.timeScale == 0f) return;
             _gameUIManager.UpdateUIInfo();
             _characterManager.MoveCharacter();
             _barrelManager.CheckHits();

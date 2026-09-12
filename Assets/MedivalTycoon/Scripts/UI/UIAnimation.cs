@@ -13,13 +13,11 @@ public class UIAnimation : MonoBehaviour
     [SerializeField] private float _stagger = 0.06f;
     [SerializeField] private Ease _dropEase = Ease.OutBack;
 
-    [Header("Lift on pause (up->down)")]
+    [Header("Lift on pause")]
     [SerializeField] private float _liftAmount = 40f; // pixels to lift on pause
     [SerializeField] private float _liftUpDuration = 0.18f;
-    [SerializeField] private float _liftDownDuration = 0.28f;
     [SerializeField] private float _liftStagger = 0.03f;
     [SerializeField] private Ease _liftUpEase = Ease.OutSine;
-    [SerializeField] private Ease _liftDownEase = Ease.InQuad;
 
     private List<Vector2> _initialAnchored = new List<Vector2>();
     private List<Quaternion> _initialRotations = new List<Quaternion>();
@@ -31,6 +29,8 @@ public class UIAnimation : MonoBehaviour
     // Cache initial positions and rotations
     public void Initialize()
     {
+        if (_initialized) return;
+        _buttons.RemoveAll(rt => rt == null);
         _initialAnchored.Clear();
         _initialRotations.Clear();
 
@@ -67,7 +67,7 @@ public class UIAnimation : MonoBehaviour
             float delay = i * _stagger;
 
             // Последовательность: падение
-            var seq = DOTween.Sequence();
+            var seq = DOTween.Sequence().SetUpdate(true);
             seq.Append(rt.DOAnchorPos(targetPos, _dropDuration).SetDelay(delay).SetEase(_dropEase));
             seq.SetId(rt);
             seq.Play();
@@ -81,6 +81,8 @@ public class UIAnimation : MonoBehaviour
     // Остановить анимации и вернуть в исходное состояние
     public void ResetAnimation()
     {
+        if (!_initialized) Initialize();
+        DOTween.Kill(this);
         _isPlaying = false;
         for (int i = 0; i < _buttons.Count; i++)
         {
@@ -92,10 +94,11 @@ public class UIAnimation : MonoBehaviour
         }
     }
 
-    // Запускает бесконечное покачивание с небольшой амплитудой, отличающейся для каждой кнопки
-    // Поднять UI (например при нажатии Pause) — все кнопки поднимаются и потом возвращаются
+    // Keep the HUD raised until Play restores it on resume.
     public void Lift()
     {
+        DOTween.Kill(this);
+        _isPlaying = false;
         if (!_initialized) Initialize();
 
         for (int i = 0; i < _buttons.Count; i++)
@@ -108,10 +111,17 @@ public class UIAnimation : MonoBehaviour
             var basePos = _initialAnchored[Mathf.Clamp(i, 0, _initialAnchored.Count - 1)];
             float delay = i * _liftStagger;
 
-            var seq = DOTween.Sequence();
+            var seq = DOTween.Sequence().SetUpdate(true);
             seq.Append(rt.DOAnchorPos(basePos + Vector2.up * _liftAmount, _liftUpDuration).SetEase(_liftUpEase));
-            seq.Append(rt.DOAnchorPos(basePos, _liftDownDuration).SetEase(_liftDownEase));
+
             seq.SetDelay(delay).SetId(rt).Play();
         }
+    }
+
+    private void OnDestroy()
+    {
+        DOTween.Kill(this);
+        foreach (var rt in _buttons)
+            if (rt != null) DOTween.Kill(rt);
     }
 }

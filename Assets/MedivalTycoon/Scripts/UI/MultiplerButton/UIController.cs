@@ -12,5 +12,6 @@ public class UIController : MonoBehaviour
     {
         _uiAnimations.Initialize();
         _pauseButton.Initialize(_uiAnimations);
+        _uiAnimations.Play();
     }
 }
