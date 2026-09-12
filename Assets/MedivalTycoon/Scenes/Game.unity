@@ -4811,6 +4811,10 @@ MonoBehaviour:
   _resumeButton: {fileID: 55839347}
   _restartButton: {fileID: 345888942}
   _exitButton: {fileID: 1146281004}
+  _rewardedAdIcon: {fileID: 21300000, guid: e6c0e6aba45304554ab40525f98aaaae, type: 3}
+  _onRewardedAdRequested:
+    m_PersistentCalls:
+      m_Calls: []
   _panelDuration: 0.5
 --- !u!1001 &189177003
 PrefabInstance:
@@ -36577,6 +36581,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1113492498}
   - component: {fileID: 1113492499}
+  - component: {fileID: 1113492500}
   m_Layer: 0
   m_Name: ----GAME-----
   m_TagString: Untagged
@@ -36623,6 +36628,19 @@ MonoBehaviour:
   _visitorsManager: {fileID: 1402639839}
   _tutorialManager: {fileID: 566249977}
   _uiController: {fileID: 901080998}
+--- !u!114 &1113492500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1113492497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c735209bc254efc955795438736d46e, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  _timer: {fileID: 423999406}
 --- !u!1001 &1117242404
 PrefabInstance:
   m_ObjectHideFlags: 0

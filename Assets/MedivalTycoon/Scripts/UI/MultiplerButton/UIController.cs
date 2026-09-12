@@ -14,4 +14,9 @@ public class UIController : MonoBehaviour
         _pauseButton.Initialize(_uiAnimations);
         _uiAnimations.Play();
     }
+
+    public void ShowTimeOut()
+    {
+        _pauseButton.ShowTimeOut();
+    }
 }

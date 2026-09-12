@@ -10,6 +10,8 @@ public class GamePauseButton : MonoBehaviour
     [SerializeField] private Button _resumeButton;
     [SerializeField] private Button _restartButton;
     [SerializeField] private Button _exitButton;
+    [SerializeField] private Sprite _rewardedAdIcon;
+    [SerializeField] private UnityEngine.Events.UnityEvent _onRewardedAdRequested = new UnityEngine.Events.UnityEvent();
     [SerializeField] private float _panelDuration = 0.5f;
 
     private UIAnimation _uiAnimations;
@@ -19,6 +21,7 @@ public class GamePauseButton : MonoBehaviour
     private float _previousTimeScale;
     private bool _isPaused;
     private bool _isClosing;
+    private bool _isTimeOut;
     private GameObject _exitConfirmation;
     private Button _cancelExitButton;
     private Button _confirmExitButton;
@@ -43,6 +46,32 @@ public class GamePauseButton : MonoBehaviour
     public void PressButton()
     {
         if (_isPaused) return;
+        OpenPanel();
+    }
+
+    public void ShowTimeOut()
+    {
+        if (_isTimeOut) return;
+        _isTimeOut = true;
+        _pauseOverlay.name = "TimeOut";
+        _resumeButton.gameObject.name = "RewardedAdButton";
+        var icon = _resumeButton.GetComponent<Image>();
+        icon.sprite = _rewardedAdIcon;
+        icon.preserveAspect = true;
+        _resumeButton.onClick.RemoveListener(Resume);
+        _resumeButton.onClick.AddListener(RequestRewardedAd);
+        OpenPanel();
+    }
+
+    private void RequestRewardedAd()
+    {
+        if (!_isTimeOut || _isClosing || _exitConfirmation.activeSelf) return;
+        // The ad provider will grant extra time only after a completed rewarded view.
+        _onRewardedAdRequested.Invoke();
+    }
+
+    private void OpenPanel()
+    {
         _isPaused = true;
         _previousTimeScale = Time.timeScale;
         Time.timeScale = 0f;
@@ -57,7 +86,7 @@ public class GamePauseButton : MonoBehaviour
 
     public void Resume()
     {
-        if (!_isPaused || _isClosing || _exitConfirmation.activeSelf) return;
+        if (!_isPaused || _isClosing || _isTimeOut || _exitConfirmation.activeSelf) return;
         _isClosing = true;
         _panelTween?.Kill();
         _uiAnimations.Play();
@@ -196,6 +225,7 @@ public class GamePauseButton : MonoBehaviour
         _panelTween?.Kill();
         if (_pauseButton != null) _pauseButton.onClick.RemoveListener(PressButton);
         if (_resumeButton != null) _resumeButton.onClick.RemoveListener(Resume);
+        if (_resumeButton != null) _resumeButton.onClick.RemoveListener(RequestRewardedAd);
         if (_restartButton != null) _restartButton.onClick.RemoveListener(RestartLevel);
         if (_exitButton != null) _exitButton.onClick.RemoveListener(ShowExitConfirmation);
         if (_cancelExitButton != null) _cancelExitButton.onClick.RemoveListener(CancelExit);

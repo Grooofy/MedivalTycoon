@@ -10,10 +10,10 @@ namespace UI
         [SerializeField] private VisitorsUI _visitorsUI;
 
 
-        public void ShowUIInfo(LoadingGameSettings loadingGameSettings)
+        public void ShowUIInfo(LoadingGameSettings loadingGameSettings, System.Action onTimeOut)
         {
             _wallet.Initialize(loadingGameSettings);
-            _timer.Initialize(loadingGameSettings);
+            _timer.Initialize(loadingGameSettings, onTimeOut);
             _visitorsUI.Initialize(loadingGameSettings);
             _moneyUI.Initialize(_wallet);
         }

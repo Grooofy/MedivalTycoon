@@ -35,7 +35,7 @@ namespace MedivalTycoon
             _loadingGameSettings.Load();
             Time.timeScale = 1f;
             _characterManager.CreateCharacters();
-            _gameUIManager.ShowUIInfo(_loadingGameSettings);
+            _gameUIManager.ShowUIInfo(_loadingGameSettings, _uiController.ShowTimeOut);
             _tableManager.Initialize(_loadingGameSettings);
             _tableManager.CreateTables(_loadingGameSettings);
             _chestCoinManager.Initialize();
@@ -62,6 +62,7 @@ namespace MedivalTycoon
         {
             if (Time.timeScale == 0f) return;
             _gameUIManager.UpdateUIInfo();
+            if (Time.timeScale == 0f) return;
             _characterManager.MoveCharacter();
             _barrelManager.CheckHits();
             _chestCoinManager.CheckHits();
