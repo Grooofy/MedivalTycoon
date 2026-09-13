@@ -5,6 +5,7 @@ public class LevelBaseView : MonoBehaviour
 
     private void Start()
     {
+        _levelButtonCreator.Initialize();
         ShowIcons();
     }
 
@@ -21,8 +22,8 @@ public class LevelBaseView : MonoBehaviour
             else
             {
                 ShowIconText(i);
-                if (_levelButtonCreator.GetInfoCompleted(i - 1))
-                    ShowButtonInteractable(i);
+                _levelButtonCreator.GetLevelButton(i).SetInteractable(
+                    _levelButtonCreator.GetInfoCompleted(i - 1));
             }
         }
     }
@@ -34,7 +35,7 @@ public class LevelBaseView : MonoBehaviour
 
     private void ShowButtonInteractable(int sequenceNumber)
     {
-        _levelButtonCreator.GetLevelButton(sequenceNumber).SwitchButtonInteractable();
+        _levelButtonCreator.GetLevelButton(sequenceNumber).SetInteractable(true);
     }
 
 }

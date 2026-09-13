@@ -11,13 +11,22 @@ public class PanelUI: MonoBehaviour
 
     public virtual void Open()
     {
+        _canvasGroup.DOKill();
         _canvasGroup.DOFade(_maxValue, _durationAnimation);
         SwitchCanvasGroup(true);
     }
 
     public virtual void Close()
     {
+        _canvasGroup.DOKill();
         _canvasGroup.DOFade(_minValue, _durationAnimation);
+        SwitchCanvasGroup(false);
+    }
+
+    public void HideImmediately()
+    {
+        _canvasGroup.DOKill();
+        _canvasGroup.alpha = 0f;
         SwitchCanvasGroup(false);
     }
 

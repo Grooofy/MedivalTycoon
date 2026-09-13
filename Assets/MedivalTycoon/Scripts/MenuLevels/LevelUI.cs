@@ -14,17 +14,29 @@ public class LevelUI : MonoBehaviour
 
     private void OnEnable()
     {
-        _button.onClick.AddListener(delegate { _levelData.Save(_level); });
+        _button.onClick.AddListener(SelectLevel);
     }
 
     private void OnDisable()
     {
-        _button.onClick.RemoveListener(delegate { _levelData.Save(_level); });
+        _button.onClick.RemoveListener(SelectLevel);
     }
 
     public void SetLevel(Level level)
     {
         _level = level;
+        PaintCoins(LevelRewards.GetBest(level.NumberLevel));
+    }
+
+    public void SelectLevel()
+    {
+        if (_level != null)
+            _levelData.Save(_level);
+    }
+
+    public void SetInteractable(bool value)
+    {
+        _button.interactable = value;
     }
 
     public void SwitchButtonInteractable()
@@ -34,21 +46,11 @@ public class LevelUI : MonoBehaviour
 
     public void PaintCoins(int countCoins)
     {
-        switch (countCoins)
+        for (int i = 0; i < _coinImages.Count; i++)
         {
-            case 1:
-                PaintCoin(_coinImages[0]);
-                break;
-
-            case 2:
-                for (int i = 0; i < 2; i++)
-                    PaintCoin(_coinImages[i]);
-                break;
-
-            case 3:
-                foreach (var coinImage in _coinImages)
-                    PaintCoin(coinImage);
-                break;
+            Color color = _coinImages[i].color;
+            color.a = i < countCoins ? 1f : 0.2f;
+            _coinImages[i].color = color;
         }
     }
 
@@ -57,11 +59,4 @@ public class LevelUI : MonoBehaviour
         _textMesh.text = number.ToString();
     }
 
-    private void PaintCoin(Image coinImage)
-    {
-        const int newAlfaChannel = 255;
-        Color color = coinImage.color;
-        color.a = newAlfaChannel;
-        coinImage.color = color;
-    }
 }

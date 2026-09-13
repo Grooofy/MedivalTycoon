@@ -14,6 +14,8 @@ namespace Tables
 
         private IPropsPool _beerPool;
 
+        public bool HasUncollectedCoins => _gridSpawner.HasUncollectedCoins;
+
         public void Initialize(LoadingGameSettings loadingGameSettings)
         {
             _beerPool = _propsPool.GetBeerPool();

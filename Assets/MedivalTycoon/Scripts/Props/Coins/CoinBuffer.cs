@@ -19,12 +19,15 @@ namespace Money
         private int _amountPoint;
         private int _amountVisitorWallet;
         private bool _isFull;
+        private bool _isCreatingCoins;
         private int _index;
         private TableInteractionMode _tableInteractionMode;
 
         public PropsType Type => PropsType.Coin;
 
         public bool IsTake { get; private set; }
+
+        public bool HasUncollectedCoins => _isCreatingCoins || _pointsProps.Count > 0;
 
         public void Initialize(IPropsPool coinPool, TableInteractionMode tableInteractionMode)
         {
@@ -59,6 +62,7 @@ namespace Money
 
         public IEnumerator FillingPoints()
         {
+            _isCreatingCoins = true;
             while (_isFull == false && _index <= _amountVisitorWallet)
             {
                 if (_index >= _amountPoint) break;
@@ -76,6 +80,7 @@ namespace Money
                 yield return WaitFor.QuarterSecond;
             }
 
+            _isCreatingCoins = false;
             if (_index >= _amountVisitorWallet)
             {
                 _amountVisitorWallet = 0;

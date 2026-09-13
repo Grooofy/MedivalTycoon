@@ -12,6 +12,11 @@ public class NextScene : MonoBehaviour
         _button.onClick.AddListener(OpenGameScene);
     }
 
+    private void OnDisable()
+    {
+        _button.onClick.RemoveListener(OpenGameScene);
+    }
+
     private void OpenGameScene()
     {
         SceneTransition.SwitchToScene(NAMESCENE);

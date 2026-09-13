@@ -17,6 +17,9 @@ public class PropsSpawner : MonoBehaviour
     private PropsPool<Beer> _currentBeerPool;
     private PropsPool<Coin> _currentCoinPool;
 
+    // Active coins include those on tables, in hands and moving into the chest.
+    public bool HasUndeliveredCoins => _currentCoinPool != null && _currentCoinPool.ActiveCount > 0;
+
     public IPropsPool GetBarrelPool()
     {
         if (_currentBarrelPool == null)

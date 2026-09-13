@@ -25,6 +25,13 @@ namespace MedivalTycoon
         [SerializeField] private VisitorsManager _visitorsManager;
         [SerializeField] private TutorialManager _tutorialManager;
         [SerializeField] private UIController _uiController;
+        [SerializeField] private VictoryPanel _victoryPanel;
+
+        private bool _isLevelCompleted;
+
+        // Null until a successful completion; preserve the unrounded timer value.
+        public float? RemainingSecondsAtCompletion { get; private set; }
+        public float LevelDurationSeconds { get; private set; }
 
 
 
@@ -33,6 +40,7 @@ namespace MedivalTycoon
         {
 
             _loadingGameSettings.Load();
+            LevelDurationSeconds = Mathf.Max(0f, _loadingGameSettings.GetSeconds());
             Time.timeScale = 1f;
             _characterManager.CreateCharacters();
             _gameUIManager.ShowUIInfo(_loadingGameSettings, _uiController.ShowTimeOut);
@@ -69,6 +77,26 @@ namespace MedivalTycoon
             _beerManager.CheckHits();
             _tableManager.CheckHits();
             _visitorsManager.UpdateState();
+            CheckLevelCompletion();
+        }
+
+        private void CheckLevelCompletion()
+        {
+            if (_isLevelCompleted || _visitorsManager.RemainingVisitors > 0 ||
+                _tableManager.HasUncollectedCoins || _chestCoinManager.HasUndeliveredCoins)
+                return;
+
+            float remainingSeconds = _gameUIManager.RemainingSeconds;
+            if (remainingSeconds <= 0f)
+                return;
+
+            _isLevelCompleted = true;
+            RemainingSecondsAtCompletion = remainingSeconds;
+            _gameUIManager.StopTimer();
+            int result = LevelRewards.Calculate(remainingSeconds, LevelDurationSeconds);
+            int earned = LevelRewards.Grant(_loadingGameSettings.LevelNumber, result);
+            _victoryPanel.Show(result, earned);
+            Debug.Log($"Уровень пройден! Осталось {remainingSeconds:F2} из {LevelDurationSeconds:F2} секунд.");
         }
     }
 }

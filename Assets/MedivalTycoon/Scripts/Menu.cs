@@ -15,8 +15,8 @@ namespace MedivalTycoon
 
         private void Initialize()
         {
-            _menuUIManager.Initialize();
             _levelButtonCreater.Initialize();
+            _menuUIManager.Initialize();
         }
 
         private void Update()

@@ -137,7 +137,7 @@ public class QueueVisitor : MonoBehaviour
 
     private void OnDestroy()
     {
-        _seatAggregator.OnDestroy();
+        _seatAggregator?.OnDestroy();
         EventBus.Unsubscribe<SeatFreed>(OnSeatFreed);
         EventBus.Unsubscribe<TableBuilt>(OnTableBuilt);
     }

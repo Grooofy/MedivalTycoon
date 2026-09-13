@@ -12,6 +12,8 @@ public class Timer : MonoBehaviour
     private bool _isRunning;
     private Action _onTimeOut;
 
+    public float RemainingSeconds => _gameTime;
+
     public void Initialize(LoadingGameSettings loadingGameSettings, Action onTimeOut)
     {
         _gameCountTimeText = GetComponentInChildren<TextMeshProUGUI>();

@@ -6,6 +6,8 @@ public class LoadingGameSettings : MonoBehaviour
     private ISaveSystem _iSaveSystem = new PlayerPrefsSystem();
     private SaveData _saveData;   
 
+    public int LevelNumber => _saveData.NumberLevel;
+
     public void Load()
     {
         _saveData = _iSaveSystem.Load();

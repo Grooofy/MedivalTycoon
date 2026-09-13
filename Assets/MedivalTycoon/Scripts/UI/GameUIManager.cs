@@ -9,6 +9,13 @@ namespace UI
         [SerializeField] private MoneyUI _moneyUI;
         [SerializeField] private VisitorsUI _visitorsUI;
 
+        public float RemainingSeconds => _timer.RemainingSeconds;
+
+        public void StopTimer()
+        {
+            _timer.Stop();
+        }
+
 
         public void ShowUIInfo(LoadingGameSettings loadingGameSettings, System.Action onTimeOut)
         {

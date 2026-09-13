@@ -86,5 +86,11 @@ public class SeatAggregator
         EventBus.Unsubscribe<TableBuilt>(OnTableBuilt);
         EventBus.Unsubscribe<SeatTaken>(OnSeatTaken);
         EventBus.Unsubscribe<SeatFreed>(OnSeatFreed);
+        _freeSeats.Clear();
+        _occupiedSeats.Clear();
+
+        // Scene reload must create an aggregator with fresh event subscriptions.
+        if (ReferenceEquals(_instance, this))
+            _instance = null;
     }
 }

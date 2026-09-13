@@ -10,7 +10,7 @@ public class LevelBase : MonoBehaviour
 
     public bool TutorIsComlete()
     {
-        return _levels[0].IsComplete; 
+        return IsComplete(0);
     }
 
     public Level GetTutorLevelData()
@@ -25,6 +25,6 @@ public class LevelBase : MonoBehaviour
 
     public bool IsComplete(int id)
     {
-        return _levels[id].IsComplete;
+        return _levels[id].IsComplete || LevelRewards.GetBest(_levels[id].NumberLevel) > 0;
     }
 }

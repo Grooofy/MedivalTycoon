@@ -11,6 +11,8 @@ namespace Propses
 
         private ObjectPool<IProps> _pool;
 
+        public int ActiveCount => _pool == null ? 0 : _pool.CountActive;
+
         public IProps Spawn()
         {
             return _pool.Get();

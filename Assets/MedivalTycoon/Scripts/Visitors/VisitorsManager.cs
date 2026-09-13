@@ -12,8 +12,13 @@ namespace Visitors
         [SerializeField] private float _maxWaitTime;
         [SerializeField] private int _maxBeerCount;
 
+        public int RemainingVisitors { get; private set; }
+
         public void Initialize(LoadingGameSettings loadingGameSettings)
         {
+            RemainingVisitors = loadingGameSettings.GetVisitors();
+            EventBus.Unsubscribe<Events.VisitorLeaveTavern>(OnVisitorLeft);
+            EventBus.Subscribe<Events.VisitorLeaveTavern>(OnVisitorLeft);
             _queueVisitor.Initialize(loadingGameSettings.GetVisitors(), _spacing, _speed, _maxBeerCount, _maxWaitTime);
             _queueVisitor.SpawnVisitorsInLine(_queueVisitor.transform.position);
         }
@@ -21,6 +26,16 @@ namespace Visitors
         public void UpdateState()
         {
             _queueVisitor.UpdateState();
+        }
+
+        private void OnVisitorLeft(Events.VisitorLeaveTavern visitorLeaveTavern)
+        {
+            RemainingVisitors = Mathf.Max(0, RemainingVisitors - 1);
+        }
+
+        private void OnDestroy()
+        {
+            EventBus.Unsubscribe<Events.VisitorLeaveTavern>(OnVisitorLeft);
         }
     }
 }

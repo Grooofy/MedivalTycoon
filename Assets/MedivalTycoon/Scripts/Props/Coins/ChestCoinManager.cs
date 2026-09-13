@@ -17,6 +17,8 @@ public class ChestCoinManager : MonoBehaviour
 
     private IPropsPool _coinsPool;
 
+    public bool HasUndeliveredCoins => _propsSpawner.HasUndeliveredCoins;
+
 
     public void Initialize()
     {

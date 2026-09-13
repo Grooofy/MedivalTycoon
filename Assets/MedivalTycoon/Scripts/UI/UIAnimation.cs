@@ -24,6 +24,9 @@ public class UIAnimation : MonoBehaviour
     private bool _initialized;
     private bool _isPlaying;
 
+    public float LiftDuration => _liftUpDuration + Mathf.Max(0, _buttons.Count - 1) * _liftStagger;
+    public float DropDuration => _dropDuration + Mathf.Max(0, _buttons.Count - 1) * _stagger;
+
     
 
     // Cache initial positions and rotations

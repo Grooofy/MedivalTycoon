@@ -19,6 +19,7 @@ namespace Tables
         public event UnityAction<int> PriceChanged;
         public event UnityAction<Seat> LinedUp;
         public bool IsBuilt => Price <= 0;
+        public bool HasUncollectedCoins => _isCoinManagerInitialize && _coinManager.GetCoinBuffer().HasUncollectedCoins;
         public int Price { get; private set; }
 
         private Queue<Point> _wayPoints = new Queue<Point>();

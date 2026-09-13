@@ -15,6 +15,7 @@ public class ChestCoinBuffer : MonoBehaviour, IPropsMover
     private Stack<IProps> _props = new Stack<IProps>();
     private Point _finishPoint;
     private Wallet _wallet;
+    private bool _isFilling;
 
     public PropsType Type => PropsType.Coin;
 
@@ -39,20 +40,28 @@ public class ChestCoinBuffer : MonoBehaviour, IPropsMover
 
     public IEnumerator FillingPoints()
     {
-        while (_props.Count > 0)
+        if (_isFilling) yield break;
+        _isFilling = true;
+        try
         {
-            _props.TryPop(out var props);
-            if (props == null) break;
+            while (_props.Count > 0)
+            {
+                _props.TryPop(out var props);
+                if (props == null) continue;
 
-            StartCoroutine(props.TryMoveTo(_finishPoint));
-            _wallet.StartAddCoins(10);                                       //Вынести цену за ОДИН КОШЕЛЬ
-            yield return WaitFor.QuarterSecond;
-            _coinPool.Despawn(props);
-            props.Reset();
-            _finishPoint.Free();
+                // Do not release the coin until it reaches the chest.
+                yield return props.TryMoveTo(_finishPoint);
+                _wallet.StartAddCoins(10);
+                _coinPool.Despawn(props);
+                _finishPoint.Free();
+                yield return WaitFor.QuarterSecond;
+            }
+        }
+        finally
+        {
+            _isFilling = false;
         }
     }
-
 
     public void CreatePoints(int cout, float offset, Vector3 spaceSize = default)
     {

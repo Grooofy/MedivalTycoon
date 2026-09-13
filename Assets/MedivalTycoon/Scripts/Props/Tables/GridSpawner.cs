@@ -23,6 +23,8 @@ namespace Tables
         private int _objectsToSpawn;
         private Vector3 _origin;
 
+        public bool HasUncollectedCoins => _tables.Any(table => table.HasUncollectedCoins);
+
         public void Initialize(Table table, TableTrigger prefabTableZone, int objectsToSpawn)
         {
             _factory = new TableFactory(prefabTableZone, table);
