@@ -8,6 +8,8 @@ namespace Characters
         public IPropsMover HandTool => _hand;
         
         private Worker _worker;
+        private float _moveSpeed;
+        private int _capacity;
         private CharacterController _controller;
         private Animator _animator;
         private IPropsMover _hand;
@@ -18,6 +20,8 @@ namespace Characters
         public void Initialize(Worker worker)
         {
             _worker = worker;
+            _moveSpeed = CharacterUpgrades.GetValue(worker, CharacterUpgrades.Stat.Speed);
+            _capacity = Mathf.RoundToInt(CharacterUpgrades.GetValue(worker, CharacterUpgrades.Stat.Capacity));
             _controller = GetComponent<CharacterController>();
             _animator = GetComponentInChildren<Animator>();
             _hand = GetComponentInChildren<IPropsMover>();
@@ -25,7 +29,7 @@ namespace Characters
    
         public int GetNumberWearableObjects()
         {
-            return _worker.NumberWearableObjects;
+            return _capacity;
         }
 
         public float GetDistanceBetweenPoints()
@@ -44,7 +48,7 @@ namespace Characters
         
         private void MoveController(Vector3 normalizeDirection)
         {
-            _controller.Move((normalizeDirection + _velocity) * _worker.MoveSpeed * Time.deltaTime);
+            _controller.Move((normalizeDirection + _velocity) * _moveSpeed * Time.deltaTime);
             
             if (!_controller.isGrounded)
                 _velocity.y += -9.81f * Time.deltaTime;

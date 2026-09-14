@@ -1,3 +1,4 @@
+using System.Collections;
 using Characters;
 using Events;
 using Tutorial;
@@ -8,85 +9,50 @@ namespace Money
     public class CoinGiver : MonoBehaviour
     {
         private LayerMask _waiterLayer;
-
         private float _detectionRadius = 0.35f;
-        private IPropsMover _regulating;
-        private Hand _currentHand;
-        private Coroutine _activeCoroutine;
-        private bool _isActive;
-        private bool _isReady;
-        private bool _isActiveRequested;
+        private CoinBuffer _buffer;
+        private bool _isTransferring;
 
         public void Initialize(IPropsMover regulating, LayerMask waiterLayer)
         {
-            _regulating = regulating;
+            _buffer = (CoinBuffer)regulating;
             _waiterLayer = waiterLayer;
-            _isReady = false;
-            _isActiveRequested = false;
-
-            // Если регулятор - это CoinBuffer, подпишемся на событие создания всех монет
-            if (regulating is Money.CoinBuffer coinBuffer)
-            {
-                coinBuffer.AllCoinsCreated += OnAllCoinsCreated;
-            }
+            gameObject.SetActive(false);
         }
 
         public void CheckHits()
         {
-            if (_isActive == false) return;
+            if (_buffer == null) return;
+            // The table polls this even while the marker is hidden.
+            bool hasCoins = _buffer.HasAvailableCoins;
+            if (gameObject.activeSelf != hasCoins)
+                gameObject.SetActive(hasCoins);
+            if (!hasCoins || _isTransferring) return;
 
-            Collider[] hits = Physics.OverlapSphere(transform.position, _detectionRadius, _waiterLayer);
-
-            if (hits.Length > 0)
+            foreach (var hit in Physics.OverlapSphere(transform.position, _detectionRadius, _waiterLayer))
             {
-                foreach (var hit in hits)
-                {
-                    if (_currentHand != null) break;
+                if (!hit.TryGetComponent(out Hand hand) || !hand.CanAccept(_buffer.Type)
+                    || hand.IsFull || hand.GetEmptyPointsCount() == 0)
+                    continue;
 
-                    if (hit.TryGetComponent(out Hand hand))
-                    {
-                        if (hand.CanAccept(_regulating.Type))
-                        {
-                            _currentHand = hand;
-                            _currentHand.RegisterProps(_regulating);
-                            EventBus.Raise(new TutorialStepCompleted { Step = TutorialStep.TakeMoney });
-                            _activeCoroutine = StartCoroutine(_currentHand.FillingPoints());
-                        }
-                            
-                    }
-                }
-            }
-            else if (_currentHand != null)
-            {
-                if (_activeCoroutine != null)
-                {
-                    StopCoroutine(_activeCoroutine);
-                    _activeCoroutine = null;
-                }
-
-                _currentHand = null;
+                _isTransferring = true;
+                hand.RegisterProps(_buffer);
+                EventBus.Raise(new TutorialStepCompleted { Step = TutorialStep.TakeMoney });
+                // Complete reserved coins even when the player leaves or the marker hides.
+                hand.StartCoroutine(TransferTo(hand));
+                break;
             }
         }
 
-        public void SetActiveGameObject(bool value)
+        private IEnumerator TransferTo(Hand hand)
         {
-            // Запрашиваем видимость; реальная видимость зависит также от готовности (коинов)
-            _isActiveRequested = value;
-
-            var shouldBeActive = _isActiveRequested && _isReady;
-            _isActive = shouldBeActive;
-            gameObject.SetActive(shouldBeActive);
-        }
-
-        private void OnAllCoinsCreated()
-        {
-            _isReady = true;
-
-            // Если уже был запрос на активацию — включаем
-            if (_isActiveRequested)
+            try
             {
-                _isActive = true;
-                gameObject.SetActive(true);
+                yield return hand.FillingPoints();
+            }
+            finally
+            {
+                _isTransferring = false;
             }
         }
 

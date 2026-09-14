@@ -19,3 +19,17 @@ MonoBehaviour:
   _numberWearableObjects: 10
   _distanceBetweenPoints: 0.07
   IsSelect: 0
+  _speedUpgrades:
+  - Price: 1
+    Increase: 0.2
+  - Price: 2
+    Increase: 0.2
+  - Price: 3
+    Increase: 0.2
+  _capacityUpgrades:
+  - Price: 1
+    Increase: 2
+  - Price: 2
+    Increase: 2
+  - Price: 3
+    Increase: 2

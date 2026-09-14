@@ -96,6 +96,7 @@ namespace Characters
                 }
             }
 
+            IsFull = _index >= _points.Count && _points.Count > 0;
             if (_index <= 0)
             {
                 IsFull = false;

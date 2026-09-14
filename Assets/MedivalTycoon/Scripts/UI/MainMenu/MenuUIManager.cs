@@ -9,7 +9,7 @@ namespace UI.MainMenu
         [SerializeField] private Button _start;
         [SerializeField] private Button _settings;
         [SerializeField] private LevelPanel _levelPanel;
-        [SerializeField] private SettingPanel _settingPanel;
+        [SerializeField] private PanelUI _settingPanel;
 
         [Header("Scene-authored animated menu (optional for the legacy menu)")]
         [SerializeField] private Button _back;

@@ -18,14 +18,15 @@ namespace Money
         private Stack<IProps> _pointsProps = new Stack<IProps>();
         private int _amountPoint;
         private int _amountVisitorWallet;
-        private bool _isFull;
         private bool _isCreatingCoins;
+        private readonly Dictionary<IProps, Coroutine> _arrivalCoroutines = new Dictionary<IProps, Coroutine>();
         private int _index;
         private TableInteractionMode _tableInteractionMode;
 
         public PropsType Type => PropsType.Coin;
 
         public bool IsTake { get; private set; }
+        public bool HasAvailableCoins => _pointsProps.Count > 0;
 
         public bool HasUncollectedCoins => _isCreatingCoins || _pointsProps.Count > 0;
 
@@ -38,7 +39,8 @@ namespace Money
 
         public void SetAmountVisitorWallet(int amount)
         {
-            _amountVisitorWallet = amount + _index; 
+            // Preserve the existing payout (the old inclusive loop created amount + 1).
+            _amountVisitorWallet = amount + 1;
         }
 
         public void CreatePoints(int cout, float offset, Vector3 spaceSize = default)
@@ -62,26 +64,29 @@ namespace Money
 
         public IEnumerator FillingPoints()
         {
+            if (_isCreatingCoins) yield break;
             _isCreatingCoins = true;
-            while (_isFull == false && _index <= _amountVisitorWallet)
+            while (_amountVisitorWallet > 0)
             {
-                if (_index >= _amountPoint) break;
+                if (_index >= _amountPoint)
+                {
+                    yield return null;
+                    continue;
+                }
 
                 var prop = _coinPool.Spawn();
 
-                StartCoroutine(prop.TryMoveTo(_points[_index]));
+                _arrivalCoroutines[prop] = StartCoroutine(prop.TryMoveTo(_points[_index]));
 
                 _pointsProps.Push(prop);
                 _index++;
-                
-                if (_index >= _amountPoint)
-                    _isFull = true;
+                _amountVisitorWallet--;
                 
                 yield return WaitFor.QuarterSecond;
             }
 
             _isCreatingCoins = false;
-            if (_index >= _amountVisitorWallet)
+            if (_amountVisitorWallet == 0)
             {
                 _amountVisitorWallet = 0;
                 AllCoinsCreated?.Invoke();
@@ -98,9 +103,16 @@ namespace Money
             {
                 _pointsProps.TryPop(out var prop);
 
+                // A coin must stop moving to the table before the hand takes ownership.
+                if (_arrivalCoroutines.TryGetValue(prop, out var arrival))
+                {
+                    StopCoroutine(arrival);
+                    _arrivalCoroutines.Remove(prop);
+                }
+
                 result.Push(prop);
 
-                if (_index >= 0)
+                if (_index > 0)
                 {
                     _index--;
                     _points[_index].Free();
@@ -109,7 +121,6 @@ namespace Money
                 if (_pointsProps.Count == 0)
                 {
                     _index = 0;
-                    _isFull = false;
                     ResetPoints();
                 }
             }
