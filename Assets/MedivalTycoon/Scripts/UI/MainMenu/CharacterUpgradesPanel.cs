@@ -80,7 +80,7 @@ namespace UI.MainMenu
                 float value = CharacterUpgrades.GetValue(worker, view.Stat, level);
                 string next = max ? "" : $" → {CharacterUpgrades.GetValue(worker, view.Stat, level + 1):0.##}";
                 view.Description.text = $"{title} · {level}/{steps.Length}\n{value:0.##}{next}";
-                view.Price.text = max ? "Максимум" : $"Улучшить · {steps[level].Price} мон.";
+                view.Price.text = max ? "Максимум" : $"Улучшить · {steps[level].Price}";
                 view.Buy.interactable = !max && LevelRewards.Balance >= steps[level].Price;
             }
         }
