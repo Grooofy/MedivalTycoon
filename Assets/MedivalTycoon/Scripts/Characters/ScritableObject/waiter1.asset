@@ -26,10 +26,38 @@ MonoBehaviour:
     Increase: 0.2
   - Price: 3
     Increase: 0.2
+  - Price: 4
+    Increase: 0.2
+  - Price: 5
+    Increase: 0.2
+  - Price: 6
+    Increase: 0.2
+  - Price: 7
+    Increase: 0.2
+  - Price: 8
+    Increase: 0.2
+  - Price: 9
+    Increase: 0.2
+  - Price: 10
+    Increase: 0.2
   _capacityUpgrades:
   - Price: 1
     Increase: 2
   - Price: 2
     Increase: 2
   - Price: 3
+    Increase: 2
+  - Price: 4
+    Increase: 2
+  - Price: 5
+    Increase: 2
+  - Price: 6
+    Increase: 2
+  - Price: 7
+    Increase: 2
+  - Price: 8
+    Increase: 2
+  - Price: 9
+    Increase: 2
+  - Price: 10
     Increase: 2

@@ -27,4 +27,10 @@ public class LevelBase : MonoBehaviour
     {
         return _levels[id].IsComplete || LevelRewards.GetBest(_levels[id].NumberLevel) > 0;
     }
+
+    public bool CanStart(int id)
+    {
+        return id >= 0 && id < _levels.Count && !IsComplete(id)
+            && (id == 0 || IsComplete(id - 1));
+    }
 }

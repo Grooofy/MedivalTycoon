@@ -27,7 +27,14 @@ public class LevelButtonCreater : MonoBehaviour
         SetDataLevel();
         _initialized = true;
         if (_sceneLevelIcons.Count > 0)
-            _levelIcons[0].SelectLevel();
+        {
+            for (int i = 0; i < _levelIcons.Count; i++)
+            {
+                if (!CanStart(i)) continue;
+                _levelIcons[i].SelectLevel();
+                break;
+            }
+        }
     }
 
     public LevelUI GetLevelButton(int id)
@@ -45,6 +52,11 @@ public class LevelButtonCreater : MonoBehaviour
         return _levelBase.IsComplete(number);
     }
 
+    public bool CanStart(int id)
+    {
+        return _levelBase.CanStart(id);
+    }
+
     private void CreateLevelsList()
     {
         _levelIcons.Add(_levelUITutorial);
@@ -60,6 +72,7 @@ public class LevelButtonCreater : MonoBehaviour
     {
         for (int i = 0; i < _levelBase.LevelsCount; i++)
         {
+            _levelIcons[i].SetAvailability(CanStart(i), GetInfoCompleted(i));
             if (i == 0)
                 _levelIcons[i].SetLevel(_levelBase.GetTutorLevelData());
             else 

@@ -15,27 +15,16 @@ public class LevelBaseView : MonoBehaviour
 
         for (int i = 0; i < iconCount; i++)
         {
-            if (i == 0)
-            {
-                ShowButtonInteractable(i);
-            }
-            else
-            {
+            if (i > 0)
                 ShowIconText(i);
-                _levelButtonCreator.GetLevelButton(i).SetInteractable(
-                    _levelButtonCreator.GetInfoCompleted(i - 1));
-            }
+            _levelButtonCreator.GetLevelButton(i).SetAvailability(
+                _levelButtonCreator.CanStart(i), _levelButtonCreator.GetInfoCompleted(i));
         }
     }
 
     private void ShowIconText(int sequenceNumber)
     {
         _levelButtonCreator.GetLevelButton(sequenceNumber).ShowNumber(sequenceNumber);
-    }
-
-    private void ShowButtonInteractable(int sequenceNumber)
-    {
-        _levelButtonCreator.GetLevelButton(sequenceNumber).SetInteractable(true);
     }
 
 }

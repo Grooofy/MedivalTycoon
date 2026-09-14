@@ -69,7 +69,12 @@ namespace UI.MainMenu
         {
             _balance.text = $"Монеты: {LevelRewards.Balance}";
             for (int i = 0; i < _workers.Length; i++)
+            {
                 _workers[i].Button.interactable = i != _selected;
+                var color = _workers[i].Icon.color;
+                color.a = i == _selected ? 0.5f : 1f;
+                _workers[i].Icon.color = color;
+            }
             var worker = _workers[_selected].Worker;
             foreach (var view in _upgrades)
             {
@@ -77,9 +82,13 @@ namespace UI.MainMenu
                 var steps = worker.GetUpgrades(view.Stat);
                 bool max = level >= steps.Length;
                 string title = view.Stat == CharacterUpgrades.Stat.Speed ? "Скорость" : "Вместимость";
-                float value = CharacterUpgrades.GetValue(worker, view.Stat, level);
-                string next = max ? "" : $" → {CharacterUpgrades.GetValue(worker, view.Stat, level + 1):0.##}";
-                view.Description.text = $"{title} · {level}/{steps.Length}\n{value:0.##}{next}";
+                view.Description.text = $"{title} · {level}/{steps.Length}";
+                if (view.Stat == CharacterUpgrades.Stat.Capacity)
+                {
+                    float value = CharacterUpgrades.GetValue(worker, view.Stat, level);
+                    string next = max ? "" : $" → {CharacterUpgrades.GetValue(worker, view.Stat, level + 1):0.##}";
+                    view.Description.text += $"\n{value:0.##}{next}";
+                }
                 view.Price.text = max ? "Максимум" : $"Улучшить · {steps[level].Price}";
                 view.Buy.interactable = !max && LevelRewards.Balance >= steps[level].Price;
             }

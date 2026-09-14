@@ -19,6 +19,16 @@ public class NextScene : MonoBehaviour
 
     private void OpenGameScene()
     {
-        SceneTransition.SwitchToScene(NAMESCENE);
+        var levelBase = FindObjectOfType<LevelBase>(true);
+        if (levelBase == null) return;
+
+        int selectedNumber = new PlayerPrefsSystem().Load().NumberLevel;
+        for (int i = 0; i < levelBase.LevelsCount; i++)
+        {
+            if (levelBase.GetLevelData(i).NumberLevel != selectedNumber) continue;
+            if (levelBase.CanStart(i))
+                SceneTransition.SwitchToScene(NAMESCENE);
+            return;
+        }
     }
 }

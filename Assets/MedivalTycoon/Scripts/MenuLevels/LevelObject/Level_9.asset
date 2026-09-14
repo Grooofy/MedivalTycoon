@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: Level_9
   m_EditorClassIdentifier: 
   _numberLevel: 0
-  _money: 000000000000000000000000
-  numberVisitors: 0
-  _seconds: 0
+  _startMoney: 1111
+  _numberVisitors: 1
+  _seconds: 1111
+  _isComplete: 0
+  _tableAmount: 1
+  _tableCost: 1

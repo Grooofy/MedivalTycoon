@@ -30,13 +30,20 @@ public class LevelUI : MonoBehaviour
 
     public void SelectLevel()
     {
-        if (_level != null)
+        if (_level != null && _button.enabled && _button.interactable)
             _levelData.Save(_level);
     }
 
     public void SetInteractable(bool value)
     {
         _button.interactable = value;
+    }
+
+    public void SetAvailability(bool canStart, bool isComplete)
+    {
+        // Completed levels keep their normal appearance without accepting clicks.
+        _button.interactable = canStart || isComplete;
+        _button.enabled = !isComplete;
     }
 
     public void SwitchButtonInteractable()

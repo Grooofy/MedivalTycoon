@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58cfe4db91adaf845b14519fe36afd95, type: 3}
   m_Name: Level_3
   m_EditorClassIdentifier: 
-  _numberLevel: 0
-  _startMoney: 0
-  _numberVisitors: 0
-  _seconds: 0
+  _numberLevel: 3
+  _startMoney: 100
+  _numberVisitors: 1
+  _seconds: 11111
   _isComplete: 0
+  _tableAmount: 1
+  _tableCost: 1

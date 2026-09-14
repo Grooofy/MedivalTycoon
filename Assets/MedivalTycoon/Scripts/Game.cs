@@ -54,15 +54,11 @@ namespace MedivalTycoon
             _beerManager.CreatePoints();
             _tutorialManager.Initialize();
             _uiController.Initialize();
-            /* if (!_loadingGameSettings.IsTutorialCompleted())
-             {
-                 _tutorialManager.StartTutorial();
-             }*/
-            //ДЛЯ ТЕСТА
-            if (IsTutorial)
+            if (!_loadingGameSettings.IsTutorialCompleted())
             {
                 _tutorialManager.StartTutorial();
             }
+
 
         }
 
@@ -96,7 +92,6 @@ namespace MedivalTycoon
             int result = LevelRewards.Calculate(remainingSeconds, LevelDurationSeconds);
             int earned = LevelRewards.Grant(_loadingGameSettings.LevelNumber, result);
             _victoryPanel.Show(result, earned);
-            Debug.Log($"Уровень пройден! Осталось {remainingSeconds:F2} из {LevelDurationSeconds:F2} секунд.");
         }
     }
 }
