@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class PlayerPrefsSystem: ISaveSystem
 {
@@ -12,6 +12,9 @@ public class PlayerPrefsSystem: ISaveSystem
 
     public void Save(SaveData data)
     {
+        PlayerPrefs.SetFloat("guestWaitSeconds", data.GuestWaitSeconds);
+        PlayerPrefs.SetInt("minBeerAmount", data.MinBeerAmount);
+        PlayerPrefs.SetInt("maxBeerAmount", data.MaxBeerAmount);
         PlayerPrefs.SetInt(LEVELKEY, data.NumberLevel);
         PlayerPrefs.SetInt(MONEYKEY, data.StartMoney);
         PlayerPrefs.SetInt(VISITORSKEY, data.NumberVisitors);
@@ -25,6 +28,9 @@ public class PlayerPrefsSystem: ISaveSystem
     public SaveData Load()
     {
         var result = new SaveData();
+        result.GuestWaitSeconds = Mathf.Max(0.1f, PlayerPrefs.GetFloat("guestWaitSeconds", 120f));
+        result.MinBeerAmount = Mathf.Clamp(PlayerPrefs.GetInt("minBeerAmount", 3), 1, int.MaxValue - 1);
+        result.MaxBeerAmount = Mathf.Clamp(PlayerPrefs.GetInt("maxBeerAmount", 4), result.MinBeerAmount, int.MaxValue - 1);
         
         if (PlayerPrefs.HasKey(LEVELKEY))
         {

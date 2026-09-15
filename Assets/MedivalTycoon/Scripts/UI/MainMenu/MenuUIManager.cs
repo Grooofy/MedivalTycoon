@@ -13,6 +13,7 @@ namespace UI.MainMenu
 
         [Header("Scene-authored animated menu (optional for the legacy menu)")]
         [SerializeField] private Button _back;
+        [SerializeField] private GameObject _startGameButton;
         [SerializeField] private CanvasGroup _homeButtons;
         [SerializeField] private CanvasGroup _levelActions;
         [SerializeField] private UIAnimation _homeAnimation;
@@ -22,7 +23,7 @@ namespace UI.MainMenu
         private Tween _transition;
         private bool _initialized;
         private bool _transitioning;
-        private bool _showingLevels;
+        private PanelUI _activePanel;
         private const string SoundPreference = "Menu.SoundEnabled";
         private bool HasAnimation => _homeAnimation != null && _actionsAnimation != null;
 
@@ -82,7 +83,7 @@ namespace UI.MainMenu
             SetGroup(_homeButtons, true, false);
             SetGroup(_levelActions, false, false);
             _transitioning = true;
-            _showingLevels = false;
+            _activePanel = null;
             _homeAnimation.Play();
             _transition = DOVirtual.DelayedCall(_homeAnimation.DropDuration + 0.02f, () =>
             {
@@ -91,53 +92,45 @@ namespace UI.MainMenu
             });
         }
 
-        private void OpenLevelPanel()
+        private void OpenLevelPanel() => OpenPanel(_levelPanel);
+
+        private void OpenSettingsPanel() => OpenPanel(_settingPanel);
+
+        private void OpenPanel(PanelUI panel)
         {
-            if (_transitioning || _showingLevels) return;
-            if (HasAnimation)
+            if (_transitioning || (HasAnimation && _activePanel != null)) return;
+            if (!HasAnimation)
             {
-                _transitioning = true;
-                _settingPanel.HideImmediately();
-                SetGroup(_homeButtons, true, false);
-                _homeAnimation.Lift();
-                _transition = DOVirtual.DelayedCall(_homeAnimation.LiftDuration, () =>
-                {
-                    SetGroup(_homeButtons, false, false);
-                    _levelPanel.Open();
-                    SetGroup(_levelActions, true, false);
-                    _actionsAnimation.Play();
-                    _transition = DOVirtual.DelayedCall(_actionsAnimation.DropDuration + 0.02f, () =>
-                    {
-                        SetGroup(_levelActions, true, true);
-                        _showingLevels = true;
-                        _transitioning = false;
-                    });
-                });
+                (panel == _levelPanel ? _settingPanel : _levelPanel).Close();
+                panel.Open();
                 return;
             }
-            if (_settingPanel.gameObject.activeSelf)
-            {
-                _settingPanel.Close();
-            }
-            _levelPanel.Open();
-        }
 
-        private void OpenSettingsPanel()
-        {
-            if (_transitioning || _showingLevels) return;
-            if (_levelPanel.gameObject.activeSelf)
+            _transitioning = true;
+            _activePanel = panel;
+            (panel == _levelPanel ? _settingPanel : _levelPanel).HideImmediately();
+            if (_startGameButton != null) _startGameButton.SetActive(panel == _levelPanel);
+            SetGroup(_homeButtons, true, false);
+            _homeAnimation.Lift();
+            _transition = DOVirtual.DelayedCall(_homeAnimation.LiftDuration, () =>
             {
-                _levelPanel.Close();
-            }
-            _settingPanel.Open();
+                SetGroup(_homeButtons, false, false);
+                panel.Open();
+                SetGroup(_levelActions, true, false);
+                _actionsAnimation.Play();
+                _transition = DOVirtual.DelayedCall(_actionsAnimation.DropDuration + 0.02f, () =>
+                {
+                    SetGroup(_levelActions, true, true);
+                    _transitioning = false;
+                });
+            });
         }
-
         private void Back()
         {
-            if (_transitioning || !_showingLevels) return;
+            if (_transitioning || _activePanel == null) return;
             _transitioning = true;
             SetGroup(_levelActions, true, false);
-            _levelPanel.Close();
+            _activePanel.Close();
             _actionsAnimation.Lift();
             _transition = DOVirtual.DelayedCall(_actionsAnimation.LiftDuration, () =>
             {
@@ -147,7 +140,7 @@ namespace UI.MainMenu
                 _transition = DOVirtual.DelayedCall(_homeAnimation.DropDuration + 0.02f, () =>
                 {
                     SetGroup(_homeButtons, true, true);
-                    _showingLevels = false;
+                    _activePanel = null;
                     _transitioning = false;
                 });
             });

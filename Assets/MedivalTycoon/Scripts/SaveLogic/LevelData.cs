@@ -25,6 +25,9 @@ public class LevelData : MonoBehaviour
     
     private void FillFields(Level level)
     {
+        _myData.GuestWaitSeconds = level.GuestWaitSeconds;
+        _myData.MinBeerAmount = level.MinBeerAmount;
+        _myData.MaxBeerAmount = level.MaxBeerAmount;
         _myData.NumberLevel = level.NumberLevel;
         _myData.StartMoney = level.StartMoney;
         _myData.NumberVisitors = level.NumberVisitors;

@@ -5,7 +5,10 @@ using UnityEngine;
 
 public class SleepVisitorBuffer : MonoBehaviour, IPropsMover
 {
+    [SerializeField, Min(0.01f), Tooltip("Seconds per item before tavern upgrades. Lower is faster.")]
+    private float _fillInterval = 0.25f;
     private Stack<IProps> _props = new Stack<IProps>();
+    private bool _isFilling;
     private Point _finishPoint; 
     public PropsType Type => PropsType.Visitor;
 
@@ -28,16 +31,20 @@ public class SleepVisitorBuffer : MonoBehaviour, IPropsMover
 
     public IEnumerator FillingPoints()
     {
+        if (_isFilling) yield break;
+        _isFilling = true;
+        try {
         while (_props.Count > 0)
         {
             _props.TryPop(out var props);
             if (props == null) break;
 
-            StartCoroutine(props.TryMoveTo(_finishPoint));               
-            yield return WaitFor.QuarterSecond;
+            yield return props.TryMoveTo(_finishPoint);               
+            yield return WaitFor.Seconds(TavernUpgrades.FillSeconds(_fillInterval));
             props.Reset();
             _finishPoint.Free();
         }
+        } finally { _isFilling = false; }
     }
 
     public void CreatePoints(int cout, float offset, Vector3 spaceSize = default)

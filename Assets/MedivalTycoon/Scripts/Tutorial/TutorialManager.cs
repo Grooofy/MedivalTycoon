@@ -117,13 +117,16 @@ namespace Tutorial
                     TutorialStep.Characters,
                     TutorialStep.ShowUITimer,
                     TutorialStep.ShowUIVisitorAmount,
-                    TutorialStep.ShowUIMoneyAmout
+                    TutorialStep.ShowUIMoneyAmout,
+                    TutorialStep.LastStep
                 };
 
                 _tutorialUI.ShowMessage(data.Message, () =>
                 {
+                    if (_currentStep != data.Step) return;
                     _tutorialUI.Close();
-                    if (data.TargetButton != null || autoAdvanceSteps.Contains(_currentStep))
+                    // Acknowledging a hint must not complete an action step.
+                    if (autoAdvanceSteps.Contains(_currentStep))
                     {
                         NextStep();
                     }
@@ -253,7 +256,12 @@ namespace Tutorial
             if (btn == null) return;
 
             _subscribedButton = btn;
-            _subscribedAction = () => OnAnyButtonClicked(btn);
+            var subscribedStep = _currentStep;
+            _subscribedAction = () =>
+            {
+                // Character selection can advance the tutorial earlier in this same click.
+                if (_currentStep == subscribedStep) OnAnyButtonClicked(btn);
+            };
             _subscribedButton.onClick.AddListener(_subscribedAction);
         }
 
@@ -335,7 +343,17 @@ namespace Tutorial
 
         private void NextStep()
         {
+            ClearSubscribedButton();
+            StopPopupAnimation();
+            _tutorialUI.Close();
             _currentStep++;
+            // Skip the extra acknowledgement before highlighting a character.
+            // Keep enum values intact because scene data and events serialize them.
+            if (_currentStep == TutorialStep.WaitVisitor)
+                _currentStep = TutorialStep.SelectedWaiter;
+            else if (_currentStep == TutorialStep.SleepVisitors)
+                _currentStep = TutorialStep.SelectedSecuryte;
+
             if (_currentStep == TutorialStep.Complete)
             {
                 FinishTutorial();
@@ -348,6 +366,8 @@ namespace Tutorial
 
         private void FinishTutorial()
         {
+            _spotlight.HideSpotlight();
+            if (_pointer != null) _pointer.HidePointer();
             Debug.Log("Tutorial: Completed!");
             _loadingGameSettings.SaveTutorialStatus(true);
         }

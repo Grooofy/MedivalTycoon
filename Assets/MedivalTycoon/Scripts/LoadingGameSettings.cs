@@ -6,6 +6,9 @@ public class LoadingGameSettings : MonoBehaviour
     private ISaveSystem _iSaveSystem = new PlayerPrefsSystem();
     private SaveData _saveData;   
 
+    public float GuestWaitSeconds => _saveData.GuestWaitSeconds;
+    public int MinBeerAmount => _saveData.MinBeerAmount;
+    public int MaxBeerAmount => _saveData.MaxBeerAmount;
     public int LevelNumber => _saveData.NumberLevel;
 
     public void Load()

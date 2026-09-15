@@ -11,6 +11,8 @@ using UnityEngine;
 
 public class ChestCoinBuffer : MonoBehaviour, IPropsMover
 {
+    [SerializeField, Min(0.01f), Tooltip("Seconds per item before tavern upgrades. Lower is faster.")]
+    private float _fillInterval = 0.1f;
     private IPropsPool _coinPool;
     private Stack<IProps> _props = new Stack<IProps>();
     private Point _finishPoint;
@@ -54,7 +56,7 @@ public class ChestCoinBuffer : MonoBehaviour, IPropsMover
                 _wallet.StartAddCoins(10);
                 _coinPool.Despawn(props);
                 _finishPoint.Free();
-                yield return WaitFor.QuarterSecond;
+                yield return WaitFor.Seconds(TavernUpgrades.FillSeconds(_fillInterval));
             }
         }
         finally

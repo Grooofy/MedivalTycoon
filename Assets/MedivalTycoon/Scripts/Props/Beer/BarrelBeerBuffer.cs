@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using Events;
 using MedivalTycoon;
@@ -9,9 +9,15 @@ namespace Beers
 {
     public class BarrelBeerBuffer : MonoBehaviour, IPropsMover
     {
+    [SerializeField, Min(0.01f), Tooltip("Seconds per item before tavern upgrades. Lower is faster.")]
+    private float _fillInterval = 0.1f;
+        public int AvailableCount => _pointsProps.Count;
+        private bool _isResetting;
+        private bool _isFilling;
         public bool IsTake;
         private Stack<IProps> _props = new Stack<IProps>();
         private Stack<IProps> _pointsProps = new Stack<IProps>();
+    private readonly Dictionary<IProps, Coroutine> _arrivals = new Dictionary<IProps, Coroutine>();
         private SpawnerPoints _spawnerPoints = new SpawnerPoints();
         private Point _barrelFinishPoint;
         private float _delayBarrelReset;
@@ -19,7 +25,6 @@ namespace Beers
         private List<Point> _points;
         private int _index;
         private int _amountPoint;
-        private bool _isFull;
         private bool _isEmpty = true;
 
         public PropsType Type => PropsType.Barrel;
@@ -50,74 +55,62 @@ namespace Beers
             }
         }
         
-        public int GetEmptyPointsCount()
-        {
-            var index = 0;
-
-            foreach (var point in _points)
-            {
-                if (point.IsFill == false) index++;
-            }
-            return index;
-        }
-
+        public int GetEmptyPointsCount() => Mathf.Max(0, _amountPoint - _index - _props.Count);
 
         public IEnumerator FillingPoints()
         {
-            while (_isFull == false && _props.Count > 0)
+            if (_isFilling) yield break;
+            _isFilling = true;
+            try
             {
-                if (_isEmpty)
+                while (_props.Count > 0)
                 {
-                    EventBus.Raise(new BeerBufferOpen(_isEmpty));
-                    _isEmpty = false;
+                    if (_index >= _amountPoint) { yield return null; continue; }
+                    var prop = _props.Pop();
+                    _arrivals[prop] = StartCoroutine(prop.TryMoveTo(_points[_index]));
+                    _pointsProps.Push(prop);
+                    _index++;
+                    if (_isEmpty)
+                    {
+                        _isEmpty = false;
+                        EventBus.Raise(new BeerBufferOpen(true));
+                    }
+                    yield return WaitFor.Seconds(TavernUpgrades.FillSeconds(_fillInterval));
                 }
-                if (_index >= _amountPoint) break;
-                
-                _props.TryPop(out var props);
-                if (props == null) break;
-                
-               StartCoroutine(props.TryMoveTo(_points[_index]));
-
-                _pointsProps.Push(props);
-                _index++;
-
-                if (_index >= _amountPoint)
-                {
-                    _index = _amountPoint;
-                    _isFull = true;
-                }
-                yield return WaitFor.TenthSecond;
             }
+            finally { _isFilling = false; }
         }
-
         public IEnumerator ResetBarrel()
         {
-            while (IsTake && _isEmpty == false)
+            if (_isResetting) yield break;
+            _isResetting = true;
+            try
             {
-                _pointsProps.TryPop(out var props);
-                if (props == null) break;
-                
-                yield return props.TryMoveTo(_barrelFinishPoint);
-                EventBus.Raise(new BeerCreated());
-                yield return WaitFor.Seconds(_delayBarrelReset);
-                
-                _barrelFinishPoint.Free();
-                _barrelPool.Despawn(props);
-                _index--;
-                _points[_index].Free();
-                
-                _isFull = false;
-
-                if (_index <= 0)
+                while (IsTake && _pointsProps.Count > 0)
                 {
-                    _index = 0;
-                    EventBus.Raise(new BeerBufferOpen(_isEmpty));
-                    _isEmpty = true;
-                    ResetPoints();
+                    var props = _pointsProps.Pop();
+                    if (_arrivals.TryGetValue(props, out var arrival))
+                    {
+                        StopCoroutine(arrival);
+                        _arrivals.Remove(props);
+                    }
+                    // Release the reserved slot before accepting another delivery.
+                    _index--;
+                    _points[_index].Free();
+                    yield return props.TryMoveTo(_barrelFinishPoint);
+                    EventBus.Raise(new BeerCreated());
+                    yield return WaitFor.Seconds(TavernUpgrades.FillSeconds(_delayBarrelReset));
+                    _barrelFinishPoint.Free();
+                    _barrelPool.Despawn(props);
+                    if (_pointsProps.Count == 0)
+                    {
+                        _isEmpty = true;
+                        EventBus.Raise(new BeerBufferOpen(false));
+                    }
                 }
             }
+            finally { _isResetting = false; }
         }
-        
         private void ResetPoints()
         {
             foreach (var point in _points)

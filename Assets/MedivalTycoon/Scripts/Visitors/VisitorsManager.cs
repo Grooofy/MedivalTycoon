@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 
 namespace Visitors
@@ -9,8 +9,8 @@ namespace Visitors
 
         [SerializeField] private float _spacing;
         [SerializeField] private float _speed;
-        [SerializeField] private float _maxWaitTime;
-        [SerializeField] private int _maxBeerCount;
+
+
 
         public int RemainingVisitors { get; private set; }
 
@@ -19,7 +19,7 @@ namespace Visitors
             RemainingVisitors = loadingGameSettings.GetVisitors();
             EventBus.Unsubscribe<Events.VisitorLeaveTavern>(OnVisitorLeft);
             EventBus.Subscribe<Events.VisitorLeaveTavern>(OnVisitorLeft);
-            _queueVisitor.Initialize(loadingGameSettings.GetVisitors(), _spacing, _speed, _maxBeerCount, _maxWaitTime);
+            _queueVisitor.Initialize(loadingGameSettings.GetVisitors(), _spacing, _speed, loadingGameSettings.MaxBeerAmount, loadingGameSettings.GuestWaitSeconds, loadingGameSettings.MinBeerAmount);
             _queueVisitor.SpawnVisitorsInLine(_queueVisitor.transform.position);
         }
 

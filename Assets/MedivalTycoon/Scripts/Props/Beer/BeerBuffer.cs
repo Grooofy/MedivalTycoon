@@ -13,6 +13,8 @@ using UnityEngine.Events;
 
 public class BeerBuffer : MonoBehaviour, IPropsMover
 {
+    [SerializeField, Min(0.01f), Tooltip("Seconds per item before tavern upgrades. Lower is faster.")]
+    private float _fillInterval = 0.25f;
     public bool IsTake { get; set; }
 
     public PropsType Type => PropsType.Beer;
@@ -21,14 +23,12 @@ public class BeerBuffer : MonoBehaviour, IPropsMover
     private SpawnerPoints _spawnerPoints = new SpawnerPoints();
     private Stack<IProps> _props = new Stack<IProps>();
     private Stack<IProps> _pointsProps = new Stack<IProps>();
+    private readonly Dictionary<IProps, Coroutine> _arrivals = new Dictionary<IProps, Coroutine>();
     private int _index;
-    private bool _isFull;
     private bool _isFilling;
     private int _currentCountBeerPoint;
     private int _amountPoint;
     private int _startAmountBeerToBarrel;
-    private int currentAmountBeerToBarrel;
-    private Coroutine _filingCoroutine;
     private IPropsPool _beerPool;
     private BeerMachineAnimation _beerMachineAnimation;
 
@@ -36,8 +36,8 @@ public class BeerBuffer : MonoBehaviour, IPropsMover
     public void Initialize( IPropsPool beerPool, int amountBeerToBarrel)
     {
         _beerPool = beerPool;
-        _startAmountBeerToBarrel = amountBeerToBarrel;
-        _currentCountBeerPoint = _startAmountBeerToBarrel;
+        _startAmountBeerToBarrel = Mathf.Max(1, amountBeerToBarrel);
+        _currentCountBeerPoint = 0;
         _beerMachineAnimation = GetComponentInChildren<BeerMachineAnimation>();
         _beerMachineAnimation.Initialize();
         EventBus.Subscribe<BeerCreated>(StartFilingPoints);
@@ -62,71 +62,43 @@ public class BeerBuffer : MonoBehaviour, IPropsMover
         }
     }
 
-    public int GetEmptyPointsCount()
-    {
-        var index = 0;
-
-        foreach (var point in _points)
-        {
-            if (point.IsFill == false) index++;
-        }
-
-        return index;
-    }
+    public int GetEmptyPointsCount() => Mathf.Max(0, _amountPoint - _index - _props.Count);
 
     private void StartFilingPoints(BeerCreated beerCreated)
     {
-        if (_isFilling) return;
-
-        _filingCoroutine = StartCoroutine(FillingPoints());
+        _currentCountBeerPoint += _startAmountBeerToBarrel + TavernUpgrades.BonusMugs;
+        if (!_isFilling) StartCoroutine(FillingPoints());
     }
 
     public IEnumerator FillingPoints()
-    {       
-        if(_props.Count == 0)
+    {
+        if (_isFilling) yield break;
+        _isFilling = true;
+        try
         {
-            while (_isFull == false && _currentCountBeerPoint > 0)
+            while (_props.Count > 0 || _currentCountBeerPoint > 0)
             {
-                _isFilling = true;
-                var prop = _beerPool.Spawn();
-
-                StartCoroutine(prop.TryMoveTo(_points[_index]));
-
-                _pointsProps.Push(prop);
-                _index++;
-                _beerMachineAnimation.PlayAnimation();
-                _currentCountBeerPoint--;
-
-                if (_index >= _amountPoint)
-                    _isFull = true;
-                yield return WaitFor.QuarterSecond;
-            }
-            _isFilling = false;
-            _filingCoroutine = null;
-            _currentCountBeerPoint = _startAmountBeerToBarrel;
-        }
-        else
-        {
-            while (_isFull == false && _props.Count > 0)
-            {
-                _props.TryPop(out var props);
-                if (props == null) break;
-
-                StartCoroutine(props.TryMoveTo(_points[_index]));
-
-                _pointsProps.Push(props);
-                _index++;
-
                 if (_index >= _amountPoint)
                 {
-                    _index = _amountPoint;
-                    _isFull = true;
+                    yield return null;
+                    continue;
                 }
-                yield return WaitFor.TenthSecond;
+                IProps prop;
+                if (_props.Count > 0) prop = _props.Pop();
+                else
+                {
+                    prop = _beerPool.Spawn();
+                    _currentCountBeerPoint--;
+                    _beerMachineAnimation.PlayAnimation();
+                }
+                _arrivals[prop] = StartCoroutine(prop.TryMoveTo(_points[_index]));
+                _pointsProps.Push(prop);
+                _index++;
+                yield return WaitFor.Seconds(TavernUpgrades.FillSeconds(_fillInterval));
             }
-        }        
+        }
+        finally { _isFilling = false; }
     }
-
 
     public Stack<IProps> GetTo(int amount)
     {
@@ -136,14 +108,18 @@ public class BeerBuffer : MonoBehaviour, IPropsMover
         for (int i = 0; i < itemsToTake; i++)
         {
             _pointsProps.TryPop(out var prop);
+            if (_arrivals.TryGetValue(prop, out var arrival))
+            {
+                StopCoroutine(arrival);
+                _arrivals.Remove(prop);
+            }
 
             result.Push(prop);
 
-            if (_index >= 0)
+            if (_index > 0)
             {
                 _index--;
                 _points[_index].Free();
-                _isFull = false;
             }
 
             if (_pointsProps.Count == 0)

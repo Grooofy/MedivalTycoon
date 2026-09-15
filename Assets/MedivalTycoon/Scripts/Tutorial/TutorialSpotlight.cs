@@ -15,6 +15,7 @@ namespace Tutorial
         private Canvas _canvas;
         private readonly List<Image> _panels = new List<Image>();
         private RectTransform _targetRect;
+        private readonly Vector3[] _targetCorners = new Vector3[4];
 
         // Поля для анимации
         private Tween _moveTween;
@@ -60,6 +61,7 @@ namespace Tutorial
         {
             if (_canvas == null) return;
 
+            if (_moveTween != null) _moveTween.Kill();
             _targetRect = null;
             gameObject.SetActive(true);
 
@@ -143,10 +145,20 @@ namespace Tutorial
         // Этот метод вызывает DOTween каждый кадр
         private void OnAnimationUpdate(float t)
         {
+            if (_targetRect == null) return;
+            _endPos = GetTargetScreenPosition();
+            _endSize = GetHoleSize();
+
             // Интерполяция позиций и размеров
             _currentAnimPos = Vector2.Lerp(_startPos, _endPos, t);
             _currentAnimSize = Vector2.Lerp(_startSize, _endSize, t);
 
+            UpdatePanelsLayout();
+        }
+
+        private void LateUpdate()
+        {
+            // Follow layout changes and the target button's pulse after the entrance tween.
             UpdatePanelsLayout();
         }
 
@@ -201,23 +213,29 @@ namespace Tutorial
         private Vector2 GetTargetScreenPosition()
         {
             RectTransform canvasRect = _canvas.GetComponent<RectTransform>();
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                canvasRect,
-                _targetRect.position,
-                _canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : _canvas.worldCamera,
-                out var localPoint
-            );
-
-            return new Vector2(
-                localPoint.x + canvasRect.rect.width / 2,
-                localPoint.y + canvasRect.rect.height / 2
-            );
+            return GetTargetBounds().center - canvasRect.rect.min;
         }
 
         private Vector2 GetHoleSize()
         {
             if (_targetRect == null) return Vector2.one * 100f;
-            return _targetRect.rect.size + Vector2.one * padding * 2;
+            return GetTargetBounds().size + Vector2.one * padding * 2;
+        }
+
+        private Rect GetTargetBounds()
+        {
+            // Measure in overlay canvas units, including all parent scales and the pivot.
+            _targetRect.GetWorldCorners(_targetCorners);
+            Vector2 min = new Vector2(float.PositiveInfinity, float.PositiveInfinity);
+            Vector2 max = new Vector2(float.NegativeInfinity, float.NegativeInfinity);
+            for (int i = 0; i < _targetCorners.Length; i++)
+            {
+                Vector2 point = _canvas.transform.InverseTransformPoint(_targetCorners[i]);
+                min = Vector2.Min(min, point);
+                max = Vector2.Max(max, point);
+            }
+
+            return Rect.MinMaxRect(min.x, min.y, max.x, max.y);
         }
 
         private void OnDestroy()

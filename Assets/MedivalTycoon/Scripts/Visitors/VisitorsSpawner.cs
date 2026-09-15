@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Visitors
@@ -10,12 +10,12 @@ namespace Visitors
         
         private readonly List<TavernVisitor> _tavernVisitors = new List<TavernVisitor>();
 
-        public TavernVisitor CreateVisitor(Transform position, float speed, int maxBeerCount, float maxWaitTime, Vector3 exitPoint, LayerMask securityLayer)
+        public TavernVisitor CreateVisitor(Transform position, float speed, int maxBeerCount, float maxWaitTime, Vector3 exitPoint, LayerMask securityLayer, int minBeerCount = 3)
         {
             var currentTavernVisitor = Instantiate(_tavernVisitor, position);
             _randomVisitorModel.SpawnRandomModel(currentTavernVisitor.transform);
             currentTavernVisitor.InitializeIpropsVisitor(speed, securityLayer);
-            currentTavernVisitor.Initialize(speed, maxBeerCount, maxWaitTime, exitPoint);
+            currentTavernVisitor.Initialize(speed, maxBeerCount, maxWaitTime, exitPoint, minBeerCount);
             _tavernVisitors.Add(currentTavernVisitor);
             return currentTavernVisitor;
         }

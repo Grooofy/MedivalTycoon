@@ -37,13 +37,14 @@ namespace Visitors
         private float _speed;
         private float _maxWaitTime;
 
-        public void Initialize(float speed, int maxBeerAmount, float maxWaitTime, Vector3 exitPoint)
+        public void Initialize(float speed, int maxBeerAmount, float maxWaitTime, Vector3 exitPoint, int minBeerAmount = 3)
         {
             Animator = GetComponentInChildren<Animator>();
             _fiilImage = GetComponentInChildren<WaitTimerUI>();
             _beerModel = GetComponentInChildren<Beer>();
             _particleSystem = GetComponentInChildren<ParticleSystem>();
-            _maxBeerAmount = maxBeerAmount;
+            _minBeerAmount = Mathf.Clamp(minBeerAmount, 1, int.MaxValue - 1);
+            _maxBeerAmount = Mathf.Clamp(maxBeerAmount, _minBeerAmount, int.MaxValue - 1);
             _maxWaitTime = maxWaitTime;
             _exitPoint = exitPoint;
             _speed = speed;
@@ -67,7 +68,7 @@ namespace Visitors
 
         public void SetRandomAmountBeer()
         {
-            BeerAmount = UnityEngine.Random.Range(_minBeerAmount, _maxBeerAmount);
+            BeerAmount = UnityEngine.Random.Range(_minBeerAmount, _maxBeerAmount + 1);
         }
 
         public void GoTo(Queue<Vector3> way)

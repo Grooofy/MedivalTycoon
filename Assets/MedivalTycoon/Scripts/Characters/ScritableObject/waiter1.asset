@@ -12,13 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4462d441f2ae44e2b28ea2b10d520472, type: 3}
   m_Name: waiter1
   m_EditorClassIdentifier: 
-  _moveSpeed: 1.2
-  _rotateSpeed: 7
-  _icon: {fileID: 21300000, guid: ebcce7283dceb9747930ee8c34563e89, type: 3}
-  _id: 2
-  _numberWearableObjects: 10
-  _distanceBetweenPoints: 0.07
-  IsSelect: 0
   _speedUpgrades:
   - Price: 1
     Increase: 0.2
@@ -61,3 +54,10 @@ MonoBehaviour:
     Increase: 2
   - Price: 10
     Increase: 2
+  _moveSpeed: 0.7
+  _rotateSpeed: 3
+  _icon: {fileID: 21300000, guid: ebcce7283dceb9747930ee8c34563e89, type: 3}
+  _id: 2
+  _numberWearableObjects: 2
+  _distanceBetweenPoints: 0.07
+  IsSelect: 1

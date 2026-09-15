@@ -1,4 +1,4 @@
-﻿using Beers;
+using Beers;
 using MedivalTycoon;
 using Propses;
 using System;
@@ -10,6 +10,8 @@ namespace Money
 {
     public class CoinBuffer : MonoBehaviour, IPropsMover
     {
+    [SerializeField, Min(0.01f), Tooltip("Seconds per item before tavern upgrades. Lower is faster.")]
+    private float _fillInterval = 0.25f;
         public Action AllCoinsCreated;
         private IPropsPool _coinPool;
         public SpawnerPoints _spawnerPoints;
@@ -82,7 +84,7 @@ namespace Money
                 _index++;
                 _amountVisitorWallet--;
                 
-                yield return WaitFor.QuarterSecond;
+                yield return WaitFor.Seconds(TavernUpgrades.FillSeconds(_fillInterval));
             }
 
             _isCreatingCoins = false;

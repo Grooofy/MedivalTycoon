@@ -7,10 +7,13 @@ using UnityEngine;
 
 public class BarrelBuffer : MonoBehaviour, IPropsMover
 {
+    [SerializeField, Min(0.01f), Tooltip("Seconds per item before tavern upgrades. Lower is faster.")]
+    private float _fillInterval = 1f;
     public PropsType Type => PropsType.Barrel;
 
     private Queue<IProps> _props = new Queue<IProps>();
     private Stack<IProps> _pointsProps = new Stack<IProps>();
+    private readonly Dictionary<IProps, Coroutine> _arrivals = new Dictionary<IProps, Coroutine>();
     private SpawnerPoints _spawnerPoints = new SpawnerPoints();
     private IPropsPool _barrelPool;
     private List<Point> _points;
@@ -45,17 +48,7 @@ public class BarrelBuffer : MonoBehaviour, IPropsMover
         }
     }
 
-    public int GetEmptyPointsCount()
-    {
-        var index = 0;
-
-        foreach (var point in _points)
-        {
-            if (point.IsFill) index++;
-        }
-        
-        return index;
-    }
+    public int GetEmptyPointsCount() => Mathf.Max(0, _amountPoint - _index);
 
     public IEnumerator FillingPoints()
     {
@@ -63,9 +56,11 @@ public class BarrelBuffer : MonoBehaviour, IPropsMover
         {
             if (_index >= _amountPoint) break;
 
+
+            yield return WaitFor.Seconds(TavernUpgrades.FillSeconds(_fillInterval));
             var prop = _barrelPool.Spawn();
 
-            StartCoroutine(prop.TryMoveTo(_points[_index]));
+            _arrivals[prop] = StartCoroutine(prop.TryMoveTo(_points[_index]));
 
             _pointsProps.Push(prop);
             _index++;
@@ -75,7 +70,7 @@ public class BarrelBuffer : MonoBehaviour, IPropsMover
                 _isFull = true;
                 EventBus.Raise(new PropsMoverFullingPointEvent(true));
             }
-            yield return new WaitForSecondsRealtime(1);
+
         }
     }
 
@@ -87,10 +82,15 @@ public class BarrelBuffer : MonoBehaviour, IPropsMover
         for (int i = 0; i < itemsToTake; i++)
         {
             _pointsProps.TryPop(out var prop);
+            if (_arrivals.TryGetValue(prop, out var arrival))
+            {
+                StopCoroutine(arrival);
+                _arrivals.Remove(prop);
+            }
            
             result.Push(prop);
 
-            if (_index >= 0)
+            if (_index > 0)
             {
                 _index--;
                 _points[_index].Free();

@@ -9,8 +9,7 @@ namespace Propses
         public void MoveTo(Transform transform, Point endPoint, float moveSpeed)
         {
             if (endPoint.IsFill) return;
-
-            // Устанавливаем родителя ОДИН РАЗ при первом обращении к этой точке
+            
             if (_currentTarget != endPoint)
             {
                 transform.SetParent(endPoint.transform);
@@ -23,7 +22,7 @@ namespace Propses
             if (IsMinDistance(transform.position, endPoint.transform.position))
             {
                 endPoint.Fill();
-                _currentTarget = null; // Сбрасываем для следующей точки
+                _currentTarget = null; 
             }
         }
 

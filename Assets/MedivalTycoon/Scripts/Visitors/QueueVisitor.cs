@@ -1,4 +1,4 @@
-﻿using Characters;
+using Characters;
 using Events;
 using System.Collections;
 using System.Collections.Generic;
@@ -23,13 +23,14 @@ public class QueueVisitor : MonoBehaviour
     private float _speed;
     private float _maxWaitTime;
     private int _maxBeerCount;
+    private int _minBeerCount;
     private Vector3 _lineDirection = Vector3.right;
     private bool _isInitialized;
     private TavernVisitor _currentVisitor;
 
 
 
-    public void Initialize(int numberOfObjects, float spacing, float speed, int maxBeerCount, float maxWaitTime)
+    public void Initialize(int numberOfObjects, float spacing, float speed, int maxBeerCount, float maxWaitTime, int minBeerCount = 3)
     {
         _seatAggregator = SeatAggregator.Instance;
         _numberOfObjects = numberOfObjects;
@@ -37,6 +38,7 @@ public class QueueVisitor : MonoBehaviour
         _speed = speed;
         _maxWaitTime = maxWaitTime;
         _maxBeerCount = maxBeerCount;
+        _minBeerCount = minBeerCount;
         _exitPoint.Initialize(_visitorsLayer);
         _sleepVisitorBuffer.Initialize(_exitPoint.GetPoint());
         _sleepVisitorsTaker.Initialize(_sleepVisitorBuffer, _securityLayer);
@@ -55,7 +57,7 @@ public class QueueVisitor : MonoBehaviour
             var point = ObjectFactory.CreateObjectWithComponent<Point>($"Point {i}");
             point.transform.SetParent(transform);
             point.transform.position = spawnPosition;
-            var visitor = _visitorsSpawner.CreateVisitor(point.transform, _speed, _maxBeerCount, _maxWaitTime, _exitPoint.GetPosition(), _securityLayer);
+            var visitor = _visitorsSpawner.CreateVisitor(point.transform, _speed, _maxBeerCount, _maxWaitTime, _exitPoint.GetPosition(), _securityLayer, _minBeerCount);
             _guestQueue.Enqueue(visitor);
             _createdPoints.Add(point);
         }
