@@ -9,6 +9,7 @@ namespace Characters
         
         private Worker _worker;
         private float _moveSpeed;
+        private float _rotationSpeed;
         private int _capacity;
         private CharacterController _controller;
         private Animator _animator;
@@ -21,6 +22,8 @@ namespace Characters
         {
             _worker = worker;
             _moveSpeed = CharacterUpgrades.GetValue(worker, CharacterUpgrades.Stat.Speed);
+            float speedMultiplier = worker.MoveSpeed > 0f ? _moveSpeed / worker.MoveSpeed : 1f;
+            _rotationSpeed = worker.RotationSpeed * speedMultiplier;
             _capacity = Mathf.RoundToInt(CharacterUpgrades.GetValue(worker, CharacterUpgrades.Stat.Capacity));
             _controller = GetComponent<CharacterController>();
             _animator = GetComponentInChildren<Animator>();
@@ -72,7 +75,7 @@ namespace Characters
             transform.rotation = Quaternion.Slerp(
                 transform.rotation,
                 targetRotation,
-                _worker.RotationSpeed * Time.deltaTime
+                _rotationSpeed * Time.deltaTime
             );
         }
     }

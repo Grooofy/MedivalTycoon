@@ -19,13 +19,13 @@ namespace UI.MainMenu
             public string WorkerSpeed = "Скорость";
             public string WorkerCapacity = "Вместимость";
             [Tooltip("{0}: title, {1}: purchased level, {2}: maximum level")]
-            public string WorkerLevel = "{0} · {1}/{2}";
+            public string WorkerLevel = "{0} {1}/{2}";
             [TextArea, Tooltip("{0}: current value, {1}: next value text")]
             public string WorkerCapacityValue = "\n{0:0.##}{1}";
             [Tooltip("{0}: next value")]
             public string WorkerNextValue = " → {0:0.##}";
             [TextArea, Tooltip("{0}: purchased level, {1}: maximum level")]
-            public string TavernSpeed = "Скорость получения бочек\n{0}/{1}";
+            public string TavernSpeed = "Скорость получения бочек\nУровень: {0}";
             [TextArea, Tooltip("{0}: bonus mugs, {1}: next value text, {2}: purchased level, {3}: maximum level")]
             public string TavernMugs = "Кружек из бочки +{0}{1}\n{2}/{3}";
             [Tooltip("{0}: next bonus mugs")]
@@ -93,7 +93,7 @@ namespace UI.MainMenu
             Refresh();
         }
 
-        private void Refresh()
+        public void Refresh()
         {
             _balance.text = string.Format(_labels.Balance, LevelRewards.Balance);
             if (_tavern != null) _tavern.interactable = _selected >= 0;

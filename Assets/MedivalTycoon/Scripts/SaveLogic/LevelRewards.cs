@@ -8,6 +8,13 @@ public static class LevelRewards
     public static int Balance => PlayerPrefs.GetInt(BalanceKey, 0);
     public static int GetBest(int level) => PlayerPrefs.GetInt(BestKey(level), 0);
 
+    internal static void AddTestCoins()
+    {
+        if (Balance > int.MaxValue - 1000) return;
+        PlayerPrefs.SetInt(BalanceKey, Balance + 1000);
+        PlayerPrefs.Save();
+    }
+
     // The caller commits the balance and upgrade together with PlayerPrefs.Save().
     internal static bool TrySpend(int price)
     {

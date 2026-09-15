@@ -12,14 +12,16 @@ public class PanelUI: MonoBehaviour
     public virtual void Open()
     {
         _canvasGroup.DOKill();
-        _canvasGroup.DOFade(_maxValue, _durationAnimation);
+        _canvasGroup.DOFade(_maxValue, _durationAnimation)
+            .SetLink(_canvasGroup.gameObject, LinkBehaviour.KillOnDestroy);
         SwitchCanvasGroup(true);
     }
 
     public virtual void Close()
     {
         _canvasGroup.DOKill();
-        _canvasGroup.DOFade(_minValue, _durationAnimation);
+        _canvasGroup.DOFade(_minValue, _durationAnimation)
+            .SetLink(_canvasGroup.gameObject, LinkBehaviour.KillOnDestroy);
         SwitchCanvasGroup(false);
     }
 
