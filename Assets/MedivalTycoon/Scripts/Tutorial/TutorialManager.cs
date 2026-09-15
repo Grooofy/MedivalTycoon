@@ -43,7 +43,7 @@ namespace Tutorial
     public struct TutorialStepData
     {
         public TutorialStep Step;
-        public string Message;
+        public string MessageKey;
         public Sprite Icon;
         public RectTransform TargetHighlight;
         public Button TargetButton;
@@ -102,14 +102,14 @@ namespace Tutorial
         {
             TutorialStepData data = _stepsData.Find(s => s.Step == _currentStep);
 
-            if (string.IsNullOrEmpty(data.Message) && _currentStep != TutorialStep.Complete)
+            if (string.IsNullOrEmpty(data.MessageKey) && _currentStep != TutorialStep.Complete)
             {
                 Debug.LogWarning($"Tutorial: No data found for step {_currentStep}");
             }
 
             ProcessStepLogic(data);
 
-            if (!string.IsNullOrEmpty(data.Message))
+            if (!string.IsNullOrEmpty(data.MessageKey))
             {
                 var autoAdvanceSteps = new HashSet<TutorialStep>
                 {
@@ -121,7 +121,7 @@ namespace Tutorial
                     TutorialStep.LastStep
                 };
 
-                _tutorialUI.ShowMessage(data.Message, () =>
+                _tutorialUI.ShowMessage(data.MessageKey, () =>
                 {
                     if (_currentStep != data.Step) return;
                     _tutorialUI.Close();

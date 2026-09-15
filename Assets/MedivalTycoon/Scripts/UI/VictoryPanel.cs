@@ -29,8 +29,8 @@ namespace UI
 
         public void Show(int result, int earned)
         {
-            _rewardText.text = $"Получено монет: +{earned}";
-            _resultText.text = $"Результат: {result} из 3\nБаланс: {LevelRewards.Balance}";
+            Localization.LocalizedText.Bind(_rewardText, "victory.reward", earned);
+            Localization.LocalizedText.Bind(_resultText, "victory.result", result, LevelRewards.Balance);
             for (int i = 0; i < _coins.Length; i++)
                 _coins[i].color = new Color(1f, 1f, 1f, i < result ? 1f : 0.2f);
             _leaving = false;

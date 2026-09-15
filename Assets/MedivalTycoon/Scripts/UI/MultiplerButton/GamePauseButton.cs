@@ -11,7 +11,7 @@ public class GamePauseButton : MonoBehaviour
     [SerializeField] private Button _restartButton;
     [SerializeField] private Button _exitButton;
     [SerializeField] private Sprite _rewardedAdIcon;
-    [SerializeField] private UnityEngine.Events.UnityEvent _onRewardedAdRequested = new UnityEngine.Events.UnityEvent();
+    [SerializeField, Min(1f)] private float _rewardSeconds = 60f;
     [SerializeField] private float _panelDuration = 0.5f;
 
     private UIAnimation _uiAnimations;
@@ -22,6 +22,9 @@ public class GamePauseButton : MonoBehaviour
     private bool _isPaused;
     private bool _isClosing;
     private bool _isTimeOut;
+    private bool _adPending;
+    private Text _rewardLabel;
+    private Sprite _resumeIcon;
     private GameObject _exitConfirmation;
     private Button _cancelExitButton;
     private Button _confirmExitButton;
@@ -29,6 +32,7 @@ public class GamePauseButton : MonoBehaviour
     public void Initialize(UIAnimation uIAnimation)
     {
         _pauseButton = GetComponent<Button>();
+        _resumeIcon = _resumeButton.GetComponent<Image>().sprite;
         _uiAnimations = uIAnimation;
         _pauseButton.onClick.RemoveListener(PressButton);
         _pauseButton.onClick.AddListener(PressButton);
@@ -60,14 +64,45 @@ public class GamePauseButton : MonoBehaviour
         icon.preserveAspect = true;
         _resumeButton.onClick.RemoveListener(Resume);
         _resumeButton.onClick.AddListener(RequestRewardedAd);
+        if (_rewardLabel == null)
+        {
+            CreateLabel("RewardDescription", (RectTransform)_resumeButton.transform,
+                "", new Vector2(-0.5f, -0.65f), new Vector2(1.5f, 0f), 24);
+            _rewardLabel = _resumeButton.transform.Find("RewardDescription").GetComponent<Text>();
+        }
+        Localization.LocalizedText.Bind(_rewardLabel, "ad.reward", Mathf.CeilToInt(_rewardSeconds));
+        _rewardLabel.gameObject.SetActive(true);
         OpenPanel();
     }
 
     private void RequestRewardedAd()
     {
-        if (!_isTimeOut || _isClosing || _exitConfirmation.activeSelf) return;
-        // The ad provider will grant extra time only after a completed rewarded view.
-        _onRewardedAdRequested.Invoke();
+        if (!_isTimeOut || _isClosing || _adPending || _exitConfirmation.activeSelf) return;
+        _adPending = true;
+        SetPauseButtonsInteractable(false);
+        if (!MedivalTycoon.YandexPlatform.ShowRewarded(OnRewardedFinished))
+            OnRewardedFinished(false);
+    }
+
+    private void OnRewardedFinished(bool rewarded)
+    {
+        if (this == null) return;
+        _adPending = false;
+        SetPauseButtonsInteractable(true);
+        if (!rewarded)
+        {
+            Localization.LocalizedText.Bind(_rewardLabel, "ad.retry", Mathf.CeilToInt(_rewardSeconds));
+            return;
+        }
+        var timer = FindObjectOfType<Timer>();
+        if (timer == null) return;
+        timer.AddRewardedTime(_rewardSeconds);
+        _isTimeOut = false;
+        _resumeButton.onClick.RemoveListener(RequestRewardedAd);
+        _resumeButton.onClick.AddListener(Resume);
+        _resumeButton.GetComponent<Image>().sprite = _resumeIcon;
+        _rewardLabel.gameObject.SetActive(false);
+        Resume();
     }
 
     private void OpenPanel()
@@ -157,12 +192,12 @@ public class GamePauseButton : MonoBehaviour
         _exitConfirmation = overlay.gameObject;
         var panel = CreatePanel("Dialog", overlay, new Vector2(0.2f, 0.3f),
             new Vector2(0.8f, 0.7f), new Color(0.16f, 0.11f, 0.07f));
-        CreateLabel("Title", panel, "Выйти в главное меню?", new Vector2(0.05f, 0.66f),
+        CreateLabel("Title", panel, "exit.title", new Vector2(0.05f, 0.66f),
             new Vector2(0.95f, 0.94f), 38);
-        CreateLabel("Warning", panel, "Вы уверены, что хотите выйти?\nПрогресс текущего уровня не сохранится.",
+        CreateLabel("Warning", panel, "exit.warning",
             new Vector2(0.06f, 0.35f), new Vector2(0.94f, 0.67f), 28);
-        _cancelExitButton = CreateDialogButton("Cancel", panel, "Нет", 0.08f, 0.46f);
-        _confirmExitButton = CreateDialogButton("Confirm", panel, "Да", 0.54f, 0.92f);
+        _cancelExitButton = CreateDialogButton("Cancel", panel, "common.no", 0.08f, 0.46f);
+        _confirmExitButton = CreateDialogButton("Confirm", panel, "common.yes", 0.54f, 0.92f);
         _cancelExitButton.onClick.AddListener(CancelExit);
         _confirmExitButton.onClick.AddListener(ConfirmExit);
         _exitConfirmation.SetActive(false);
@@ -194,7 +229,7 @@ public class GamePauseButton : MonoBehaviour
         rect.offsetMax = Vector2.zero;
         var label = obj.GetComponent<Text>();
         label.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-        label.text = value;
+        if (!string.IsNullOrEmpty(value)) Localization.LocalizedText.Bind(label, value);
         label.fontSize = size;
         label.resizeTextForBestFit = true;
         label.resizeTextMinSize = 12;

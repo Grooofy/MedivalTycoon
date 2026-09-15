@@ -14,7 +14,7 @@ public class SeatUI : MonoBehaviour
         else
             _text.gameObject.SetActive(true);
 
-        _text.text = $"Пиво: {remaining}";
+        Localization.LocalizedText.Bind(_text, "seat.beer", remaining);
     }
 
 }

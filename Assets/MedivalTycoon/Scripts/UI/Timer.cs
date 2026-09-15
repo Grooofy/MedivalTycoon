@@ -49,6 +49,14 @@ public class Timer : MonoBehaviour
         _isRunning = false;
     }
 
+    public void AddRewardedTime(float seconds)
+    {
+        if (seconds <= 0f) return;
+        _gameTime += seconds;
+        _isRunning = true;
+        ShowTimer();
+    }
+
     public void Resume()
     {
         _isRunning = _gameTime > 0f;

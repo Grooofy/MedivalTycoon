@@ -13,9 +13,9 @@ namespace Tutorial
 
         private Action _onNextClick;
 
-        public void ShowMessage(string text, Action onNext, Sprite icon = null)
+        public void ShowMessage(string messageKey, Action onNext, Sprite icon = null)
         {            
-            _messageText.text = text;
+            Localization.LocalizedText.Bind(_messageText, messageKey);
             _onNextClick = onNext;
             _icon.sprite = icon;
             _icon.gameObject.SetActive(icon != null);

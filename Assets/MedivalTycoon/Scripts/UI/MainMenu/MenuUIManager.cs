@@ -30,6 +30,7 @@ namespace UI.MainMenu
         public void Initialize()
         {
             if (_initialized) return;
+            Localization.LanguageSelector.Create(GetComponentInParent<Canvas>());
             _start.onClick.AddListener(OpenLevelPanel);
             _settings.onClick.AddListener(OpenSettingsPanel);
             if (_back != null) _back.onClick.AddListener(Back);
@@ -42,6 +43,7 @@ namespace UI.MainMenu
             }
             _initialized = true;
             if (HasAnimation) ShowHome();
+            else MedivalTycoon.YandexPlatform.MarkReady();
         }
 
         public void UpdateUI()
@@ -89,6 +91,7 @@ namespace UI.MainMenu
             {
                 SetGroup(_homeButtons, true, true);
                 _transitioning = false;
+                MedivalTycoon.YandexPlatform.MarkReady();
             });
         }
 

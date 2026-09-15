@@ -1,0 +1,143 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 994465fad4ea93f45b82eaf950f2d930, type: 3}
+  m_Name: en
+  m_EditorClassIdentifier:
+  Entries:
+  - ID: menu.play
+    Text: "Play"
+  - ID: menu.start
+    Text: "Start game"
+  - ID: menu.levels
+    Text: "Choose a level"
+  - ID: menu.upgrades
+    Text: "Upgrades"
+  - ID: menu.back
+    Text: "Back"
+  - ID: menu.close
+    Text: "Close"
+  - ID: menu.tutorial
+    Text: "Tutorial"
+  - ID: menu.settings
+    Text: "Settings"
+  - ID: settings.language
+    Text: "Language"
+  - ID: loading
+    Text: "Loading..."
+  - ID: worker.waiter
+    Text: "Waiter"
+  - ID: worker.bartender
+    Text: "Bartender"
+  - ID: worker.security
+    Text: "Guard"
+  - ID: tavern
+    Text: "Tavern"
+  - ID: action.upgrade_bar
+    Text: "Upgrade bar"
+  - ID: action.clear_beer
+    Text: "Clear\nbeer"
+  - ID: action.pour_beer
+    Text: "Pour\nbeer"
+  - ID: action.deposit
+    Text: "Deposit\ngold"
+  - ID: action.barrels
+    Text: "Get\nbarrels"
+  - ID: action.next
+    Text: "Next"
+  - ID: action.exit
+    Text: "Exit"
+  - ID: victory.title
+    Text: "Level complete!"
+  - ID: victory.reward
+    Text: "Coins earned: +{0}"
+  - ID: victory.result
+    Text: "Result: {0} of 3\nBalance: {1}"
+  - ID: seat.beer
+    Text: "Beer: {0}"
+  - ID: ad.reward
+    Text: "Watch ad: +{0} sec."
+  - ID: ad.retry
+    Text: "Ad unavailable. Retry: +{0} sec."
+  - ID: exit.title
+    Text: "Return to the main menu?"
+  - ID: exit.warning
+    Text: "Are you sure you want to exit?\nProgress in this level will not be saved."
+  - ID: common.no
+    Text: "No"
+  - ID: common.yes
+    Text: "Yes"
+  - ID: upgrade.Balance
+    Text: "Coins: {0}"
+  - ID: upgrade.Buy
+    Text: "Upgrade \u00b7 {0}"
+  - ID: upgrade.Maximum
+    Text: "Max"
+  - ID: upgrade.WorkerSpeed
+    Text: "Speed"
+  - ID: upgrade.WorkerCapacity
+    Text: "Capacity"
+  - ID: upgrade.WorkerLevel
+    Text: "{0} {1}/{2}"
+  - ID: upgrade.WorkerCapacityValue
+    Text: "\n{0:0.##}{1}"
+  - ID: upgrade.WorkerNextValue
+    Text: " \u2192 {0:0.##}"
+  - ID: upgrade.TavernSpeed
+    Text: "Barrel delivery speed\nLevel: {0}"
+  - ID: upgrade.TavernMugs
+    Text: "Mugs per barrel +{0}{1}\n{2}/{3}"
+  - ID: upgrade.TavernNextMugs
+    Text: " \u2192 +{0:0}"
+  - ID: tutorial.Welcome
+    Text: "Listen up, rookie! The ale brews itself, but the fumes... they make my crew dizzy. Here they are..."
+  - ID: tutorial.Characters
+    Text: "Your trio: the Bartender brews, the Waiter serves, and the Guard throws people out. The fumes make them dizzy \u2014 they need your cursor to guide them."
+  - ID: tutorial.ShowUITimer
+    Text: "Your shift has started. Serve every guest before the fumes get too thick!"
+  - ID: tutorial.CreateBarrel
+    Text: "Only the BARTENDER can order barrels. Go order some!"
+  - ID: tutorial.TakeBarrel
+    Text: "Grab the barrels!"
+  - ID: tutorial.MoveBarrel
+    Text: "Hurry, carry them over!"
+  - ID: tutorial.ShowUIVisitorAmount
+    Text: "See that counter? Those are the guests you need to serve before time runs out."
+  - ID: tutorial.BuildTable
+    Text: "Guests won't sit on the floor. Add tables to the tavern."
+  - ID: tutorial.WaitVisitor
+    Text: "Guests won't wait long. QUICK! Bring the order before they fall asleep!"
+  - ID: tutorial.SelectedWaiter
+    Text: "Guests won't wait long. QUICK, BRING THEM A DRINK!"
+  - ID: tutorial.CreateBeer
+    Text: "HURRY UP AND POUR A DRINK!"
+  - ID: tutorial.TakeBeer
+    Text: "GRAB THE MUG!"
+  - ID: tutorial.ServesesVisitor
+    Text: "RUN! RUN! As fast as you can!"
+  - ID: tutorial.GiveBeer
+    Text: "You can't carry a drink and money at the same time. Put the drink on the table."
+  - ID: tutorial.TakeMoney
+    Text: "Collect the coins."
+  - ID: tutorial.GiveMoney
+    Text: "Take the COINS to the CHEST."
+  - ID: tutorial.ShowUIMoneyAmout
+    Text: "YES! We're getting rich!"
+  - ID: tutorial.SleepVisitors
+    Text: "Well, now he's fallen asleep."
+  - ID: tutorial.SelectedSecuryte
+    Text: "Select the Guard."
+  - ID: tutorial.TakeVisitor
+    Text: "Pick up the sleeping guest and make room for the next one!"
+  - ID: tutorial.GiveVisitor
+    Text: "Throw him OUT!"
+  - ID: tutorial.LastStep
+    Text: "That's it! Finish your shift."

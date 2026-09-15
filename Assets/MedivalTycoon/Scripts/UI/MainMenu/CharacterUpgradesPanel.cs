@@ -9,30 +9,6 @@ namespace UI.MainMenu
     public sealed class CharacterUpgradesPanel : PanelUI
     {
         [Serializable]
-        private sealed class UpgradeLabels
-        {
-            [Tooltip("{0}: balance")]
-            public string Balance = "Монеты: {0}";
-            [Tooltip("{0}: price")]
-            public string Buy = "Улучшить · {0}";
-            public string Maximum = "Максимум";
-            public string WorkerSpeed = "Скорость";
-            public string WorkerCapacity = "Вместимость";
-            [Tooltip("{0}: title, {1}: purchased level, {2}: maximum level")]
-            public string WorkerLevel = "{0} {1}/{2}";
-            [TextArea, Tooltip("{0}: current value, {1}: next value text")]
-            public string WorkerCapacityValue = "\n{0:0.##}{1}";
-            [Tooltip("{0}: next value")]
-            public string WorkerNextValue = " → {0:0.##}";
-            [TextArea, Tooltip("{0}: purchased level, {1}: maximum level")]
-            public string TavernSpeed = "Скорость получения бочек\nУровень: {0}";
-            [TextArea, Tooltip("{0}: bonus mugs, {1}: next value text, {2}: purchased level, {3}: maximum level")]
-            public string TavernMugs = "Кружек из бочки +{0}{1}\n{2}/{3}";
-            [Tooltip("{0}: next bonus mugs")]
-            public string TavernNextMugs = " → +{0:0}";
-        }
-
-        [Serializable]
         private struct WorkerChoice
         {
             public Worker Worker;
@@ -54,8 +30,15 @@ namespace UI.MainMenu
         [SerializeField] private TMP_Text _balance;
         [SerializeField] private Button _close;
         [SerializeField] private Button _tavern;
-        [SerializeField] private UpgradeLabels _labels = new UpgradeLabels();
         private int _selected;
+
+        private void OnEnable()
+        {
+            Localization.LocalizationManager.LanguageChanged += Refresh;
+            Refresh();
+        }
+
+        private void OnDisable() => Localization.LocalizationManager.LanguageChanged -= Refresh;
 
         private void Awake()
         {
@@ -95,7 +78,7 @@ namespace UI.MainMenu
 
         public void Refresh()
         {
-            _balance.text = string.Format(_labels.Balance, LevelRewards.Balance);
+            _balance.text = Localization.LocalizationManager.Format("upgrade.Balance", LevelRewards.Balance);
             if (_tavern != null) _tavern.interactable = _selected >= 0;
             for (int i = 0; i < _workers.Length; i++)
             {
@@ -112,11 +95,11 @@ namespace UI.MainMenu
                     int level = TavernUpgrades.GetLevel(stat);
                     int maxLevel = TavernUpgrades.GetMaxLevel(stat);
                     bool max = level >= maxLevel;
-                    string nextMugs = max ? string.Empty : string.Format(_labels.TavernNextMugs, TavernUpgrades.GetValue(stat, level + 1));
+                    string nextMugs = max ? string.Empty : Localization.LocalizationManager.Format("upgrade.TavernNextMugs", TavernUpgrades.GetValue(stat, level + 1));
                     view.Description.text = stat == TavernUpgrades.Stat.FillSpeed
-                        ? string.Format(_labels.TavernSpeed, level, maxLevel)
-                        : string.Format(_labels.TavernMugs, TavernUpgrades.BonusMugs, nextMugs, level, maxLevel);
-                    view.Price.text = max ? _labels.Maximum : string.Format(_labels.Buy, TavernUpgrades.Price(stat));
+                        ? Localization.LocalizationManager.Format("upgrade.TavernSpeed", level, maxLevel)
+                        : Localization.LocalizationManager.Format("upgrade.TavernMugs", TavernUpgrades.BonusMugs, nextMugs, level, maxLevel);
+                    view.Price.text = max ? Localization.LocalizationManager.Get("upgrade.Maximum") : Localization.LocalizationManager.Format("upgrade.Buy", TavernUpgrades.Price(stat));
                     view.Buy.interactable = TavernUpgrades.CanBuy(stat);
                 }
                 return;
@@ -127,15 +110,15 @@ namespace UI.MainMenu
                 int level = CharacterUpgrades.GetLevel(worker, view.Stat);
                 var steps = worker.GetUpgrades(view.Stat);
                 bool max = level >= steps.Length;
-                string title = view.Stat == CharacterUpgrades.Stat.Speed ? _labels.WorkerSpeed : _labels.WorkerCapacity;
-                view.Description.text = string.Format(_labels.WorkerLevel, title, level, steps.Length);
+                string title = view.Stat == CharacterUpgrades.Stat.Speed ? Localization.LocalizationManager.Get("upgrade.WorkerSpeed") : Localization.LocalizationManager.Get("upgrade.WorkerCapacity");
+                view.Description.text = Localization.LocalizationManager.Format("upgrade.WorkerLevel", title, level, steps.Length);
                 if (view.Stat == CharacterUpgrades.Stat.Capacity)
                 {
                     float value = CharacterUpgrades.GetValue(worker, view.Stat, level);
-                    string next = max ? string.Empty : string.Format(_labels.WorkerNextValue, CharacterUpgrades.GetValue(worker, view.Stat, level + 1));
-                    view.Description.text += string.Format(_labels.WorkerCapacityValue, value, next);
+                    string next = max ? string.Empty : Localization.LocalizationManager.Format("upgrade.WorkerNextValue", CharacterUpgrades.GetValue(worker, view.Stat, level + 1));
+                    view.Description.text += Localization.LocalizationManager.Format("upgrade.WorkerCapacityValue", value, next);
                 }
-                view.Price.text = max ? _labels.Maximum : string.Format(_labels.Buy, steps[level].Price);
+                view.Price.text = max ? Localization.LocalizationManager.Get("upgrade.Maximum") : Localization.LocalizationManager.Format("upgrade.Buy", steps[level].Price);
                 view.Buy.interactable = !max && LevelRewards.Balance >= steps[level].Price;
             }
         }

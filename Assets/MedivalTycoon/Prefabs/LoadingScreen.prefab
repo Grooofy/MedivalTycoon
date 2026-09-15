@@ -284,6 +284,7 @@ GameObject:
   - component: {fileID: 7038891403986418778}
   - component: {fileID: 7038891403986418756}
   - component: {fileID: 7038891403986418757}
+  - component: {fileID: 880000000000000000}
   m_Layer: 5
   m_Name: Loading
   m_TagString: Untagged
@@ -339,7 +340,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Loading...
+  m_text: "\u0417\u0430\u0433\u0440\u0443\u0437\u043a\u0430..."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0d675f8f4a5de39429587b7bf66be7c3, type: 2}
   m_sharedMaterial: {fileID: -4233675445601470399, guid: 0d675f8f4a5de39429587b7bf66be7c3, type: 2}
@@ -522,3 +523,16 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &880000000000000000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7038891403986418779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 546c8361094446acab3d4dfe708a7e22, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  _key: loading
